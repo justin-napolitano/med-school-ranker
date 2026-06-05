@@ -798,9 +798,9 @@
     "status": "reviewed"
   },
   {
-    "current_decision_summary": "First executable slice: serve the site, capture desktop/mobile screenshots, record findings, and fix only high-impact layout or clarity issues.",
+    "current_decision_summary": "Screenshot QA and high-impact site clarity pass have been completed in the current static site history.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md",
-    "next_action": "Run next before feature work.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_a_screenshot_qa",
@@ -809,12 +809,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Second executable slice: reversible in-memory hide/restore controls, visible/all/hidden filters, hidden-school review, and visibility CSV export.",
+    "current_decision_summary": "Reversible hide/restore controls, visibility filters, hidden-school review, and visibility CSV export are implemented.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md",
-    "next_action": "Run after Slice A is committed.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_b_visibility",
@@ -823,12 +823,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Third executable slice: dossier index and minimal dossier detail for every active school, with generated facts and missing prompts.",
+    "current_decision_summary": "Dossier index and per-school dossier/profile route shell with generated facts and prompts are implemented.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md",
-    "next_action": "Run after Slice B is committed.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_c_dossiers",
@@ -837,12 +837,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Fourth executable slice: browser-memory dossier edits and school_dossier_edits_export.csv with versioned schema.",
+    "current_decision_summary": "Browser-memory dossier edits and school_dossier_edits_export.csv are implemented with a versioned schema.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md",
-    "next_action": "Run after Slice C is committed.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_d_dossier_edits",
@@ -851,12 +851,12 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Fifth executable slice: research queue with next actions based on rank, confidence, missing sections, visibility, and dossier state.",
+    "current_decision_summary": "Research queue and deterministic next actions based on rank, confidence, missing sections, visibility, and dossier state are implemented.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md",
-    "next_action": "Run after Slice D is committed.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_e_research_queue",
@@ -865,6 +865,20 @@
     "priority": "medium",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Next executable slice: consolidate Rankings inline controls, Application List shortlist workflow, Compare side-by-side review, dossier-style profile actions, and plan-index cleanup before visual design.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md",
+    "next_action": "Execute next before beginning the visual design pass.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_i_pre_design_functional_ux",
+    "plan_name": "Site UX Slice I Pre-Design Functional UX Consolidation",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "ready"
   }
 ]
