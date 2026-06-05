@@ -90,6 +90,18 @@ Can include:
 - public source summaries;
 - source names and URLs that are safe to publish.
 
+## Phase 0 Scaffold
+
+Publish-safe scaffolding should be created before the full product UI is rebuilt:
+
+- Define payload groups as `product_public`, `product_local`, and `admin_local`.
+- Generate `local_full` from all non-private allowed groups.
+- Generate `publish_safe` only from `product_public`.
+- Add a simple mode indicator to generated metadata.
+- Add exclusion tests before any public deployment work.
+
+This prevents later route work from accidentally treating hidden admin views as safe.
+
 ## Implementation Steps
 
 1. Add site mode argument or environment setting.

@@ -33,6 +33,18 @@ The target quality bar is "USNews-worthy or better" in usefulness: strong tables
 - The static site approach remains acceptable while product UX is built out.
 - Editing can remain in CSV/XLSX for now; in-browser writes are not required for this phase.
 
+## Critical Review Fixes In Scope
+
+The critical review findings are required work in this execution plan, not separate commentary:
+
+- Add a Phase 0 guardrail slice before product feature work.
+- Scaffold `local_full` and `publish_safe` payload separation before admin data is moved around.
+- Treat publish-safe data removal as a payload-generation requirement, not CSS/nav hiding.
+- Add curated-list field-readiness metadata so lists that need immature fields are labeled provisional until those fields are source-backed or manually reviewed.
+- Require AAMC MCAT/GPA grid caveats wherever national grid context is displayed.
+- Require screenshot/browser smoke checks for the visual-quality phase when tooling is available.
+- Keep route-shell/admin separation runnable even if deterministic scoring work is still in progress.
+
 ## Route Model
 
 Public/product routes:
@@ -113,6 +125,16 @@ Missing facts should remain missing. Curated list eligibility should degrade gra
 
 ## Implementation Sequence
 
+### Phase 0: Guardrails and Readiness
+
+- Add explicit site mode scaffolding for `local_full` and `publish_safe`.
+- Define product-safe payload sections separately from admin-local payload sections.
+- Add tests that publish-safe payloads do not contain admin/source-review/private data, even before publish-safe routes are polished.
+- Add generated school slugs and list slugs to the payload contract.
+- Add curated-list field-readiness metadata covering `ownership_type`, `region`, city facts, culture fields, scoring fields, cost fields, and source-confidence fields.
+- Add AAMC grid caveat text as reusable display copy.
+- Add tests that missing curated-list fields produce provisional or low-confidence status rather than false claims.
+
 ### Phase A: Product Route Shell
 
 - Make `#/rankings` the default route.
@@ -140,12 +162,15 @@ Missing facts should remain missing. Curated list eligibility should degrade gra
 - Generate list pages from definitions.
 - Add "Apply this lens" controls to rankings.
 - Support curated routes for best cities, best culture fit, best public, best private, low cost, and admissions realism.
+- Use field readiness to mark list confidence and missing-data behavior.
+- Do not label a curated list as high confidence unless its required fields are available and reviewed.
 
 ### Phase E: Publish-Safe Product Build
 
-- Add `local_full` and `publish_safe` site modes.
-- In publish-safe mode, omit admin routes and private/local payloads.
+- Complete the `local_full` and `publish_safe` mode implementation started in Phase 0.
+- In publish-safe mode, omit admin routes and private/local payloads from generated JSON and embedded HTML.
 - Add tests that private fields and admin data are absent from publish-safe output.
+- Add a build/report line showing which site mode was generated.
 
 ### Phase F: Polish and QA
 
@@ -172,6 +197,7 @@ Additional site checks:
 - `#/lists/:slug` pages render from data definitions.
 - A curated list can be applied as a scoring lens to rankings.
 - Publish-safe mode excludes private/admin payloads.
+- Field-readiness metadata is present for curated lists and missing fields are not overclaimed.
 - AAMC grid is labeled as national aggregate MD data, not school-specific probability.
 
 ## Definition of Done
