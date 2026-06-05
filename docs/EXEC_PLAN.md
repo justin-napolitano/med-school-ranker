@@ -99,6 +99,8 @@ The project is divided into subplans:
 - [Hidden Curriculum](plans/hidden_curriculum.md)
 - [Scoring Engine](plans/scoring_engine.md)
 - [Headless Scoring Execution Plan](HEADLESS_SCORING_EXECUTION_PLAN.md)
+- [Scoring Transparency and Rollup Executive Plan](SCORING_TRANSPARENCY_EXEC_PLAN.md)
+- [Headless Scoring Transparency Execution Plan](HEADLESS_SCORING_TRANSPARENCY_EXECUTION_PLAN.md)
 - [Workbook and Export](plans/workbook_and_export.md)
 - [Validation and QA](plans/validation_and_qa.md)
 - [Governance](plans/governance.md)
@@ -156,6 +158,16 @@ The project is divided into subplans:
 - Add data completeness penalties and warnings.
 
 Phase 2B execution details live in [Headless Scoring Execution Plan](HEADLESS_SCORING_EXECUTION_PLAN.md). This phase is deterministic scoring only. It does not include school-specific predictive admissions probability.
+
+### Milestone 7.5: Scoring Transparency and Rollup
+
+- Add long-form score contribution outputs.
+- Add rank confidence, rank bands, and deterministic explanation fields.
+- Add workbook/site audit views that answer "Why this rank?"
+- Introduce a generated decision rollup table after explainability outputs are stable.
+- Move toward normalized domain tables incrementally rather than expanding the master table indefinitely.
+
+Execution details live in [Scoring Transparency and Rollup Executive Plan](SCORING_TRANSPARENCY_EXEC_PLAN.md) and [Headless Scoring Transparency Execution Plan](HEADLESS_SCORING_TRANSPARENCY_EXECUTION_PLAN.md).
 
 ### Milestone 8: Review-Ready Workbook
 
