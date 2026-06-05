@@ -144,6 +144,7 @@ uv run med-school-build-rankings
 uv run med-school-build-workbook
 uv run med-school-build-site
 uv run med-school-build-all
+uv run med-school-import-reviewer-state --visibility-export school_visibility_export.csv --dossier-export school_dossier_edits_export.csv
 uv run med-school-validate
 uv run pytest
 ```

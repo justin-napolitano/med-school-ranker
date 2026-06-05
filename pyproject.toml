@@ -20,6 +20,7 @@ med-school-build-workbook = "med_school_ranker.workbook:main"
 med-school-build-site = "med_school_ranker.site:main"
 med-school-build-all = "med_school_ranker.bundle:main"
 med-school-integrate-sources = "med_school_ranker.source_integration:main"
+med-school-import-reviewer-state = "med_school_ranker.reviewer_state:main"
 med-school-validate = "med_school_ranker.validation:main"
 
 [build-system]

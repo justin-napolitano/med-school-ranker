@@ -32,6 +32,8 @@ from med_school_ranker.paths import (
     RANKINGS_CSV,
     ROOT,
     SCENARIO_WEIGHTS_CSV,
+    SCHOOL_DOSSIERS_CSV,
+    SCHOOL_VISIBILITY_CSV,
     SCORE_CONTRIBUTIONS_CSV,
     SCORING_METHODOLOGY_CSV,
     SITE_DIR,
@@ -55,6 +57,8 @@ JSON_OUTPUTS = {
     "admissions_policies": ADMISSIONS_POLICIES_CSV,
     "letter_requirements": LETTER_REQUIREMENTS_CSV,
     "partner_inputs": PARTNER_INPUTS_CSV,
+    "school_visibility": SCHOOL_VISIBILITY_CSV,
+    "school_dossiers": SCHOOL_DOSSIERS_CSV,
     "source_match_overrides": SOURCE_MATCH_OVERRIDES_CSV,
     "source_review_queue": SOURCE_REVIEW_QUEUE_CSV,
     "admissions_source_queue": ADMISSIONS_SOURCE_QUEUE_CSV,
@@ -107,7 +111,7 @@ PRODUCT_PUBLIC_JSON_KEYS = {
     "letter_requirements",
 }
 
-PRODUCT_LOCAL_KEYS = {"applicant_profiles", "partner_inputs"}
+PRODUCT_LOCAL_KEYS = {"applicant_profiles", "partner_inputs", "school_visibility", "school_dossiers"}
 ADMIN_LOCAL_KEYS = {
     "source_status",
     "source_match_overrides",
@@ -726,6 +730,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     admissions_policies = read_csv(ADMISSIONS_POLICIES_CSV)
     letter_requirements = read_csv(LETTER_REQUIREMENTS_CSV)
     partner_inputs = read_csv(PARTNER_INPUTS_CSV)
+    school_visibility = read_csv(SCHOOL_VISIBILITY_CSV)
+    school_dossiers = read_csv(SCHOOL_DOSSIERS_CSV)
     source_match_overrides = read_csv(SOURCE_MATCH_OVERRIDES_CSV)
     source_review_queue = read_csv(SOURCE_REVIEW_QUEUE_CSV)
     source_queue = read_csv(ADMISSIONS_SOURCE_QUEUE_CSV)
@@ -763,6 +769,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     admissions_policies = with_school_route(admissions_policies)
     letter_requirements = with_school_route(letter_requirements)
     partner_inputs = with_school_route(partner_inputs)
+    school_visibility = with_school_route(school_visibility)
+    school_dossiers = with_school_route(school_dossiers)
     source_match_overrides = with_school_route(source_match_overrides)
     source_review_queue = with_school_route(source_review_queue)
     source_queue = with_school_route(source_queue)
@@ -770,6 +778,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
 
     rankings_by_school = first_by_school(rankings)
     partner_by_school = first_by_school(partner_inputs)
+    visibility_by_school = first_by_school(school_visibility)
+    dossier_by_school = first_by_school(school_dossiers)
     source_by_school = first_by_school(source_queue)
     stats_by_school = first_by_school(admissions_stats)
     cost_by_school = first_by_school(cost_and_debt)
@@ -795,6 +805,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     for school in school_master:
         school_id = school.get("school_id", "")
         partner_row = partner_by_school.get(school_id, {})
+        visibility_row = visibility_by_school.get(school_id, {})
+        dossier_row = dossier_by_school.get(school_id, {})
         source_row = source_by_school.get(school_id, {})
         stats_row = stats_by_school.get(school_id, {})
         cost_row = cost_by_school.get(school_id, {})
@@ -861,6 +873,10 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
                     "data_quality": issues_by_school.get(school_id, []),
                 }
             )
+            if visibility_row:
+                item["visibility"] = visibility_row
+            if dossier_row:
+                item["dossier"] = dossier_row
         schools.append(item)
 
     degree_counts = Counter(row.get("degree_type", "Unknown") or "Unknown" for row in school_master)
@@ -952,6 +968,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
                 "source_status": status,
                 "applicant_profiles": applicant_profiles,
                 "partner_inputs": partner_inputs,
+                "school_visibility": school_visibility,
+                "school_dossiers": school_dossiers,
                 "source_match_overrides": source_match_overrides,
                 "source_review_queue": source_review_queue,
                 "admissions_source_queue": source_queue,
@@ -1169,6 +1187,37 @@ const DECISION_STATUSES = ['considering', 'applying', 'applied', 'interview', 'a
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
+visibilityState = Object.fromEntries(rows('school_visibility')
+  .filter(record => record.school_id)
+  .map(record => [record.school_id, {
+    export_schema_version: 'school_visibility_v1',
+    school_id: record.school_id,
+    school_name: record.school_name || '',
+    visibility_state: record.visibility_state || 'visible',
+    visibility_reason: record.visibility_reason || '',
+    hidden_at: record.hidden_at || '',
+    updated_at: record.updated_at || '',
+    source: record.source || 'manual/school_visibility.csv',
+    notes: record.notes || '',
+  }]));
+dossierState = Object.fromEntries(rows('school_dossiers')
+  .filter(record => record.school_id)
+  .map(record => [record.school_id, {
+    school_id: record.school_id,
+    school_name: record.school_name || '',
+    research_status: record.research_status || '',
+    interest_level: record.interest_level || '',
+    four_year_happiness: record.four_year_happiness || '',
+    location_fit: record.location_fit || '',
+    culture_fit: record.culture_fit || '',
+    regret_index: record.regret_index || '',
+    hard_no_flag: record.hard_no_flag || '',
+    hard_no_reason: record.hard_no_reason || '',
+    application_decision_status: record.application_decision_status || '',
+    notes: record.notes || '',
+    updated_at: record.updated_at || '',
+    source: record.source || 'manual/school_dossiers.csv',
+  }]));
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
 const truthy = (value) => ['1', 'true', 't', 'yes', 'y'].includes(String(value || '').trim().toLowerCase());
 const parseScore = (value) => {
@@ -1308,7 +1357,22 @@ function setSchoolVisibility(id, visibilityStateValue, reason='') {
   const item = schoolById(id);
   if (!item) return;
   if (visibilityStateValue === 'visible') {
-    delete visibilityState[id];
+    const previous = visibilityState[id] || {};
+    if (!previous.visibility_state || previous.visibility_state === 'visible') {
+      delete visibilityState[id];
+      return;
+    }
+    visibilityState[id] = {
+      export_schema_version: 'school_visibility_v1',
+      school_id: id,
+      school_name: item.school.school_name || previous.school_name || '',
+      visibility_state: 'visible',
+      visibility_reason: reason || previous.visibility_reason || '',
+      hidden_at: previous.hidden_at || '',
+      updated_at: nowIso(),
+      source: 'browser_session',
+      notes: previous.notes || '',
+    };
     return;
   }
   const previous = visibilityState[id] || {};
@@ -1341,7 +1405,6 @@ function hiddenSchools() {
 function visibilityExportRecords() {
   const exportedAt = nowIso();
   return Object.values(visibilityState)
-    .filter(record => record.visibility_state !== 'visible')
     .sort((a, b) => String(a.school_name).localeCompare(String(b.school_name)))
     .map(record => ({
       export_schema_version: 'school_visibility_v1',
