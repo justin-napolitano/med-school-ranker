@@ -417,13 +417,19 @@ def build_site_payload() -> dict[str, object]:
                     "error_count": error_count,
                     "partner_input_status": "present" if has_partner_input(partner_row) else "missing",
                     "partner_notes_indicator": "yes" if partner_row.get("partner_notes", "").strip() else "no",
-                    "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")),
+                    "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")) or is_truthy(rankings_by_school.get(school_id, {}).get("hard_no_flag")),
+                    "excluded_from_rank": is_truthy(rankings_by_school.get(school_id, {}).get("excluded_from_rank")),
                     "admissions_stats_present": "yes" if has_admissions_stats(stats_row) else "no",
-                    "admissions_data_quality_band": stats_row.get("data_quality_band", "").strip() or "missing",
-                    "published_mcat_band": stats_row.get("published_mcat_band", "").strip() or "missing",
-                    "published_gpa_band": stats_row.get("published_gpa_band", "").strip() or "missing",
+                    "admissions_fit_tier": rankings_by_school.get(school_id, {}).get("admissions_fit_tier", "").strip() or "missing",
+                    "application_bucket": rankings_by_school.get(school_id, {}).get("application_bucket", "").strip() or "missing",
+                    "admissions_data_quality_band": rankings_by_school.get(school_id, {}).get("stats_data_quality_band", "").strip() or stats_row.get("data_quality_band", "").strip() or "missing",
+                    "published_mcat_band": rankings_by_school.get(school_id, {}).get("published_mcat_band", "").strip() or stats_row.get("published_mcat_band", "").strip() or "missing",
+                    "published_gpa_band": rankings_by_school.get(school_id, {}).get("published_gpa_band", "").strip() or stats_row.get("published_gpa_band", "").strip() or "missing",
                     "aamc_acceptance_rate_band": stats_row.get("aamc_acceptance_rate_band", "").strip() or "missing",
                     "cost_data_present": "yes" if cost_row else "no",
+                    "cost_basis_present": "yes" if rankings_by_school.get(school_id, {}).get("cost_basis", "").strip() else "no",
+                    "missing_score_status": "missing" if rankings_by_school.get(school_id, {}).get("missing_score_inputs", "").strip() else "complete",
+                    "score_warning_status": "warning" if rankings_by_school.get(school_id, {}).get("score_warnings", "").strip() else "clear",
                     "admissions_policy_count": len(policy_rows),
                     "letter_requirement_count": len(letter_rows),
                     "source_review_count": len(review_rows),
@@ -627,7 +633,7 @@ let currentView = 'dashboard';
 let selectedSchoolId = payload.schools[0]?.school?.school_id || '';
 let sortState = {};
 let filters = {
-  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: ''},
+  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
   sources: {sourceMissing: ''},
 };
 
@@ -757,8 +763,8 @@ function linkSchool(item) {
 function rankingFilters() {
   const degrees = [...new Set(payload.schools.map(s => s.school.degree_type).filter(Boolean))].sort();
   const states = [...new Set(payload.schools.map(s => s.school.state).filter(Boolean))].sort();
-  const tiers = [...new Set(payload.schools.map(s => s.ranking.dynamic_tier).filter(Boolean))].sort();
-  const buckets = [...new Set(payload.schools.map(s => s.ranking.suggested_funnel_bucket).filter(Boolean))].sort();
+  const tiers = [...new Set(payload.schools.map(s => s.derived.admissions_fit_tier).filter(Boolean))].sort();
+  const buckets = [...new Set(payload.schools.map(s => s.derived.application_bucket).filter(Boolean))].sort();
   const qualities = [...new Set(payload.schools.map(s => s.derived.admissions_data_quality_band).filter(Boolean))].sort();
   const mcatBands = [...new Set(payload.schools.map(s => s.derived.published_mcat_band).filter(Boolean))].sort();
   const gpaBands = [...new Set(payload.schools.map(s => s.derived.published_gpa_band).filter(Boolean))].sort();
@@ -771,24 +777,29 @@ function rankingFilters() {
       <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
       <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
       <label>Hard No <select id="rankHardNo"><option value="" ${f.hardNo === '' ? 'selected' : ''}>All</option><option value="yes" ${f.hardNo === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${f.hardNo === 'no' ? 'selected' : ''}>No</option></select></label>
+      <label>Rankable <select id="rankExcluded"><option value="" ${f.excluded === '' ? 'selected' : ''}>All</option><option value="yes" ${f.excluded === 'yes' ? 'selected' : ''}>Excluded</option><option value="no" ${f.excluded === 'no' ? 'selected' : ''}>Rankable</option></select></label>
       <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>
       <label>Partner <select id="rankPartner"><option value="" ${f.partner === '' ? 'selected' : ''}>All</option><option value="present" ${f.partner === 'present' ? 'selected' : ''}>Present</option><option value="missing" ${f.partner === 'missing' ? 'selected' : ''}>Missing</option></select></label>
       <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
       <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
       <label>GPA Band <select id="rankGpaBand"><option value="" ${f.gpaBand === '' ? 'selected' : ''}>All</option>${optionTags(gpaBands, f.gpaBand)}</select></label>
       <label>AAMC Rate Band <select id="rankAamcRateBand"><option value="" ${f.aamcRateBand === '' ? 'selected' : ''}>All</option>${optionTags(aamcRateBands, f.aamcRateBand)}</select></label>
+      <label>Missing Scores <select id="rankMissingScore"><option value="" ${f.missingScore === '' ? 'selected' : ''}>All</option><option value="missing" ${f.missingScore === 'missing' ? 'selected' : ''}>Missing</option><option value="complete" ${f.missingScore === 'complete' ? 'selected' : ''}>Complete</option></select></label>
+      <label>Score Warnings <select id="rankScoreWarning"><option value="" ${f.scoreWarning === '' ? 'selected' : ''}>All</option><option value="warning" ${f.scoreWarning === 'warning' ? 'selected' : ''}>Has warnings</option><option value="clear" ${f.scoreWarning === 'clear' ? 'selected' : ''}>Clear</option></select></label>
     </div>`;
 }
 
 function rankingsRows() {
-  const {degree, state, tier, bucket, hardNo, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand} = filters.rankings;
+  const {degree, state, tier, bucket, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
   return filteredSchools().filter(s => {
     if (degree && s.school.degree_type !== degree) return false;
     if (state && s.school.state !== state) return false;
-    if (tier && s.ranking.dynamic_tier !== tier) return false;
-    if (bucket && s.ranking.suggested_funnel_bucket !== bucket) return false;
+    if (tier && s.derived.admissions_fit_tier !== tier) return false;
+    if (bucket && s.derived.application_bucket !== bucket) return false;
     if (hardNo === 'yes' && !s.derived.hard_no_flag) return false;
     if (hardNo === 'no' && s.derived.hard_no_flag) return false;
+    if (excluded === 'yes' && !s.derived.excluded_from_rank) return false;
+    if (excluded === 'no' && s.derived.excluded_from_rank) return false;
     if (warnings === 'yes' && s.derived.warning_count < 1) return false;
     if (warnings === 'no' && s.derived.warning_count > 0) return false;
     if (partner && s.derived.partner_input_status !== partner) return false;
@@ -796,6 +807,8 @@ function rankingsRows() {
     if (mcatBand && s.derived.published_mcat_band !== mcatBand) return false;
     if (gpaBand && s.derived.published_gpa_band !== gpaBand) return false;
     if (aamcRateBand && s.derived.aamc_acceptance_rate_band !== aamcRateBand) return false;
+    if (missingScore && s.derived.missing_score_status !== missingScore) return false;
+    if (scoreWarning && s.derived.score_warning_status !== scoreWarning) return false;
     return true;
   });
 }
@@ -808,12 +821,15 @@ function renderRankings() {
     rankTier: 'tier',
     rankBucket: 'bucket',
     rankHardNo: 'hardNo',
+    rankExcluded: 'excluded',
     rankWarnings: 'warnings',
     rankPartner: 'partner',
     rankQuality: 'quality',
     rankMcatBand: 'mcatBand',
     rankGpaBand: 'gpaBand',
     rankAamcRateBand: 'aamcRateBand',
+    rankMissingScore: 'missingScore',
+    rankScoreWarning: 'scoreWarning',
   };
   Object.entries(bindings).forEach(([id, key]) => $(id).addEventListener('change', event => {
     filters.rankings[key] = event.target.value;
@@ -829,19 +845,25 @@ function renderRankingTable() {
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
     {key:'school.city', label:'City', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-    {key:'ranking.dynamic_tier', label:'Tier', render:s=>missing(s.ranking.dynamic_tier)},
-    {key:'ranking.suggested_funnel_bucket', label:'Bucket', render:s=>missing(s.ranking.suggested_funnel_bucket)},
+    {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier)},
+    {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket)},
     {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
     {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
     {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
+    {key:'ranking.admissions_mcat_fit_score', label:'MCAT Fit', render:s=>missing(s.ranking.admissions_mcat_fit_score)},
+    {key:'ranking.admissions_gpa_fit_score', label:'GPA Fit', render:s=>missing(s.ranking.admissions_gpa_fit_score)},
+    {key:'ranking.admissions_oos_friendliness_score', label:'OOS Fit', render:s=>missing(s.ranking.admissions_oos_friendliness_score)},
+    {key:'ranking.attendance_cost_score', label:'Cost Fit', render:s=>missing(s.ranking.attendance_cost_score)},
     {key:'ranking.data_completeness_score', label:'Data', render:s=>missing(s.ranking.data_completeness_score)},
     {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
-    {key:'admissions_stats.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.admissions_stats.published_mcat_average)},
-    {key:'admissions_stats.published_gpa_average', label:'GPA Avg', render:s=>missing(s.admissions_stats.published_gpa_average)},
+    {key:'ranking.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.ranking.published_mcat_average)},
+    {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average)},
+    {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
     {key:'derived.published_mcat_band', label:'MCAT Band', render:s=>missing(s.derived.published_mcat_band)},
     {key:'derived.published_gpa_band', label:'GPA Band', render:s=>missing(s.derived.published_gpa_band)},
-    {key:'admissions_stats.aamc_acceptance_rate', label:'AAMC Rate', render:s=>missing(s.admissions_stats.aamc_acceptance_rate)},
+    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>missing(s.ranking.score_warnings)},
     {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
+    {key:'derived.excluded_from_rank', label:'Excluded', render:s=>s.derived.excluded_from_rank ? badge('Excluded', 'warn') : ''},
     {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
     {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status},
   ], rows, 'rankings');
@@ -863,12 +885,22 @@ function renderDetail() {
         ['Accreditation', item.school.accreditation_status],
       ])}
       ${detailPanel('Ranking', [
+        ['Profile', item.ranking.profile_name],
         ['Overall rank', item.ranking.overall_rank],
-        ['Tier', item.ranking.dynamic_tier],
-        ['Bucket', item.ranking.suggested_funnel_bucket],
+        ['Admissions tier', item.ranking.admissions_fit_tier],
+        ['Bucket', item.ranking.application_bucket],
         ['Admissions', item.ranking.admissions_score],
         ['Attendance', item.ranking.attendance_score],
+        ['MCAT fit', item.ranking.admissions_mcat_fit_score],
+        ['GPA fit', item.ranking.admissions_gpa_fit_score],
+        ['OOS fit', item.ranking.admissions_oos_friendliness_score],
+        ['Cost fit', item.ranking.attendance_cost_score],
         ['Data completeness', item.ranking.data_completeness_score],
+        ['Excluded from rank', item.ranking.excluded_from_rank],
+        ['Missing score inputs', item.ranking.missing_score_inputs],
+        ['Score warnings', item.ranking.score_warnings],
+        ['Positive drivers', item.ranking.top_positive_drivers],
+        ['Negative drivers', item.ranking.top_negative_drivers],
       ])}
       ${detailPanel('Partner Review', [
         ['Could live here', item.partner_input.could_live_here_4_years_score],
@@ -886,6 +918,12 @@ function renderDetail() {
         ['Published source count', item.admissions_stats.published_source_count],
         ['Published MCAT average', item.admissions_stats.published_mcat_average],
         ['Published GPA average', item.admissions_stats.published_gpa_average],
+        ['School MCAT used for fit', item.ranking.school_mcat_for_fit],
+        ['School GPA used for fit', item.ranking.school_gpa_for_fit],
+        ['Profile MCAT band', item.ranking.profile_aamc_mcat_band],
+        ['Profile GPA band', item.ranking.profile_aamc_gpa_band],
+        ['Profile AAMC national rate', item.ranking.profile_aamc_acceptance_rate],
+        ['Profile AAMC national rate band', item.ranking.profile_aamc_acceptance_rate_band],
         ['MCAT spread', item.admissions_stats.published_mcat_spread],
         ['GPA spread', item.admissions_stats.published_gpa_spread],
         ['Data quality', item.admissions_stats.data_quality_band],
@@ -901,6 +939,8 @@ function renderDetail() {
         ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
         ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
         ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
+        ['Applicant cost basis', item.ranking.cost_basis],
+        ['Adjusted cost basis', item.ranking.cost_basis_adjusted],
         ['Confidence', item.cost_and_debt.data_confidence],
       ])}
       ${detailPanel('Source Coverage', [

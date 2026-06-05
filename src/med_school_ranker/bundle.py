@@ -13,7 +13,11 @@ from med_school_ranker.workbook import build_workbook
 
 def is_private_data_path(path: Path) -> bool:
     relative_parts = path.relative_to(ROOT).parts
-    return relative_parts[:3] == ("data", "manual", "private") or relative_parts[:2] == ("data", "private")
+    return (
+        relative_parts[:3] == ("data", "manual", "private")
+        or relative_parts[:2] == ("data", "private")
+        or relative_parts[:2] == ("outputs", "private")
+    )
 
 
 def build_upload_zip() -> Path:

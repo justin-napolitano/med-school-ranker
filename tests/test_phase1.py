@@ -19,6 +19,7 @@ SCHOOL_MASTER_FIELDS = [
     "degree_type",
     "city",
     "state",
+    "state_abbrev",
     "active_in_universe",
     "manual_exclusion_flag",
     "exclusion_reason",
@@ -44,6 +45,7 @@ def default_school_rows() -> list[dict[str, str]]:
             "degree_type": "MD",
             "city": "Boston",
             "state": "Massachusetts",
+            "state_abbrev": "MA",
             "active_in_universe": "TRUE",
             "manual_exclusion_flag": "FALSE",
             "exclusion_reason": "",
@@ -57,6 +59,7 @@ def default_school_rows() -> list[dict[str, str]]:
             "degree_type": "DO",
             "city": "Chicago",
             "state": "Illinois",
+            "state_abbrev": "IL",
             "active_in_universe": "TRUE",
             "manual_exclusion_flag": "FALSE",
             "exclusion_reason": "",
@@ -208,9 +211,18 @@ def patch_ranking_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(rankings, "ROOT", root)
     monkeypatch.setattr(rankings, "OUT", out)
     monkeypatch.setattr(rankings, "MASTER_CSV", root / "data/school_master.csv")
+    monkeypatch.setattr(rankings, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
+    monkeypatch.setattr(rankings, "PRIVATE_APPLICANT_PROFILES_CSV", root / "data/manual/private/applicant_profiles.local.csv")
     monkeypatch.setattr(rankings, "PREFERENCES_CSV", root / "data/user_preferences.csv")
     monkeypatch.setattr(rankings, "SCENARIO_WEIGHTS_CSV", root / "data/scenario_weights.csv")
+    monkeypatch.setattr(rankings, "AAMC_MCAT_GPA_GRID_CSV", root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv")
+    monkeypatch.setattr(rankings, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
+    monkeypatch.setattr(rankings, "COST_AND_DEBT_CSV", root / "data/normalized/cost_and_debt.csv")
+    monkeypatch.setattr(rankings, "ADMISSIONS_POLICIES_CSV", root / "data/normalized/admissions_policies.csv")
+    monkeypatch.setattr(rankings, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
     monkeypatch.setattr(rankings, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    monkeypatch.setattr(rankings, "PRIVATE_OUT", out / "private")
+    monkeypatch.setattr(rankings, "PRIVATE_RANKINGS_CSV", out / "private/calculated_rankings.private.csv")
     return out
 
 
@@ -441,6 +453,9 @@ def test_upload_bundle_includes_site_and_excludes_private_data(tmp_path, monkeyp
     private_file = tmp_path / "data/private/secret.csv"
     private_file.parent.mkdir(parents=True)
     private_file.write_text("secret\nsuper_secret_value\n")
+    private_output = out / "private/calculated_rankings.private.csv"
+    private_output.parent.mkdir(parents=True)
+    private_output.write_text("secret\nsuper_secret_private_score\n")
 
     monkeypatch.setattr(bundle, "ROOT", tmp_path)
     monkeypatch.setattr(bundle, "DATA", tmp_path / "data")
@@ -457,3 +472,4 @@ def test_upload_bundle_includes_site_and_excludes_private_data(tmp_path, monkeyp
     assert "outputs/site/data/site_payload.json" in names
     assert not any(name.startswith("data/private/") for name in names)
     assert not any(name.startswith("data/manual/private/") for name in names)
+    assert not any(name.startswith("outputs/private/") for name in names)
