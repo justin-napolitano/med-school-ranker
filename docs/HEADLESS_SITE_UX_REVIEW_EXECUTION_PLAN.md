@@ -2,9 +2,11 @@
 
 ## Objective
 
-Run a headless visual review of the current site, capture screenshots, improve obvious UX issues, and implement the first applicant workflow features for school visibility and dossiers.
+Coordinate the site UX review and research workflow work across separate headless slices.
 
 This plan is for a Codex headless worker. It should be executed after the scoring transparency proof of concept is committed.
+
+Do not execute all slices in one run unless the user explicitly asks. The recommended next run is Slice A only.
 
 ## Repository
 
@@ -22,6 +24,11 @@ Read these first:
 - `docs/site/ux_review/02_school_visibility_controls.md`
 - `docs/site/ux_review/03_school_dossier_profiles.md`
 - `docs/site/ux_review/04_research_workflow_and_exports.md`
+- `docs/site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md`
+- `docs/site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md`
+- `docs/site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md`
+- `docs/site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md`
+- `docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md`
 
 Read these as implementation context:
 
@@ -44,11 +51,81 @@ Read these as implementation context:
 - Do not implement predictive admissions probability.
 - Do not commit private profile data or private-derived outputs.
 - Prefer additive site/data outputs and reversible local interactions.
-- Required MVP first: screenshot QA, focused visual fixes, hide/restore controls, minimal dossier index/detail, and CSV export.
-- Research queue, advanced dossier editing, storage persistence, and import/writeback are follow-up unless the MVP is complete and verified.
+- Execute one slice per headless run unless explicitly instructed otherwise.
+- Required order: Slice A, Slice B, Slice C, Slice D, Slice E.
+- Research queue, advanced dossier editing, storage persistence, and import/writeback are follow-up until their slice is explicitly selected.
 - Browser-local state means in-memory JavaScript state in the first pass. Do not use `localStorage` or `sessionStorage` unless a visible privacy label and clear/reset control are also implemented.
 
-## Phase 0: Preflight
+## Slice Order
+
+### Slice A: Screenshot QA and Triage
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md
+```
+
+Purpose:
+
+- capture screenshots;
+- record findings;
+- fix high-impact visual/clarity issues only.
+
+### Slice B: School Visibility Controls
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md
+```
+
+Purpose:
+
+- hide/restore schools;
+- visible/all/hidden filters;
+- hidden-school export.
+
+### Slice C: Minimal School Dossiers
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md
+```
+
+Purpose:
+
+- dossier index;
+- dossier detail shell;
+- precomputed facts and missing prompts.
+
+### Slice D: Dossier Local Edits and Export
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md
+```
+
+Purpose:
+
+- local editable dossier fields;
+- dossier edits export.
+
+### Slice E: Research Queue
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md
+```
+
+Purpose:
+
+- research queue and next actions.
+
+## Shared Preflight
 
 Tasks:
 
@@ -68,92 +145,7 @@ curl -I http://localhost:8000
 
 If no server is already running, start one with an approved local static-server approach already used in the repo.
 
-## Phase 1: Screenshot-Based Visual QA
-
-Tasks:
-
-- Capture screenshots for the routes/states defined in `01_visual_qa_screenshots.md`.
-- Save screenshots under `outputs/site_qa/screenshots/`.
-- Create `outputs/site_qa/ux_review_findings.csv`.
-- Review screenshots for:
-  - text overflow;
-  - controls that are unclear or too dense;
-  - table columns that obscure the main decision;
-  - selector confusion;
-  - missing private/local labels;
-  - broken detail panels;
-  - mobile usability failures.
-- Apply focused UI fixes.
-- Rebuild and retake screenshots for changed views.
-
-If screenshot tooling is unavailable, stop before feature implementation and report the missing tool as a blocker. A text-only DOM/HTML review is not a substitute for screenshot QA in this pass.
-
-## Phase 2: School Visibility Controls
-
-Tasks:
-
-- Add a reversible "hide from view" action to school rows.
-- Add a restore action.
-- Add filters for visible, hidden, all, and hard-no.
-- Add a hidden-school review surface.
-- Store visibility state in in-memory browser state.
-- Add CSV export for hidden/visibility decisions.
-- Keep hidden schools out of the working ranking view only when the visibility filter says so.
-- Do not delete hidden rows from payloads or generated data.
-
-Verification:
-
-- Hiding a school removes it from the visible working view.
-- Hidden count updates.
-- Hidden school can be restored.
-- Hidden schools can be exported with reason/status.
-- Full universe remains available through `all` or hidden review mode.
-- Export includes `export_schema_version`, `exported_at`, `school_id`, `visibility_state`, and `visibility_reason`.
-
-## Phase 3: School Dossier Profiles
-
-Tasks:
-
-- Add a school profiles/dossiers tab or route.
-- Provide an index of all active schools, including MD and DO.
-- Open a dossier for each school.
-- Include precomputed fields from rankings, school master, admissions stats, cost, policies, and score contributions.
-- Add local editable research fields defined in `03_school_dossier_profiles.md`.
-- Add missing-data research prompts.
-- Keep precomputed facts visually distinct from user-entered research fields.
-- Keep this phase to a minimal dossier shell if time is constrained: summary, fit, key facts, missing prompts, notes/status fields, and export.
-
-Verification:
-
-- Every active school has a dossier entry.
-- Dossier opens from rankings and from the dossier index.
-- Precomputed facts are visible and source/confidence labeled.
-- Local editable fields can be changed in browser state.
-- Dossier edits can be exported as CSV.
-- Export includes `export_schema_version`, `exported_at`, and stable `school_id`.
-
-## Phase 4: Research Workflow and Exports
-
-This phase is follow-up unless Phases 1-3 are complete and verified.
-
-Tasks:
-
-- Add filters for research status, missing sections, rank band, admissions tier, and visibility state.
-- Add "next research action" display.
-- Add export buttons for:
-  - visibility decisions;
-  - dossier edits;
-  - current ranked view.
-- Ensure exports are deterministic, clearly named, and do not include private source files.
-- Do not implement import/writeback.
-
-Verification:
-
-- Exports download valid CSV.
-- Export headers are stable.
-- Exported rows reflect the current browser-local state.
-
-## Required Final Checks
+## Shared Final Checks
 
 Before committing:
 

@@ -63,6 +63,18 @@ Follow-up work:
 - import/writeback of exported edits;
 - advanced shortlist/application workflow.
 
+## Headless Slice Plan
+
+Run this work as separate commits:
+
+1. [Slice A: Screenshot QA and Triage](site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md)
+2. [Slice B: School Visibility Controls](site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md)
+3. [Slice C: Minimal School Dossiers](site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md)
+4. [Slice D: Dossier Local Edits and Export](site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md)
+5. [Slice E: Research Queue](site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md)
+
+Do not combine slices unless the user explicitly asks. Slice A is the immediate next execution target.
+
 ## Phase Sequence
 
 ### Phase 1: Headless Visual QA
@@ -150,6 +162,11 @@ school_id
 - [School Visibility Controls](site/ux_review/02_school_visibility_controls.md)
 - [School Dossier Profiles](site/ux_review/03_school_dossier_profiles.md)
 - [Research Workflow and Exports](site/ux_review/04_research_workflow_and_exports.md)
+- [Slice A: Screenshot QA and Triage](site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md)
+- [Slice B: School Visibility Controls](site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md)
+- [Slice C: Minimal School Dossiers](site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md)
+- [Slice D: Dossier Local Edits and Export](site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md)
+- [Slice E: Research Queue](site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md)
 
 ## Acceptance Criteria
 
