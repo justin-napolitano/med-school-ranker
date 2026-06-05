@@ -108,6 +108,7 @@ The project is divided into subplans:
 - [Headless Product Site Rebuild Execution Plan](HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
 - [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md)
 - [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md)
+- [Site Visual Direction Plan](SITE_VISUAL_DIRECTION_PLAN.md)
 - [Site UX Review and School Research Workflow Plan](SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md)
 - [Headless Site UX Review Execution Plan](HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md)
 
@@ -192,6 +193,15 @@ Execution details live in [Site Data Modeling Executive Plan](SITE_DATA_MODELING
 - Keep the site backward compatible while proving the node read model.
 
 Execution details live in [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md) and [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md).
+
+### Milestone 7.85: Visual Direction
+
+- Define a serious, modern, digitally native visual language for current and future applicants.
+- Target Gen Z and early Gen Alpha expectations without forced slang, novelty, or fake youth branding.
+- Make transparency, source confidence, missing data, and "why this rank" visible parts of the interface.
+- Keep style implementation downstream of profile-node/card UI adoption.
+
+Execution details live in [Site Visual Direction Plan](SITE_VISUAL_DIRECTION_PLAN.md).
 
 ### Milestone 8: Review-Ready Workbook
 

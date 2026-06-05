@@ -2,7 +2,7 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": true,
-  "generated_at": "2026-06-05T22:08:49+00:00",
+  "generated_at": "2026-06-05T22:48:09+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "compare_card",
   "nodes": [
@@ -19,7 +19,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_atsu_kcom_a_t_still_university_kirksville_college_of_osteopathic_medicine_kirksv",
       "identity": {
         "campus_name": "ATSU-KCOM",
@@ -88,7 +88,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_atsu_soma_a_t_still_university_school_of_osteopathic_medicine_in_arizona_mesa_ar",
       "identity": {
         "campus_name": "ATSU-SOMA",
@@ -155,7 +155,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_acom_alabama_college_of_osteopathic_medicine_dothan_alabama",
       "identity": {
         "campus_name": "ACOM",
@@ -221,7 +221,7 @@
         "in_state": "93727",
         "out_state": "93727"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_albany_medical_college_albany_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -296,7 +296,7 @@
         "in_state": "112697",
         "out_state": "112697"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_albert_einstein_college_of_medicine_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -372,7 +372,7 @@
         "in_state": "36246",
         "out_state": "36246"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
       "identity": {
         "campus_name": "Main campus",
@@ -449,7 +449,7 @@
         "in_state": "114181",
         "out_state": "114181"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_anne_burnett_marion_school_of_medicine_at_texas_christian_university_fort_worth_",
       "identity": {
         "campus_name": "Main campus",
@@ -516,7 +516,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_arizona_state_university_john_shufeldt_school_of_medicine_and_medical_engineerin",
       "identity": {
         "campus_name": "Main campus",
@@ -585,7 +585,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_arcom_arkansas_college_of_osteopathic_medicine_fort_smith_arkansas",
       "identity": {
         "campus_name": "ARCOM",
@@ -653,7 +653,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_bucom_baptist_health_sciences_university_college_of_osteopathic_medicine_memphis",
       "identity": {
         "campus_name": "BUCOM",
@@ -722,7 +722,7 @@
         "in_state": "64821",
         "out_state": "77917"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_baylor_college_of_medicine_school_of_medicine_houston_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -789,7 +789,7 @@
         "in_state": "81999",
         "out_state": "109161"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_boonshoft_school_of_medicine_wright_state_university_dayton_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -866,7 +866,7 @@
         "in_state": "104107",
         "out_state": "104107"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_boston_university_aram_v_chobanian_and_edward_avedisian_school_of_medicine_bosto",
       "identity": {
         "campus_name": "Main campus",
@@ -946,7 +946,7 @@
         "in_state": "64004",
         "out_state": "95444"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_brody_school_of_medicine_at_east_carolina_university_greenville_north_carolina",
       "identity": {
         "campus_name": "Main campus",
@@ -1021,7 +1021,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_bcsom_burrell_college_school_of_osteopathic_medicine_las_cruces_new_mexico",
       "identity": {
         "campus_name": "BCSOM",
@@ -1090,7 +1090,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_bcsom_fl_burrell_college_school_of_osteopathic_medicine_florida_melbourne_florid",
       "identity": {
         "campus_name": "BCSOM-FL",
@@ -1159,7 +1159,7 @@
         "in_state": "69751",
         "out_state": "97411"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_cuny_school_of_medicine_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -1236,7 +1236,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_chsu_com_california_health_sciences_university_college_of_osteopathic_medicine_c",
       "identity": {
         "campus_name": "CHSU-COM",
@@ -1305,7 +1305,7 @@
         "in_state": "113663",
         "out_state": "113663"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_california_northstate_university_college_of_medicine_elk_grove_california",
       "identity": {
         "campus_name": "Main campus",
@@ -1382,7 +1382,7 @@
         "in_state": "115072",
         "out_state": "115072"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_california_university_of_science_and_medicine_school_of_medicine_colton_californ",
       "identity": {
         "campus_name": "Main campus",
@@ -1460,7 +1460,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_cusom_campbell_university_jerry_m_wallace_school_of_osteopathic_medicine_buies_c",
       "identity": {
         "campus_name": "CUSOM",
@@ -1527,7 +1527,7 @@
         "in_state": "82744",
         "out_state": "96202"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_carle_illinois_college_of_medicine_urbana_champaign_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -1604,7 +1604,7 @@
         "in_state": "112023",
         "out_state": "112023"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_case_western_reserve_university_school_of_medicine_cleveland_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -1681,7 +1681,7 @@
         "in_state": "62938",
         "out_state": "99080"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_charles_e_schmidt_college_of_medicine_at_florida_atlantic_university_boca_raton_",
       "identity": {
         "campus_name": "Main campus",
@@ -1758,7 +1758,7 @@
         "in_state": "137117",
         "out_state": "137117"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_charles_r_drew_university_of_medicine_and_science_college_of_medicine_los_angele",
       "identity": {
         "campus_name": "Main campus",
@@ -1837,7 +1837,7 @@
         "in_state": "104743",
         "out_state": "104743"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_chicago_medical_school_at_rosalind_franklin_university_of_medicine_and_science_n",
       "identity": {
         "campus_name": "Main campus",
@@ -1916,7 +1916,7 @@
         "in_state": "114621",
         "out_state": "114621"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_columbia_university_vagelos_college_of_physicians_and_surgeons_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -1993,7 +1993,7 @@
         "in_state": "80381",
         "out_state": "106483"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_cooper_medical_school_of_rowan_university_camden_new_jersey",
       "identity": {
         "campus_name": "Main campus",
@@ -2071,7 +2071,7 @@
         "in_state": "73285",
         "out_state": "96543"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_covenant_healthcare_college_of_medicine_at_central_michigan_university_mount_ple",
       "identity": {
         "campus_name": "Main campus",
@@ -2138,7 +2138,7 @@
         "in_state": "109846",
         "out_state": "109846"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_creighton_university_school_of_medicine_omaha_nebraska",
       "identity": {
         "campus_name": "Main campus",
@@ -2217,7 +2217,7 @@
         "in_state": "97916",
         "out_state": "110161"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_david_geffen_school_of_medicine_at_ucla_los_angeles_california",
       "identity": {
         "campus_name": "Main campus",
@@ -2284,7 +2284,7 @@
         "in_state": "63184",
         "out_state": "78248"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_dell_medical_school_university_of_texas_at_austin_austin_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -2360,7 +2360,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_dmu_com_des_moines_university_college_of_osteopathic_medicine_west_des_moines_io",
       "identity": {
         "campus_name": "DMU-COM",
@@ -2427,7 +2427,7 @@
         "in_state": "104842",
         "out_state": "104842"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_donald_and_barbara_zucker_school_of_medicine_at_hofstra_northwell_hempstead_new_",
       "identity": {
         "campus_name": "Main campus",
@@ -2505,7 +2505,7 @@
         "in_state": "110487",
         "out_state": "110487"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_drexel_university_college_of_medicine_philadelphia_pennsylvania",
       "identity": {
         "campus_name": "Main campus",
@@ -2585,7 +2585,7 @@
         "in_state": "113884",
         "out_state": "113884"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_duke_university_school_of_medicine_durham_north_carolina",
       "identity": {
         "campus_name": "Main campus",
@@ -2664,7 +2664,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_duqcom_duquesne_university_nasuti_college_of_osteopathic_medicine_pittsburgh_pen",
       "identity": {
         "campus_name": "DUQCOM",
@@ -2733,7 +2733,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_dyu_com_d_youville_university_college_of_osteopathic_medicine_buffalo_new_york",
       "identity": {
         "campus_name": "DYU-COM",
@@ -2802,7 +2802,7 @@
         "in_state": "74449",
         "out_state": "85393"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_east_tennessee_state_university_james_h_quillen_college_of_medicine_johnson_city",
       "identity": {
         "campus_name": "Main campus",
@@ -2877,7 +2877,7 @@
         "in_state": "69031",
         "out_state": "92301"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_eastern_virginia_medical_school_at_old_dominion_university_norfolk_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -2945,7 +2945,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_vcom_auburn_campus_edward_via_college_of_osteopathic_medicine_auburn_alabama",
       "identity": {
         "campus_name": "VCOM-Auburn Campus",
@@ -3014,7 +3014,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_vcom_carolinas_edward_via_college_of_osteopathic_medicine_spartanburg_south_caro",
       "identity": {
         "campus_name": "VCOM-Carolinas",
@@ -3083,7 +3083,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_vcom_virginia_edward_via_college_of_osteopathic_medicine_blacksburg_virginia",
       "identity": {
         "campus_name": "VCOM-Virginia",
@@ -3152,7 +3152,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_vcom_louisiana_edward_via_college_of_osteopathic_medicine_louisiana_campus_monro",
       "identity": {
         "campus_name": "VCOM-Louisiana",
@@ -3220,7 +3220,7 @@
         "in_state": "109402",
         "out_state": "109402"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_emory_university_school_of_medicine_atlanta_georgia",
       "identity": {
         "campus_name": "Main campus",
@@ -3300,7 +3300,7 @@
         "in_state": "84478",
         "out_state": "118976"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_florida_international_university_herbert_wertheim_college_of_medicine_miami_flor",
       "identity": {
         "campus_name": "Main campus",
@@ -3377,7 +3377,7 @@
         "in_state": "70612",
         "out_state": "108619"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_florida_state_university_college_of_medicine_tallahassee_florida",
       "identity": {
         "campus_name": "Main campus",
@@ -3454,7 +3454,7 @@
         "in_state": "101334",
         "out_state": "101334"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_frank_h_netter_md_school_of_medicine_at_quinnipiac_university_north_haven_connec",
       "identity": {
         "campus_name": "Main campus",
@@ -3532,7 +3532,7 @@
         "in_state": "69123",
         "out_state": "104356"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_frederick_p_whiddon_college_of_medicine_at_the_university_of_south_alabama_mobil",
       "identity": {
         "campus_name": "Main campus",
@@ -3612,7 +3612,7 @@
         "in_state": "101004",
         "out_state": "101004"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_geisel_school_of_medicine_at_dartmouth_hanover_new_hampshire",
       "identity": {
         "campus_name": "Main campus",
@@ -3688,7 +3688,7 @@
         "in_state": "105637",
         "out_state": "112591"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_geisinger_commonwealth_school_of_medicine_scranton_pennsylvania",
       "identity": {
         "campus_name": "Main campus",
@@ -3764,7 +3764,7 @@
         "in_state": "108572",
         "out_state": "108572"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_george_washington_university_school_of_medicine_and_health_sciences_washington_d",
       "identity": {
         "campus_name": "Main campus",
@@ -3841,7 +3841,7 @@
         "in_state": "114380",
         "out_state": "114380"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_georgetown_university_school_of_medicine_washington_district_of_columbia",
       "identity": {
         "campus_name": "Main campus",
@@ -3919,7 +3919,7 @@
         "in_state": "127852",
         "out_state": "125352"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_hackensack_meridian_school_of_medicine_nutley_new_jersey",
       "identity": {
         "campus_name": "Main campus",
@@ -3993,7 +3993,7 @@
         "in_state": "113489",
         "out_state": "115569"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_harvard_medical_school_boston_massachusetts",
       "identity": {
         "campus_name": "Main campus",
@@ -4067,7 +4067,7 @@
         "in_state": "101787",
         "out_state": "101787"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_howard_university_college_of_medicine_washington_district_of_columbia",
       "identity": {
         "campus_name": "Main campus",
@@ -4145,7 +4145,7 @@
         "in_state": "107007",
         "out_state": "0"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -4222,7 +4222,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_icom_idaho_college_of_osteopathic_medicine_meridian_idaho",
       "identity": {
         "campus_name": "ICOM",
@@ -4288,7 +4288,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_illinoiscom_illinois_college_of_osteopathic_medicine_chicago_illinois",
       "identity": {
         "campus_name": "IllinoisCOM",
@@ -4357,7 +4357,7 @@
         "in_state": "70227",
         "out_state": "97768"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_indiana_university_school_of_medicine_indianapolis_indiana",
       "identity": {
         "campus_name": "Main campus",
@@ -4433,7 +4433,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_iupcom_indiana_university_of_pennsylvania_college_of_osteopathic_medicine_indian",
       "identity": {
         "campus_name": "IUPCOM",
@@ -4502,7 +4502,7 @@
         "in_state": "82284",
         "out_state": "107004"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_jacobs_school_of_medicine_and_biomedical_sciences_at_the_university_at_buffalo_b",
       "identity": {
         "campus_name": "Main campus",
@@ -4580,7 +4580,7 @@
         "in_state": "79683",
         "out_state": "114339"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_john_a_burns_school_of_medicine_university_of_hawaii_at_manoa_honolulu_hawaii",
       "identity": {
         "campus_name": "Main campus",
@@ -4658,7 +4658,7 @@
         "in_state": "105788",
         "out_state": "105788"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_johns_hopkins_university_school_of_medicine_baltimore_maryland",
       "identity": {
         "campus_name": "Main campus",
@@ -4737,7 +4737,7 @@
         "in_state": "39636",
         "out_state": "39636"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
       "identity": {
         "campus_name": "Main campus",
@@ -4815,7 +4815,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_kcu_com_joplin_kansas_city_university_of_medicine_and_biosciences_college_of_ost",
       "identity": {
         "campus_name": "KCU-COM-Joplin",
@@ -4884,7 +4884,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_kcu_com_kansas_city_university_of_medicine_and_biosciences_college_of_osteopathi",
       "identity": {
         "campus_name": "KCU-COM",
@@ -4953,7 +4953,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_kansascom_kansas_health_sciences_center_kansas_college_of_osteopathic_medicine_w",
       "identity": {
         "campus_name": "KansasCOM",
@@ -5022,7 +5022,7 @@
         "in_state": "114717",
         "out_state": "114717"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_keck_school_of_medicine_of_the_university_of_southern_california_los_angeles_cal",
       "identity": {
         "campus_name": "Main campus",
@@ -5098,7 +5098,7 @@
         "in_state": "85830",
         "out_state": "119449"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_kirk_kerkorian_school_of_medicine_at_unlv_las_vegas_nevada",
       "identity": {
         "campus_name": "Main campus",
@@ -5176,7 +5176,7 @@
         "in_state": "84235",
         "out_state": "112413"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_lsu_health_sciences_center_school_of_medicine_in_new_orleans_new_orleans_louisia",
       "identity": {
         "campus_name": "Main campus",
@@ -5243,7 +5243,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lecom_bradenton_lake_erie_college_of_osteopathic_medicine_bradenton_bradenton_fl",
       "identity": {
         "campus_name": "LECOM-Bradenton",
@@ -5309,7 +5309,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lecom_elmira_lake_erie_college_of_osteopathic_medicine_elmira_elmira_new_york",
       "identity": {
         "campus_name": "LECOM-Elmira",
@@ -5378,7 +5378,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lecom_lake_erie_college_of_osteopathic_medicine_erie_erie_pennsylvania",
       "identity": {
         "campus_name": "LECOM",
@@ -5444,7 +5444,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lecom_jacksonville_lake_erie_college_of_osteopathic_medicine_jacksonville_jackso",
       "identity": {
         "campus_name": "LECOM-Jacksonville",
@@ -5513,7 +5513,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lecom_seton_hill_lake_erie_college_of_osteopathic_medicine_seton_hill_greensburg",
       "identity": {
         "campus_name": "LECOM-Seton Hill",
@@ -5582,7 +5582,7 @@
         "in_state": "88396",
         "out_state": "91972"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_lewis_katz_school_of_medicine_at_temple_university_philadelphia_pennsylvania",
       "identity": {
         "campus_name": "Main campus",
@@ -5660,7 +5660,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lucom_liberty_university_college_of_osteopathic_medicine_lynchburg_virginia",
       "identity": {
         "campus_name": "LUCOM",
@@ -5729,7 +5729,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lmu_dcom_lincoln_memorial_university_debusk_college_of_osteopathic_medicine_harr",
       "identity": {
         "campus_name": "LMU-DCOM",
@@ -5796,7 +5796,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lmu_dcom_knoxville_lincoln_memorial_university_debusk_college_of_osteopathic_med",
       "identity": {
         "campus_name": "LMU-DCOM Knoxville",
@@ -5865,7 +5865,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_lmu_dcom_orange_park_lincoln_memorial_university_debusk_college_of_osteopathic_m",
       "identity": {
         "campus_name": "LMU-DCOM \u2013 Orange Park",
@@ -5934,7 +5934,7 @@
         "in_state": "108520",
         "out_state": "108520"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_loma_linda_university_school_of_medicine_loma_linda_california",
       "identity": {
         "campus_name": "Main campus",
@@ -6011,7 +6011,7 @@
         "in_state": "67131",
         "out_state": "100545"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_louisiana_state_university_school_of_medicine_in_shreveport_shreveport_louisiana",
       "identity": {
         "campus_name": "Main campus",
@@ -6088,7 +6088,7 @@
         "in_state": "106044",
         "out_state": "107024"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_loyola_university_chicago_stritch_school_of_medicine_maywood_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -6166,7 +6166,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_mu_wcom_marian_university_tom_and_julie_wood_college_of_osteopathic_medicine_ind",
       "identity": {
         "campus_name": "MU-WCOM",
@@ -6235,7 +6235,7 @@
         "in_state": "62212",
         "out_state": "96796"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_marshall_university_joan_c_edwards_school_of_medicine_huntington_west_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -6312,7 +6312,7 @@
         "in_state": "107884",
         "out_state": "107884"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_mayo_clinic_alix_school_of_medicine_rochester_minnesota",
       "identity": {
         "campus_name": "Main campus",
@@ -6388,7 +6388,7 @@
         "in_state": "62492",
         "out_state": "70147"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_mcgovern_medical_school_at_uthealth_houston_houston_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -6455,7 +6455,7 @@
         "in_state": "70271",
         "out_state": "102577"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_medical_college_of_georgia_at_augusta_university_augusta_georgia",
       "identity": {
         "campus_name": "Main campus",
@@ -6532,7 +6532,7 @@
         "in_state": "105717",
         "out_state": "109187"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_medical_college_of_wisconsin_milwaukee_wisconsin",
       "identity": {
         "campus_name": "Main campus",
@@ -6609,7 +6609,7 @@
         "in_state": "82113",
         "out_state": "111228"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_medical_university_of_south_carolina_college_of_medicine_charleston_south_caroli",
       "identity": {
         "campus_name": "Main campus",
@@ -6688,7 +6688,7 @@
         "in_state": "106566",
         "out_state": "106566"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_meharry_medical_college_school_of_medicine_nashville_tennessee",
       "identity": {
         "campus_name": "Main campus",
@@ -6753,7 +6753,7 @@
         "in_state": "78788",
         "out_state": "0"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_mercer_university_school_of_medicine_macon_georgia",
       "identity": {
         "campus_name": "Main campus",
@@ -6832,7 +6832,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_msom_meritus_school_of_osteopathic_medicine_hagerstown_maryland",
       "identity": {
         "campus_name": "MSOM",
@@ -6900,7 +6900,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_methodist_university_cape_fear_valley_health_school_of_medicine_fayetteville_nor",
       "identity": {
         "campus_name": "Main campus",
@@ -6979,7 +6979,7 @@
         "in_state": "67978",
         "out_state": "95802"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_michigan_state_university_college_of_human_medicine_east_lansing_michigan",
       "identity": {
         "campus_name": "Main campus",
@@ -7057,7 +7057,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_msucom_dmc_michigan_state_university_college_of_osteopathic_medicine_detroit_mic",
       "identity": {
         "campus_name": "MSUCOM-DMC",
@@ -7126,7 +7126,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_msucom_michigan_state_university_college_of_osteopathic_medicine_east_lansing_mi",
       "identity": {
         "campus_name": "MSUCOM",
@@ -7195,7 +7195,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_msucom_muc_michigan_state_university_college_of_osteopathic_medicine_macomb_mich",
       "identity": {
         "campus_name": "MSUCOM-MUC",
@@ -7264,7 +7264,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_mwu_azcom_midwestern_university_arizona_college_of_osteopathic_medicine_glendale",
       "identity": {
         "campus_name": "MWU/AZCOM",
@@ -7331,7 +7331,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_mwu_ccom_midwestern_university_chicago_college_of_osteopathic_medicine_downers_g",
       "identity": {
         "campus_name": "MWU/CCOM",
@@ -7400,7 +7400,7 @@
         "in_state": "115875",
         "out_state": "115875"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_morehouse_school_of_medicine_atlanta_georgia",
       "identity": {
         "campus_name": "Main campus",
@@ -7476,7 +7476,7 @@
         "in_state": "27944",
         "out_state": "27944"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -7555,7 +7555,7 @@
         "in_state": "35258",
         "out_state": "35258"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_nyu_grossman_school_of_medicine_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -7632,7 +7632,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_nyitcom_new_york_institute_of_technology_college_of_osteopathic_medicine_old_wes",
       "identity": {
         "campus_name": "NYITCOM",
@@ -7699,7 +7699,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_nyitcom_jonesboro_new_york_institute_of_technology_college_of_osteopathic_medici",
       "identity": {
         "campus_name": "NYITCOM-Jonesboro",
@@ -7768,7 +7768,7 @@
         "in_state": "102045",
         "out_state": "102045"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_new_york_medical_college_valhalla_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -7844,7 +7844,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_noordacom_noorda_college_of_osteopathic_medicine_provo_utah",
       "identity": {
         "campus_name": "NoordaCOM",
@@ -7912,7 +7912,7 @@
         "in_state": "93516",
         "out_state": "140044"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_northeast_ohio_medical_university_college_of_medicine_rootstown_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -7979,7 +7979,7 @@
         "in_state": "115930",
         "out_state": "115930"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_northwestern_university_feinberg_school_of_medicine_chicago_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -8057,7 +8057,7 @@
         "in_state": "133307",
         "out_state": "133307"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_nova_southeastern_university_dr_kiran_c_patel_college_of_allopathic_medicine_for",
       "identity": {
         "campus_name": "Main campus",
@@ -8133,7 +8133,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_nsu_kpcom_clearwater_nova_southeastern_university_dr_kiran_c_patel_college_of_os",
       "identity": {
         "campus_name": "NSU-KPCOM-Clearwater",
@@ -8202,7 +8202,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_nsu_kpcom_nova_southeastern_university_dr_kiran_c_patel_college_of_osteopathic_m",
       "identity": {
         "campus_name": "NSU-KPCOM",
@@ -8271,7 +8271,7 @@
         "in_state": "91065",
         "out_state": "91065"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_oakland_university_william_beaumont_school_of_medicine_rochester_michigan",
       "identity": {
         "campus_name": "Main campus",
@@ -8349,7 +8349,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_ou_hcom_cleveland_ohio_university_heritage_college_of_osteopathic_medicine_cleve",
       "identity": {
         "campus_name": "OU-HCOM-Cleveland",
@@ -8418,7 +8418,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_ou_hcom_ohio_university_heritage_college_of_osteopathic_medicine_athens_ohio",
       "identity": {
         "campus_name": "OU-HCOM",
@@ -8487,7 +8487,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_ou_hcom_dublin_ohio_university_heritage_college_of_osteopathic_medicine_dublin_d",
       "identity": {
         "campus_name": "OU-HCOM-Dublin",
@@ -8556,7 +8556,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_osu_com_oklahoma_state_university_center_for_health_sciences_college_of_osteopat",
       "identity": {
         "campus_name": "OSU-COM",
@@ -8623,7 +8623,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_osu_com_tahlequah_oklahoma_state_university_center_for_health_sciences_college_o",
       "identity": {
         "campus_name": "OSU-COM Tahlequah",
@@ -8692,7 +8692,7 @@
         "in_state": "94089",
         "out_state": "120397"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_oregon_health_and_science_university_school_of_medicine_portland_oregon",
       "identity": {
         "campus_name": "Main campus",
@@ -8769,7 +8769,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_ocom_orlando_college_of_osteopathic_medicine_celebration_florida",
       "identity": {
         "campus_name": "OCOM",
@@ -8837,7 +8837,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_pnwu_com_pacific_northwest_university_of_health_sciences_college_of_osteopathic_",
       "identity": {
         "campus_name": "PNWU-COM",
@@ -8904,7 +8904,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_paul_l_foster_school_of_medicine_texas_tech_university_health_sciences_center_at",
       "identity": {
         "campus_name": "Main campus",
@@ -8982,7 +8982,7 @@
         "in_state": "100415",
         "out_state": "107619"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_penn_state_college_of_medicine_hershey_pennsylvania",
       "identity": {
         "campus_name": "Main campus",
@@ -9049,7 +9049,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_pcom_philadelphia_college_of_osteopathic_medicine_philadelphia_pennsylvania",
       "identity": {
         "campus_name": "PCOM",
@@ -9115,7 +9115,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_pcom_georgia_philadelphia_college_of_osteopathic_medicine_georgia_suwanee_georgi",
       "identity": {
         "campus_name": "PCOM Georgia",
@@ -9182,7 +9182,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_pcom_south_georgia_philadelphia_college_of_osteopathic_medicine_south_georgia_mo",
       "identity": {
         "campus_name": "PCOM South Georgia",
@@ -9250,7 +9250,7 @@
         "in_state": "112583",
         "out_state": "112583"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_raymond_and_ruth_perelman_school_of_medicine_at_the_university_of_pennsylvania_p",
       "identity": {
         "campus_name": "Main campus",
@@ -9317,7 +9317,7 @@
         "in_state": "90143",
         "out_state": "112793"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_renaissance_school_of_medicine_at_stony_brook_university_stony_brook_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -9397,7 +9397,7 @@
         "in_state": "72866",
         "out_state": "105472"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_robert_larner_m_d_college_of_medicine_at_the_university_of_vermont_burlington_ve",
       "identity": {
         "campus_name": "Main campus",
@@ -9476,7 +9476,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_rvucom_rocky_vista_university_college_of_osteopathic_medicine_parker_colorado",
       "identity": {
         "campus_name": "RVUCOM",
@@ -9545,7 +9545,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_rvucom_su_campus_rocky_vista_university_college_of_osteopathic_medicine_ivins_ut",
       "identity": {
         "campus_name": "RVUCOM-SU Campus",
@@ -9614,7 +9614,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_rvu_mcom_rocky_vista_university_montana_college_of_osteopathic_medicine_billings",
       "identity": {
         "campus_name": "RVU-MCOM",
@@ -9683,7 +9683,7 @@
         "in_state": "113531",
         "out_state": "113531"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_roseman_university_college_of_medicine_las_vegas_nevada",
       "identity": {
         "campus_name": "Main campus",
@@ -9761,7 +9761,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_rowan_virtuasom_rowan_virtua_school_of_osteopathic_medicine_stratford_new_jersey",
       "identity": {
         "campus_name": "Rowan-VirtuaSOM",
@@ -9830,7 +9830,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_rowan_virtuasom_sewell_rowan_virtua_school_of_osteopathic_medicine_sewell_new_je",
       "identity": {
         "campus_name": "Rowan-VirtuaSOM-Sewell",
@@ -9899,7 +9899,7 @@
         "in_state": "116311",
         "out_state": "107391"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_rush_medical_college_of_rush_university_medical_center_chicago_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -9977,7 +9977,7 @@
         "in_state": "99290",
         "out_state": "127766"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_rutgers_new_jersey_medical_school_newark_new_jersey",
       "identity": {
         "campus_name": "Main campus",
@@ -10054,7 +10054,7 @@
         "in_state": "101100",
         "out_state": "129576"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_rutgers_robert_wood_johnson_medical_school_piscataway_new_jersey",
       "identity": {
         "campus_name": "Main campus",
@@ -10129,7 +10129,7 @@
         "in_state": "87031",
         "out_state": "111751"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_suny_downstate_health_sciences_university_college_of_medicine_brooklyn_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -10210,7 +10210,7 @@
         "in_state": "98076",
         "out_state": "98076"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_saint_louis_university_school_of_medicine_st_louis_missouri",
       "identity": {
         "campus_name": "Main campus",
@@ -10289,7 +10289,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_shsu_com_sam_houston_state_university_college_of_osteopathic_medicine_huntsville",
       "identity": {
         "campus_name": "SHSU-COM",
@@ -10358,7 +10358,7 @@
         "in_state": "102480",
         "out_state": "102480"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_sidney_kimmel_medical_college_at_thomas_jefferson_university_philadelphia_pennsy",
       "identity": {
         "campus_name": "Main campus",
@@ -10437,7 +10437,7 @@
         "in_state": "65706",
         "out_state": "0"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_southern_illinois_university_school_of_medicine_springfield_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -10516,7 +10516,7 @@
         "in_state": "90766",
         "out_state": "133496"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_spencer_fox_eccles_school_of_medicine_at_the_university_of_utah_salt_lake_city_u",
       "identity": {
         "campus_name": "Main campus",
@@ -10596,7 +10596,7 @@
         "in_state": "121282",
         "out_state": "121282"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_stanford_university_school_of_medicine_palo_alto_california",
       "identity": {
         "campus_name": "Main campus",
@@ -10674,7 +10674,7 @@
         "in_state": "89621",
         "out_state": "114341"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_state_university_of_new_york_upstate_medical_university_alan_and_marlene_norton_",
       "identity": {
         "campus_name": "Main campus",
@@ -10755,7 +10755,7 @@
         "in_state": "53130",
         "out_state": "68880"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t",
       "identity": {
         "campus_name": "Main campus",
@@ -10822,7 +10822,7 @@
         "in_state": "56378",
         "out_state": "69478"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_texas_tech_university_health_sciences_center_school_of_medicine_lubbock_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -10902,7 +10902,7 @@
         "in_state": "61508",
         "out_state": "87056"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_the_ohio_state_university_college_of_medicine_columbus_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -10982,7 +10982,7 @@
         "in_state": "60356",
         "out_state": "75772"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_the_university_of_texas_at_san_antonio_joe_r_and_teresa_lozano_long_school_of_me",
       "identity": {
         "campus_name": "Main campus",
@@ -11049,7 +11049,7 @@
         "in_state": "60536",
         "out_state": "76476"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_the_university_of_texas_at_tyler_school_of_medicine_tyler_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -11127,7 +11127,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tvcom_the_valley_college_of_osteopathic_medicine_phoenix_arizona",
       "identity": {
         "campus_name": "TVCOM",
@@ -11196,7 +11196,7 @@
         "in_state": "104340",
         "out_state": "104340"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_the_warren_alpert_medical_school_of_brown_university_providence_rhode_island",
       "identity": {
         "campus_name": "Main campus",
@@ -11274,7 +11274,7 @@
         "in_state": "105639",
         "out_state": "105639"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_thomas_f_frist_jr_college_of_medicine_at_belmont_university_nashville_tennessee",
       "identity": {
         "campus_name": "Main campus",
@@ -11352,7 +11352,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tourocom_harlem_touro_college_of_osteopathic_medicine_new_york_new_york",
       "identity": {
         "campus_name": "TouroCOM-Harlem",
@@ -11421,7 +11421,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tourocom_middletown_touro_college_of_osteopathic_medicine_middletown_new_york",
       "identity": {
         "campus_name": "TouroCOM-Middletown",
@@ -11490,7 +11490,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tourocom_great_falls_touro_college_of_osteopathic_medicine_great_falls_great_fal",
       "identity": {
         "campus_name": "TouroCOM-Great Falls",
@@ -11559,7 +11559,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tucom_touro_university_college_of_osteopathic_medicine_california_vallejo_califo",
       "identity": {
         "campus_name": "TUCOM",
@@ -11626,7 +11626,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_tuncom_touro_university_nevada_college_of_osteopathic_medicine_henderson_nevada",
       "identity": {
         "campus_name": "TUNCOM",
@@ -11695,7 +11695,7 @@
         "in_state": "111854",
         "out_state": "111854"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_tufts_university_school_of_medicine_boston_massachusetts",
       "identity": {
         "campus_name": "Main campus",
@@ -11775,7 +11775,7 @@
         "in_state": "114804",
         "out_state": "114804"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_tulane_university_school_of_medicine_new_orleans_louisiana",
       "identity": {
         "campus_name": "Main campus",
@@ -11855,7 +11855,7 @@
         "in_state": "71974",
         "out_state": "95284"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_usf_health_morsani_college_of_medicine_tampa_florida",
       "identity": {
         "campus_name": "Main campus",
@@ -11933,7 +11933,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_uniformed_services_university_of_the_health_sciences_f_edward_h_bert_school_of_m",
       "identity": {
         "campus_name": "Main campus",
@@ -12011,7 +12011,7 @@
         "in_state": "74582",
         "out_state": "105891"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_alabama_at_birmingham_marnix_e_heersink_school_of_medicine_birming",
       "identity": {
         "campus_name": "Main campus",
@@ -12090,7 +12090,7 @@
         "in_state": "84651",
         "out_state": "103982"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_arizona_college_of_medicine_phoenix_phoenix_arizona",
       "identity": {
         "campus_name": "Main campus",
@@ -12168,7 +12168,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_arizona_college_of_medicine_tucson_tucson_arizona",
       "identity": {
         "campus_name": "Main campus",
@@ -12236,7 +12236,7 @@
         "in_state": "72446",
         "out_state": "106510"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_arkansas_for_medical_sciences_college_of_medicine_little_rock_arka",
       "identity": {
         "campus_name": "Main campus",
@@ -12312,7 +12312,7 @@
         "in_state": "87708",
         "out_state": "99953"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_california_davis_school_of_medicine_davis_california",
       "identity": {
         "campus_name": "Main campus",
@@ -12389,7 +12389,7 @@
         "in_state": "78212",
         "out_state": "90457"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_california_irvine_school_of_medicine_irvine_california",
       "identity": {
         "campus_name": "Main campus",
@@ -12469,7 +12469,7 @@
         "in_state": "97557",
         "out_state": "109802"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_california_riverside_school_of_medicine_riverside_california",
       "identity": {
         "campus_name": "Main campus",
@@ -12548,7 +12548,7 @@
         "in_state": "75043",
         "out_state": "87288"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_california_san_diego_school_of_medicine_san_diego_california",
       "identity": {
         "campus_name": "Main campus",
@@ -12627,7 +12627,7 @@
         "in_state": "89616",
         "out_state": "101861"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_california_san_francisco_school_of_medicine_san_francisco_californ",
       "identity": {
         "campus_name": "Main campus",
@@ -12706,7 +12706,7 @@
         "in_state": "58121",
         "out_state": "84995"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_central_florida_college_of_medicine_orlando_florida",
       "identity": {
         "campus_name": "Main campus",
@@ -12782,7 +12782,7 @@
         "in_state": "100977",
         "out_state": "100977"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_chicago_division_of_the_biological_sciences_the_pritzker_school_of",
       "identity": {
         "campus_name": "Main campus",
@@ -12861,7 +12861,7 @@
         "in_state": "63213",
         "out_state": "82071"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_cincinnati_college_of_medicine_cincinnati_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -12940,7 +12940,7 @@
         "in_state": "88131",
         "out_state": "114086"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_colorado_school_of_medicine_denver_colorado",
       "identity": {
         "campus_name": "Main campus",
@@ -13019,7 +13019,7 @@
         "in_state": "98525",
         "out_state": "126710"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_connecticut_school_of_medicine_farmington_connecticut",
       "identity": {
         "campus_name": "Main campus",
@@ -13098,7 +13098,7 @@
         "in_state": "73121",
         "out_state": "85377"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_florida_college_of_medicine_gainesville_florida",
       "identity": {
         "campus_name": "Main campus",
@@ -13176,7 +13176,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_georgia_school_of_medicine_athens_georgia",
       "identity": {
         "campus_name": "Main campus",
@@ -13253,7 +13253,7 @@
         "in_state": "56614",
         "out_state": "69714"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_houston_tilman_j_fertitta_family_college_of_medicine_houston_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -13329,7 +13329,7 @@
         "in_state": "89195",
         "out_state": "123095"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_illinois_college_of_medicine_chicago_illinois",
       "identity": {
         "campus_name": "Main campus",
@@ -13406,7 +13406,7 @@
         "in_state": "71215",
         "out_state": "92614"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_iowa_roy_j_and_lucille_a_carver_college_of_medicine_iowa_city_iowa",
       "identity": {
         "campus_name": "Main campus",
@@ -13482,7 +13482,7 @@
         "in_state": "77850",
         "out_state": "108342"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_kansas_school_of_medicine_kansas_city_kansas",
       "identity": {
         "campus_name": "Main campus",
@@ -13561,7 +13561,7 @@
         "in_state": "73566",
         "out_state": "109762"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_kentucky_college_of_medicine_lexington_kentucky",
       "identity": {
         "campus_name": "Main campus",
@@ -13639,7 +13639,7 @@
         "in_state": "79586",
         "out_state": "104894"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_louisville_school_of_medicine_louisville_kentucky",
       "identity": {
         "campus_name": "Main campus",
@@ -13719,7 +13719,7 @@
         "in_state": "89344",
         "out_state": "123095"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_maryland_school_of_medicine_baltimore_maryland",
       "identity": {
         "campus_name": "Main campus",
@@ -13799,7 +13799,7 @@
         "in_state": "82795",
         "out_state": "113221"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_massachusetts_t_h_chan_school_of_medicine_worcester_massachusetts",
       "identity": {
         "campus_name": "Main campus",
@@ -13879,7 +13879,7 @@
         "in_state": "112815",
         "out_state": "112815"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_miami_leonard_m_miller_school_of_medicine_miami_florida",
       "identity": {
         "campus_name": "Main campus",
@@ -13959,7 +13959,7 @@
         "in_state": "101094",
         "out_state": "121932"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_michigan_medical_school_ann_arbor_michigan",
       "identity": {
         "campus_name": "Main campus",
@@ -14037,7 +14037,7 @@
         "in_state": "83654",
         "out_state": "106325"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_minnesota_medical_school_minneapolis_minnesota",
       "identity": {
         "campus_name": "Main campus",
@@ -14115,7 +14115,7 @@
         "in_state": "80020",
         "out_state": "0"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
       "identity": {
         "campus_name": "Main campus",
@@ -14192,7 +14192,7 @@
         "in_state": "81343",
         "out_state": "128885"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_missouri_columbia_school_of_medicine_columbia_missouri",
       "identity": {
         "campus_name": "Main campus",
@@ -14270,7 +14270,7 @@
         "in_state": "80965",
         "out_state": "124914"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_missouri_kansas_city_school_of_medicine_kansas_city_missouri",
       "identity": {
         "campus_name": "Main campus",
@@ -14347,7 +14347,7 @@
         "in_state": "73423",
         "out_state": "88799"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_nebraska_college_of_medicine_omaha_nebraska",
       "identity": {
         "campus_name": "Main campus",
@@ -14422,7 +14422,7 @@
         "in_state": "76988",
         "out_state": "105691"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_nevada_reno_school_of_medicine_reno_nevada",
       "identity": {
         "campus_name": "Main campus",
@@ -14502,7 +14502,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_unecom_university_of_new_england_college_of_osteopathic_medicine_biddeford_maine",
       "identity": {
         "campus_name": "UNECOM",
@@ -14569,7 +14569,7 @@
         "in_state": "61985",
         "out_state": "90221"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_new_mexico_school_of_medicine_albuquerque_new_mexico",
       "identity": {
         "campus_name": "Main campus",
@@ -14650,7 +14650,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_north_carolina_school_of_medicine_chapel_hill_north_carolina",
       "identity": {
         "campus_name": "Main campus",
@@ -14719,7 +14719,7 @@
         "in_state": "64125",
         "out_state": "94718"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_north_dakota_school_of_medicine_and_health_sciences_grand_forks_no",
       "identity": {
         "campus_name": "Main campus",
@@ -14795,7 +14795,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_unthsc_tcom_university_of_north_texas_health_science_center_texas_college_of_ost",
       "identity": {
         "campus_name": "UNTHSC/TCOM",
@@ -14862,7 +14862,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_unc_com_university_of_northern_colorado_college_of_osteopathic_medicine_greely_c",
       "identity": {
         "campus_name": "UNC-COM",
@@ -14931,7 +14931,7 @@
         "in_state": "77430",
         "out_state": "112726"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_oklahoma_college_of_medicine_oklahoma_city_oklahoma",
       "identity": {
         "campus_name": "Main campus",
@@ -15011,7 +15011,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_up_kycom_university_of_pikeville_kentucky_college_of_osteopathic_medicine_pikevi",
       "identity": {
         "campus_name": "UP-KYCOM",
@@ -15078,7 +15078,7 @@
         "in_state": "98074",
         "out_state": "103350"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_pittsburgh_school_of_medicine_pittsburgh_pennsylvania",
       "identity": {
         "campus_name": "Main campus",
@@ -15157,7 +15157,7 @@
         "in_state": "103800",
         "out_state": "103800"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_rochester_school_of_medicine_and_dentistry_rochester_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -15233,7 +15233,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_south_carolina_kay_and_c_edward_floyd_m_d_school_of_medicine_colum",
       "identity": {
         "campus_name": "Main campus",
@@ -15302,7 +15302,7 @@
         "in_state": "78537",
         "out_state": "122799"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_south_carolina_school_of_medicine_greenville_greenville_south_caro",
       "identity": {
         "campus_name": "Main campus",
@@ -15381,7 +15381,7 @@
         "in_state": "64369",
         "out_state": "110499"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_south_dakota_sanford_school_of_medicine_vermillion_south_dakota",
       "identity": {
         "campus_name": "Main campus",
@@ -15458,7 +15458,7 @@
         "in_state": "75551",
         "out_state": "95047"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_tennessee_health_science_center_college_of_medicine_memphis_tennes",
       "identity": {
         "campus_name": "Main campus",
@@ -15535,7 +15535,7 @@
         "in_state": "61825",
         "out_state": "76991"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_texas_medical_branch_john_sealy_school_of_medicine_galveston_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -15612,7 +15612,7 @@
         "in_state": "59260",
         "out_state": "72360"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_texas_rio_grande_valley_school_of_medicine_edinburg_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -15687,7 +15687,7 @@
         "in_state": "64790",
         "out_state": "77890"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_texas_southwestern_medical_school_dallas_texas",
       "identity": {
         "campus_name": "Main campus",
@@ -15762,7 +15762,7 @@
         "in_state": "71052",
         "out_state": "106881"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_toledo_college_of_medicine_and_life_sciences_toledo_ohio",
       "identity": {
         "campus_name": "Main campus",
@@ -15839,7 +15839,7 @@
         "in_state": "86104",
         "out_state": "100052"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_virginia_school_of_medicine_charlottesville_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -15919,7 +15919,7 @@
         "in_state": "97083",
         "out_state": "141434"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_washington_school_of_medicine_seattle_washington",
       "identity": {
         "campus_name": "Main campus",
@@ -15998,7 +15998,7 @@
         "in_state": "78665",
         "out_state": "97464"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_university_of_wisconsin_school_of_medicine_and_public_health_madison_wisconsin",
       "identity": {
         "campus_name": "Main campus",
@@ -16075,7 +16075,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_uiwsom_university_of_the_incarnate_word_school_of_osteopathic_medicine_san_anton",
       "identity": {
         "campus_name": "UIWSOM",
@@ -16142,7 +16142,7 @@
         "in_state": "116943",
         "out_state": "116943"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_vanderbilt_university_school_of_medicine_nashville_tennessee",
       "identity": {
         "campus_name": "Main campus",
@@ -16221,7 +16221,7 @@
         "in_state": "88878",
         "out_state": "116112"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_virginia_commonwealth_university_school_of_medicine_richmond_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -16298,7 +16298,7 @@
         "in_state": "93201",
         "out_state": "93201"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_virginia_tech_carilion_school_of_medicine_roanoke_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -16374,7 +16374,7 @@
         "in_state": "110448",
         "out_state": "110448"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_wake_forest_university_school_of_medicine_winston_salem_north_carolina",
       "identity": {
         "campus_name": "Main campus",
@@ -16449,7 +16449,7 @@
         "in_state": "74688",
         "out_state": "0"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
       "identity": {
         "campus_name": "Main campus",
@@ -16525,7 +16525,7 @@
         "in_state": "100069",
         "out_state": "100069"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_washington_university_in_st_louis_school_of_medicine_st_louis_missouri",
       "identity": {
         "campus_name": "Main campus",
@@ -16601,7 +16601,7 @@
         "in_state": "79284",
         "out_state": "107533"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_wayne_state_university_school_of_medicine_detroit_michigan",
       "identity": {
         "campus_name": "Main campus",
@@ -16679,7 +16679,7 @@
         "in_state": "108442",
         "out_state": "108442"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_weill_cornell_medicine_new_york_new_york",
       "identity": {
         "campus_name": "Main campus",
@@ -16757,7 +16757,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_wvsom_west_virginia_school_of_osteopathic_medicine_lewisburg_west_virginia",
       "identity": {
         "campus_name": "WVSOM",
@@ -16823,7 +16823,7 @@
         "in_state": "70337",
         "out_state": "108143"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_west_virginia_university_school_of_medicine_morgantown_west_virginia",
       "identity": {
         "campus_name": "Main campus",
@@ -16903,7 +16903,7 @@
         "in_state": "102734",
         "out_state": "102734"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_western_michigan_university_homer_stryker_m_d_school_of_medicine_kalamazoo_michi",
       "identity": {
         "campus_name": "Main campus",
@@ -16979,7 +16979,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_westernu_comp_western_university_of_health_sciences_college_of_osteopathic_medic",
       "identity": {
         "campus_name": "WesternU/COMP",
@@ -17046,7 +17046,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_westernu_comp_northwest_western_university_of_health_sciences_college_of_osteopa",
       "identity": {
         "campus_name": "WesternU/COMP-Northwest",
@@ -17115,7 +17115,7 @@
         "in_state": "",
         "out_state": ""
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "do_wcucom_william_carey_university_college_of_osteopathic_medicine_hattiesburg_miss",
       "identity": {
         "campus_name": "WCUCOM",
@@ -17184,7 +17184,7 @@
         "in_state": "115691",
         "out_state": "115691"
       },
-      "generated_at": "2026-06-05T22:08:49+00:00",
+      "generated_at": "2026-06-05T22:48:09+00:00",
       "id": "md_yale_school_of_medicine_new_haven_connecticut",
       "identity": {
         "campus_name": "Main campus",
