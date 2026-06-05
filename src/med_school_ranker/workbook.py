@@ -15,6 +15,7 @@ from med_school_ranker.paths import DATA, OUT, RANKINGS_CSV, ROOT, WORKBOOK_XLSX
 
 SHEETS = [
     ("Instructions", None),
+    ("Project Subplans", DATA / "project_subplans.csv"),
     ("School Master", DATA / "school_master.csv"),
     ("User Preferences", DATA / "user_preferences.csv"),
     ("Scenario Weights", DATA / "scenario_weights.csv"),
@@ -116,7 +117,7 @@ def add_instructions_sheet(wb: Workbook) -> None:
         ["Medical School Ranker", "Workbook generated from the CSV seed project."],
         ["Use", "Edit School Master scores and preferences, then regenerate rankings with uv."],
         ["Regenerate", "uv run med-school-build-all"],
-        ["Primary tabs", "School Master, User Preferences, Scenario Weights, Calculated Rankings, Final Application List."],
+        ["Primary tabs", "Project Subplans, School Master, User Preferences, Scenario Weights, Calculated Rankings, Final Application List."],
         ["Important", "Calculated Rankings is generated output. Do not manually edit it as the source of truth."],
         ["Transparency", "Keep manual_exclusion_flag, exclusion_reason, source URLs, data_confidence, and last_verified_date current."],
         ["Score scale", "Use 1-10. Higher should always mean better fit or lower concern for the applicant."],

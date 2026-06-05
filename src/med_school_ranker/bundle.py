@@ -18,7 +18,7 @@ def build_upload_zip() -> Path:
         for path in [ROOT / ".gitignore", ROOT / "README.md", ROOT / "pyproject.toml", ROOT / "uv.lock"]:
             if path.exists():
                 archive.write(path, path.relative_to(ROOT))
-        for folder_name in ["scripts", "src"]:
+        for folder_name in ["docs", "scripts", "src"]:
             for path in sorted((ROOT / folder_name).rglob("*")):
                 if "__pycache__" in path.parts or path.suffix == ".pyc":
                     continue

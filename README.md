@@ -2,9 +2,30 @@
 
 CSV and XLSX decision model for ranking U.S. MD and DO medical school options while keeping every inclusion, exclusion, weight, and source auditable.
 
+## Planning Docs
+
+Start here before expanding the seed data model:
+
+- [Executive Plan](docs/EXEC_PLAN.md)
+- [Headless Execution Plan: Phase 1](docs/HEADLESS_EXECUTION_PLAN.md)
+- [Data Architecture](docs/plans/data_architecture.md)
+- [School Universe](docs/plans/school_universe.md)
+- [Applicant Profiles](docs/plans/applicant_profiles.md)
+- [Admissions Stats](docs/plans/admissions_stats.md)
+- [Cost and Debt](docs/plans/cost_and_debt.md)
+- [Admissions Probability](docs/plans/admissions_probability.md)
+- [Attendance Preference](docs/plans/attendance_preference.md)
+- [Residency and Match](docs/plans/residency_and_match.md)
+- [Hidden Curriculum](docs/plans/hidden_curriculum.md)
+- [Scoring Engine](docs/plans/scoring_engine.md)
+- [Workbook and Export](docs/plans/workbook_and_export.md)
+- [Validation and QA](docs/plans/validation_and_qa.md)
+- [Governance](docs/plans/governance.md)
+
 ## Files
 
 - `outputs/med_school_ranker.xlsx`: upload this workbook to Google Sheets. It contains the tabs below.
+- `data/project_subplans.csv`: import as **Project Subplans**. Machine-readable index of the exec plan and subplans.
 - `data/school_master.csv`: import as **School Master**. One row per LCME MD program and AOA/COCA DO school/site row.
 - `data/user_preferences.csv`: import as **User Preferences**. Controls Admissions Score, Attendance Score, and Overall School Value.
 - `data/scenario_weights.csv`: import as **Scenario Weights**. Creates alternative rankings for prestige, lifestyle, finance, specialty optionality, and admissions realism.
@@ -25,6 +46,7 @@ outputs/med_school_ranker.xlsx
 Google Sheets should preserve these worksheets:
 
 - `Instructions`
+- `Project Subplans`
 - `School Master`
 - `User Preferences`
 - `Scenario Weights`
@@ -35,9 +57,9 @@ Google Sheets should preserve these worksheets:
 
 ## Current Seed Universe
 
-- 163 MD program rows from the LCME Accredited Programs directory.
+- 159 MD program rows from the LCME Accredited Programs directory, excluding Puerto Rico by current project decision.
 - 74 DO school/site rows from the AOA Osteopathic Medical Schools directory.
-- 237 total rows.
+- 233 total rows.
 
 The DO side is deliberately campus/site-level where the official directory exposes separate locations. That makes the sheet larger than the rough "~200 schools" target, but it keeps location-sensitive decisions transparent. Use `parent_school_name`, `campus_name`, and `application_unit_assumption` to decide later whether to collapse or keep campuses separate.
 
