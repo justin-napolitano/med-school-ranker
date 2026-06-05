@@ -4,7 +4,12 @@
 
 This runbook tells a headless worker how to continue the project without relying on conversational context.
 
-No next headless execution phase is currently selected.
+The next selected headless execution phase is:
+
+```text
+Profile Node UI Adoption
+docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md
+```
 
 The most recently executed phase is:
 
@@ -13,7 +18,7 @@ Site Data Modeling Node Slice
 docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md
 ```
 
-Do not rerun that slice unless the user explicitly asks. The likely next work is a product card/profile UI adoption or design slice that consumes the generated node files under `outputs/site/data/nodes/`.
+Do not rerun that slice unless the user explicitly asks.
 
 ## Repository
 
@@ -44,17 +49,22 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 ## Document Read Order
 
-For a future card/profile UI adoption phase, read in this order first:
+For the selected profile-node UI adoption phase, read in this order first:
 
-1. `docs/SITE_DATA_MODELING_EXEC_PLAN.md`
-2. `docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md`
-3. `docs/site/data_modeling/01_canonical_domain_tables.md`
+1. `docs/SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md`
+2. `docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md`
+3. `docs/SITE_DATA_MODELING_EXEC_PLAN.md`
 4. `docs/site/data_modeling/02_json_node_contracts.md`
 5. `docs/site/data_modeling/03_card_surfaces_and_profile_sections.md`
-6. `docs/site/data_modeling/04_admin_public_payload_separation.md`
-7. `docs/site/data_modeling/06_validation_privacy_and_qa.md`
-8. `docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md`
-9. `docs/EXEC_PLAN.md`
+6. `docs/site/profile_node_ui/01_node_contract_audit.md`
+7. `docs/site/profile_node_ui/02_shared_card_components.md`
+8. `docs/site/profile_node_ui/03_profile_route_node_consumption.md`
+9. `docs/site/profile_node_ui/04_rankings_and_compare_preview.md`
+10. `docs/site/profile_node_ui/05_admin_payload_compatibility.md`
+11. `docs/site/profile_node_ui/06_visual_qa_and_validation.md`
+12. `docs/site/profile_node_ui/CRITICAL_REVIEW.md`
+13. `docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md`
+14. `docs/EXEC_PLAN.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -88,7 +98,21 @@ Local-private build, if Phase 2B implements it:
 
 ## Current Headless Worker Prompt
 
-There is no current prompt selected. Before the next `codex exec` run, choose or draft a specific card/profile UI adoption plan and then write a bounded prompt here.
+Use this prompt for the next `codex exec` run:
+
+```text
+You are working in /Users/justin/repos/med-school-ranker.
+
+Execute docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md end to end.
+
+Follow docs/HEADLESS_WORKER_RUNBOOK.md first. Start from a clean status check and create branch impl-profile-node-ui-adoption from main if needed.
+
+This is a UI-consumption slice for generated JSON nodes. Make the existing static site render school profile main sections from school_profile_nodes and add a limited visible card preview from generated card/ranking/compare nodes. Preserve current admin tables, workbook/CSV outputs, rankings table behavior, shortlist/application-list controls, compare controls, visibility controls, browser-local dossier edits, and publish-safe mode.
+
+Do not perform a visual redesign. Do not migrate frameworks. Do not migrate to Postgres or Vercel. Do not change scoring formulas. Do not implement predictive admissions probability. Do not scrape or download data. Do not commit private data or private-derived outputs.
+
+Prefer adding missing UI fields to the Python node builders with tests rather than rebuilding joins in JavaScript. Regenerate workbook, site, upload zip, and data quality outputs. Run uv run pytest, uv run med-school-validate, uv run med-school-build-all, git diff --check, the upload-bundle privacy check, and available screenshot QA if dependencies are already present. Commit only public-safe code/docs/data/generated outputs.
+```
 
 The executed data-modeling prompt is preserved in `docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md` for history.
 

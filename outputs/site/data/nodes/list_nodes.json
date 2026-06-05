@@ -2,14 +2,14 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-05T21:34:31+00:00",
+  "generated_at": "2026-06-05T22:08:49+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "list",
   "nodes": [
     {
       "description": "Location-focused scaffold for schools in stronger city and setting contexts.",
       "eligibility_summary": "Requires sourced region, setting, and city-fit facts before strong claims.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_cities",
       "list_id": "best_cities",
       "missing_or_low_confidence_fields": [
@@ -35,7 +35,7 @@
     {
       "description": "Culture-fit scaffold for future evidence-backed culture and fit scores.",
       "eligibility_summary": "Requires explicit culture evidence or reviewed fit scores.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_culture_fit",
       "list_id": "best_culture_fit",
       "missing_or_low_confidence_fields": [
@@ -60,7 +60,7 @@
     {
       "description": "Public-school scaffold for future ownership-backed filtering and scoring.",
       "eligibility_summary": "Requires source-backed ownership type before public/private claims.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_public_schools",
       "list_id": "best_public_schools",
       "missing_or_low_confidence_fields": [
@@ -83,7 +83,7 @@
     {
       "description": "Private-school scaffold for future ownership-backed filtering and scoring.",
       "eligibility_summary": "Requires source-backed ownership type before public/private claims.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_private_schools",
       "list_id": "best_private_schools",
       "missing_or_low_confidence_fields": [
@@ -106,7 +106,7 @@
     {
       "description": "Cost-focused list using available tuition and cost-of-attendance rows.",
       "eligibility_summary": "MD AAMC cost rows are partially available; DO tuition coverage is incomplete.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_low_cost",
       "list_id": "best_low_cost",
       "missing_or_low_confidence_fields": [],
@@ -167,7 +167,7 @@
     {
       "description": "Admissions-realism list using published MCAT/GPA stats where source-backed.",
       "eligibility_summary": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_admissions_realism",
       "list_id": "best_admissions_realism",
       "missing_or_low_confidence_fields": [],
@@ -227,7 +227,7 @@
     {
       "description": "Local-only partner-fit scaffold for reviewed partner preferences.",
       "eligibility_summary": "Requires intentionally populated partner inputs before use.",
-      "generated_at": "2026-06-05T21:34:31+00:00",
+      "generated_at": "2026-06-05T22:08:49+00:00",
       "id": "best_partner_fit",
       "list_id": "best_partner_fit",
       "missing_or_low_confidence_fields": [

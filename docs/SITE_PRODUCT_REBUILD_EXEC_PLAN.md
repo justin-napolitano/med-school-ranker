@@ -1,6 +1,6 @@
 # Product Site Rebuild Executive Plan
 
-Note: this plan should now run after the data-modeling/card-contract work in [Site Data Modeling Executive Plan](SITE_DATA_MODELING_EXEC_PLAN.md). Scoring exists, but the product redesign should consume route-ready JSON nodes and card/profile contracts rather than the current admin-heavy aggregate payload.
+Note: this plan should run after the data-modeling/card-contract work in [Site Data Modeling Executive Plan](SITE_DATA_MODELING_EXEC_PLAN.md) and the first UI-consumption slice in [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md). Scoring exists, but the product redesign should consume route-ready JSON nodes and card/profile contracts rather than the current admin-heavy aggregate payload.
 
 ## Objective
 
@@ -117,6 +117,8 @@ Missing facts should remain missing. Curated list eligibility should degrade gra
 ## Child Plans
 
 - [Headless Product Site Rebuild Execution Plan](HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
+- [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md)
+- [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md)
 - [Routes and Information Architecture](site/product_rebuild/01_routes_and_information_architecture.md)
 - [Rankings and List Builder](site/product_rebuild/02_rankings_and_list_builder.md)
 - [School Profiles](site/product_rebuild/03_school_profiles.md)

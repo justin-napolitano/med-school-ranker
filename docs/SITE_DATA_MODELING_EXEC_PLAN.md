@@ -237,6 +237,8 @@ The current generated site can remain the admin panel while the future product r
 ## Child Plans
 
 - [Headless Site Data Modeling Execution Plan](HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md)
+- [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md)
+- [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md)
 - [Canonical Domain Tables](site/data_modeling/01_canonical_domain_tables.md)
 - [JSON Node Contracts](site/data_modeling/02_json_node_contracts.md)
 - [Card Surfaces and Profile Sections](site/data_modeling/03_card_surfaces_and_profile_sections.md)

@@ -106,6 +106,8 @@ The project is divided into subplans:
 - [Governance](plans/governance.md)
 - [Product Site Rebuild Executive Plan](SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
 - [Headless Product Site Rebuild Execution Plan](HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
+- [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md)
+- [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md)
 - [Site UX Review and School Research Workflow Plan](SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md)
 - [Headless Site UX Review Execution Plan](HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md)
 
@@ -180,6 +182,16 @@ Execution details live in [Scoring Transparency and Rollup Executive Plan](SCORI
 - Preserve a future Postgres/Vercel migration path without making JSON the source of truth.
 
 Execution details live in [Site Data Modeling Executive Plan](SITE_DATA_MODELING_EXEC_PLAN.md) and [Headless Site Data Modeling Execution Plan](HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md).
+
+### Milestone 7.8: Profile Node UI Adoption
+
+- Make the existing static site consume generated profile/card nodes before visual redesign.
+- Render school profile sections from `school_profile_nodes`.
+- Add shared node-backed card/section helpers for later design work.
+- Preserve current admin, shortlist, compare, visibility, dossier, and publish-safe workflows.
+- Keep the site backward compatible while proving the node read model.
+
+Execution details live in [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md) and [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md).
 
 ### Milestone 8: Review-Ready Workbook
 
