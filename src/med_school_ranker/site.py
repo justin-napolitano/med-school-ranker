@@ -1084,6 +1084,7 @@ input, select {
   text-decoration: none;
 }
 .tabs a.active, button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:disabled { color: var(--muted); background: #eef3f7; cursor: not-allowed; }
 main { padding: 18px; }
 .view { display: none; }
 .view.active { display: block; }
@@ -1099,7 +1100,9 @@ main { padding: 18px; }
 .selector-panel { margin: 0 0 14px; }
 .selector-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+#rankTable table { min-width: 2100px; }
+#mdSelectorTable table { min-width: 1300px; }
 th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; font-size: 13px; }
 th { position: sticky; top: 0; background: #eef4f8; color: var(--header); cursor: pointer; z-index: 1; }
 tr:hover td { background: #f8fbfd; }
@@ -1111,7 +1114,9 @@ tr:hover td { background: #f8fbfd; }
 .badge.partial { color: #7b5a00; border-color: #d8bf72; background: #fff9e8; }
 .badge.ready { color: #17623a; border-color: #a9d6bb; background: #eefaf2; }
 .muted { color: var(--muted); }
-.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 12px; }
+.panel p { overflow-wrap: anywhere; line-height: 1.25; }
+.empty-state { border: 1px dashed var(--border); border-radius: 8px; padding: 12px; color: var(--muted); background: #f8fbfd; }
 .route-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
 .route-tools a { color: var(--accent); }
 .caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; }
@@ -1290,6 +1295,10 @@ function selectorCostBasis(item) {
   return null;
 }
 
+function selectorReady() {
+  return Boolean(selectorState.mcatBand && selectorState.gpaBand && selectorState.applicantState);
+}
+
 function selectorOosScore(item) {
   if (!selectorState.applicantState) return null;
   if (selectorState.applicantState === schoolState(item)) return 10;
@@ -1379,9 +1388,17 @@ function downloadCsv(filename, headers, records) {
 
 function sortRows(tableRows, tableKey, defaultKey, defaultDir='asc') {
   const state = sortState[tableKey] || {key: defaultKey, dir: defaultDir};
+  const valueFor = (row) => state.get ? state.get(row) : state.key.split('.').reduce((o,k)=>o?.[k], row);
   return [...tableRows].sort((a, b) => {
-    const av = String(state.get ? state.get(a) : state.key.split('.').reduce((o,k)=>o?.[k], a) || '').toLowerCase();
-    const bv = String(state.get ? state.get(b) : state.key.split('.').reduce((o,k)=>o?.[k], b) || '').toLowerCase();
+    const rawA = valueFor(a);
+    const rawB = valueFor(b);
+    const aMissing = rawA === undefined || rawA === null || String(rawA).trim() === '';
+    const bMissing = rawB === undefined || rawB === null || String(rawB).trim() === '';
+    if (aMissing && bMissing) return 0;
+    if (aMissing) return 1;
+    if (bMissing) return -1;
+    const av = String(rawA).toLowerCase();
+    const bv = String(rawB).toLowerCase();
     const an = Number(av), bn = Number(bv);
     const result = !Number.isNaN(an) && !Number.isNaN(bn) ? an - bn : av.localeCompare(bv);
     return state.dir === 'desc' ? -result : result;
@@ -1464,6 +1481,10 @@ function mdSelectorControls() {
   const mcatBands = unique(rows('aamc_mcat_gpa_grid').map(row => row.mcat_band));
   const gpaBands = unique(rows('aamc_mcat_gpa_grid').map(row => row.gpa_band));
   const states = unique(rows('schools').map(item => item.school.state_abbrev || item.ranking.state_abbrev)).sort();
+  const ready = selectorReady();
+  const selectorStatus = ready
+    ? `${selectorRankedRows().length} active MD schools in selector view`
+    : 'Select MCAT band, GPA band, and applicant state to calculate the MD selector ranking.';
   return `<div class="panel selector-panel">
       <h3>MD Band Selector ${badge('local/private-derived', 'warn')}</h3>
       <div class="caveat">MD-only proof of concept. DO schools are excluded from this interactive reranking view. Selected-profile rankings stay in browser memory and are not written back.</div>
@@ -1474,14 +1495,18 @@ function mdSelectorControls() {
       </div>
       <div class="selector-actions">
         <button type="button" id="downloadSelectorAssumptions">Download Assumptions CSV</button>
-        <button type="button" id="downloadSelectorRows">Download Current MD Ranking CSV</button>
-        <span class="muted">${selectorRankedRows().length} active MD schools in selector view</span>
+        <button type="button" id="downloadSelectorRows" ${ready ? '' : 'disabled title="Select all assumptions first"'}>Download Current MD Ranking CSV</button>
+        <span class="muted">${selectorStatus}</span>
       </div>
       <div id="mdSelectorTable"></div>
     </div>`;
 }
 
 function renderMdSelectorTable() {
+  if (!selectorReady()) {
+    $('mdSelectorTable').innerHTML = '<div class="empty-state">No selected-profile ranking is shown until MCAT band, GPA band, and applicant state are selected. This prevents unselected assumptions from looking like a real Decision Rank.</div>';
+    return;
+  }
   const selectedRows = selectorRankedRows().slice(0, 50);
   const columns = [
     {key:'selector.decisionRank', label:'Decision Rank', render:r=>r.decisionRank},
@@ -1512,6 +1537,7 @@ function selectedAssumptionRecords() {
 }
 
 function selectedRankingRecords() {
+  if (!selectorReady()) return [];
   return selectorRankedRows().map(row => ({
     decision_rank: row.decisionRank,
     school_id: row.item.school.school_id,
@@ -1602,7 +1628,7 @@ function renderRankingTable() {
     {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
     {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
     {key:'derived.aamc_acceptance_rate_band', label:'AAMC Band', render:s=>missing(s.ranking.profile_aamc_acceptance_rate_band || s.derived.aamc_acceptance_rate_band)},
-    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>missing(s.ranking.score_warnings)},
+    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>s.ranking.score_warnings ? badge('Has warnings', 'warn') : 'Clear'},
   ];
   if (ADMIN_ENABLED) {
     columns.push(
