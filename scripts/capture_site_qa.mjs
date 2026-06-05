@@ -211,6 +211,12 @@ async function main() {
     await loadPage(cdp, "#/methodology", desktop);
     await screenshot(cdp, `methodology_desktop_${label}.png`);
 
+    await loadPage(cdp, "#/dossiers", desktop);
+    await screenshot(cdp, `dossiers_desktop_${label}.png`);
+
+    await loadPage(cdp, "#/research", desktop);
+    await screenshot(cdp, `research_queue_desktop_${label}.png`);
+
     await loadPage(cdp, "#/rankings", desktop);
     const profileRoute = await firstMdProfileRoute(cdp);
     await loadPage(cdp, profileRoute, desktop);
@@ -225,6 +231,12 @@ async function main() {
     await screenshot(cdp, `rankings_mobile_${label}.png`);
     await setSelectorValues(cdp);
     await screenshot(cdp, `rankings_selector_changed_mobile_${label}.png`);
+
+    await loadPage(cdp, "#/dossiers", mobile);
+    await screenshot(cdp, `dossiers_mobile_${label}.png`);
+
+    await loadPage(cdp, "#/research", mobile);
+    await screenshot(cdp, `research_queue_mobile_${label}.png`);
 
     await loadPage(cdp, profileRoute, mobile);
     await screenshot(cdp, `school_profile_mobile_${label}.png`);

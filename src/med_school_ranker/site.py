@@ -80,6 +80,8 @@ AAMC_GRID_CAVEAT = (
 
 PUBLIC_ROUTES = [
     {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
+    {"path": "#/dossiers", "label": "Dossiers", "route_type": "public"},
+    {"path": "#/research", "label": "Research Queue", "route_type": "public"},
     {"path": "#/lists", "label": "Curated Lists", "route_type": "public"},
     {"path": "#/compare", "label": "Compare", "route_type": "public"},
     {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
@@ -1010,6 +1012,8 @@ def render_site_html(payload: dict[str, object]) -> str:
   </nav>
   <main>
     <section id="rankings" class="view"></section>
+    <section id="dossiers" class="view"></section>
+    <section id="research" class="view"></section>
     <section id="lists" class="view"></section>
     <section id="listDetail" class="view"></section>
     <section id="compare" class="view"></section>
@@ -1058,13 +1062,14 @@ h2 { margin: 0 0 12px; font-size: 18px; color: var(--header); }
 h3 { margin: 0 0 8px; font-size: 15px; color: var(--header); }
 p { margin: 4px 0 0; color: var(--muted); }
 .search-label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; min-width: 280px; }
-input, select {
+input, select, textarea {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 10px;
   font: inherit;
   background: #fff;
 }
+textarea { min-height: 120px; resize: vertical; width: 100%; }
 .tabs {
   display: flex;
   gap: 6px;
@@ -1085,6 +1090,7 @@ input, select {
 }
 .tabs a.active, button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 button:disabled { color: var(--muted); background: #eef3f7; cursor: not-allowed; }
+button.secondary { background: #f7fafc; }
 main { padding: 18px; }
 .view { display: none; }
 .view.active { display: block; }
@@ -1099,6 +1105,10 @@ main { padding: 18px; }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; align-items: end; }
 .selector-panel { margin: 0 0 14px; }
 .selector-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
+.field-grid label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
+.full-span { grid-column: 1 / -1; }
+.inline-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
 table { width: 100%; border-collapse: collapse; min-width: 1100px; }
 #rankTable table { min-width: 2100px; }
@@ -1136,7 +1146,9 @@ const ADMIN_ENABLED = (payload.routes?.admin || []).length > 0;
 let currentRoute = {view: 'rankings', path: '/rankings'};
 let sortState = {};
 let filters = {
-  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
+  rankings: {degree: '', state: '', tier: '', bucket: '', visibility: 'visible', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
+  dossiers: {visibility: 'visible', status: '', missing: '', tier: '', rankBand: ''},
+  research: {visibility: 'visible', status: '', tier: '', rankBand: '', action: ''},
   sources: {sourceMissing: ''},
   quality: {severity: ''},
 };
@@ -1145,13 +1157,24 @@ let selectorState = {
   gpaBand: '',
   applicantState: '',
 };
+let visibilityState = {};
+let dossierState = {};
+
+const VISIBILITY_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'visibility_state', 'visibility_reason', 'hidden_at', 'updated_at', 'source', 'notes'];
+const DOSSIER_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'research_status', 'interest_level', 'four_year_happiness', 'location_fit', 'culture_fit', 'regret_index', 'hard_no_flag', 'hard_no_reason', 'application_decision_status', 'notes'];
+const DOSSIER_FIELDS = DOSSIER_EXPORT_HEADERS.filter(field => !['export_schema_version', 'exported_at', 'school_id', 'school_name'].includes(field));
+const RESEARCH_STATUSES = ['not_started', 'skimmed', 'needs_deep_research', 'researched', 'ready_to_decide', 'excluded', 'applied'];
+const INTEREST_LEVELS = ['high', 'medium', 'low', 'none'];
+const DECISION_STATUSES = ['considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted', 'rejected', 'withdrawn', 'not_applying'];
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
 const truthy = (value) => ['1', 'true', 't', 'yes', 'y'].includes(String(value || '').trim().toLowerCase());
 const parseScore = (value) => {
-  const number = Number(String(value ?? '').replace(/[$,%]/g, '').replace(/,/g, '').trim());
+  const text = String(value ?? '').replace(/[$,%]/g, '').replace(/,/g, '').trim();
+  if (!text) return null;
+  const number = Number(text);
   return Number.isFinite(number) ? number : null;
 };
 const clamp = (value, lower=1, upper=10) => Math.max(lower, Math.min(upper, value));
@@ -1176,6 +1199,8 @@ function parseRoute() {
   const path = routePath(window.location.hash);
   if (path.startsWith('/admin') && !ADMIN_ENABLED) return {view: 'rankings', path: '/rankings'};
   if (path === '/rankings') return {view: 'rankings', path};
+  if (path === '/dossiers') return {view: 'dossiers', path};
+  if (path === '/research') return {view: 'research', path};
   if (path === '/lists') return {view: 'lists', path};
   if (path.startsWith('/lists/')) return {view: 'listDetail', path, slug: path.split('/')[2] || ''};
   if (path === '/compare') return {view: 'compare', path};
@@ -1201,7 +1226,10 @@ function setActiveSection(view) {
 function setActiveNav(path) {
   document.querySelectorAll('.tabs a').forEach(link => {
     const navPath = routePath(link.dataset.route);
-    const active = navPath === path || (path.startsWith('/lists/') && navPath === '/lists') || (path.startsWith('/admin') && navPath === '/admin');
+    const active = navPath === path
+      || (path.startsWith('/lists/') && navPath === '/lists')
+      || (path.startsWith('/schools/') && navPath === '/dossiers')
+      || (path.startsWith('/admin') && navPath === '/admin');
     link.classList.toggle('active', active);
   });
 }
@@ -1226,6 +1254,205 @@ function optionTags(values, selected) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function safeText(value) {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function attr(value) {
+  return safeText(value).replace(/"/g, '&quot;');
+}
+
+function labelize(value) {
+  const text = String(value || '').trim();
+  if (!text) return 'Unselected';
+  return text.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function schoolId(item) {
+  return item.school?.school_id || item.ranking?.school_id || '';
+}
+
+function schoolById(id) {
+  return rows('schools').find(item => schoolId(item) === id);
+}
+
+function visibilityFor(item) {
+  const id = schoolId(item);
+  return visibilityState[id] || {
+    school_id: id,
+    school_name: item.school?.school_name || '',
+    visibility_state: 'visible',
+    visibility_reason: '',
+    hidden_at: '',
+    updated_at: '',
+    source: 'browser_session',
+    notes: '',
+  };
+}
+
+function isSchoolHidden(item) {
+  return visibilityFor(item).visibility_state === 'hidden';
+}
+
+function visibilityBadge(item) {
+  return isSchoolHidden(item) ? badge('Hidden', 'warn') : badge('Visible', 'good');
+}
+
+function setSchoolVisibility(id, visibilityStateValue, reason='') {
+  const item = schoolById(id);
+  if (!item) return;
+  if (visibilityStateValue === 'visible') {
+    delete visibilityState[id];
+    return;
+  }
+  const previous = visibilityState[id] || {};
+  const timestamp = nowIso();
+  visibilityState[id] = {
+    export_schema_version: 'school_visibility_v1',
+    school_id: id,
+    school_name: item.school.school_name || previous.school_name || '',
+    visibility_state: visibilityStateValue,
+    visibility_reason: reason || previous.visibility_reason || 'Not a current fit',
+    hidden_at: previous.hidden_at || timestamp,
+    updated_at: timestamp,
+    source: 'browser_session',
+    notes: previous.notes || '',
+  };
+}
+
+function updateVisibilityReason(id, value) {
+  const item = schoolById(id);
+  if (!item) return;
+  if (!visibilityState[id]) setSchoolVisibility(id, 'hidden', value);
+  visibilityState[id].visibility_reason = value;
+  visibilityState[id].updated_at = nowIso();
+}
+
+function hiddenSchools() {
+  return rows('schools').filter(item => isSchoolHidden(item));
+}
+
+function visibilityExportRecords() {
+  const exportedAt = nowIso();
+  return Object.values(visibilityState)
+    .filter(record => record.visibility_state !== 'visible')
+    .sort((a, b) => String(a.school_name).localeCompare(String(b.school_name)))
+    .map(record => ({
+      export_schema_version: 'school_visibility_v1',
+      exported_at: exportedAt,
+      school_id: record.school_id,
+      school_name: record.school_name,
+      visibility_state: record.visibility_state,
+      visibility_reason: record.visibility_reason,
+      hidden_at: record.hidden_at,
+      updated_at: record.updated_at,
+      source: record.source || 'browser_session',
+      notes: record.notes || '',
+    }));
+}
+
+function downloadVisibilityExport() {
+  downloadCsv('school_visibility_export.csv', VISIBILITY_EXPORT_HEADERS, visibilityExportRecords());
+}
+
+function dossierFor(item) {
+  const id = schoolId(item);
+  return dossierState[id] || {};
+}
+
+function ensureDossierRecord(id) {
+  const item = schoolById(id);
+  if (!item) return null;
+  if (!dossierState[id]) {
+    dossierState[id] = {
+      school_id: id,
+      school_name: item.school.school_name || '',
+      research_status: '',
+      interest_level: '',
+      four_year_happiness: '',
+      location_fit: '',
+      culture_fit: '',
+      regret_index: '',
+      hard_no_flag: '',
+      hard_no_reason: '',
+      application_decision_status: '',
+      notes: '',
+    };
+  }
+  return dossierState[id];
+}
+
+function updateDossierField(id, field, value) {
+  if (!DOSSIER_FIELDS.includes(field)) return;
+  const record = ensureDossierRecord(id);
+  if (!record) return;
+  record[field] = value;
+}
+
+function hasDossierEdits(record) {
+  return DOSSIER_FIELDS.some(field => String(record[field] || '').trim());
+}
+
+function dossierExportRecords() {
+  const exportedAt = nowIso();
+  return Object.values(dossierState)
+    .filter(hasDossierEdits)
+    .sort((a, b) => String(a.school_name).localeCompare(String(b.school_name)))
+    .map(record => ({
+      export_schema_version: 'school_dossier_edits_v1',
+      exported_at: exportedAt,
+      school_id: record.school_id,
+      school_name: record.school_name,
+      research_status: record.research_status || '',
+      interest_level: record.interest_level || '',
+      four_year_happiness: record.four_year_happiness || '',
+      location_fit: record.location_fit || '',
+      culture_fit: record.culture_fit || '',
+      regret_index: record.regret_index || '',
+      hard_no_flag: record.hard_no_flag || '',
+      hard_no_reason: record.hard_no_reason || '',
+      application_decision_status: record.application_decision_status || '',
+      notes: record.notes || '',
+    }));
+}
+
+function downloadDossierExport() {
+  downloadCsv('school_dossier_edits_export.csv', DOSSIER_EXPORT_HEADERS, dossierExportRecords());
+}
+
+function missingDossierSections(item) {
+  const missingSections = [];
+  const dossier = dossierFor(item);
+  if (!(item.ranking?.published_mcat_average || item.admissions_stats?.published_mcat_average)) missingSections.push('MCAT avg');
+  if (!(item.ranking?.published_gpa_average || item.admissions_stats?.published_gpa_average)) missingSections.push('GPA avg');
+  if (!(item.cost_and_debt?.estimated_coa_out_state || item.cost_and_debt?.out_state_tuition_fees_insurance || item.ranking?.cost_basis)) missingSections.push('cost');
+  if (!Number(item.derived?.admissions_policy_count || 0)) missingSections.push('admissions policy');
+  if (!Number(item.derived?.letter_requirement_count || 0)) missingSections.push('letters');
+  if (!dossier.research_status) missingSections.push('research status');
+  if (!dossier.notes) missingSections.push('notes');
+  return missingSections;
+}
+
+function researchStatusFor(item) {
+  return dossierFor(item).research_status || 'not_started';
+}
+
+function nextResearchAction(item) {
+  const dossier = dossierFor(item);
+  const missingSections = missingDossierSections(item);
+  if (isSchoolHidden(item)) return 'Review hidden status';
+  if (!dossier.research_status) return 'Start dossier';
+  if (!dossier.four_year_happiness) return 'Score four-year fit';
+  if (!dossier.interest_level) return 'Set interest level';
+  if (missingSections.length) return `Fill ${missingSections[0]}`;
+  if (!dossier.application_decision_status) return 'Set decision status';
+  return 'Ready for shortlist review';
 }
 
 function bandMidpoint(label, kind) {
@@ -1318,6 +1545,7 @@ function activeMdSchools() {
     item.school.degree_type === 'MD'
     && !truthy(item.school.manual_exclusion_flag)
     && !truthy(item.ranking.excluded_from_rank)
+    && !isSchoolHidden(item)
   ));
 }
 
@@ -1443,6 +1671,7 @@ function rankingFilters() {
       <label>State <select id="rankState"><option value="" ${f.state === '' ? 'selected' : ''}>All</option>${optionTags(states, f.state)}</select></label>
       <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
       <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
+      <label>Visibility <select id="rankVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
       ${adminFilters}
       <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
       <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
@@ -1454,12 +1683,14 @@ function rankingFilters() {
 }
 
 function rankingsRows() {
-  const {degree, state, tier, bucket, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
+  const {degree, state, tier, bucket, visibility, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
   return filteredSchools().filter(s => {
     if (degree && s.school.degree_type !== degree) return false;
     if (state && s.school.state !== state) return false;
     if (tier && s.derived.admissions_fit_tier !== tier) return false;
     if (bucket && s.derived.application_bucket !== bucket) return false;
+    if (visibility === 'visible' && isSchoolHidden(s)) return false;
+    if (visibility === 'hidden' && !isSchoolHidden(s)) return false;
     if (ADMIN_ENABLED && hardNo === 'yes' && !s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && hardNo === 'no' && s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && excluded === 'yes' && !s.derived.excluded_from_rank) return false;
@@ -1559,13 +1790,35 @@ function selectedRankingRecords() {
   }));
 }
 
+function renderVisibilityPanel() {
+  const hidden = hiddenSchools();
+  const hiddenTable = hidden.length ? table([
+    {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
+    {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
+    {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+    {key:'visibility.visibility_reason', label:'Reason', render:s=>`<input data-visibility-reason="${attr(schoolId(s))}" value="${attr(visibilityFor(s).visibility_reason)}" placeholder="Why hidden">`},
+    {key:'visibility.hidden_at', label:'Hidden At', render:s=>missing(visibilityFor(s).hidden_at)},
+    {key:'actions', label:'Actions', render:s=>`<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>`},
+  ], hidden, 'hiddenSchools') : '<div class="empty-state">No schools are hidden in this browser session.</div>';
+  return `<div class="panel selector-panel">
+    <div class="inline-actions">
+      <h3 style="margin:0">Visibility Controls</h3>
+      ${badge(`${hidden.length} hidden`, hidden.length ? 'warn' : 'good')}
+      <button type="button" id="downloadVisibilityExport">Download Visibility CSV</button>
+    </div>
+    <p>Visibility is local to this browser session. Export the CSV before closing the page if you want to preserve hide/restore decisions.</p>
+    <div style="margin-top:10px">${hiddenTable}</div>
+  </div>`;
+}
+
 function renderRankings() {
-  $('rankings').innerHTML = `<h2>Rankings</h2><div class="caveat">${payload.copy.aamc_grid_caveat}</div>${mdSelectorControls()}${rankingFilters()}<div id="rankTable"></div>`;
+  $('rankings').innerHTML = `<h2>Rankings</h2><div class="caveat">${payload.copy.aamc_grid_caveat}</div>${renderVisibilityPanel()}${mdSelectorControls()}${rankingFilters()}<div id="rankTable"></div>`;
   const bindings = {
     rankDegree: 'degree',
     rankState: 'state',
     rankTier: 'tier',
     rankBucket: 'bucket',
+    rankVisibility: 'visibility',
     rankQuality: 'quality',
     rankMcatBand: 'mcatBand',
     rankGpaBand: 'gpaBand',
@@ -1600,6 +1853,7 @@ function renderRankings() {
     if (!records.length) return;
     downloadCsv('selected-md-decision-rankings.csv', Object.keys(records[0]), records);
   });
+  $('downloadVisibilityExport')?.addEventListener('click', downloadVisibilityExport);
   renderMdSelectorTable();
   renderRankingTable();
 }
@@ -1615,6 +1869,7 @@ function renderRankingTable() {
     {key:'ranking.rank_confidence', label:'Confidence', render:s=>badge(s.ranking.rank_confidence)},
     {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
     {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket || s.ranking.suggested_funnel_bucket)},
+    {key:'visibility.visibility_state', label:'Visibility', render:s=>visibilityBadge(s)},
     {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
     {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
     {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
@@ -1629,6 +1884,7 @@ function renderRankingTable() {
     {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
     {key:'derived.aamc_acceptance_rate_band', label:'AAMC Band', render:s=>missing(s.ranking.profile_aamc_acceptance_rate_band || s.derived.aamc_acceptance_rate_band)},
     {key:'ranking.score_warnings', label:'Score Warnings', render:s=>s.ranking.score_warnings ? badge('Has warnings', 'warn') : 'Clear'},
+    {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Dossier</a>${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(s))}">Hide</button>`}</div>`},
   ];
   if (ADMIN_ENABLED) {
     columns.push(
@@ -1638,7 +1894,8 @@ function renderRankingTable() {
       {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status}
     );
   }
-  $('rankTable').innerHTML = `<p>${visibleRows.length} visible schools</p>` + table(columns, visibleRows, 'rankings');
+  const label = filters.rankings.visibility === 'hidden' ? 'hidden schools' : filters.rankings.visibility === 'all' ? 'schools' : 'visible schools';
+  $('rankTable').innerHTML = `<p>${visibleRows.length} ${label}</p>` + table(columns, visibleRows, 'rankings');
 }
 
 function renderLists() {
@@ -1703,10 +1960,229 @@ function renderCompare() {
     ], sortRows(filteredSchools(), 'compare', 'ranking.overall_rank').slice(0, 25), 'compare')}`;
 }
 
+function scoreOptions(selected) {
+  const options = [''].concat(Array.from({length: 10}, (_, index) => String(index + 1)));
+  return options.map(value => `<option value="${value}" ${String(selected || '') === value ? 'selected' : ''}>${value || 'Unselected'}</option>`).join('');
+}
+
+function labeledOptions(values, selected) {
+  return [''].concat(values).map(value => `<option value="${value}" ${String(selected || '') === value ? 'selected' : ''}>${labelize(value)}</option>`).join('');
+}
+
+function dossierSelect(item, field, label, values) {
+  const id = schoolId(item);
+  const dossier = dossierFor(item);
+  const options = Array.isArray(values) ? labeledOptions(values, dossier[field]) : scoreOptions(dossier[field]);
+  return `<label>${label}<select data-dossier-school="${attr(id)}" data-dossier-field="${attr(field)}">${options}</select></label>`;
+}
+
+function dossierInput(item, field, label, placeholder='') {
+  const id = schoolId(item);
+  const dossier = dossierFor(item);
+  return `<label>${label}<input data-dossier-school="${attr(id)}" data-dossier-field="${attr(field)}" value="${attr(dossier[field] || '')}" placeholder="${attr(placeholder)}"></label>`;
+}
+
+function dossierTextarea(item, field, label, placeholder='') {
+  const id = schoolId(item);
+  const dossier = dossierFor(item);
+  return `<label class="full-span">${label}<textarea data-dossier-school="${attr(id)}" data-dossier-field="${attr(field)}" placeholder="${attr(placeholder)}">${safeText(dossier[field] || '')}</textarea></label>`;
+}
+
+function renderDossierForm(item) {
+  const editCount = dossierExportRecords().length;
+  return `<div class="panel" style="margin-top:12px">
+    <div class="inline-actions">
+      <h3 style="margin:0">Local Dossier</h3>
+      ${badge(`${editCount} edited`, editCount ? 'warn' : '')}
+      <button type="button" id="downloadDossierExport">Download Dossier Edits CSV</button>
+      ${isSchoolHidden(item)
+        ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
+        : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(item))}">Hide School</button>`}
+    </div>
+    <p>These edits stay in browser memory until exported. They do not change the source ranking model.</p>
+    <div class="field-grid" style="margin-top:10px">
+      ${dossierSelect(item, 'research_status', 'Research status', RESEARCH_STATUSES)}
+      ${dossierSelect(item, 'interest_level', 'Interest level', INTEREST_LEVELS)}
+      ${dossierSelect(item, 'four_year_happiness', 'Could live here 4 years', null)}
+      ${dossierSelect(item, 'location_fit', 'Location fit', null)}
+      ${dossierSelect(item, 'culture_fit', 'Culture fit', null)}
+      ${dossierSelect(item, 'regret_index', 'Regret index', null)}
+      ${dossierSelect(item, 'hard_no_flag', 'Hard no', ['TRUE', 'FALSE'])}
+      ${dossierInput(item, 'hard_no_reason', 'Hard no reason', 'Only if hard no')}
+      ${dossierSelect(item, 'application_decision_status', 'Application decision', DECISION_STATUSES)}
+      ${dossierTextarea(item, 'notes', 'Dossier notes', 'School-specific research, subjective fit, unanswered questions')}
+    </div>
+  </div>`;
+}
+
+function dossierRows() {
+  const f = filters.dossiers;
+  return filteredSchools().filter(item => {
+    if (f.visibility === 'visible' && isSchoolHidden(item)) return false;
+    if (f.visibility === 'hidden' && !isSchoolHidden(item)) return false;
+    if (f.status && researchStatusFor(item) !== f.status) return false;
+    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
+    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
+    if (f.missing === 'missing' && !missingDossierSections(item).length) return false;
+    if (f.missing === 'complete' && missingDossierSections(item).length) return false;
+    return true;
+  });
+}
+
+function renderDossierFilters() {
+  const tiers = unique(rows('schools').map(s => s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)).sort();
+  const rankBands = unique(rows('schools').map(s => s.ranking.rank_band || s.derived.rank_band)).sort();
+  const f = filters.dossiers;
+  return `<div class="filters">
+    <label>Visibility <select id="dossierVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
+    <label>Research Status <select id="dossierStatus">${labeledOptions(RESEARCH_STATUSES, f.status)}</select></label>
+    <label>Missing Sections <select id="dossierMissing"><option value="" ${f.missing === '' ? 'selected' : ''}>All</option><option value="missing" ${f.missing === 'missing' ? 'selected' : ''}>Has missing</option><option value="complete" ${f.missing === 'complete' ? 'selected' : ''}>Complete</option></select></label>
+    <label>Admissions Tier <select id="dossierTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
+    <label>Rank Band <select id="dossierRankBand"><option value="" ${f.rankBand === '' ? 'selected' : ''}>All</option>${optionTags(rankBands, f.rankBand)}</select></label>
+  </div>`;
+}
+
+function renderDossiers() {
+  const tableRows = sortRows(dossierRows(), 'dossiers', 'ranking.overall_rank');
+  $('dossiers').innerHTML = `<h2>School Dossiers</h2>
+    <div class="caveat">Dossiers combine source-backed fields with local reviewer notes. Local edits are exported separately and do not mutate the seed data.</div>
+    <div class="grid">
+      ${metric('Visible schools', rows('schools').filter(item => !isSchoolHidden(item)).length)}
+      ${metric('Hidden schools', hiddenSchools().length)}
+      ${metric('Edited dossiers', dossierExportRecords().length)}
+      ${metric('Rows in view', tableRows.length)}
+    </div>
+    <div class="inline-actions" style="margin-bottom:12px">
+      <button type="button" id="downloadDossierIndexExport">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadDossierVisibilityExport">Download Visibility CSV</button>
+    </div>
+    ${renderDossierFilters()}
+    ${table([
+      {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(s.ranking.decision_rank || s.ranking.overall_rank)},
+      {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
+      {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
+      {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+      {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)},
+      {key:'ranking.rank_confidence', label:'Confidence', render:s=>badge(s.ranking.rank_confidence || s.derived.rank_confidence)},
+      {key:'dossier.research_status', label:'Research Status', render:s=>labelize(researchStatusFor(s))},
+      {key:'visibility.visibility_state', label:'Visibility', render:s=>visibilityBadge(s)},
+      {key:'dossier.missing', label:'Missing Sections', render:s=>missingDossierSections(s).join(', ') || 'Complete'},
+      {key:'research.next', label:'Next Action', render:s=>nextResearchAction(s)},
+      {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Open</a>${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(s))}">Hide</button>`}</div>`},
+    ], tableRows, 'dossiers')}`;
+  const bindings = {
+    dossierVisibility: 'visibility',
+    dossierStatus: 'status',
+    dossierMissing: 'missing',
+    dossierTier: 'tier',
+    dossierRankBand: 'rankBand',
+  };
+  Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    filters.dossiers[key] = event.target.value;
+    renderDossiers();
+  }));
+  $('downloadDossierIndexExport')?.addEventListener('click', downloadDossierExport);
+  $('downloadDossierVisibilityExport')?.addEventListener('click', downloadVisibilityExport);
+}
+
+function researchQueueRows() {
+  const f = filters.research;
+  const actions = {
+    start: 'Start dossier',
+    score: 'Score four-year fit',
+    interest: 'Set interest level',
+    fill: 'Fill',
+    decision: 'Set decision status',
+    ready: 'Ready for shortlist review',
+    hidden: 'Review hidden status',
+  };
+  return filteredSchools().map(item => ({
+    item,
+    status: researchStatusFor(item),
+    missingSections: missingDossierSections(item),
+    action: nextResearchAction(item),
+  })).filter(row => {
+    const item = row.item;
+    if (f.visibility === 'visible' && isSchoolHidden(item)) return false;
+    if (f.visibility === 'hidden' && !isSchoolHidden(item)) return false;
+    if (f.status && row.status !== f.status) return false;
+    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
+    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
+    if (f.action && !row.action.startsWith(actions[f.action])) return false;
+    return true;
+  }).sort((a, b) => {
+    const hiddenDelta = Number(isSchoolHidden(a.item)) - Number(isSchoolHidden(b.item));
+    if (hiddenDelta) return hiddenDelta;
+    const rankA = parseScore(a.item.ranking.decision_rank || a.item.ranking.overall_rank) ?? 9999;
+    const rankB = parseScore(b.item.ranking.decision_rank || b.item.ranking.overall_rank) ?? 9999;
+    return rankA - rankB;
+  });
+}
+
+function renderResearchFilters() {
+  const tiers = unique(rows('schools').map(s => s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)).sort();
+  const rankBands = unique(rows('schools').map(s => s.ranking.rank_band || s.derived.rank_band)).sort();
+  const f = filters.research;
+  return `<div class="filters">
+    <label>Visibility <select id="researchVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
+    <label>Research Status <select id="researchStatus">${labeledOptions(RESEARCH_STATUSES, f.status)}</select></label>
+    <label>Next Action <select id="researchAction"><option value="" ${f.action === '' ? 'selected' : ''}>All</option><option value="start" ${f.action === 'start' ? 'selected' : ''}>Start dossier</option><option value="score" ${f.action === 'score' ? 'selected' : ''}>Score four-year fit</option><option value="interest" ${f.action === 'interest' ? 'selected' : ''}>Set interest level</option><option value="fill" ${f.action === 'fill' ? 'selected' : ''}>Fill source gap</option><option value="decision" ${f.action === 'decision' ? 'selected' : ''}>Set decision status</option><option value="ready" ${f.action === 'ready' ? 'selected' : ''}>Ready</option><option value="hidden" ${f.action === 'hidden' ? 'selected' : ''}>Hidden review</option></select></label>
+    <label>Admissions Tier <select id="researchTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
+    <label>Rank Band <select id="researchRankBand"><option value="" ${f.rankBand === '' ? 'selected' : ''}>All</option>${optionTags(rankBands, f.rankBand)}</select></label>
+  </div>`;
+}
+
+function renderResearch() {
+  const queueRows = researchQueueRows();
+  const visibleRows = rows('schools').filter(item => !isSchoolHidden(item));
+  const readyCount = visibleRows.filter(item => nextResearchAction(item) === 'Ready for shortlist review').length;
+  $('research').innerHTML = `<h2>Research Queue</h2>
+    <div class="caveat">The queue is deterministic: hidden status, missing source sections, and local dossier fields drive the next action.</div>
+    <div class="grid">
+      ${metric('Rows in queue', queueRows.length)}
+      ${metric('Visible schools', visibleRows.length)}
+      ${metric('Ready for shortlist review', readyCount)}
+      ${metric('Edited dossiers', dossierExportRecords().length)}
+    </div>
+    <div class="inline-actions" style="margin-bottom:12px">
+      <button type="button" id="downloadResearchDossiers">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadResearchVisibility">Download Visibility CSV</button>
+    </div>
+    ${renderResearchFilters()}
+    ${table([
+      {key:'item.ranking.overall_rank', label:'Decision Rank', render:r=>missing(r.item.ranking.decision_rank || r.item.ranking.overall_rank)},
+      {key:'item.school.school_name', label:'School', render:r=>linkSchool(r.item)},
+      {key:'item.school.degree_type', label:'Degree', render:r=>badge(r.item.school.degree_type)},
+      {key:'item.school.city', label:'Location', render:r=>`${missing(r.item.school.city)}, ${missing(r.item.school.state)}`},
+      {key:'item.ranking.admissions_fit_tier', label:'Admissions Tier', render:r=>missing(r.item.ranking.admissions_fit_tier || r.item.ranking.dynamic_tier || r.item.derived.admissions_fit_tier)},
+      {key:'item.ranking.rank_band', label:'Rank Band', render:r=>missing(r.item.ranking.rank_band || r.item.derived.rank_band)},
+      {key:'item.ranking.rank_confidence', label:'Confidence', render:r=>badge(r.item.ranking.rank_confidence || r.item.derived.rank_confidence)},
+      {key:'status', label:'Research Status', render:r=>labelize(r.status)},
+      {key:'visibility', label:'Visibility', render:r=>visibilityBadge(r.item)},
+      {key:'missing', label:'Missing Sections', render:r=>r.missingSections.join(', ') || 'Complete'},
+      {key:'action', label:'Next Action', render:r=>r.action},
+      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Open</a>${isSchoolHidden(r.item) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(r.item))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(r.item))}">Hide</button>`}</div>`},
+    ], queueRows, 'researchQueue')}`;
+  const bindings = {
+    researchVisibility: 'visibility',
+    researchStatus: 'status',
+    researchAction: 'action',
+    researchTier: 'tier',
+    researchRankBand: 'rankBand',
+  };
+  Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    filters.research[key] = event.target.value;
+    renderResearch();
+  }));
+  $('downloadResearchDossiers')?.addEventListener('click', downloadDossierExport);
+  $('downloadResearchVisibility')?.addEventListener('click', downloadVisibilityExport);
+}
+
 function renderProfile() {
   const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
   if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
   const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
+  const localDossier = dossierFor(item);
   const contributionRows = rows('score_contributions').filter(row => (
     row.school_id === item.school.school_id
     && row.applicant_profile_id === item.ranking.applicant_profile_id
@@ -1740,9 +2216,9 @@ function renderProfile() {
         {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
       ], item.data_quality || [], 'detailIssues')}
     </div>` : '';
-  $('profile').innerHTML = `<div class="route-tools"><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
+  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Dossiers</a><a href="#/research">Research Queue</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
     <h2>${item.school.school_name}</h2>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl}</p>
+    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl} · ${visibilityBadge(item)}</p>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
     <div class="detail-grid">
       ${detailPanel('Identity', [
@@ -1771,6 +2247,14 @@ function renderProfile() {
         ['Negative contributors', item.ranking.top_negative_contributors || item.ranking.top_negative_drivers],
         ['Low-confidence drivers', item.ranking.missing_or_low_confidence_drivers],
         ['Rank summary', item.ranking.rank_summary],
+      ])}
+      ${detailPanel('Local Dossier Status', [
+        ['Visibility', visibilityFor(item).visibility_state],
+        ['Research status', labelize(researchStatusFor(item))],
+        ['Interest level', labelize(localDossier.interest_level)],
+        ['Application decision', labelize(localDossier.application_decision_status)],
+        ['Missing dossier sections', missingDossierSections(item).join(', ') || 'Complete'],
+        ['Next research action', nextResearchAction(item)],
       ])}
       ${detailPanel('Admissions Facts', [
         ['Stats present', item.derived.admissions_stats_present],
@@ -1805,6 +2289,7 @@ function renderProfile() {
       ])}
       ${adminPanels}
     </div>
+    ${renderDossierForm(item)}
     <div class="panel" style="margin-top:12px">
       <h3>Why This Rank?</h3>
       ${table([
@@ -1821,6 +2306,7 @@ function renderProfile() {
       ], contributionRows, 'profileContributions')}
     </div>
     ${issuesPanel}`;
+  $('downloadDossierExport')?.addEventListener('click', downloadDossierExport);
 }
 
 function detailPanel(title, panelRows) {
@@ -2060,6 +2546,8 @@ function render() {
   setActiveNav(currentRoute.path);
   setActiveSection(currentRoute.view);
   if (currentRoute.view === 'rankings') renderRankings();
+  if (currentRoute.view === 'dossiers') renderDossiers();
+  if (currentRoute.view === 'research') renderResearch();
   if (currentRoute.view === 'lists') renderLists();
   if (currentRoute.view === 'listDetail') renderListDetail();
   if (currentRoute.view === 'compare') renderCompare();
@@ -2071,6 +2559,40 @@ function render() {
 
 window.addEventListener('hashchange', render);
 $('globalSearch').addEventListener('input', render);
+document.addEventListener('click', event => {
+  const actionButton = event.target.closest('[data-action]');
+  if (!actionButton) return;
+  const action = actionButton.dataset.action;
+  const id = actionButton.dataset.schoolId;
+  if (!id) return;
+  event.preventDefault();
+  if (action === 'hide-school') {
+    const reason = window.prompt('Reason for hiding this school?', 'Not a current fit');
+    setSchoolVisibility(id, 'hidden', reason === null ? 'Not a current fit' : reason);
+    render();
+  }
+  if (action === 'restore-school') {
+    setSchoolVisibility(id, 'visible');
+    render();
+  }
+});
+document.addEventListener('input', event => {
+  const visibilityReason = event.target.closest('[data-visibility-reason]');
+  if (visibilityReason) {
+    updateVisibilityReason(visibilityReason.dataset.visibilityReason, visibilityReason.value);
+    return;
+  }
+  const dossierField = event.target.closest('[data-dossier-field]');
+  if (dossierField) {
+    updateDossierField(dossierField.dataset.dossierSchool, dossierField.dataset.dossierField, dossierField.value);
+  }
+});
+document.addEventListener('change', event => {
+  const dossierField = event.target.closest('[data-dossier-field]');
+  if (!dossierField) return;
+  updateDossierField(dossierField.dataset.dossierSchool, dossierField.dataset.dossierField, dossierField.value);
+  if (currentRoute.view === 'dossiers' || currentRoute.view === 'research' || currentRoute.view === 'profile') render();
+});
 document.addEventListener('click', event => {
   const th = event.target.closest('th[data-key]');
   if (!th) return;

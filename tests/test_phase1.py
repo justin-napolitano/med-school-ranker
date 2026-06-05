@@ -587,6 +587,30 @@ def test_default_rankings_route_and_admin_route_are_separated(tmp_path, monkeypa
     assert 'data-view="dashboard"' not in html_text
 
 
+def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+    public_routes = {route["path"] for route in embedded_payload["routes"]["public"]}
+
+    assert "#/dossiers" in public_routes
+    assert "#/research" in public_routes
+    assert 'section id="dossiers"' in html_text
+    assert 'section id="research"' in html_text
+    assert "function renderDossiers()" in html_text
+    assert "function renderResearch()" in html_text
+    assert "school_visibility_v1" in html_text
+    assert "school_dossier_edits_v1" in html_text
+    assert "school_visibility_export.csv" in html_text
+    assert "school_dossier_edits_export.csv" in html_text
+
+
 def test_school_profile_routes_resolve_for_every_active_school(tmp_path, monkeypatch):
     write_minimal_project(tmp_path)
     validation.validate_project(tmp_path)
