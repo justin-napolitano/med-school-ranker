@@ -1,0 +1,15 @@
+severity,category,item,count,message,next_action
+info,cost,canonical_rows,151,AAMC tuition rows promoted to canonical cost_and_debt.csv.,Use these for cost awareness; do not infer scholarships or debt without later sources.
+warning,cost,review_candidates,5,AAMC tuition candidates held for match or zero-cost review.,Resolve in Source Review Queue or source_match_overrides.csv.
+info,admissions_stats,canonical_rows,44,Third-party GPA/MCAT rows promoted only when agreement policy allows it.,Treat as provisional until official school/MSAR data is reviewed.
+warning,admissions_stats,conflicts,87,GPA/MCAT comparison clusters have source disagreement.,Review outputs/admissions_stats_conflicts.csv before promoting values.
+info,source_review,open_review_rows,1005,"Rows needing source matching, conflict, or coverage review.",Work data/manual/source_review_queue.csv and keep notes transparent.
+info,source_review_reason,all_zero_cost_row,3,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,ambiguous_high_confidence_cost_match,2,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,ambiguous_match_gap,97,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,below_safe_threshold,228,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,cycletrack_only_context,153,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,low_match_score,252,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,major_conflict,60,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,minor_conflict,27,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
+info,source_review_reason,no_compatible_active_school,183,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.

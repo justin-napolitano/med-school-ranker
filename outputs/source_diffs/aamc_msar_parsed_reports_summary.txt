@@ -1,0 +1,22 @@
+AAMC MSAR parsed reports summary
+Generated: 2026-06-05
+Source: https://students-residents.aamc.org/medical-school-admission-requirements/medical-school-admission-requirements-reports-applicants-and-advisors
+
+aamc_msar_main_campus_contact: 176 rows -> data/source_tables/aamc_msar_main_campus_contact.csv
+aamc_msar_mission_statement: 176 rows -> data/source_tables/aamc_msar_mission_statements.csv
+aamc_msar_gender_sexual_minority_support: 176 rows -> data/source_tables/aamc_msar_gender_sexual_minority_support.csv
+aamc_msar_admission_policies: 176 rows -> data/source_tables/aamc_msar_admission_policies.csv
+aamc_msar_applications_accepted: 176 rows -> data/source_tables/aamc_msar_applications_accepted.csv
+aamc_msar_secondary_application: 176 rows -> data/source_tables/aamc_msar_secondary_application.csv
+aamc_msar_transfer_policies: 176 rows -> data/source_tables/aamc_msar_transfer_policies.csv
+aamc_msar_lor_preferences: 169 rows -> data/source_tables/aamc_msar_lor_preferences_school_index.csv
+  notes: Preference symbols are not plain text in this PDF; this CSV preserves the official school index and flags symbol fields for follow-up decoding.
+aamc_msar_daca_policies: 176 rows -> data/source_tables/aamc_msar_daca_policies.csv
+aamc_msar_mcat_dates: 176 rows -> data/source_tables/aamc_msar_mcat_dates.csv
+aamc_msar_premed_course_requirements: 526 rows -> data/source_tables/aamc_msar_premed_course_requirements.csv
+aamc_msar_preview_policies: 145 rows -> data/source_tables/aamc_msar_preview_policies.csv
+aamc_msar_community_college_coursework: 176 rows -> data/source_tables/aamc_msar_community_college_coursework.csv
+aamc_msar_interview_policies: 174 rows -> data/source_tables/aamc_msar_interview_policies.csv
+aamc_msar_waitlist_procedures: 161 rows -> data/source_tables/aamc_msar_waitlist_procedures.csv
+aamc_msar_deposit_information: 176 rows -> data/source_tables/aamc_msar_deposit_information.csv
+  notes: Boolean deposit fields are rendered as symbols, not plain text; amount and date fields are parsed.

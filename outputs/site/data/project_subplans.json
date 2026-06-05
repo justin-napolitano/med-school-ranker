@@ -56,6 +56,34 @@
     "status": "ready"
   },
   {
+    "current_decision_summary": "Normalize the new source drop into admissions stats, cost/debt, policies, review queue, workbook, and site without hiding uncertainty.",
+    "doc_path": "docs/SOURCE_DATA_INTEGRATION_PLAN.md",
+    "next_action": "Review source integration policy and execute Phase 2A headless plan.",
+    "owner": "user",
+    "phase": "phase_2",
+    "plan_id": "source_data_integration_exec",
+    "plan_name": "Source Data Integration Executive Plan",
+    "plan_type": "executive",
+    "priority": "highest",
+    "reviewer": "tbd",
+    "source_of_truth": "markdown",
+    "status": "seeded"
+  },
+  {
+    "current_decision_summary": "Use existing source tables only; no new downloads; populate safe normalized rows; queue conflicts and ambiguous rows.",
+    "doc_path": "docs/HEADLESS_SOURCE_DATA_INTEGRATION_PLAN.md",
+    "next_action": "Run a headless Codex worker to implement source integration.",
+    "owner": "user",
+    "phase": "phase_2",
+    "plan_id": "headless_source_phase_2a",
+    "plan_name": "Headless Source Data Integration Phase 2A",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "ready"
+  },
+  {
     "current_decision_summary": "Defines static site shell, Dashboard as default view, Rankings as priority table, global search, shared filters, and detail drawer behavior.",
     "doc_path": "docs/site/navigation_and_layout.md",
     "next_action": "Implement shared layout and route/view switching.",
@@ -238,9 +266,9 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "GPA/MCAT live in a separate source-traceable layer; public school pages can be imported where permitted.",
+    "current_decision_summary": "GPA/MCAT source tables exist but are provisional; conflicts must be surfaced before values drive ranking.",
     "doc_path": "docs/plans/admissions_stats.md",
-    "next_action": "Create admissions_stats.csv and public-source/manual import workflow.",
+    "next_action": "Generate candidates and conflicts, populate source-backed admissions_stats rows, and add confidence-aware fit formulas.",
     "owner": "user",
     "phase": "phase_2",
     "plan_id": "admissions_stats",
@@ -280,9 +308,9 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "Cost and debt are tracked but low-weight by default.",
+    "current_decision_summary": "AAMC tuition source tables provide 156 patch candidates, 151 safe post-audit MD rows, 2 ambiguous high-confidence rows, 3 exact-match all-zero rows, 3 other active MD review rows, and no DO tuition coverage yet.",
     "doc_path": "docs/plans/cost_and_debt.md",
-    "next_action": "Add cost/debt schema and low-weight default scoring.",
+    "next_action": "Normalize safe AAMC tuition rows, queue review-needed rows, and add low-weight default cost scoring.",
     "owner": "user",
     "phase": "phase_3",
     "plan_id": "cost_and_debt",

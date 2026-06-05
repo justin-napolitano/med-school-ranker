@@ -1,0 +1,36 @@
+Generated: 2026-06-05T03:44:22+00:00
+
+Published MCAT/GPA source row counts:
+- ProspectiveDoctor: 146
+- Shemmassian: 203
+- The Match Guy: 116
+
+CycleTrack row counts:
+- Explorer school cards: 233
+- Explorer stats rows: 932
+- LOR school rows: 233
+- LOR link rows: 414
+- LOR rows with actual requirement URL: 297
+
+Matched GPA/MCAT comparison clusters: 316
+Agreement labels:
+- close_agreement: 27
+- major_conflict: 60
+- minor_conflict: 27
+- single_source: 202
+
+Conflict thresholds:
+- close_agreement: all available values within 0.05 GPA and 1 MCAT point
+- minor_conflict: GPA spread > 0.05 or MCAT spread > 1
+- major_conflict: GPA spread > 0.10 or MCAT spread > 2
+
+Metric definition note:
+- Published source rows are school averages.
+- CycleTrack Explorer rows are crowdsourced acceptance medians and are not official entering-class averages.
+
+Source URLs:
+- ProspectiveDoctor: https://www.prospectivedoctor.com/gpa-and-mcat/
+- Shemmassian: https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school
+- The Match Guy: https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/
+- CycleTrack Letters of Recommendation: https://cycletrack.org/lors
+- CycleTrack School Explorer: https://cycletrack.org/explorer

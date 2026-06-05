@@ -6,6 +6,7 @@ from pathlib import Path
 from med_school_ranker.paths import DATA, OUT, ROOT, SITE_DIR, UPLOAD_ZIP, WORKBOOK_XLSX
 from med_school_ranker.rankings import build_rankings
 from med_school_ranker.site import build_site
+from med_school_ranker.source_integration import build_source_integration
 from med_school_ranker.validation import has_errors, validate_project
 from med_school_ranker.workbook import build_workbook
 
@@ -23,6 +24,11 @@ def build_upload_zip() -> Path:
             archive.write(path, path.relative_to(ROOT))
         for path in sorted(OUT.glob("*.csv")):
             archive.write(path, path.relative_to(ROOT))
+        source_diffs = OUT / "source_diffs"
+        if source_diffs.exists():
+            for path in sorted(source_diffs.rglob("*")):
+                if path.is_file():
+                    archive.write(path, path.relative_to(ROOT))
         if SITE_DIR.exists():
             for path in sorted(SITE_DIR.rglob("*")):
                 if path.is_file():
@@ -47,10 +53,18 @@ def main() -> None:
         print(f"Validation failed with {error_count} error(s); see outputs/data_quality_report.csv")
         raise SystemExit(1)
 
+    source_outputs = build_source_integration()
+    issues = validate_project()
+    if has_errors(issues):
+        error_count = sum(1 for issue in issues if issue.severity == "error")
+        print(f"Validation failed with {error_count} error(s); see outputs/data_quality_report.csv")
+        raise SystemExit(1)
+
     rankings = build_rankings()
     workbook = build_workbook()
     site = build_site()
     bundle = build_upload_zip()
+    print(f"Wrote {len(source_outputs)} source integration file(s)")
     print(f"Wrote {rankings.relative_to(ROOT)}")
     print(f"Wrote {workbook.relative_to(ROOT)}")
     print(f"Wrote {site.relative_to(ROOT)}")

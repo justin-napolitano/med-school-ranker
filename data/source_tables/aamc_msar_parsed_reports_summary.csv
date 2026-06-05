@@ -1,0 +1,17 @@
+source_key,pdf_file,output_csv,row_count,notes
+aamc_msar_main_campus_contact,data/raw/aamc/msar_reports/01_msar023-msar-medical-school-main-campus-address-and-contact-information.pdf,data/source_tables/aamc_msar_main_campus_contact.csv,176,
+aamc_msar_mission_statement,data/raw/aamc/msar_reports/02_msar007-msar-mission-statement.pdf,data/source_tables/aamc_msar_mission_statements.csv,176,
+aamc_msar_gender_sexual_minority_support,data/raw/aamc/msar_reports/04_msar016-msar-support-systems-for-gender-and-sexual-minority-students.pdf,data/source_tables/aamc_msar_gender_sexual_minority_support.csv,176,
+aamc_msar_admission_policies,data/raw/aamc/msar_reports/05_msar018-msar-admission-policies-and-information.pdf,data/source_tables/aamc_msar_admission_policies.csv,176,
+aamc_msar_applications_accepted,data/raw/aamc/msar_reports/06_msar012-applications-accepted-information.pdf,data/source_tables/aamc_msar_applications_accepted.csv,176,
+aamc_msar_secondary_application,data/raw/aamc/msar_reports/07_msar006-msar-secondary-application.pdf,data/source_tables/aamc_msar_secondary_application.csv,176,
+aamc_msar_transfer_policies,data/raw/aamc/msar_reports/08_msar013-msar-application-transfer-policies.pdf,data/source_tables/aamc_msar_transfer_policies.csv,176,
+aamc_msar_lor_preferences,data/raw/aamc/msar_reports/09_msar011-msar-letter-of-evaluation-preferences.pdf,data/source_tables/aamc_msar_lor_preferences_school_index.csv,169,Preference symbols are not plain text in this PDF; this CSV preserves the official school index and flags symbol fields for follow-up decoding.
+aamc_msar_daca_policies,data/raw/aamc/msar_reports/10_msar004-daca-applications-from-daca-status.pdf,data/source_tables/aamc_msar_daca_policies.csv,176,
+aamc_msar_mcat_dates,data/raw/aamc/msar_reports/11_msar003-msar-latest-and-oldest-mcat-administration-dates-considered.pdf,data/source_tables/aamc_msar_mcat_dates.csv,176,
+aamc_msar_premed_course_requirements,data/raw/aamc/msar_reports/12_msar002-msar-premed-course-requirements.pdf,data/source_tables/aamc_msar_premed_course_requirements.csv,526,
+aamc_msar_preview_policies,data/raw/aamc/msar_reports/13_msar-preview-participation-06-09-25-04152026-sc.pdf,data/source_tables/aamc_msar_preview_policies.csv,145,
+aamc_msar_community_college_coursework,data/raw/aamc/msar_reports/14_msar024-msar-community-college-coursework-information.pdf,data/source_tables/aamc_msar_community_college_coursework.csv,176,
+aamc_msar_interview_policies,data/raw/aamc/msar_reports/15_msar008-msar-interview-procedures.pdf,data/source_tables/aamc_msar_interview_policies.csv,174,
+aamc_msar_waitlist_procedures,data/raw/aamc/msar_reports/16_msar009-msar-waitlist-procedures-1.pdf,data/source_tables/aamc_msar_waitlist_procedures.csv,161,
+aamc_msar_deposit_information,data/raw/aamc/msar_reports/18_msar001-msar-deposit-information-1.pdf,data/source_tables/aamc_msar_deposit_information.csv,176,"Boolean deposit fields are rendered as symbols, not plain text; amount and date fields are parsed."

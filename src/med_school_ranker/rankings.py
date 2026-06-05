@@ -207,7 +207,7 @@ def build_rankings() -> Path:
     headers = computed_headers + scenario_headers + passthrough_headers
 
     with RANKINGS_CSV.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=headers, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=headers, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         writer.writerows(output_rows)
 

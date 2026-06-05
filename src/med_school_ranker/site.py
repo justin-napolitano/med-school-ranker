@@ -5,14 +5,22 @@ import html
 import json
 import shutil
 from collections import Counter, defaultdict
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
 from med_school_ranker.paths import (
+    ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
+    ADMISSIONS_STATS_CANDIDATES_CSV,
+    ADMISSIONS_STATS_CONFLICTS_CSV,
     ADMISSIONS_STATS_CSV,
     APPLICANT_PROFILES_CSV,
+    COST_AND_DEBT_CANDIDATES_CSV,
+    COST_AND_DEBT_CSV,
+    COST_AND_DEBT_REVIEW_CSV,
     DATA_QUALITY_REPORT_CSV,
+    LETTER_REQUIREMENTS_CSV,
     MASTER_CSV,
     OUT,
     PARTNER_INPUTS_CSV,
@@ -20,6 +28,10 @@ from med_school_ranker.paths import (
     ROOT,
     SITE_DIR,
     SITE_INDEX_HTML,
+    SOURCE_INTEGRATION_REPORT_CSV,
+    SOURCE_MATCH_OVERRIDES_CSV,
+    SOURCE_MATCH_REVIEW_CSV,
+    SOURCE_REVIEW_QUEUE_CSV,
 )
 
 
@@ -28,11 +40,26 @@ JSON_OUTPUTS = {
     "calculated_rankings": RANKINGS_CSV,
     "applicant_profiles": APPLICANT_PROFILES_CSV,
     "admissions_stats": ADMISSIONS_STATS_CSV,
+    "cost_and_debt": COST_AND_DEBT_CSV,
+    "admissions_policies": ADMISSIONS_POLICIES_CSV,
+    "letter_requirements": LETTER_REQUIREMENTS_CSV,
     "partner_inputs": PARTNER_INPUTS_CSV,
+    "source_match_overrides": SOURCE_MATCH_OVERRIDES_CSV,
+    "source_review_queue": SOURCE_REVIEW_QUEUE_CSV,
     "admissions_source_queue": ADMISSIONS_SOURCE_QUEUE_CSV,
     "data_quality_report": DATA_QUALITY_REPORT_CSV,
+    "source_integration_report": SOURCE_INTEGRATION_REPORT_CSV,
+    "source_match_review": SOURCE_MATCH_REVIEW_CSV,
+    "admissions_stats_candidates": ADMISSIONS_STATS_CANDIDATES_CSV,
+    "admissions_stats_conflicts": ADMISSIONS_STATS_CONFLICTS_CSV,
+    "cost_and_debt_candidates": COST_AND_DEBT_CANDIDATES_CSV,
+    "cost_and_debt_review": COST_AND_DEBT_REVIEW_CSV,
     "project_subplans": ROOT / "data/project_subplans.csv",
 }
+
+SOURCE_TABLE_DIR = ROOT / "data/source_tables"
+SOURCE_DIFFS_DIR = OUT / "source_diffs"
+RAW_AAMC_MSAR_DIR = ROOT / "data/raw/aamc/msar_reports"
 
 MCAT_GPA_FIELDS = {
     "mcat_median_accepted",
@@ -49,6 +76,59 @@ MCAT_GPA_FIELDS = {
 }
 
 TRUTHY = {"1", "true", "t", "yes", "y"}
+US_STATE_ABBREVS = {
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "DC",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
+}
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -65,6 +145,16 @@ def write_json(path: Path, data: object) -> None:
 
 def is_truthy(value: str | None) -> bool:
     return str(value or "").strip().lower() in TRUTHY
+
+
+def parse_number(value: str | None) -> float | None:
+    text = str(value or "").strip().replace("$", "").replace(",", "")
+    if not text:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
 
 
 def has_partner_input(row: dict[str, str]) -> bool:
@@ -93,6 +183,152 @@ def first_by_school(rows: Iterable[dict[str, str]]) -> dict[str, dict[str, str]]
     return by_school
 
 
+def group_by_school(rows: Iterable[dict[str, str]]) -> dict[str, list[dict[str, str]]]:
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        school_id = row.get("school_id", "").strip()
+        if school_id:
+            grouped[school_id].append(row)
+    return grouped
+
+
+def count_populated(rows: Iterable[dict[str, str]], field: str) -> int:
+    return sum(1 for row in rows if row.get(field, "").strip())
+
+
+def csv_row_count(path: Path) -> int:
+    return len(read_csv(path))
+
+
+def csv_file_count(path: Path) -> int:
+    return len(list(path.glob("*.csv"))) if path.exists() else 0
+
+
+def source_table_counts() -> dict[str, int]:
+    if not SOURCE_TABLE_DIR.exists():
+        return {}
+    return {
+        path.name: csv_row_count(path)
+        for path in sorted(SOURCE_TABLE_DIR.glob("*.csv"))
+    }
+
+
+def count_raw_aamc_files() -> dict[str, int]:
+    if not RAW_AAMC_MSAR_DIR.exists():
+        return {"all": 0, "pdf": 0, "html": 0}
+    files = [path for path in RAW_AAMC_MSAR_DIR.iterdir() if path.is_file()]
+    return {
+        "all": len(files),
+        "pdf": sum(1 for path in files if path.suffix.lower() == ".pdf"),
+        "html": sum(1 for path in files if path.suffix.lower() == ".html"),
+    }
+
+
+def tuition_status(school_master: list[dict[str, str]]) -> dict[str, object]:
+    patch_rows = read_csv(SOURCE_TABLE_DIR / "aamc_msar_tuition_school_master_patch_candidates.csv")
+    join_rows = read_csv(SOURCE_TABLE_DIR / "aamc_msar_tuition_school_master_join_candidates.csv")
+    join_by_row = {row.get("aamc_source_row_number", ""): row for row in join_rows}
+    safe_rows = []
+    ambiguous_rows = []
+    review_rows = []
+    for row in patch_rows:
+        join_row = join_by_row.get(row.get("aamc_source_row_number", ""), {})
+        match_label = row.get("match_label", "")
+        match_score = parse_number(join_row.get("match_score") or row.get("match_score")) or 0
+        second_score = parse_number(join_row.get("second_match_score"))
+        second_gap = match_score - second_score if second_score is not None else 999
+        has_cost = any(
+            (parse_number(row.get(field)) or 0) > 0
+            for field in [
+                "in_state_tuition_fees_insurance",
+                "out_state_tuition_fees_insurance",
+                "estimated_coa_in_state",
+                "estimated_coa_out_state",
+            ]
+        )
+        is_safe = has_cost and (match_label == "exact" or (match_label == "high_confidence" and second_gap >= 0.03))
+        if is_safe:
+            safe_rows.append(row)
+        elif match_label == "high_confidence":
+            ambiguous_rows.append(row)
+        else:
+            review_rows.append(row)
+
+    md_rows = [row for row in school_master if row.get("degree_type") == "MD"]
+    do_rows = [row for row in school_master if row.get("degree_type") == "DO"]
+    safe_school_ids = {row.get("school_id") for row in safe_rows}
+    return {
+        "parsed_rows": csv_row_count(SOURCE_TABLE_DIR / "aamc_msar_tuition_fees_insurance.csv"),
+        "patch_candidates": len(patch_rows),
+        "safe_rows_after_gap_review": len(safe_rows),
+        "ambiguous_high_confidence_rows": len(ambiguous_rows),
+        "join_review_or_no_match_rows": sum(1 for row in join_rows if row.get("match_label") in {"review", "no_match"}),
+        "md_rows_not_safe_yet": sum(1 for row in md_rows if row.get("school_id") not in safe_school_ids),
+        "do_rows_missing_tuition": len(do_rows),
+    }
+
+
+def mcat_gpa_status() -> dict[str, object]:
+    comparable_rows = read_csv(SOURCE_TABLE_DIR / "all_comparable_mcat_gpa_sources.csv")
+    comparison_rows = read_csv(SOURCE_DIFFS_DIR / "mcat_gpa_source_comparison.csv")
+    conflict_rows = read_csv(SOURCE_DIFFS_DIR / "mcat_gpa_conflicts.csv")
+    source_counts = Counter(row.get("source_key", "") or "unknown" for row in comparable_rows)
+    agreement_counts = Counter(row.get("agreement_label", "") or "unknown" for row in comparison_rows)
+    return {
+        "comparable_rows": len(comparable_rows),
+        "rows_with_gpa": count_populated(comparable_rows, "gpa"),
+        "rows_with_mcat": count_populated(comparable_rows, "mcat"),
+        "source_counts": dict(sorted(source_counts.items())),
+        "comparison_clusters": len(comparison_rows),
+        "conflict_rows": len(conflict_rows),
+        "agreement_counts": dict(sorted(agreement_counts.items())),
+    }
+
+
+def source_status(
+    school_master: list[dict[str, str]],
+    admissions_stats: list[dict[str, str]],
+    cost_and_debt: list[dict[str, str]],
+    admissions_policies: list[dict[str, str]],
+    letter_requirements: list[dict[str, str]],
+    source_review_queue: list[dict[str, str]],
+    project_subplans: list[dict[str, str]],
+    source_match_overrides: list[dict[str, str]],
+) -> dict[str, object]:
+    source_plans = [
+        row
+        for row in project_subplans
+        if row.get("plan_id") in {"source_data_integration_exec", "headless_source_phase_2a", "admissions_stats", "cost_and_debt"}
+    ]
+    canonical_counts = {
+        "school_master_rows": len(school_master),
+        "admissions_stats_rows": len(admissions_stats),
+        "cost_and_debt_rows": len(cost_and_debt),
+        "admissions_policy_rows": len(admissions_policies),
+        "letter_requirement_rows": len(letter_requirements),
+        "source_review_queue_rows": len(source_review_queue),
+        "open_source_review_rows": sum(1 for row in source_review_queue if row.get("review_status", "").strip().lower() in {"", "open"}),
+        "school_master_median_mcat_populated": count_populated(school_master, "median_mcat"),
+        "school_master_median_gpa_populated": count_populated(school_master, "median_gpa"),
+        "school_master_in_state_tuition_populated": count_populated(school_master, "in_state_tuition_fees_insurance"),
+        "school_master_out_state_tuition_populated": count_populated(school_master, "out_state_tuition_fees_insurance"),
+        "school_master_estimated_coa_in_state_populated": count_populated(school_master, "estimated_coa_in_state"),
+        "school_master_estimated_coa_out_state_populated": count_populated(school_master, "estimated_coa_out_state"),
+    }
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "source_table_count": csv_file_count(SOURCE_TABLE_DIR),
+        "source_diff_file_count": len(list(SOURCE_DIFFS_DIR.glob("*"))) if SOURCE_DIFFS_DIR.exists() else 0,
+        "raw_aamc_files": count_raw_aamc_files(),
+        "source_tables": source_table_counts(),
+        "canonical_counts": canonical_counts,
+        "manual_override_count": len(source_match_overrides),
+        "tuition": tuition_status(school_master),
+        "mcat_gpa": mcat_gpa_status(),
+        "source_plans": source_plans,
+    }
+
+
 def suggested_next_action(
     partner_row: dict[str, str],
     source_row: dict[str, str],
@@ -113,7 +349,12 @@ def build_site_payload() -> dict[str, object]:
     rankings = read_csv(RANKINGS_CSV)
     applicant_profiles = read_csv(APPLICANT_PROFILES_CSV)
     admissions_stats = read_csv(ADMISSIONS_STATS_CSV)
+    cost_and_debt = read_csv(COST_AND_DEBT_CSV)
+    admissions_policies = read_csv(ADMISSIONS_POLICIES_CSV)
+    letter_requirements = read_csv(LETTER_REQUIREMENTS_CSV)
     partner_inputs = read_csv(PARTNER_INPUTS_CSV)
+    source_match_overrides = read_csv(SOURCE_MATCH_OVERRIDES_CSV)
+    source_review_queue = read_csv(SOURCE_REVIEW_QUEUE_CSV)
     source_queue = read_csv(ADMISSIONS_SOURCE_QUEUE_CSV)
     data_quality = read_csv(DATA_QUALITY_REPORT_CSV)
     project_subplans = read_csv(ROOT / "data/project_subplans.csv")
@@ -122,6 +363,10 @@ def build_site_payload() -> dict[str, object]:
     partner_by_school = first_by_school(partner_inputs)
     source_by_school = first_by_school(source_queue)
     stats_by_school = first_by_school(admissions_stats)
+    cost_by_school = first_by_school(cost_and_debt)
+    policies_by_school = group_by_school(admissions_policies)
+    letters_by_school = group_by_school(letter_requirements)
+    source_reviews_by_school = group_by_school(source_review_queue)
 
     warning_counts: Counter[str] = Counter()
     error_counts: Counter[str] = Counter()
@@ -143,6 +388,10 @@ def build_site_payload() -> dict[str, object]:
         partner_row = partner_by_school.get(school_id, {})
         source_row = source_by_school.get(school_id, {})
         stats_row = stats_by_school.get(school_id, {})
+        cost_row = cost_by_school.get(school_id, {})
+        policy_rows = policies_by_school.get(school_id, [])
+        letter_rows = letters_by_school.get(school_id, [])
+        review_rows = source_reviews_by_school.get(school_id, [])
         warning_count = warning_counts[school_id]
         error_count = error_counts[school_id]
         schools.append(
@@ -152,6 +401,10 @@ def build_site_payload() -> dict[str, object]:
                 "partner_input": partner_row,
                 "admissions_source": source_row,
                 "admissions_stats": stats_row,
+                "cost_and_debt": cost_row,
+                "admissions_policies": policy_rows,
+                "letter_requirements": letter_rows,
+                "source_review_queue": review_rows,
                 "data_quality": issues_by_school.get(school_id, []),
                 "derived": {
                     "warning_count": warning_count,
@@ -160,6 +413,10 @@ def build_site_payload() -> dict[str, object]:
                     "partner_notes_indicator": "yes" if partner_row.get("partner_notes", "").strip() else "no",
                     "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")),
                     "admissions_stats_present": "yes" if has_admissions_stats(stats_row) else "no",
+                    "cost_data_present": "yes" if cost_row else "no",
+                    "admissions_policy_count": len(policy_rows),
+                    "letter_requirement_count": len(letter_rows),
+                    "source_review_count": len(review_rows),
                     "source_queue_status": source_row.get("source_status", "").strip() or "not_started",
                     "suggested_next_action": suggested_next_action(
                         partner_row,
@@ -172,18 +429,35 @@ def build_site_payload() -> dict[str, object]:
         )
 
     degree_counts = Counter(row.get("degree_type", "Unknown") or "Unknown" for row in school_master)
+    status = source_status(
+        school_master,
+        admissions_stats,
+        cost_and_debt,
+        admissions_policies,
+        letter_requirements,
+        source_review_queue,
+        project_subplans,
+        source_match_overrides,
+    )
     return {
         "meta": {
             "site_privacy_mode": "local_full",
             "active_school_count": len(school_master),
             "degree_counts": dict(sorted(degree_counts.items())),
+            "generated_at": status["generated_at"],
         },
+        "source_status": status,
         "schools": schools,
         "school_master": school_master,
         "calculated_rankings": rankings,
         "applicant_profiles": applicant_profiles,
         "admissions_stats": admissions_stats,
+        "cost_and_debt": cost_and_debt,
+        "admissions_policies": admissions_policies,
+        "letter_requirements": letter_requirements,
         "partner_inputs": partner_inputs,
+        "source_match_overrides": source_match_overrides,
+        "source_review_queue": source_review_queue,
         "admissions_source_queue": source_queue,
         "data_quality_report": data_quality,
         "project_subplans": project_subplans,
@@ -194,6 +468,7 @@ def write_site_json(payload: dict[str, object]) -> None:
     data_dir = SITE_DIR / "data"
     for key, source in JSON_OUTPUTS.items():
         write_json(data_dir / f"{key}.json", read_csv(source))
+    write_json(data_dir / "source_status.json", payload["source_status"])
     write_json(data_dir / "site_payload.json", payload)
 
 
@@ -220,6 +495,7 @@ def render_site_html(payload: dict[str, object]) -> str:
   </header>
   <nav class="tabs" aria-label="Primary views">
     <button data-view="dashboard" class="active">Dashboard</button>
+    <button data-view="status">Status</button>
     <button data-view="rankings">Rankings</button>
     <button data-view="detail">School Detail</button>
     <button data-view="partner">Partner Review</button>
@@ -229,6 +505,7 @@ def render_site_html(payload: dict[str, object]) -> str:
   </nav>
   <main>
     <section id="dashboard" class="view active"></section>
+    <section id="status" class="view"></section>
     <section id="rankings" class="view"></section>
     <section id="detail" class="view"></section>
     <section id="partner" class="view"></section>
@@ -401,6 +678,31 @@ function sortRows(rows, tableKey, defaultKey, defaultDir='asc') {
 
 function warningCount() { return payload.data_quality_report.filter(i => i.severity === 'warning').length; }
 function errorCount() { return payload.data_quality_report.filter(i => i.severity === 'error').length; }
+function sourceStatus() { return payload.source_status || {}; }
+function sourceMetric(path, fallback='0') {
+  const value = path.split('.').reduce((obj, key) => obj?.[key], sourceStatus());
+  return value === undefined || value === null || value === '' ? fallback : value;
+}
+
+function renderStatusSummary() {
+  return `<div class="panel">
+    <h2>Current Source Status</h2>
+    <div class="grid">
+      ${metric('Source tables', sourceMetric('source_table_count'))}
+      ${metric('Raw AAMC files', sourceMetric('raw_aamc_files.all'))}
+      ${metric('GPA/MCAT clusters', sourceMetric('mcat_gpa.comparison_clusters'))}
+      ${metric('GPA/MCAT conflicts', sourceMetric('mcat_gpa.conflict_rows'))}
+      ${metric('Tuition patch candidates', sourceMetric('tuition.patch_candidates'))}
+      ${metric('Safe tuition rows', sourceMetric('tuition.safe_rows_after_gap_review'))}
+      ${metric('Ambiguous tuition rows', sourceMetric('tuition.ambiguous_high_confidence_rows'))}
+      ${metric('Manual overrides', sourceMetric('manual_override_count'))}
+      ${metric('Canonical admissions stats', sourceMetric('canonical_counts.admissions_stats_rows'))}
+      ${metric('Canonical cost rows', sourceMetric('canonical_counts.cost_and_debt_rows'))}
+      ${metric('Open source reviews', sourceMetric('canonical_counts.open_source_review_rows'))}
+    </div>
+    <p>Generated ${missing(payload.meta.generated_at)}. Canonical rows are promoted only when source match and confidence rules pass; unresolved rows remain visible in review outputs.</p>
+  </div>`;
+}
 
 function renderDashboard() {
   const schools = filteredSchools();
@@ -423,6 +725,7 @@ function renderDashboard() {
       ${metric('Warnings', warningCount())}
       ${metric('Admissions sources found', sourceFound)}
     </div>
+    ${renderStatusSummary()}
     <div class="panel">
       <h2>Top Research Priorities</h2>
       ${table([
@@ -547,7 +850,22 @@ function renderDetail() {
         ['Source status', item.derived.source_queue_status],
         ['Candidate URL', item.admissions_source.candidate_source_url],
         ['Stats present', item.derived.admissions_stats_present],
+        ['MCAT mean/enrolled', item.admissions_stats.mcat_mean_enrolled],
+        ['GPA mean/enrolled', item.admissions_stats.overall_gpa_mean_enrolled],
         ['Confidence', item.admissions_stats.data_confidence],
+      ])}
+      ${detailPanel('Cost and Debt', [
+        ['Cost data present', item.derived.cost_data_present],
+        ['In-state tuition+fees+insurance', item.cost_and_debt.in_state_tuition_fees_insurance],
+        ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
+        ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
+        ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
+        ['Confidence', item.cost_and_debt.data_confidence],
+      ])}
+      ${detailPanel('Source Coverage', [
+        ['Admissions policy rows', item.derived.admissions_policy_count],
+        ['Letter requirement rows', item.derived.letter_requirement_count],
+        ['Source review rows', item.derived.source_review_count],
       ])}
       ${detailPanel('Data Quality', [
         ['Warnings', item.derived.warning_count],
@@ -646,9 +964,92 @@ function renderPlans() {
   ], payload.project_subplans, 'plans');
 }
 
+function objectRows(obj) {
+  return Object.entries(obj || {}).map(([key, value]) => ({key, value}));
+}
+
+function renderStatus() {
+  const status = sourceStatus();
+  const canonical = status.canonical_counts || {};
+  const tuition = status.tuition || {};
+  const mcat = status.mcat_gpa || {};
+  const raw = status.raw_aamc_files || {};
+  $('status').innerHTML = `<h2>Current Status</h2>
+    ${renderStatusSummary()}
+    <div class="detail-grid">
+      ${detailPanel('Canonical Model Coverage', [
+        ['School master rows', canonical.school_master_rows],
+        ['Admissions stats rows', canonical.admissions_stats_rows],
+        ['Cost and debt rows', canonical.cost_and_debt_rows],
+        ['Admissions policy rows', canonical.admissions_policy_rows],
+        ['Letter requirement rows', canonical.letter_requirement_rows],
+        ['Source review rows', canonical.source_review_queue_rows],
+        ['Open source reviews', canonical.open_source_review_rows],
+        ['Median MCAT populated', canonical.school_master_median_mcat_populated],
+        ['Median GPA populated', canonical.school_master_median_gpa_populated],
+        ['In-state tuition populated', canonical.school_master_in_state_tuition_populated],
+        ['Out-state tuition populated', canonical.school_master_out_state_tuition_populated],
+        ['COA in-state populated', canonical.school_master_estimated_coa_in_state_populated],
+        ['COA out-state populated', canonical.school_master_estimated_coa_out_state_populated],
+      ])}
+      ${detailPanel('AAMC Tuition Source', [
+        ['Parsed rows', tuition.parsed_rows],
+        ['Patch candidates', tuition.patch_candidates],
+        ['Safe after gap review', tuition.safe_rows_after_gap_review],
+        ['Ambiguous high-confidence', tuition.ambiguous_high_confidence_rows],
+        ['Join review/no-match', tuition.join_review_or_no_match_rows],
+        ['MD not safe yet', tuition.md_rows_not_safe_yet],
+        ['DO missing tuition', tuition.do_rows_missing_tuition],
+      ])}
+      ${detailPanel('Raw and Parsed Sources', [
+        ['Source table CSVs', status.source_table_count],
+        ['Source diff files', status.source_diff_file_count],
+        ['Raw AAMC files', raw.all],
+        ['Raw AAMC PDFs', raw.pdf],
+        ['Raw AAMC HTML', raw.html],
+        ['Manual match overrides', status.manual_override_count],
+      ])}
+      ${detailPanel('GPA/MCAT Source Data', [
+        ['Comparable rows', mcat.comparable_rows],
+        ['Rows with GPA', mcat.rows_with_gpa],
+        ['Rows with MCAT', mcat.rows_with_mcat],
+        ['Comparison clusters', mcat.comparison_clusters],
+        ['Conflict rows', mcat.conflict_rows],
+      ])}
+    </div>
+    <div class="detail-grid" style="margin-top:12px">
+      <div class="panel">
+        <h3>GPA/MCAT Agreement</h3>
+        ${table([
+          {key:'key', label:'Label', render:r=>r.key},
+          {key:'value', label:'Count', render:r=>r.value},
+        ], objectRows(mcat.agreement_counts), 'statusAgreement')}
+      </div>
+      <div class="panel">
+        <h3>GPA/MCAT Sources</h3>
+        ${table([
+          {key:'key', label:'Source', render:r=>r.key},
+          {key:'value', label:'Rows', render:r=>r.value},
+        ], objectRows(mcat.source_counts), 'statusSources')}
+      </div>
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <h3>Phase 2A Plan Status</h3>
+      ${table([
+        {key:'plan_id', label:'Plan', render:p=>p.plan_name},
+        {key:'status', label:'Status', render:p=>badge(p.status)},
+        {key:'priority', label:'Priority', render:p=>p.priority},
+        {key:'current_decision_summary', label:'Current Decision', render:p=>p.current_decision_summary},
+        {key:'next_action', label:'Next Action', render:p=>p.next_action},
+        {key:'doc_path', label:'Doc', render:p=>p.doc_path},
+      ], status.source_plans || [], 'statusPlans')}
+    </div>`;
+}
+
 function render() {
   $('summaryText').textContent = `${payload.meta.active_school_count} active schools · ${warningCount()} warnings · ${errorCount()} errors`;
   if (currentView === 'dashboard') renderDashboard();
+  if (currentView === 'status') renderStatus();
   if (currentView === 'rankings') renderRankings();
   if (currentView === 'detail') renderDetail();
   if (currentView === 'partner') renderPartner();

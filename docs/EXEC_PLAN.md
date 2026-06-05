@@ -84,6 +84,7 @@ Current seed files can remain where they are while the raw, normalized, and manu
 The project is divided into subplans:
 
 - [Data Architecture](plans/data_architecture.md)
+- [Source Data Integration](SOURCE_DATA_INTEGRATION_PLAN.md)
 - [School Universe](plans/school_universe.md)
 - [Applicant Profiles](plans/applicant_profiles.md)
 - [Admissions Stats](plans/admissions_stats.md)
@@ -121,6 +122,7 @@ The project is divided into subplans:
 ### Milestone 4: Admissions Stats Layer
 
 - Add separate admissions stats schema.
+- Integrate existing GPA/MCAT source tables as source-backed candidates, conflicts, and reviewed normalized rows.
 - Add public school page/source adapter workflow for school-published admitted class profiles where permitted.
 - Add manual import template for sources that are public but hard to parse consistently.
 - Support user-provided MSAR/manual imports.
@@ -130,6 +132,7 @@ The project is divided into subplans:
 ### Milestone 5: Cost, Debt, and Application Logistics
 
 - Add tuition, COA, expected scholarship, fee, and deposit data layers.
+- Integrate safe AAMC tuition rows into normalized cost/debt data and queue ambiguous or missing rows for review.
 - Add debt burden formulas and sensitivity assumptions.
 - Track source dates and confidence.
 

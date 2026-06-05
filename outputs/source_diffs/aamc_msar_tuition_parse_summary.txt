@@ -1,0 +1,22 @@
+AAMC MSAR tuition parse summary
+Generated: 2026-06-05
+Source: https://students-residents.aamc.org/medical-school-admission-requirements/medical-school-admission-requirements-reports-applicants-and-advisors
+PDF: data/raw/aamc/msar_reports/19_msar015-msar-tuition-fees-and-insurance-information.pdf
+
+Parsed tuition rows: 176
+U.S. rows: 163
+Canadian/province rows: 13
+Rows with zero-field notes: 22
+
+Master join labels:
+- exact: 137
+- high_confidence: 19
+- no_match: 18
+- review: 2
+
+Safe patch candidate rows: 156
+
+Outputs:
+- data/source_tables/aamc_msar_tuition_fees_insurance.csv
+- data/source_tables/aamc_msar_tuition_school_master_join_candidates.csv
+- data/source_tables/aamc_msar_tuition_school_master_patch_candidates.csv

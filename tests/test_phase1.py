@@ -115,6 +115,9 @@ def write_minimal_project(
         ],
     )
     write_csv(root / "data/normalized/admissions_stats.csv", validation.ADMISSIONS_STATS_COLUMNS, [])
+    write_csv(root / "data/normalized/cost_and_debt.csv", validation.COST_AND_DEBT_COLUMNS, [])
+    write_csv(root / "data/normalized/admissions_policies.csv", validation.ADMISSIONS_POLICIES_COLUMNS, [])
+    write_csv(root / "data/normalized/letter_requirements.csv", validation.LETTER_REQUIREMENTS_COLUMNS, [])
     write_csv(
         root / "data/manual/admissions_source_queue.csv",
         validation.ADMISSIONS_SOURCE_QUEUE_COLUMNS,
@@ -133,6 +136,7 @@ def write_minimal_project(
             for row in rows
         ],
     )
+    write_csv(root / "data/manual/source_review_queue.csv", validation.SOURCE_REVIEW_QUEUE_COLUMNS, [])
     write_csv(
         root / "data/manual/partner_inputs.csv",
         validation.PARTNER_INPUT_COLUMNS,
@@ -154,6 +158,25 @@ def write_minimal_project(
         ],
     )
     write_csv(root / "data/final_application_list.csv", ["school_id", "school_name", "why_kept", "why_cut"], [])
+    write_csv(
+        root / "data/manual/source_match_overrides.csv",
+        [
+            "override_id",
+            "source_table",
+            "source_row_number",
+            "source_school_name",
+            "source_state",
+            "source_degree_type",
+            "override_action",
+            "school_id",
+            "school_name",
+            "match_status",
+            "reviewed_by",
+            "reviewed_date",
+            "review_notes",
+        ],
+        [],
+    )
     write_csv(
         root / "data/project_subplans.csv",
         [
@@ -200,10 +223,14 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(site_builder, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
     monkeypatch.setattr(site_builder, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
+    monkeypatch.setattr(site_builder, "SOURCE_MATCH_OVERRIDES_CSV", root / "data/manual/source_match_overrides.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_SOURCE_QUEUE_CSV", root / "data/manual/admissions_source_queue.csv")
     monkeypatch.setattr(site_builder, "DATA_QUALITY_REPORT_CSV", out / "data_quality_report.csv")
     monkeypatch.setattr(site_builder, "SITE_DIR", site_dir)
     monkeypatch.setattr(site_builder, "SITE_INDEX_HTML", site_dir / "index.html")
+    monkeypatch.setattr(site_builder, "SOURCE_TABLE_DIR", root / "data/source_tables")
+    monkeypatch.setattr(site_builder, "SOURCE_DIFFS_DIR", out / "source_diffs")
+    monkeypatch.setattr(site_builder, "RAW_AAMC_MSAR_DIR", root / "data/raw/aamc/msar_reports")
     monkeypatch.setattr(
         site_builder,
         "JSON_OUTPUTS",
@@ -212,9 +239,20 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
             "calculated_rankings": out / "calculated_rankings.csv",
             "applicant_profiles": root / "data/applicant_profiles.csv",
             "admissions_stats": root / "data/normalized/admissions_stats.csv",
+            "cost_and_debt": root / "data/normalized/cost_and_debt.csv",
+            "admissions_policies": root / "data/normalized/admissions_policies.csv",
+            "letter_requirements": root / "data/normalized/letter_requirements.csv",
             "partner_inputs": root / "data/manual/partner_inputs.csv",
+            "source_match_overrides": root / "data/manual/source_match_overrides.csv",
+            "source_review_queue": root / "data/manual/source_review_queue.csv",
             "admissions_source_queue": root / "data/manual/admissions_source_queue.csv",
             "data_quality_report": out / "data_quality_report.csv",
+            "source_integration_report": out / "source_integration_report.csv",
+            "source_match_review": out / "source_match_review.csv",
+            "admissions_stats_candidates": out / "admissions_stats_candidates.csv",
+            "admissions_stats_conflicts": out / "admissions_stats_conflicts.csv",
+            "cost_and_debt_candidates": out / "cost_and_debt_candidates.csv",
+            "cost_and_debt_review": out / "cost_and_debt_review.csv",
             "project_subplans": root / "data/project_subplans.csv",
         },
     )
@@ -243,11 +281,22 @@ def test_workbook_has_required_tabs(tmp_path, monkeypatch):
         "User Preferences",
         "Scenario Weights",
         "Admissions Stats",
+        "Cost and Debt",
+        "Admissions Policies",
+        "Letter Requirements",
         "Admissions Source Queue",
+        "Source Match Overrides",
+        "Source Review Queue",
         "Partner Inputs",
         "Calculated Rankings",
         "Final Application List",
         "Data Quality",
+        "Source Integration Report",
+        "Source Match Review",
+        "Admissions Stats Candidates",
+        "Admissions Stats Conflicts",
+        "Cost and Debt Candidates",
+        "Cost and Debt Review",
         "Sources",
         "Field Definitions",
     }
@@ -333,10 +382,22 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
         "calculated_rankings.json",
         "applicant_profiles.json",
         "admissions_stats.json",
+        "cost_and_debt.json",
+        "admissions_policies.json",
+        "letter_requirements.json",
         "partner_inputs.json",
+        "source_match_overrides.json",
+        "source_review_queue.json",
         "admissions_source_queue.json",
         "data_quality_report.json",
+        "source_integration_report.json",
+        "source_match_review.json",
+        "admissions_stats_candidates.json",
+        "admissions_stats_conflicts.json",
+        "cost_and_debt_candidates.json",
+        "cost_and_debt_review.json",
         "project_subplans.json",
+        "source_status.json",
         "site_payload.json",
     ]
     for filename in required_json:

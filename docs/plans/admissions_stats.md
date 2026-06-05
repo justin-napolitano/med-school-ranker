@@ -14,6 +14,7 @@ This plan covers MCAT, overall GPA, science GPA, accepted versus matriculated po
 - Public school profile pages, including school-published previous accepted or entering class profiles when accessible and permitted.
 - AACOM Choose DO Explorer or exported/manual DO profile data where permitted.
 - Public aggregate reports only for context, not per-school substitution.
+- Current public third-party source tables in `data/source_tables/`, including ProspectiveDoctor, Shemmassian, The Match Guy, and CycleTrack, as provisional evidence only.
 
 ## Outputs
 
@@ -52,7 +53,24 @@ Recommended fields:
 - Public scraping is allowed only for non-login, publicly accessible pages where access is permitted; adapters must store source URL, fetch date, and extraction confidence.
 - When a school page is public but inconsistent or hard to parse, the system should generate an import/review template rather than guess.
 - Third-party values are temporary research hints unless independently verified.
+- Third-party close-agreement values may be displayed as provisional values with confidence labels.
+- Third-party single-source values may be displayed as low-confidence provisional values with warnings.
+- Third-party minor or major conflicts must create review queue rows and should not silently drive fit scoring.
+- CycleTrack GPA/MCAT values are crowdsourced context, not official entering-class averages.
 - Accepted, matriculated, mean, median, and percentile values must remain separate.
+
+## Current Source Drop
+
+Current source tables contain useful evidence but are not yet integrated into this normalized layer.
+
+- ProspectiveDoctor: 146 GPA/MCAT rows.
+- Shemmassian: 203 GPA/MCAT rows.
+- The Match Guy: 116 GPA/MCAT rows.
+- Comparable GPA/MCAT rows: 676.
+- Comparison clusters: 316.
+- Agreement labels: 202 single-source, 60 major conflict, 27 minor conflict, 27 close agreement.
+
+Phase 2A should generate candidate rows and conflict reports before any value is allowed to affect ranking.
 
 ## Implementation Steps
 
@@ -63,6 +81,8 @@ Recommended fields:
 5. Add matching logic from `school_name` to stable `school_id`.
 6. Add derived MCAT/GPA fit scoring formulas.
 7. Add workbook columns showing which stats source drove the fit score.
+8. Add `outputs/admissions_stats_candidates.csv` and `outputs/admissions_stats_conflicts.csv`.
+9. Add source confidence labels to ranking, workbook, and site outputs.
 
 ## Validation Rules
 

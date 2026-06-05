@@ -1,0 +1,114 @@
+[
+  {
+    "category": "cost",
+    "count": "151",
+    "item": "canonical_rows",
+    "message": "AAMC tuition rows promoted to canonical cost_and_debt.csv.",
+    "next_action": "Use these for cost awareness; do not infer scholarships or debt without later sources.",
+    "severity": "info"
+  },
+  {
+    "category": "cost",
+    "count": "5",
+    "item": "review_candidates",
+    "message": "AAMC tuition candidates held for match or zero-cost review.",
+    "next_action": "Resolve in Source Review Queue or source_match_overrides.csv.",
+    "severity": "warning"
+  },
+  {
+    "category": "admissions_stats",
+    "count": "44",
+    "item": "canonical_rows",
+    "message": "Third-party GPA/MCAT rows promoted only when agreement policy allows it.",
+    "next_action": "Treat as provisional until official school/MSAR data is reviewed.",
+    "severity": "info"
+  },
+  {
+    "category": "admissions_stats",
+    "count": "87",
+    "item": "conflicts",
+    "message": "GPA/MCAT comparison clusters have source disagreement.",
+    "next_action": "Review outputs/admissions_stats_conflicts.csv before promoting values.",
+    "severity": "warning"
+  },
+  {
+    "category": "source_review",
+    "count": "1005",
+    "item": "open_review_rows",
+    "message": "Rows needing source matching, conflict, or coverage review.",
+    "next_action": "Work data/manual/source_review_queue.csv and keep notes transparent.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "3",
+    "item": "all_zero_cost_row",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "2",
+    "item": "ambiguous_high_confidence_cost_match",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "97",
+    "item": "ambiguous_match_gap",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "228",
+    "item": "below_safe_threshold",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "153",
+    "item": "cycletrack_only_context",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "252",
+    "item": "low_match_score",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "60",
+    "item": "major_conflict",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "27",
+    "item": "minor_conflict",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  },
+  {
+    "category": "source_review_reason",
+    "count": "183",
+    "item": "no_compatible_active_school",
+    "message": "Open review row count by reason.",
+    "next_action": "Prioritize high-value rows before relying on ranking outputs.",
+    "severity": "info"
+  }
+]

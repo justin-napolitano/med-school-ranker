@@ -1,0 +1,2 @@
+source_name,url,used_for,source_page_updated_or_info_as_of,source_last_checked,notes
+AAMC MSAR Advisor Reports,https://students-residents.aamc.org/medical-school-admission-requirements/medical-school-admission-requirements-reports-applicants-and-advisors,Root page for public AAMC MSAR Advisor Report PDF downloads and report metadata.,2027 Entering Class,2026-06-05,Downloaded by scripts/download_aamc_msar_reports.py; AAMC page states reports are updated and republished regularly.

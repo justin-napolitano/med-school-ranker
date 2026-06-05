@@ -6,12 +6,15 @@ from pathlib import Path
 from typing import Iterable
 
 from med_school_ranker.paths import (
+    ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
     ADMISSIONS_STATS_CSV,
     APPLICANT_PROFILES_CSV,
+    COST_AND_DEBT_CSV,
     DATA,
     DATA_QUALITY_REPORT_CSV,
     FINAL_APPLICATION_LIST_CSV,
+    LETTER_REQUIREMENTS_CSV,
     MANUAL_DATA,
     MASTER_CSV,
     NORMALIZED_DATA,
@@ -21,6 +24,14 @@ from med_school_ranker.paths import (
     RAW_DATA,
     ROOT,
     SCENARIO_WEIGHTS_CSV,
+    SOURCE_MATCH_OVERRIDES_CSV,
+    SOURCE_REVIEW_QUEUE_CSV,
+)
+from med_school_ranker.source_integration import (
+    ADMISSIONS_POLICIES_COLUMNS,
+    COST_AND_DEBT_COLUMNS,
+    LETTER_REQUIREMENTS_COLUMNS,
+    SOURCE_REVIEW_QUEUE_COLUMNS,
 )
 
 
@@ -104,6 +115,22 @@ PARTNER_INPUT_COLUMNS = [
     "partner_notes",
 ]
 
+SOURCE_MATCH_OVERRIDES_COLUMNS = [
+    "override_id",
+    "source_table",
+    "source_row_number",
+    "source_school_name",
+    "source_state",
+    "source_degree_type",
+    "override_action",
+    "school_id",
+    "school_name",
+    "match_status",
+    "reviewed_by",
+    "reviewed_date",
+    "review_notes",
+]
+
 REQUIRED_COLUMNS = {
     "data/school_master.csv": [
         "school_id",
@@ -117,8 +144,13 @@ REQUIRED_COLUMNS = {
     "data/scenario_weights.csv": ["scenario", "column_name", "weight"],
     "data/applicant_profiles.csv": APPLICANT_PROFILE_COLUMNS,
     "data/normalized/admissions_stats.csv": ADMISSIONS_STATS_COLUMNS,
+    "data/normalized/cost_and_debt.csv": COST_AND_DEBT_COLUMNS,
+    "data/normalized/admissions_policies.csv": ADMISSIONS_POLICIES_COLUMNS,
+    "data/normalized/letter_requirements.csv": LETTER_REQUIREMENTS_COLUMNS,
     "data/manual/admissions_source_queue.csv": ADMISSIONS_SOURCE_QUEUE_COLUMNS,
     "data/manual/partner_inputs.csv": PARTNER_INPUT_COLUMNS,
+    "data/manual/source_match_overrides.csv": SOURCE_MATCH_OVERRIDES_COLUMNS,
+    "data/manual/source_review_queue.csv": SOURCE_REVIEW_QUEUE_COLUMNS,
     "data/final_application_list.csv": ["school_id", "school_name", "why_kept", "why_cut"],
 }
 
@@ -149,12 +181,28 @@ SOURCE_METADATA_COLUMNS = [
     "data_confidence",
 ]
 
+COST_FIELDS = [
+    "in_state_tuition_fees_insurance",
+    "out_state_tuition_fees_insurance",
+    "estimated_coa_in_state",
+    "estimated_coa_out_state",
+    "expected_scholarship",
+    "application_fee",
+    "secondary_fee",
+    "deposit_amount",
+    "average_grad_indebtedness",
+]
+
+ALLOWED_OVERRIDE_ACTIONS = {"accept_match", "reject_match", "force_no_match", "ignore_source_row"}
+
 GENERATED_SCORING_COLUMNS = {
     "admissions_score",
     "attendance_score",
     "overall_school_value",
     "data_completeness_score",
 }
+
+SOURCE_MATCH_SCORE_COLUMNS = {"match_score", "second_match_score", "best_match_score"}
 
 TRUTHY = {"1", "true", "t", "yes", "y"}
 
@@ -301,7 +349,8 @@ def score_columns(headers: Iterable[str]) -> list[str]:
     return [
         header
         for header in headers
-        if header.endswith("_score") or header == "Could I realistically see myself living here for 4 years? (1-10)"
+        if (header.endswith("_score") and header not in SOURCE_MATCH_SCORE_COLUMNS)
+        or header == "Could I realistically see myself living here for 4 years? (1-10)"
     ]
 
 
@@ -420,6 +469,106 @@ def validate_source_metadata(
                 )
 
 
+def validate_source_metadata_for_file(
+    label: str,
+    rows: Iterable[dict[str, str]],
+    value_fields: Iterable[str],
+    issues: list[DataIssue],
+) -> None:
+    fields = list(value_fields)
+    for row_number, row in enumerate(rows, start=2):
+        if not any(row.get(field, "").strip() for field in fields):
+            continue
+        for field in SOURCE_METADATA_COLUMNS:
+            if not row.get(field, "").strip():
+                add_issue(
+                    issues,
+                    "warning",
+                    label,
+                    row_label(row, f"row {row_number}"),
+                    field,
+                    "Source-backed row has values without complete source metadata.",
+                    "Add source name, URL, last checked date, and confidence before relying on the row.",
+                )
+
+
+def validate_school_references(
+    label: str,
+    rows: Iterable[dict[str, str]],
+    known_school_ids: set[str],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(rows, start=2):
+        school_id = row.get("school_id", "").strip()
+        if school_id and school_id not in known_school_ids:
+            add_issue(
+                issues,
+                "error",
+                label,
+                row_label(row, f"row {row_number}"),
+                "school_id",
+                "Row references a school_id that does not exist in school_master.csv.",
+                "Fix the school_id or add a transparent source match override.",
+            )
+
+
+def validate_nonnegative_numbers(
+    label: str,
+    rows: Iterable[dict[str, str]],
+    fields: Iterable[str],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(rows, start=2):
+        for field in fields:
+            value = row.get(field, "").strip()
+            if not value:
+                continue
+            number = parse_number(value)
+            if number is None or number < 0:
+                add_issue(
+                    issues,
+                    "error",
+                    label,
+                    row_label(row, f"row {row_number}"),
+                    field,
+                    "Cost/debt field must be a nonnegative number.",
+                    "Blank unknown values or replace with a source-verified nonnegative number.",
+                )
+
+
+def validate_source_match_overrides(
+    rows: Iterable[dict[str, str]],
+    known_school_ids: set[str],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(rows, start=2):
+        action = row.get("override_action", "").strip()
+        if not action:
+            continue
+        if action not in ALLOWED_OVERRIDE_ACTIONS:
+            add_issue(
+                issues,
+                "error",
+                "data/manual/source_match_overrides.csv",
+                row_label(row, f"row {row_number}"),
+                "override_action",
+                f"Unknown override_action '{action}'.",
+                "Use accept_match, reject_match, force_no_match, or ignore_source_row.",
+            )
+        if action == "accept_match":
+            school_id = row.get("school_id", "").strip()
+            if not school_id or school_id not in known_school_ids:
+                add_issue(
+                    issues,
+                    "error",
+                    "data/manual/source_match_overrides.csv",
+                    row_label(row, f"row {row_number}"),
+                    "school_id",
+                    "accept_match override must reference a valid school_id.",
+                    "Use a school_id from school_master.csv.",
+                )
+
+
 def validate_blank_source_queue_urls(
     rows: Iterable[dict[str, str]],
     issues: list[DataIssue],
@@ -509,7 +658,7 @@ def validate_final_application_rationale(
 def write_report(path: Path, issues: Iterable[DataIssue]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=REPORT_COLUMNS)
+        writer = csv.DictWriter(f, fieldnames=REPORT_COLUMNS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(issue.to_row() for issue in issues)
 
@@ -527,15 +676,22 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     scenario_headers, scenario_rows = loaded.get("data/scenario_weights.csv", ([], []))
     applicant_headers, applicant_rows = loaded.get("data/applicant_profiles.csv", ([], []))
     stats_headers, stats_rows = loaded.get("data/normalized/admissions_stats.csv", ([], []))
+    cost_headers, cost_rows = loaded.get("data/normalized/cost_and_debt.csv", ([], []))
+    policy_headers, policy_rows = loaded.get("data/normalized/admissions_policies.csv", ([], []))
+    letter_headers, letter_rows = loaded.get("data/normalized/letter_requirements.csv", ([], []))
     source_queue_headers, source_queue_rows = loaded.get("data/manual/admissions_source_queue.csv", ([], []))
     partner_headers, partner_rows = loaded.get("data/manual/partner_inputs.csv", ([], []))
+    _, source_override_rows = loaded.get("data/manual/source_match_overrides.csv", ([], []))
+    _, source_review_rows = loaded.get("data/manual/source_review_queue.csv", ([], []))
     _, final_rows = loaded.get("data/final_application_list.csv", ([], []))
+    known_school_ids = {row.get("school_id", "").strip() for row in master_rows if row.get("school_id", "").strip()}
 
     validate_duplicate_school_ids(master_rows, issues)
     for label, headers, rows in [
         ("data/school_master.csv", master_headers, master_rows),
         ("data/applicant_profiles.csv", applicant_headers, applicant_rows),
         ("data/normalized/admissions_stats.csv", stats_headers, stats_rows),
+        ("data/normalized/cost_and_debt.csv", cost_headers, cost_rows),
         ("data/manual/partner_inputs.csv", partner_headers, partner_rows),
     ]:
         validate_score_ranges(label, headers, rows, issues)
@@ -579,6 +735,40 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
         issues,
     )
     validate_source_metadata(stats_rows, issues)
+    validate_source_metadata_for_file(
+        "data/normalized/cost_and_debt.csv",
+        cost_rows,
+        [
+            "in_state_tuition_fees_insurance",
+            "out_state_tuition_fees_insurance",
+            "estimated_coa_in_state",
+            "estimated_coa_out_state",
+        ],
+        issues,
+    )
+    validate_source_metadata_for_file(
+        "data/normalized/admissions_policies.csv",
+        policy_rows,
+        ["policy_value"],
+        issues,
+    )
+    validate_source_metadata_for_file(
+        "data/normalized/letter_requirements.csv",
+        letter_rows,
+        ["requirement_url"],
+        issues,
+    )
+    validate_nonnegative_numbers("data/normalized/cost_and_debt.csv", cost_rows, COST_FIELDS, issues)
+    for label, rows in [
+        ("data/normalized/admissions_stats.csv", stats_rows),
+        ("data/normalized/cost_and_debt.csv", cost_rows),
+        ("data/normalized/admissions_policies.csv", policy_rows),
+        ("data/normalized/letter_requirements.csv", letter_rows),
+        ("data/manual/partner_inputs.csv", partner_rows),
+        ("data/manual/source_review_queue.csv", source_review_rows),
+    ]:
+        validate_school_references(label, rows, known_school_ids, issues)
+    validate_source_match_overrides(source_override_rows, known_school_ids, issues)
     validate_blank_source_queue_urls(source_queue_rows, issues)
     validate_ranking_coverage(master_headers, master_rows, preference_rows, scenario_rows, issues)
     validate_final_application_rationale(final_rows, issues)

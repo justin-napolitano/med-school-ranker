@@ -1,0 +1,28 @@
+Generated: 2026-06-05T03:52:23+00:00
+Root URL: https://students-residents.aamc.org/medical-school-admission-requirements/medical-school-admission-requirements-reports-applicants-and-advisors
+
+Report links discovered: 19
+Downloaded files: 17
+Verified PDF responses: 17
+Total bytes: 16582790
+
+Downloaded file names:
+- 01_msar023-msar-medical-school-main-campus-address-and-contact-information.pdf | Medical School Main Campus Address and Contact Information | downloaded
+- 02_msar007-msar-mission-statement.pdf | Medical School Mission Statement | downloaded
+- 03_ba-bs-md-program-list.html | BA/BS-MD Program List | non_pdf_response
+- 04_msar016-msar-support-systems-for-gender-and-sexual-minority-students.pdf | Support Systems for Gender and Sexual Minority Students | downloaded
+- 05_msar018-msar-admission-policies-and-information.pdf | Admission Policies and Information | downloaded
+- 06_msar012-applications-accepted-information.pdf | Applications Accepted Information | downloaded
+- 07_msar006-msar-secondary-application.pdf | Secondary Application Information | downloaded
+- 08_msar013-msar-application-transfer-policies.pdf | Application Transfer Policies | downloaded
+- 09_msar011-msar-letter-of-evaluation-preferences.pdf | Letter of Evaluation Preferences | downloaded
+- 10_msar004-daca-applications-from-daca-status.pdf | DACA Policies | downloaded
+- 11_msar003-msar-latest-and-oldest-mcat-administration-dates-considered.pdf | Latest and Oldest MCAT Test Administration Dates Considered | downloaded
+- 12_msar002-msar-premed-course-requirements.pdf | Premedical Coursework Chart | downloaded
+- 13_msar-preview-participation-06-09-25-04152026-sc.pdf | PREview® Professional Readiness Exam Policies | downloaded
+- 14_msar024-msar-community-college-coursework-information.pdf | Community College Coursework Information | downloaded
+- 15_msar008-msar-interview-procedures.pdf | Interview Policies | downloaded
+- 16_msar009-msar-waitlist-procedures-1.pdf | Waitlist Procedures | downloaded
+- 17_debt-information.html | Debt Information | non_pdf_response
+- 18_msar001-msar-deposit-information-1.pdf | Deposit Due Date | downloaded
+- 19_msar015-msar-tuition-fees-and-insurance-information.pdf | Tuition, Fees and Insurance Information | downloaded
