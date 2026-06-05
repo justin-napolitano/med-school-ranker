@@ -12,6 +12,7 @@ Rankings is the highest-priority table for Phase 1.5A. If implementation tradeof
 - `school_master.json`
 - `partner_inputs.json`
 - `data_quality_report.json`
+- joined per-school derived payload
 
 ## Primary Table
 
@@ -32,6 +33,8 @@ Columns:
 - warning count
 - hard-no flag
 - partner notes indicator
+
+These fields should come from the joined per-school payload, not ad hoc client-side joins.
 
 ## Filters
 

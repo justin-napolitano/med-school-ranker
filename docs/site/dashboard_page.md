@@ -13,6 +13,7 @@ This is the homepage/default view.
 - `data_quality_report.json`
 - `admissions_source_queue.json`
 - `partner_inputs.json`
+- joined per-school derived payload
 
 ## Sections
 

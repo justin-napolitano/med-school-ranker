@@ -12,6 +12,7 @@ Show all review context for one selected school without forcing the user to scan
 - `admissions_source_queue.json`
 - `admissions_stats.json`
 - `data_quality_report.json`
+- joined per-school derived payload
 
 ## Sections
 
@@ -71,6 +72,7 @@ Show all review context for one selected school without forcing the user to scan
 ## Definition of Done
 
 - Every school can render a detail page/panel.
+- Detail view uses `school_id` joins consistently.
 - Missing sections show clear empty states.
 - Source and data quality context are visible.
 - Partner inputs are visually separate from sourced facts.

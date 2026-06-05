@@ -20,6 +20,11 @@ outputs/site/assets/
 outputs/site/data/*.json
 ```
 
+Phase 1.5A local rule:
+
+- `index.html` must embed the data payload needed for the site to run from `file://`.
+- Adjacent JSON files are generated for inspection and future hosted use.
+
 ## Commands
 
 Required command:
@@ -45,10 +50,12 @@ uv run pytest
 1. Validate project.
 2. Build rankings.
 3. Convert selected CSVs to JSON.
-4. Generate or copy static site files.
-5. Verify required output files exist.
-6. Verify JSON parses.
-7. Verify active school count matches `data/school_master.csv`.
+4. Build a joined per-school payload with derived fields.
+5. Generate or copy static site files.
+6. Embed site data into `index.html`.
+7. Verify required output files exist.
+8. Verify JSON parses.
+9. Verify active school count matches `data/school_master.csv`.
 
 ## GitHub Pages Options
 
@@ -70,6 +77,7 @@ Current decision: do not wire GitHub Pages deployment in Phase 1.5A.
 - No files from `data/manual/private` copied to site output.
 - Site data JSON excludes private data paths.
 - `index.html` references existing local files.
+- `index.html` includes embedded data, avoiding required `fetch()` calls for local review.
 - Site output can be opened from the filesystem.
 
 ## Definition of Done

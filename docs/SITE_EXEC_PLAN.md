@@ -11,6 +11,7 @@ The site is for rapid review by the user. The workbook remains the partner-frien
 - Build a static generated site, not a full web app.
 - Use repo CSVs as source data.
 - Generate JSON and static assets into `outputs/site/`.
+- Generate `outputs/site/index.html` as a self-contained local review file with embedded data for Phase 1.5A.
 - Publishable via GitHub Pages.
 - No backend, database, authentication, or server-side rendering in the first pass.
 - No in-browser writes in the first pass.
@@ -19,6 +20,8 @@ The site is for rapid review by the user. The workbook remains the partner-frien
 - Rankings is the highest-priority review table for Phase 1.5A usability.
 - School comparison is deferred to Phase 1.5B.
 - Site remains local-only until the user is ready to publish; GitHub Pages deployment is planned but not wired in the first implementation pass.
+- Phase 1.5A uses `site_privacy_mode=local_full`.
+- Future publishing should use `site_privacy_mode=publish_safe` before GitHub Pages.
 
 ## Non-Goals
 
@@ -38,11 +41,15 @@ outputs/site/
   data/
     school_master.json
     calculated_rankings.json
+    applicant_profiles.json
+    admissions_stats.json
     partner_inputs.json
     admissions_source_queue.json
     data_quality_report.json
     project_subplans.json
 ```
+
+Phase 1.5A must embed the same JSON payload into `index.html` so the site works from `file://` without browser `fetch()` restrictions. Adjacent JSON files are still generated for inspection and future hosting.
 
 Primary command:
 
@@ -56,6 +63,8 @@ Full build command should eventually include site generation:
 uv run med-school-build-all
 ```
 
+Phase 1.5A decision: once `med-school-build-site` exists and tests pass, `uv run med-school-build-all` must run validation, rankings, workbook, site generation, and upload bundle.
+
 ## Architecture
 
 Use one of these conservative approaches:
@@ -64,6 +73,8 @@ Use one of these conservative approaches:
 2. Small Vite app if the implementation benefits from component structure.
 
 Default recommendation: plain static HTML/CSS/JS for Phase 1.5. The current needs are tables, filters, detail panes, and source links; a framework is not necessary yet.
+
+Phase 1.5A implementation rule: do not rely on client-side `fetch()` for required data when opened locally. Generate embedded JSON in `index.html` and optionally write adjacent JSON files for debugging and later GitHub Pages use.
 
 ## Data Contract
 
@@ -79,6 +90,48 @@ The site should read generated JSON derived from:
 - `data/normalized/admissions_stats.csv`
 
 The site build should not mutate source CSVs.
+
+## Derived Field Rules
+
+The site builder should create a normalized client payload with derived fields so the frontend does not need to reimplement joins repeatedly.
+
+Join key:
+
+- Use `school_id` for all school-level joins.
+
+Per-school derived fields:
+
+- `warning_count`: count of `data_quality_report` rows where `severity=warning` and `row_id` equals `school_id`.
+- `error_count`: count of `data_quality_report` rows where `severity=error` and `row_id` equals `school_id`.
+- `partner_input_status`: `present` when any partner score, hard-no flag, hard-no reason, or partner notes exist; otherwise `missing`.
+- `partner_notes_indicator`: `yes` when `partner_notes` is nonblank; otherwise `no`.
+- `hard_no_flag`: truthy when partner input `hard_no_flag` is truthy.
+- `admissions_stats_present`: `yes` when any MCAT/GPA metric field is populated for the school; otherwise `no`.
+- `source_queue_status`: from `admissions_source_queue.source_status`, defaulting to `not_started` when blank.
+- `suggested_next_action`: `review partner input` if partner input is missing; else `find admissions source` if candidate source URL is blank; else `review data quality` if warnings/errors exist; else `review ranking`.
+
+Truthiness:
+
+- Treat `TRUE`, `true`, `1`, `yes`, and `y` as true.
+
+Missing values:
+
+- Preserve missing source values as empty strings in raw JSON.
+- Display missing score/source fields as `Missing` in the UI, not zero.
+
+## Privacy Modes
+
+Phase 1.5A default:
+
+- `local_full`: include applicant profile template, partner inputs, source queue, validation report, and rankings. This mode is for local machine review.
+
+Future publish mode:
+
+- `publish_safe`: exclude private/local applicant data and optionally exclude partner inputs before GitHub Pages publishing.
+
+Private files:
+
+- Never include anything from `data/manual/private` or `data/private` in any site output.
 
 ## Navigation Model
 
@@ -134,6 +187,7 @@ Detailed page plans live in:
 - Add `med-school-build-site` command.
 - Generate JSON from CSVs.
 - Generate `outputs/site/index.html`.
+- Embed generated JSON in `index.html` for local file opening.
 - Implement dashboard, rankings table, detail panel, data quality table, and source queue table, with Rankings receiving the most polish in the first pass.
 - Add basic styling and client-side filtering.
 - Add tests/smoke checks for required files and valid JSON.
@@ -157,6 +211,7 @@ Detailed page plans live in:
 - Site build must fail if required CSV/JSON inputs are missing.
 - Generated JSON must be parseable.
 - `index.html` must reference existing asset/data files.
+- `index.html` must contain an embedded data payload sufficient to run without `fetch()`.
 - School count in site JSON must match active `school_master.csv`.
 - Puerto Rico remains excluded from active site data.
 - No private `data/manual/private` files should be copied into `outputs/site`.

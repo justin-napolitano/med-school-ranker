@@ -10,6 +10,7 @@ Track the research queue for finding public, source-verified GPA/MCAT pages with
 - `school_master.json`
 - `admissions_stats.json`
 - `data_quality_report.json`
+- joined per-school derived payload
 
 ## Primary Table
 

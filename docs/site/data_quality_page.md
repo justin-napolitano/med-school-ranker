@@ -8,6 +8,7 @@ Make validation warnings and errors easy to inspect, filter, and connect back to
 
 - `data_quality_report.json`
 - `school_master.json`
+- joined per-school derived payload
 
 ## Primary Table
 
