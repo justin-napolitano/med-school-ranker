@@ -4,6 +4,8 @@
 
 Provide the first-screen summary for rapid review of the medical school universe, data completeness, and next research actions.
 
+This is the homepage/default view.
+
 ## Inputs
 
 - `school_master.json`
@@ -84,6 +86,7 @@ Ranking snapshot:
 ## Definition of Done
 
 - Dashboard loads without requiring scores to be populated.
+- Dashboard is the default view when opening `outputs/site/index.html`.
 - Counts match source JSON.
 - It is obvious which schools need research next.
 - Clicking a school opens or navigates to detail.

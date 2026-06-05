@@ -17,8 +17,8 @@ This plan covers top-level menu items, global search, filter placement, responsi
 
 Primary navigation:
 
-- Dashboard
-- Rankings
+- Dashboard, default first screen
+- Rankings, highest-priority table view
 - School Detail
 - Partner Review
 - Admissions Sources
@@ -56,6 +56,7 @@ Mobile layout:
 - Global search filters school-centric pages.
 - Table row click opens school detail.
 - URL hash or query params may preserve current view/filter in a later pass.
+- School comparison is not part of the first implementation pass.
 
 ## Non-Goals
 
@@ -67,6 +68,7 @@ Mobile layout:
 ## Definition of Done
 
 - Every primary menu item routes to a visible view.
+- Dashboard is the default/home view.
 - Global search filters relevant tables.
 - Selected school can be inspected from school-centric tables.
 - Layout works at desktop and mobile widths without overlapping controls.

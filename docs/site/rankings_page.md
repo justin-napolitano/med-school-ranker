@@ -4,6 +4,8 @@
 
 Provide the main review table for comparing schools and narrowing the universe toward the application list.
 
+Rankings is the highest-priority table for Phase 1.5A. If implementation tradeoffs are needed, polish this table before lower-priority pages.
+
 ## Inputs
 
 - `calculated_rankings.json`
@@ -62,6 +64,7 @@ Alternate sorts:
 - Click school name to open detail.
 - Toggle visible columns in later pass.
 - Select multiple rows for future comparison drawer in later pass.
+- Do not implement comparison in the first pass; reserve it for Phase 1.5B.
 
 ## Empty/Unscored State
 
@@ -74,6 +77,7 @@ Because many scores are blank early, the table must still be useful:
 ## Definition of Done
 
 - Table shows all active schools.
+- Rankings table receives the most complete filtering/sorting polish in Phase 1.5A.
 - Filters work together.
 - Sort behavior is stable.
 - Unscored rows remain visible.

@@ -4,6 +4,8 @@
 
 Define how the static review site is generated, verified, and prepared for GitHub Pages.
 
+First implementation is local-only. GitHub Pages remains a later publishing step after the user confirms the local review site is useful.
+
 ## Inputs
 
 - CSV source files.
@@ -61,6 +63,8 @@ Option B: add GitHub Actions workflow later:
 
 Default first pass: local static generation only. Add GitHub Actions after the site shape is useful.
 
+Current decision: do not wire GitHub Pages deployment in Phase 1.5A.
+
 ## Validation Rules
 
 - No files from `data/manual/private` copied to site output.
@@ -72,5 +76,5 @@ Default first pass: local static generation only. Add GitHub Actions after the s
 
 - `uv run med-school-build-site` generates a usable static site.
 - The site can be opened locally without a dev server.
-- Output is suitable for GitHub Pages.
+- Output is suitable for GitHub Pages later, but deployment is not required in the first pass.
 - Tests verify required output files and JSON validity.

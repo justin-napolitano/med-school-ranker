@@ -15,6 +15,10 @@ The site is for rapid review by the user. The workbook remains the partner-frien
 - No backend, database, authentication, or server-side rendering in the first pass.
 - No in-browser writes in the first pass.
 - Editing still happens in CSV/XLSX; the site is read-only review.
+- Homepage opens to Dashboard.
+- Rankings is the highest-priority review table for Phase 1.5A usability.
+- School comparison is deferred to Phase 1.5B.
+- Site remains local-only until the user is ready to publish; GitHub Pages deployment is planned but not wired in the first implementation pass.
 
 ## Non-Goals
 
@@ -81,7 +85,7 @@ The site build should not mutate source CSVs.
 Primary menu items:
 
 - Dashboard
-- Rankings
+- Rankings, highest-priority table view
 - School Detail
 - Partner Review
 - Admissions Sources
@@ -117,7 +121,7 @@ Detailed page plans live in:
 
 - Dense, scannable, operational UI.
 - No landing page or marketing-style hero.
-- First screen should be the review dashboard.
+- First screen is the review dashboard.
 - Keep controls obvious and compact.
 - Use tables for comparison and detail panels for per-school context.
 - Surface data quality and missing data instead of hiding it.
@@ -130,7 +134,7 @@ Detailed page plans live in:
 - Add `med-school-build-site` command.
 - Generate JSON from CSVs.
 - Generate `outputs/site/index.html`.
-- Implement dashboard, rankings table, detail panel, data quality table, and source queue table.
+- Implement dashboard, rankings table, detail panel, data quality table, and source queue table, with Rankings receiving the most polish in the first pass.
 - Add basic styling and client-side filtering.
 - Add tests/smoke checks for required files and valid JSON.
 
@@ -146,6 +150,7 @@ Detailed page plans live in:
 - Add deployment instructions.
 - Add optional GitHub Actions workflow.
 - Add static asset cache-safe filenames if needed.
+- Do not wire deployment until the local site has been reviewed.
 
 ## Validation Rules
 
