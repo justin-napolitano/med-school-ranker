@@ -700,9 +700,9 @@
     "status": "reviewed_after_scoring"
   },
   {
-    "current_decision_summary": "Define the canonical-domain, generated JSON read-model, card/profile, admin/public payload, and Postgres/Vercel migration contracts before product redesign.",
+    "current_decision_summary": "Generated JSON read-model nodes now exist; keep this as the governing contract for card/profile UI adoption, future import/persistence, and Postgres/Vercel migration.",
     "doc_path": "docs/SITE_DATA_MODELING_EXEC_PLAN.md",
-    "next_action": "Use this as the governing plan for the next implementation slice.",
+    "next_action": "Use the generated nodes for the next product card/profile design or UI adoption slice.",
     "owner": "user",
     "phase": "phase_2e",
     "plan_id": "site_data_modeling_exec",
@@ -711,12 +711,12 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "active"
   },
   {
-    "current_decision_summary": "Headless worker plan for generating first-class JSON node files under outputs/site/data/nodes while preserving current CSV/workbook/static-site outputs.",
+    "current_decision_summary": "Initial JSON node files are generated under outputs/site/data/nodes for school facts, school cards, profiles, rankings, compare, lists, methodology, and admin status.",
     "doc_path": "docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md",
-    "next_action": "Execute next when ready to implement the data-modeling node slice.",
+    "next_action": "Keep as historical execution record; next work should consume nodes in the UI.",
     "owner": "user",
     "phase": "phase_2e",
     "plan_id": "headless_site_data_modeling",
@@ -725,7 +725,7 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Defines canonical domain table families and keeps generated outputs separate from source-of-truth data.",
@@ -742,9 +742,9 @@
     "status": "drafted"
   },
   {
-    "current_decision_summary": "Defines generated read-model node files for school facts, cards, profiles, rankings, compare, lists, methodology, and admin status.",
+    "current_decision_summary": "Generated read-model node files are implemented with schema metadata, stable IDs, counts, required node families, and site-mode flags.",
     "doc_path": "docs/site/data_modeling/02_json_node_contracts.md",
-    "next_action": "Use as the implementation contract for outputs/site/data/nodes.",
+    "next_action": "Keep as the node contract; update deliberately when UI consumers require new fields.",
     "owner": "user",
     "phase": "phase_2e",
     "plan_id": "site_data_model_json_nodes",
@@ -753,7 +753,7 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Defines reusable card families and profile section nodes so the product site can move beyond admin tables.",
@@ -770,9 +770,9 @@
     "status": "drafted"
   },
   {
-    "current_decision_summary": "Classifies node families by publish safety and makes payload exclusion a generation-time requirement.",
+    "current_decision_summary": "Publish-safe node generation excludes admin status and reviewer-state node fields; local_full retains admin/reviewer nodes for local review.",
     "doc_path": "docs/site/data_modeling/04_admin_public_payload_separation.md",
-    "next_action": "Apply to every node-generation and hosting slice.",
+    "next_action": "Keep applying this guardrail to every future hosting and UI slice.",
     "owner": "user",
     "phase": "phase_2e",
     "plan_id": "site_data_model_payload_split",
@@ -781,7 +781,7 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Defines how CSV/manual inputs can later map to Postgres while preserving generated card/profile JSON contracts for Vercel hosting.",
@@ -798,9 +798,9 @@
     "status": "drafted"
   },
   {
-    "current_decision_summary": "Defines node shape, determinism, publish-safe, upload-bundle privacy, and screenshot QA requirements.",
+    "current_decision_summary": "Node shape, count, publish-safe exclusion, and upload-bundle privacy checks are implemented for the first node-generation slice.",
     "doc_path": "docs/site/data_modeling/06_validation_privacy_and_qa.md",
-    "next_action": "Run these checks for the next node implementation slice.",
+    "next_action": "Reuse and extend these checks when the UI begins consuming nodes.",
     "owner": "user",
     "phase": "phase_2e",
     "plan_id": "site_data_model_validation_qa",
@@ -809,7 +809,7 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Core UX review workflow is implemented across slices A-E and I: screenshot QA, visibility, dossiers, research queue, exports, application list, compare, and profile actions.",

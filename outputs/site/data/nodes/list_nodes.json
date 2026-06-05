@@ -1,0 +1,260 @@
+{
+  "contains_admin_data": false,
+  "contains_private_derived_data": false,
+  "contains_reviewer_state": false,
+  "generated_at": "2026-06-05T21:34:31+00:00",
+  "node_schema_version": "site_nodes_v1",
+  "node_type": "list",
+  "nodes": [
+    {
+      "description": "Location-focused scaffold for schools in stronger city and setting contexts.",
+      "eligibility_summary": "Requires sourced region, setting, and city-fit facts before strong claims.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_cities",
+      "list_id": "best_cities",
+      "missing_or_low_confidence_fields": [
+        "region",
+        "city_fit_score"
+      ],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "provisional",
+      "required_fields": [
+        "city",
+        "region",
+        "city_fit_score"
+      ],
+      "route": "#/lists/best-cities",
+      "school_ids": [],
+      "site_mode": "local_full",
+      "slug": "best-cities",
+      "title": "Best Cities",
+      "top_card_ids": []
+    },
+    {
+      "description": "Culture-fit scaffold for future evidence-backed culture and fit scores.",
+      "eligibility_summary": "Requires explicit culture evidence or reviewed fit scores.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_culture_fit",
+      "list_id": "best_culture_fit",
+      "missing_or_low_confidence_fields": [
+        "culture_fit_score",
+        "culture_evidence_status"
+      ],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "provisional",
+      "required_fields": [
+        "culture_fit_score",
+        "culture_evidence_status"
+      ],
+      "route": "#/lists/best-culture-fit",
+      "school_ids": [],
+      "site_mode": "local_full",
+      "slug": "best-culture-fit",
+      "title": "Best Culture Fit",
+      "top_card_ids": []
+    },
+    {
+      "description": "Public-school scaffold for future ownership-backed filtering and scoring.",
+      "eligibility_summary": "Requires source-backed ownership type before public/private claims.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_public_schools",
+      "list_id": "best_public_schools",
+      "missing_or_low_confidence_fields": [
+        "ownership_type"
+      ],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "provisional",
+      "required_fields": [
+        "ownership_type"
+      ],
+      "route": "#/lists/best-public-schools",
+      "school_ids": [],
+      "site_mode": "local_full",
+      "slug": "best-public-schools",
+      "title": "Best Public Schools",
+      "top_card_ids": []
+    },
+    {
+      "description": "Private-school scaffold for future ownership-backed filtering and scoring.",
+      "eligibility_summary": "Requires source-backed ownership type before public/private claims.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_private_schools",
+      "list_id": "best_private_schools",
+      "missing_or_low_confidence_fields": [
+        "ownership_type"
+      ],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "provisional",
+      "required_fields": [
+        "ownership_type"
+      ],
+      "route": "#/lists/best-private-schools",
+      "school_ids": [],
+      "site_mode": "local_full",
+      "slug": "best-private-schools",
+      "title": "Best Private Schools",
+      "top_card_ids": []
+    },
+    {
+      "description": "Cost-focused list using available tuition and cost-of-attendance rows.",
+      "eligibility_summary": "MD AAMC cost rows are partially available; DO tuition coverage is incomplete.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_low_cost",
+      "list_id": "best_low_cost",
+      "missing_or_low_confidence_fields": [],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "partial",
+      "required_fields": [
+        "in_state_tuition_fees_insurance",
+        "out_state_tuition_fees_insurance",
+        "estimated_coa_in_state",
+        "estimated_coa_out_state"
+      ],
+      "route": "#/lists/best-low-cost",
+      "school_ids": [
+        "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
+        "md_mercer_university_school_of_medicine_macon_georgia",
+        "md_southern_illinois_university_school_of_medicine_springfield_illinois",
+        "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
+        "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
+        "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
+        "md_nyu_grossman_school_of_medicine_new_york_new_york",
+        "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
+        "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
+        "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t",
+        "md_texas_tech_university_health_sciences_center_school_of_medicine_lubbock_texas",
+        "md_university_of_houston_tilman_j_fertitta_family_college_of_medicine_houston_texas",
+        "md_mcgovern_medical_school_at_uthealth_houston_houston_texas",
+        "md_university_of_texas_rio_grande_valley_school_of_medicine_edinburg_texas",
+        "md_the_university_of_texas_at_san_antonio_joe_r_and_teresa_lozano_long_school_of_me",
+        "md_the_university_of_texas_at_tyler_school_of_medicine_tyler_texas",
+        "md_university_of_texas_medical_branch_john_sealy_school_of_medicine_galveston_texas",
+        "md_baylor_college_of_medicine_school_of_medicine_houston_texas",
+        "md_dell_medical_school_university_of_texas_at_austin_austin_texas",
+        "md_university_of_texas_southwestern_medical_school_dallas_texas",
+        "md_university_of_cincinnati_college_of_medicine_cincinnati_ohio",
+        "md_east_tennessee_state_university_james_h_quillen_college_of_medicine_johnson_city",
+        "md_university_of_central_florida_college_of_medicine_orlando_florida",
+        "md_university_of_florida_college_of_medicine_gainesville_florida",
+        "md_the_ohio_state_university_college_of_medicine_columbus_ohio"
+      ],
+      "site_mode": "local_full",
+      "slug": "best-low-cost",
+      "title": "Best Low Cost",
+      "top_card_ids": [
+        "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
+        "md_mercer_university_school_of_medicine_macon_georgia",
+        "md_southern_illinois_university_school_of_medicine_springfield_illinois",
+        "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
+        "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
+        "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
+        "md_nyu_grossman_school_of_medicine_new_york_new_york",
+        "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
+        "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
+        "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t"
+      ]
+    },
+    {
+      "description": "Admissions-realism list using published MCAT/GPA stats where source-backed.",
+      "eligibility_summary": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_admissions_realism",
+      "list_id": "best_admissions_realism",
+      "missing_or_low_confidence_fields": [],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "partial",
+      "required_fields": [
+        "published_mcat_average",
+        "published_gpa_average",
+        "aamc_acceptance_rate_band"
+      ],
+      "route": "#/lists/best-admissions-realism",
+      "school_ids": [
+        "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
+        "md_mercer_university_school_of_medicine_macon_georgia",
+        "md_southern_illinois_university_school_of_medicine_springfield_illinois",
+        "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
+        "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
+        "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
+        "md_nyu_grossman_school_of_medicine_new_york_new_york",
+        "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
+        "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
+        "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t",
+        "md_texas_tech_university_health_sciences_center_school_of_medicine_lubbock_texas",
+        "md_university_of_houston_tilman_j_fertitta_family_college_of_medicine_houston_texas",
+        "md_mcgovern_medical_school_at_uthealth_houston_houston_texas",
+        "md_university_of_texas_rio_grande_valley_school_of_medicine_edinburg_texas",
+        "md_the_university_of_texas_at_san_antonio_joe_r_and_teresa_lozano_long_school_of_me",
+        "md_the_university_of_texas_at_tyler_school_of_medicine_tyler_texas",
+        "md_university_of_texas_medical_branch_john_sealy_school_of_medicine_galveston_texas",
+        "md_baylor_college_of_medicine_school_of_medicine_houston_texas",
+        "md_dell_medical_school_university_of_texas_at_austin_austin_texas",
+        "md_university_of_texas_southwestern_medical_school_dallas_texas",
+        "md_university_of_cincinnati_college_of_medicine_cincinnati_ohio",
+        "md_east_tennessee_state_university_james_h_quillen_college_of_medicine_johnson_city",
+        "md_university_of_central_florida_college_of_medicine_orlando_florida",
+        "md_university_of_florida_college_of_medicine_gainesville_florida",
+        "md_the_ohio_state_university_college_of_medicine_columbus_ohio"
+      ],
+      "site_mode": "local_full",
+      "slug": "best-admissions-realism",
+      "title": "Best Admissions Realism",
+      "top_card_ids": [
+        "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
+        "md_mercer_university_school_of_medicine_macon_georgia",
+        "md_southern_illinois_university_school_of_medicine_springfield_illinois",
+        "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
+        "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
+        "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
+        "md_nyu_grossman_school_of_medicine_new_york_new_york",
+        "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
+        "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
+        "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t"
+      ]
+    },
+    {
+      "description": "Local-only partner-fit scaffold for reviewed partner preferences.",
+      "eligibility_summary": "Requires intentionally populated partner inputs before use.",
+      "generated_at": "2026-06-05T21:34:31+00:00",
+      "id": "best_partner_fit",
+      "list_id": "best_partner_fit",
+      "missing_or_low_confidence_fields": [
+        "partner_fit_score",
+        "partner_review_status"
+      ],
+      "node_schema_version": "site_nodes_v1",
+      "node_type": "list",
+      "publish_safe": false,
+      "readiness_label": "provisional",
+      "required_fields": [
+        "partner_fit_score",
+        "partner_review_status"
+      ],
+      "route": "#/lists/best-partner-fit",
+      "school_ids": [],
+      "site_mode": "local_full",
+      "slug": "best-partner-fit",
+      "title": "Best Partner Fit",
+      "top_card_ids": []
+    }
+  ],
+  "publish_safe": false,
+  "record_count": 7,
+  "site_mode": "local_full",
+  "source_tables": [
+    "generated curated list definitions",
+    "outputs/calculated_rankings.csv"
+  ]
+}

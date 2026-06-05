@@ -467,6 +467,135 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
         json.loads((site_dir / "data" / filename).read_text())
 
 
+def test_site_generation_writes_json_node_read_models(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    site_dir = patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    embedded_payload = extract_embedded_payload(output.read_text())
+    nodes_dir = site_dir / "data/nodes"
+    required_node_files = {
+        "school_nodes.json",
+        "school_card_nodes.json",
+        "school_profile_nodes.json",
+        "ranking_card_nodes.json",
+        "compare_card_nodes.json",
+        "list_nodes.json",
+        "methodology_nodes.json",
+        "admin_status_nodes.json",
+    }
+    bundles = {
+        filename: json.loads((nodes_dir / filename).read_text())
+        for filename in required_node_files
+    }
+
+    for filename, bundle in bundles.items():
+        assert bundle["node_schema_version"] == "site_nodes_v1", filename
+        assert bundle["site_mode"] == "local_full", filename
+        assert bundle["record_count"] == len(bundle["nodes"]), filename
+        assert bundle["source_tables"], filename
+        assert all(node["node_schema_version"] == "site_nodes_v1" for node in bundle["nodes"])
+
+    master_rows = site_builder.read_csv(tmp_path / "data/school_master.csv")
+    school_nodes = bundles["school_nodes.json"]["nodes"]
+    assert len(school_nodes) == len(master_rows)
+    assert [node["school_id"] for node in school_nodes] == sorted(row["school_id"] for row in master_rows)
+    for field in [
+        "school_id",
+        "school_slug",
+        "display_name",
+        "degree_type",
+        "campus_name",
+        "city",
+        "state",
+        "state_abbrev",
+        "region",
+        "ownership_type",
+        "official_url",
+        "profile_route",
+        "active",
+        "manual_exclusion_flag",
+        "source_confidence",
+    ]:
+        assert field in school_nodes[0]
+
+    school_card = bundles["school_card_nodes.json"]["nodes"][0]
+    assert school_card["node_type"] == "school_card"
+    assert school_card["identity"]["display_name"]
+    assert "rank_summary" in school_card
+    assert "mcat_gpa_summary" in school_card
+    assert "cost_summary" in school_card
+    assert "warning_chips" in school_card
+    assert school_card["actions"]["profile_route"].startswith("#/schools/")
+
+    ranking_card = bundles["ranking_card_nodes.json"]["nodes"][0]
+    for field in [
+        "decision_rank",
+        "rank_band",
+        "rank_confidence",
+        "overall_school_value",
+        "admissions_score",
+        "attendance_score",
+        "admissions_fit_tier",
+        "application_bucket",
+        "top_positive_contributors",
+        "top_negative_contributors",
+        "missing_or_low_confidence_drivers",
+        "aamc_context_label",
+    ]:
+        assert field in ranking_card
+
+    compare_card = bundles["compare_card_nodes.json"]["nodes"][0]
+    assert "rank_fit" in compare_card
+    assert "admissions_facts" in compare_card
+    assert "cost_facts" in compare_card
+    assert "requirements_summary" in compare_card
+    assert "reviewer_state" in compare_card
+
+    profile_node = bundles["school_profile_nodes.json"]["nodes"][0]
+    assert profile_node["route"].startswith("#/schools/")
+    assert profile_node["header"]["display_name"]
+    assert profile_node["snapshot_cards"]
+    assert {section["section_id"] for section in profile_node["sections"]} >= {
+        "overview",
+        "applicant_fit",
+        "admissions_stats",
+        "cost_and_debt",
+        "requirements",
+        "source_confidence",
+        "methodology",
+    }
+    assert "admin_refs" in profile_node
+
+    list_node = bundles["list_nodes.json"]["nodes"][0]
+    for field in [
+        "list_id",
+        "slug",
+        "route",
+        "title",
+        "description",
+        "readiness_label",
+        "eligibility_summary",
+        "required_fields",
+        "missing_or_low_confidence_fields",
+        "school_ids",
+        "top_card_ids",
+    ]:
+        assert field in list_node
+
+    methodology_nodes = bundles["methodology_nodes.json"]["nodes"]
+    assert any("school-specific acceptance probability" in node["aamc_caveat"] for node in methodology_nodes)
+
+    admin_node = bundles["admin_status_nodes.json"]["nodes"][0]
+    assert admin_node["node_type"] == "admin_status"
+    assert "validation_counts" in admin_node
+    assert "plan_status_counts" in admin_node
+    assert embedded_payload["site_nodes"]["school_nodes"]["record_count"] == len(master_rows)
+
+
 def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp_path, monkeypatch):
     secret = "super_secret_partner_review_value"
     partner_row = {
@@ -522,6 +651,11 @@ def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp
     assert "admissions_source_queue" not in embedded_payload
     assert "data_quality_report" not in embedded_payload
     assert "source_status" not in embedded_payload
+    assert "site_nodes" in embedded_payload
+    assert "admin_status_nodes" not in embedded_payload["site_nodes"]
+    assert embedded_payload["site_nodes"]["school_card_nodes"]["publish_safe"] is True
+    assert embedded_payload["site_nodes"]["compare_card_nodes"]["contains_reviewer_state"] is False
+    assert embedded_payload["site_nodes"]["school_profile_nodes"]["contains_reviewer_state"] is False
     assert all("partner_input" not in school for school in embedded_payload["schools"])
     assert all("visibility" not in school for school in embedded_payload["schools"])
     assert all("dossier" not in school for school in embedded_payload["schools"])
@@ -535,6 +669,22 @@ def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp
     assert "data/source_review_queue.json" not in generated_names
     assert "data/admissions_source_queue.json" not in generated_names
     assert "data/source_status.json" not in generated_names
+    assert "data/nodes/school_nodes.json" in generated_names
+    assert "data/nodes/school_card_nodes.json" in generated_names
+    assert "data/nodes/school_profile_nodes.json" in generated_names
+    assert "data/nodes/ranking_card_nodes.json" in generated_names
+    assert "data/nodes/compare_card_nodes.json" in generated_names
+    assert "data/nodes/list_nodes.json" in generated_names
+    assert "data/nodes/methodology_nodes.json" in generated_names
+    assert "data/nodes/admin_status_nodes.json" not in generated_names
+    compare_nodes = json.loads((site_dir / "data/nodes/compare_card_nodes.json").read_text())
+    profile_nodes = json.loads((site_dir / "data/nodes/school_profile_nodes.json").read_text())
+    assert all("reviewer_state" not in node for node in compare_nodes["nodes"])
+    assert all("admin_refs" not in node for node in profile_nodes["nodes"])
+    assert all(
+        "reviewer_state" not in {section["section_id"] for section in node["sections"]}
+        for node in profile_nodes["nodes"]
+    )
     for path in site_dir.rglob("*"):
         if path.is_file():
             assert secret not in path.read_text(errors="ignore")

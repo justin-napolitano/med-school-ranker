@@ -76,6 +76,7 @@ SITE_MODE_LOCAL_FULL = "local_full"
 SITE_MODE_PUBLISH_SAFE = "publish_safe"
 SITE_MODES = {SITE_MODE_LOCAL_FULL, SITE_MODE_PUBLISH_SAFE}
 DEFAULT_ROUTE = "#/rankings"
+NODE_SCHEMA_VERSION = "site_nodes_v1"
 
 AAMC_GRID_CAVEAT = (
     "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical "
@@ -111,6 +112,17 @@ PRODUCT_PUBLIC_JSON_KEYS = {
     "admissions_policies",
     "letter_requirements",
 }
+
+PRODUCT_PUBLIC_NODE_KEYS = {
+    "school_nodes",
+    "school_card_nodes",
+    "school_profile_nodes",
+    "ranking_card_nodes",
+    "compare_card_nodes",
+    "list_nodes",
+    "methodology_nodes",
+}
+ADMIN_LOCAL_NODE_KEYS = {"admin_status_nodes"}
 
 PRODUCT_LOCAL_KEYS = {"applicant_profiles", "partner_inputs", "school_visibility", "school_dossiers"}
 ADMIN_LOCAL_KEYS = {
@@ -447,6 +459,7 @@ def payload_groups(site_mode: str) -> dict[str, list[str]]:
             "routes",
             "copy",
             "schools",
+            "site_nodes",
             "school_profiles",
             "school_master",
             "calculated_rankings",
@@ -700,6 +713,766 @@ def source_status(
     }
 
 
+def clean_node_value(value: object) -> str:
+    return str(value or "").strip()
+
+
+def first_present(*values: object) -> str:
+    for value in values:
+        text = clean_node_value(value)
+        if text:
+            return text
+    return ""
+
+
+def node_common(node_type: str, node_id: str, generated_at: str, site_mode: str) -> dict[str, object]:
+    return {
+        "node_schema_version": NODE_SCHEMA_VERSION,
+        "node_type": node_type,
+        "id": node_id,
+        "generated_at": generated_at,
+        "site_mode": site_mode,
+        "publish_safe": site_mode == SITE_MODE_PUBLISH_SAFE,
+    }
+
+
+def node_bundle(
+    node_type: str,
+    nodes: list[dict[str, object]],
+    generated_at: str,
+    site_mode: str,
+    source_tables: list[str],
+    *,
+    contains_admin_data: bool = False,
+    contains_reviewer_state: bool = False,
+    contains_private_derived_data: bool = False,
+) -> dict[str, object]:
+    return {
+        "node_schema_version": NODE_SCHEMA_VERSION,
+        "node_type": node_type,
+        "generated_at": generated_at,
+        "site_mode": site_mode,
+        "source_tables": source_tables,
+        "record_count": len(nodes),
+        "publish_safe": site_mode == SITE_MODE_PUBLISH_SAFE,
+        "contains_admin_data": contains_admin_data,
+        "contains_reviewer_state": contains_reviewer_state,
+        "contains_private_derived_data": contains_private_derived_data,
+        "nodes": nodes,
+    }
+
+
+def item_school_id(item: dict[str, object]) -> str:
+    school = item.get("school", {})
+    if isinstance(school, dict):
+        return clean_node_value(school.get("school_id"))
+    return ""
+
+
+def item_school_name(item: dict[str, object]) -> str:
+    school = item.get("school", {})
+    if isinstance(school, dict):
+        return clean_node_value(school.get("school_name"))
+    return ""
+
+
+def source_refs_for_item(item: dict[str, object]) -> list[dict[str, str]]:
+    source_refs: dict[tuple[str, str], dict[str, str]] = {}
+    source_groups = [
+        item.get("school", {}),
+        item.get("admissions_stats", {}),
+        item.get("cost_and_debt", {}),
+    ]
+    source_groups.extend(item.get("admissions_policies", []) if isinstance(item.get("admissions_policies"), list) else [])
+    source_groups.extend(item.get("letter_requirements", []) if isinstance(item.get("letter_requirements"), list) else [])
+    for row in source_groups:
+        if not isinstance(row, dict):
+            continue
+        source_name = clean_node_value(row.get("source_name"))
+        source_url = clean_node_value(row.get("source_url"))
+        if not source_name and not source_url:
+            continue
+        key = (source_name, source_url)
+        source_refs.setdefault(
+            key,
+            {
+                "source_name": source_name or "Source",
+                "source_url": source_url,
+            },
+        )
+    return sorted(source_refs.values(), key=lambda row: (row["source_name"], row["source_url"]))
+
+
+def node_missing_fields(item: dict[str, object]) -> list[str]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
+    cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    missing_fields = []
+    if not first_present(ranking.get("decision_rank"), ranking.get("overall_rank")):
+        missing_fields.append("decision_rank")
+    if not first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average")):
+        missing_fields.append("mcat_average")
+    if not first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average")):
+        missing_fields.append("gpa_average")
+    if not first_present(
+        cost.get("estimated_coa_out_state"),
+        cost.get("out_state_tuition_fees_insurance"),
+        ranking.get("cost_basis"),
+    ):
+        missing_fields.append("cost")
+    if not parse_number(clean_node_value(derived.get("admissions_policy_count"))):
+        missing_fields.append("admissions_policy")
+    if not parse_number(clean_node_value(derived.get("letter_requirement_count"))):
+        missing_fields.append("letter_requirements")
+    return missing_fields
+
+
+def readiness_for_missing_fields(missing_fields: list[str]) -> str:
+    if not missing_fields:
+        return "ready"
+    critical_missing = {"decision_rank", "mcat_average", "gpa_average"}
+    if critical_missing.intersection(missing_fields):
+        return "provisional"
+    return "partial"
+
+
+def confidence_for_item(item: dict[str, object], readiness: str) -> str:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    return first_present(ranking.get("rank_confidence"), derived.get("rank_confidence"), readiness)
+
+
+def warning_chips_for_item(item: dict[str, object], missing_fields: list[str]) -> list[dict[str, str]]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    chips = []
+    if missing_fields:
+        chips.append({"label": f"{len(missing_fields)} missing fields", "severity": "warn"})
+    if clean_node_value(ranking.get("score_warnings")):
+        chips.append({"label": "score warnings", "severity": "warn"})
+    rank_confidence = first_present(ranking.get("rank_confidence"), derived.get("rank_confidence"))
+    if rank_confidence in {"partial", "provisional"}:
+        chips.append({"label": f"{rank_confidence} confidence", "severity": "warn"})
+    if derived.get("hard_no_flag") is True:
+        chips.append({"label": "hard no", "severity": "error"})
+    return chips
+
+
+def school_identity_summary(item: dict[str, object]) -> dict[str, str]:
+    school = item.get("school", {}) if isinstance(item.get("school"), dict) else {}
+    city = clean_node_value(school.get("city"))
+    state = clean_node_value(school.get("state"))
+    return {
+        "school_id": clean_node_value(school.get("school_id")),
+        "school_slug": clean_node_value(school.get("school_slug") or item.get("school_slug")),
+        "display_name": clean_node_value(school.get("school_name")),
+        "degree_type": clean_node_value(school.get("degree_type")),
+        "campus_name": clean_node_value(school.get("campus_name")),
+        "city": city,
+        "state": state,
+        "state_abbrev": clean_node_value(school.get("state_abbrev")),
+        "region": clean_node_value(school.get("region")),
+        "ownership_type": clean_node_value(school.get("ownership_type")),
+        "location": ", ".join(part for part in [city, state] if part),
+        "official_url": first_present(school.get("official_url"), school.get("school_url"), school.get("source_url")),
+        "profile_route": clean_node_value(item.get("profile_route") or school.get("profile_route")),
+    }
+
+
+def build_school_node(item: dict[str, object], generated_at: str, site_mode: str) -> dict[str, object]:
+    school = item.get("school", {}) if isinstance(item.get("school"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    identity = school_identity_summary(item)
+    node = node_common("school", identity["school_id"], generated_at, site_mode)
+    node.update(identity)
+    node.update(
+        {
+            "route": identity["profile_route"],
+            "active": clean_node_value(school.get("active_in_universe")) or "TRUE",
+            "manual_exclusion_flag": clean_node_value(school.get("manual_exclusion_flag")),
+            "source_confidence": first_present(
+                derived.get("admissions_data_quality_band"),
+                school.get("source_confidence"),
+                "missing",
+            ),
+            "last_verified": first_present(school.get("last_verified"), school.get("updated_at")),
+            "source_refs": source_refs_for_item(item),
+        }
+    )
+    return node
+
+
+def build_school_card_node(item: dict[str, object], generated_at: str, site_mode: str) -> dict[str, object]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
+    cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    identity = school_identity_summary(item)
+    missing_fields = node_missing_fields(item)
+    readiness = readiness_for_missing_fields(missing_fields)
+    node = node_common("school_card", identity["school_id"], generated_at, site_mode)
+    node.update(
+        {
+            "school_id": identity["school_id"],
+            "school_slug": identity["school_slug"],
+            "route": identity["profile_route"],
+            "identity": identity,
+            "rank_summary": {
+                "decision_rank": first_present(ranking.get("decision_rank"), ranking.get("overall_rank")),
+                "rank_band": first_present(ranking.get("rank_band"), derived.get("rank_band")),
+                "rank_confidence": first_present(ranking.get("rank_confidence"), derived.get("rank_confidence")),
+                "admissions_fit_tier": first_present(
+                    ranking.get("admissions_fit_tier"),
+                    ranking.get("dynamic_tier"),
+                    derived.get("admissions_fit_tier"),
+                ),
+                "application_bucket": first_present(
+                    ranking.get("application_bucket"),
+                    ranking.get("suggested_funnel_bucket"),
+                    derived.get("application_bucket"),
+                ),
+            },
+            "mcat_gpa_summary": {
+                "mcat_average": first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average")),
+                "mcat_band": first_present(ranking.get("published_mcat_band"), stats.get("published_mcat_band")),
+                "gpa_average": first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average")),
+                "gpa_band": first_present(ranking.get("published_gpa_band"), stats.get("published_gpa_band")),
+                "aamc_rate_band": first_present(
+                    ranking.get("profile_aamc_acceptance_rate_band"),
+                    stats.get("aamc_acceptance_rate_band"),
+                    derived.get("aamc_acceptance_rate_band"),
+                ),
+            },
+            "cost_summary": {
+                "in_state": first_present(cost.get("estimated_coa_in_state"), cost.get("in_state_tuition_fees_insurance")),
+                "out_state": first_present(cost.get("estimated_coa_out_state"), cost.get("out_state_tuition_fees_insurance")),
+                "cost_basis": first_present(ranking.get("cost_basis")),
+            },
+            "location_summary": {
+                "city": identity["city"],
+                "state": identity["state"],
+                "region": identity["region"],
+                "ownership_type": identity["ownership_type"],
+            },
+            "readiness": readiness,
+            "confidence": confidence_for_item(item, readiness),
+            "missing_fields": missing_fields,
+            "warning_chips": warning_chips_for_item(item, missing_fields),
+            "actions": {
+                "profile_route": identity["profile_route"],
+                "compare_action": "add_compare",
+            },
+            "source_refs": source_refs_for_item(item),
+        }
+    )
+    return node
+
+
+def build_ranking_card_node(item: dict[str, object], generated_at: str, site_mode: str) -> dict[str, object]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    identity = school_identity_summary(item)
+    missing_fields = node_missing_fields(item)
+    node = node_common("ranking_card", identity["school_id"], generated_at, site_mode)
+    node.update(
+        {
+            "school_id": identity["school_id"],
+            "school_slug": identity["school_slug"],
+            "route": identity["profile_route"],
+            "display_name": identity["display_name"],
+            "degree_type": identity["degree_type"],
+            "decision_rank": first_present(ranking.get("decision_rank"), ranking.get("overall_rank")),
+            "rank_band": first_present(ranking.get("rank_band"), derived.get("rank_band")),
+            "rank_confidence": first_present(ranking.get("rank_confidence"), derived.get("rank_confidence")),
+            "overall_school_value": clean_node_value(ranking.get("overall_school_value")),
+            "admissions_score": clean_node_value(ranking.get("admissions_score")),
+            "attendance_score": clean_node_value(ranking.get("attendance_score")),
+            "admissions_fit_tier": first_present(
+                ranking.get("admissions_fit_tier"),
+                ranking.get("dynamic_tier"),
+                derived.get("admissions_fit_tier"),
+            ),
+            "application_bucket": first_present(
+                ranking.get("application_bucket"),
+                ranking.get("suggested_funnel_bucket"),
+                derived.get("application_bucket"),
+            ),
+            "top_positive_contributors": clean_node_value(
+                ranking.get("top_positive_contributors") or ranking.get("top_positive_drivers")
+            ),
+            "top_negative_contributors": clean_node_value(
+                ranking.get("top_negative_contributors") or ranking.get("top_negative_drivers")
+            ),
+            "missing_or_low_confidence_drivers": clean_node_value(ranking.get("missing_or_low_confidence_drivers")),
+            "aamc_context_label": AAMC_GRID_CAVEAT,
+            "missing_fields": missing_fields,
+            "readiness": readiness_for_missing_fields(missing_fields),
+        }
+    )
+    return node
+
+
+def requirements_summary_for_item(item: dict[str, object]) -> dict[str, object]:
+    policies = item.get("admissions_policies", []) if isinstance(item.get("admissions_policies"), list) else []
+    letters = item.get("letter_requirements", []) if isinstance(item.get("letter_requirements"), list) else []
+    policy_categories = sorted(
+        {
+            clean_node_value(row.get("policy_category") or row.get("policy_field"))
+            for row in policies
+            if isinstance(row, dict) and clean_node_value(row.get("policy_category") or row.get("policy_field"))
+        }
+    )
+    return {
+        "policy_count": len(policies),
+        "letter_requirement_count": len(letters),
+        "policy_categories": policy_categories,
+    }
+
+
+def reviewer_state_summary_for_item(item: dict[str, object]) -> dict[str, str]:
+    visibility = item.get("visibility", {}) if isinstance(item.get("visibility"), dict) else {}
+    dossier = item.get("dossier", {}) if isinstance(item.get("dossier"), dict) else {}
+    return {
+        "visibility_state": clean_node_value(visibility.get("visibility_state")) or "visible",
+        "research_status": clean_node_value(dossier.get("research_status")),
+        "interest_level": clean_node_value(dossier.get("interest_level")),
+        "application_decision_status": clean_node_value(dossier.get("application_decision_status")),
+        "four_year_happiness": clean_node_value(dossier.get("four_year_happiness")),
+    }
+
+
+def build_compare_card_node(item: dict[str, object], generated_at: str, site_mode: str) -> dict[str, object]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
+    cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    identity = school_identity_summary(item)
+    missing_fields = node_missing_fields(item)
+    node = node_common("compare_card", identity["school_id"], generated_at, site_mode)
+    node.update(
+        {
+            "school_id": identity["school_id"],
+            "school_slug": identity["school_slug"],
+            "route": identity["profile_route"],
+            "identity": identity,
+            "rank_fit": {
+                "decision_rank": first_present(ranking.get("decision_rank"), ranking.get("overall_rank")),
+                "rank_band": first_present(ranking.get("rank_band"), derived.get("rank_band")),
+                "rank_confidence": first_present(ranking.get("rank_confidence"), derived.get("rank_confidence")),
+                "admissions_score": clean_node_value(ranking.get("admissions_score")),
+                "attendance_score": clean_node_value(ranking.get("attendance_score")),
+                "admissions_fit_tier": first_present(
+                    ranking.get("admissions_fit_tier"),
+                    ranking.get("dynamic_tier"),
+                    derived.get("admissions_fit_tier"),
+                ),
+            },
+            "admissions_facts": {
+                "mcat_average": first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average")),
+                "mcat_band": first_present(ranking.get("published_mcat_band"), stats.get("published_mcat_band")),
+                "gpa_average": first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average")),
+                "gpa_band": first_present(ranking.get("published_gpa_band"), stats.get("published_gpa_band")),
+                "aamc_rate_band": first_present(
+                    ranking.get("profile_aamc_acceptance_rate_band"),
+                    stats.get("aamc_acceptance_rate_band"),
+                    derived.get("aamc_acceptance_rate_band"),
+                ),
+            },
+            "cost_facts": {
+                "in_state": first_present(cost.get("estimated_coa_in_state"), cost.get("in_state_tuition_fees_insurance")),
+                "out_state": first_present(cost.get("estimated_coa_out_state"), cost.get("out_state_tuition_fees_insurance")),
+                "cost_basis": clean_node_value(ranking.get("cost_basis")),
+            },
+            "requirements_summary": requirements_summary_for_item(item),
+            "missing_data_summary": {
+                "missing_fields": missing_fields,
+                "readiness": readiness_for_missing_fields(missing_fields),
+            },
+        }
+    )
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        node["reviewer_state"] = reviewer_state_summary_for_item(item)
+    return node
+
+
+def snapshot_cards_for_item(item: dict[str, object]) -> list[dict[str, str]]:
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
+    cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    return [
+        {
+            "card_id": "decision_rank",
+            "label": "Decision Rank",
+            "value": first_present(ranking.get("decision_rank"), ranking.get("overall_rank"), "Unranked"),
+            "context": first_present(ranking.get("rank_confidence"), derived.get("rank_confidence")),
+        },
+        {
+            "card_id": "mcat_average",
+            "label": "MCAT Avg",
+            "value": first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average"), "Missing"),
+            "context": first_present(ranking.get("published_mcat_band"), stats.get("published_mcat_band")),
+        },
+        {
+            "card_id": "gpa_average",
+            "label": "GPA Avg",
+            "value": first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average"), "Missing"),
+            "context": first_present(ranking.get("published_gpa_band"), stats.get("published_gpa_band")),
+        },
+        {
+            "card_id": "out_state_cost",
+            "label": "OOS Cost",
+            "value": first_present(cost.get("estimated_coa_out_state"), cost.get("out_state_tuition_fees_insurance"), "Missing"),
+            "context": clean_node_value(ranking.get("cost_basis")),
+        },
+        {
+            "card_id": "data_quality",
+            "label": "Data Quality",
+            "value": first_present(derived.get("admissions_data_quality_band"), "Missing"),
+            "context": first_present(derived.get("rank_band")),
+        },
+    ]
+
+
+def profile_sections_for_item(item: dict[str, object], site_mode: str) -> list[dict[str, object]]:
+    identity = school_identity_summary(item)
+    ranking = item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}
+    stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
+    cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
+    derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    sections = [
+        {
+            "section_id": "overview",
+            "title": "Overview",
+            "readiness": "ready" if identity["display_name"] else "missing",
+            "facts": identity,
+            "missing_fields": [] if identity["display_name"] else ["display_name"],
+            "source_refs": source_refs_for_item(item),
+        },
+        {
+            "section_id": "applicant_fit",
+            "title": "Applicant Fit",
+            "readiness": readiness_for_missing_fields(
+                [field for field in node_missing_fields(item) if field in {"decision_rank", "mcat_average", "gpa_average"}]
+            ),
+            "facts": {
+                "decision_rank": first_present(ranking.get("decision_rank"), ranking.get("overall_rank")),
+                "admissions_score": clean_node_value(ranking.get("admissions_score")),
+                "attendance_score": clean_node_value(ranking.get("attendance_score")),
+                "admissions_fit_tier": first_present(
+                    ranking.get("admissions_fit_tier"),
+                    ranking.get("dynamic_tier"),
+                    derived.get("admissions_fit_tier"),
+                ),
+                "aamc_context": AAMC_GRID_CAVEAT,
+            },
+            "missing_fields": [field for field in node_missing_fields(item) if field in {"decision_rank", "mcat_average", "gpa_average"}],
+            "source_refs": [],
+        },
+        {
+            "section_id": "admissions_stats",
+            "title": "Admissions Stats",
+            "readiness": "ready" if first_present(stats.get("published_mcat_average"), stats.get("published_gpa_average")) else "missing",
+            "facts": {
+                "mcat_average": first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average")),
+                "mcat_band": first_present(ranking.get("published_mcat_band"), stats.get("published_mcat_band")),
+                "gpa_average": first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average")),
+                "gpa_band": first_present(ranking.get("published_gpa_band"), stats.get("published_gpa_band")),
+                "data_quality_band": first_present(derived.get("admissions_data_quality_band")),
+            },
+            "missing_fields": [field for field in node_missing_fields(item) if field in {"mcat_average", "gpa_average"}],
+            "source_refs": source_refs_for_item(item),
+        },
+        {
+            "section_id": "cost_and_debt",
+            "title": "Cost and Debt",
+            "readiness": "ready" if "cost" not in node_missing_fields(item) else "missing",
+            "facts": {
+                "estimated_coa_in_state": clean_node_value(cost.get("estimated_coa_in_state")),
+                "estimated_coa_out_state": clean_node_value(cost.get("estimated_coa_out_state")),
+                "in_state_tuition_fees_insurance": clean_node_value(cost.get("in_state_tuition_fees_insurance")),
+                "out_state_tuition_fees_insurance": clean_node_value(cost.get("out_state_tuition_fees_insurance")),
+                "cost_basis": clean_node_value(ranking.get("cost_basis")),
+            },
+            "missing_fields": ["cost"] if "cost" in node_missing_fields(item) else [],
+            "source_refs": source_refs_for_item(item),
+        },
+        {
+            "section_id": "requirements",
+            "title": "Requirements and Policies",
+            "readiness": "ready" if requirements_summary_for_item(item)["policy_count"] or requirements_summary_for_item(item)["letter_requirement_count"] else "missing",
+            "facts": requirements_summary_for_item(item),
+            "missing_fields": [
+                field
+                for field in ["admissions_policy", "letter_requirements"]
+                if field in node_missing_fields(item)
+            ],
+            "source_refs": source_refs_for_item(item),
+        },
+        {
+            "section_id": "source_confidence",
+            "title": "Source Confidence",
+            "readiness": first_present(derived.get("rank_confidence"), "missing"),
+            "facts": {
+                "rank_confidence": first_present(derived.get("rank_confidence")),
+                "admissions_data_quality_band": first_present(derived.get("admissions_data_quality_band")),
+                "missing_fields": ", ".join(node_missing_fields(item)),
+            },
+            "missing_fields": node_missing_fields(item),
+            "source_refs": source_refs_for_item(item),
+        },
+        {
+            "section_id": "methodology",
+            "title": "Methodology",
+            "readiness": "ready",
+            "facts": {
+                "aamc_context": AAMC_GRID_CAVEAT,
+                "weight_basis": "present_components_only",
+            },
+            "missing_fields": [],
+            "source_refs": [],
+        },
+    ]
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        sections.append(
+            {
+                "section_id": "reviewer_state",
+                "title": "Reviewer State",
+                "readiness": "partial",
+                "facts": reviewer_state_summary_for_item(item),
+                "missing_fields": [],
+                "source_refs": [],
+            }
+        )
+    return sections
+
+
+def build_school_profile_node(item: dict[str, object], generated_at: str, site_mode: str) -> dict[str, object]:
+    identity = school_identity_summary(item)
+    missing_fields = node_missing_fields(item)
+    node = node_common("school_profile", identity["school_id"], generated_at, site_mode)
+    node.update(
+        {
+            "school_id": identity["school_id"],
+            "school_slug": identity["school_slug"],
+            "route": identity["profile_route"],
+            "header": identity,
+            "snapshot_cards": snapshot_cards_for_item(item),
+            "sections": profile_sections_for_item(item, site_mode),
+            "source_confidence": confidence_for_item(item, readiness_for_missing_fields(missing_fields)),
+            "methodology_refs": ["methodology_scoring", "methodology_aamc_context"],
+            "missing_fields": missing_fields,
+            "readiness": readiness_for_missing_fields(missing_fields),
+        }
+    )
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+        node["admin_refs"] = {
+            "source_review_count": clean_node_value(derived.get("source_review_count")),
+            "source_queue_status": clean_node_value(derived.get("source_queue_status")),
+            "warning_count": clean_node_value(derived.get("warning_count")),
+            "error_count": clean_node_value(derived.get("error_count")),
+        }
+    return node
+
+
+def build_list_node(
+    row: dict[str, object],
+    generated_at: str,
+    site_mode: str,
+    ranked_school_ids: list[str],
+) -> dict[str, object]:
+    list_id = clean_node_value(row.get("list_id"))
+    readiness = clean_node_value(row.get("readiness_label")) or "provisional"
+    school_ids = ranked_school_ids[:25] if readiness in {"ready", "partial"} else []
+    node = node_common("list", list_id, generated_at, site_mode)
+    node.update(
+        {
+            "list_id": list_id,
+            "slug": clean_node_value(row.get("slug")),
+            "route": clean_node_value(row.get("route")),
+            "title": clean_node_value(row.get("title")),
+            "description": clean_node_value(row.get("description")),
+            "readiness_label": readiness,
+            "eligibility_summary": clean_node_value(row.get("methodology_notes")),
+            "required_fields": list(row.get("required_fields", [])) if isinstance(row.get("required_fields"), list) else [],
+            "missing_or_low_confidence_fields": list(row.get("missing_fields", [])) if isinstance(row.get("missing_fields"), list) else [],
+            "school_ids": school_ids,
+            "top_card_ids": school_ids[:10],
+        }
+    )
+    return node
+
+
+def build_methodology_nodes(
+    scoring_methodology: list[dict[str, str]],
+    generated_at: str,
+    site_mode: str,
+) -> list[dict[str, object]]:
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in scoring_methodology:
+        area = clean_node_value(row.get("methodology_area") or row.get("score_group") or "scoring")
+        grouped[area].append(row)
+    if not grouped:
+        grouped["scoring"] = []
+    nodes = []
+    for area, rows in sorted(grouped.items()):
+        node = node_common("methodology", f"methodology_{slugify(area)}", generated_at, site_mode)
+        node.update(
+            {
+                "scoring_group": area,
+                "formula_summary": first_present(*(row.get("formula") for row in rows), "See scoring methodology table."),
+                "weight_basis": "present_components_only",
+                "component_rows": rows,
+                "aamc_caveat": AAMC_GRID_CAVEAT,
+                "confidence_labels": ["high", "medium", "partial", "provisional", "excluded"],
+                "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
+            }
+        )
+        nodes.append(node)
+    caveat_node = node_common("methodology", "methodology_aamc_context", generated_at, site_mode)
+    caveat_node.update(
+        {
+            "scoring_group": "AAMC Context",
+            "formula_summary": AAMC_GRID_CAVEAT,
+            "weight_basis": "not_applicable",
+            "component_rows": [],
+            "aamc_caveat": AAMC_GRID_CAVEAT,
+            "confidence_labels": ["national aggregate context"],
+            "private_public_note": "AAMC grid values are context, not school-specific probability.",
+        }
+    )
+    nodes.append(caveat_node)
+    return nodes
+
+
+def build_admin_status_node(
+    status: dict[str, object],
+    project_subplans: list[dict[str, str]],
+    data_quality: list[dict[str, str]],
+    generated_at: str,
+    site_mode: str,
+) -> dict[str, object]:
+    plan_counts = Counter(row.get("status", "") or "unknown" for row in project_subplans)
+    severity_counts = Counter(row.get("severity", "") or "unknown" for row in data_quality)
+    canonical = status.get("canonical_counts", {}) if isinstance(status.get("canonical_counts"), dict) else {}
+    node = node_common("admin_status", "admin_status", generated_at, site_mode)
+    node.update(
+        {
+            "source_integration_status": {
+                "source_table_count": status.get("source_table_count", 0),
+                "source_diff_file_count": status.get("source_diff_file_count", 0),
+                "manual_override_count": status.get("manual_override_count", 0),
+            },
+            "validation_counts": {
+                "errors": severity_counts.get("error", 0),
+                "warnings": severity_counts.get("warning", 0),
+                "info": severity_counts.get("info", 0),
+            },
+            "source_review_counts": {
+                "source_review_queue_rows": canonical.get("source_review_queue_rows", 0),
+                "open_source_review_rows": canonical.get("open_source_review_rows", 0),
+            },
+            "raw_source_counts": status.get("raw_aamc_files", {}),
+            "plan_status_counts": dict(sorted(plan_counts.items())),
+            "build_metadata": {
+                "generated_at": status.get("generated_at", generated_at),
+                "site_mode": site_mode,
+            },
+        }
+    )
+    return node
+
+
+def build_site_nodes(
+    schools: list[dict[str, object]],
+    curated_lists: list[dict[str, object]],
+    scoring_methodology: list[dict[str, str]],
+    status: dict[str, object],
+    project_subplans: list[dict[str, str]],
+    data_quality: list[dict[str, str]],
+    generated_at: str,
+    site_mode: str,
+) -> dict[str, dict[str, object]]:
+    sorted_schools = sorted(schools, key=lambda item: (item_school_name(item), item_school_id(item)))
+    ranked_schools = sorted(
+        sorted_schools,
+        key=lambda item: parse_number(
+            clean_node_value(
+                (item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}).get("decision_rank")
+                or (item.get("ranking", {}) if isinstance(item.get("ranking"), dict) else {}).get("overall_rank")
+            )
+        )
+        or 9999,
+    )
+    ranked_school_ids = [item_school_id(item) for item in ranked_schools if item_school_id(item)]
+    publish_safe = site_mode == SITE_MODE_PUBLISH_SAFE
+    nodes: dict[str, dict[str, object]] = {
+        "school_nodes": node_bundle(
+            "school",
+            [build_school_node(item, generated_at, site_mode) for item in sorted_schools],
+            generated_at,
+            site_mode,
+            ["data/school_master.csv"],
+        ),
+        "school_card_nodes": node_bundle(
+            "school_card",
+            [build_school_card_node(item, generated_at, site_mode) for item in sorted_schools],
+            generated_at,
+            site_mode,
+            ["data/school_master.csv", "outputs/calculated_rankings.csv", "data/normalized/admissions_stats.csv", "data/normalized/cost_and_debt.csv"],
+        ),
+        "school_profile_nodes": node_bundle(
+            "school_profile",
+            [build_school_profile_node(item, generated_at, site_mode) for item in sorted_schools],
+            generated_at,
+            site_mode,
+            ["data/school_master.csv", "outputs/calculated_rankings.csv", "data/normalized/admissions_stats.csv", "data/normalized/cost_and_debt.csv", "data/normalized/admissions_policies.csv", "data/normalized/letter_requirements.csv"],
+            contains_reviewer_state=not publish_safe,
+        ),
+        "ranking_card_nodes": node_bundle(
+            "ranking_card",
+            [build_ranking_card_node(item, generated_at, site_mode) for item in sorted_schools],
+            generated_at,
+            site_mode,
+            ["outputs/calculated_rankings.csv", "outputs/score_contributions.csv"],
+        ),
+        "compare_card_nodes": node_bundle(
+            "compare_card",
+            [build_compare_card_node(item, generated_at, site_mode) for item in sorted_schools],
+            generated_at,
+            site_mode,
+            ["data/school_master.csv", "outputs/calculated_rankings.csv", "data/normalized/admissions_stats.csv", "data/normalized/cost_and_debt.csv", "data/normalized/admissions_policies.csv", "data/normalized/letter_requirements.csv"],
+            contains_reviewer_state=not publish_safe,
+        ),
+        "list_nodes": node_bundle(
+            "list",
+            [build_list_node(row, generated_at, site_mode, ranked_school_ids) for row in curated_lists],
+            generated_at,
+            site_mode,
+            ["generated curated list definitions", "outputs/calculated_rankings.csv"],
+        ),
+        "methodology_nodes": node_bundle(
+            "methodology",
+            build_methodology_nodes(scoring_methodology, generated_at, site_mode),
+            generated_at,
+            site_mode,
+            ["outputs/scoring_methodology.csv"],
+        ),
+    }
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        nodes["admin_status_nodes"] = node_bundle(
+            "admin_status",
+            [build_admin_status_node(status, project_subplans, data_quality, generated_at, site_mode)],
+            generated_at,
+            site_mode,
+            ["outputs/data_quality_report.csv", "data/project_subplans.csv", "data/manual/source_review_queue.csv"],
+            contains_admin_data=True,
+        )
+    return nodes
+
+
 def suggested_next_action(
     partner_row: dict[str, str],
     source_row: dict[str, str],
@@ -919,6 +1692,16 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
         + list(letter_requirements)
     )
     groups = payload_groups(site_mode)
+    site_nodes = build_site_nodes(
+        schools,
+        curated_lists,
+        scoring_methodology,
+        status,
+        project_subplans,
+        data_quality,
+        clean_node_value(status.get("generated_at")),
+        site_mode,
+    )
     payload: dict[str, object] = {
         "meta": {
             "site_mode": site_mode,
@@ -945,6 +1728,7 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
             },
         },
         "schools": schools,
+        "site_nodes": site_nodes,
         "school_profiles": school_profiles,
         "school_master": [public_row(row) for row in school_master] if publish_safe else school_master,
         "calculated_rankings": [public_row(row) for row in rankings] if publish_safe else rankings,
@@ -995,6 +1779,12 @@ def write_site_json(payload: dict[str, object], site_mode: str) -> None:
     write_json(data_dir / "curated_lists.json", payload["curated_lists"])
     write_json(data_dir / "school_profiles.json", payload["school_profiles"])
     write_json(data_dir / "public_sources.json", payload["public_sources"])
+    site_nodes = payload.get("site_nodes", {})
+    if isinstance(site_nodes, dict):
+        node_keys = PRODUCT_PUBLIC_NODE_KEYS | (ADMIN_LOCAL_NODE_KEYS if site_mode == SITE_MODE_LOCAL_FULL else set())
+        for key in sorted(node_keys):
+            if key in site_nodes:
+                write_json(data_dir / "nodes" / f"{key}.json", site_nodes[key])
     write_json(data_dir / "site_payload.json", payload)
 
 
