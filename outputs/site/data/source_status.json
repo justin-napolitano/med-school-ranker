@@ -14,7 +14,7 @@
     "school_master_rows": 233,
     "source_review_queue_rows": 1034
   },
-  "generated_at": "2026-06-05T06:36:31+00:00",
+  "generated_at": "2026-06-05T07:10:14+00:00",
   "manual_override_count": 0,
   "mcat_gpa": {
     "agreement_counts": {
@@ -41,9 +41,9 @@
     }
   },
   "raw_aamc_files": {
-    "all": 20,
-    "html": 3,
-    "pdf": 17
+    "all": 0,
+    "html": 0,
+    "pdf": 0
   },
   "source_diff_file_count": 6,
   "source_plans": [
