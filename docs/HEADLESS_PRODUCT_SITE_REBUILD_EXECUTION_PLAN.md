@@ -94,6 +94,15 @@ Repeat this loop until all required phases pass verification:
 
 ## Phase Order
 
+### Phase 0: Guardrails and Readiness
+
+- Add or verify `local_full` and `publish_safe` site mode scaffolding.
+- Split route/payload planning into product-safe and admin-local sections before moving admin views.
+- Add school/list slug generation to the payload contract.
+- Add AAMC grid caveat text as reusable display copy.
+- Add curated-list field-readiness metadata so missing `ownership_type`, `region`, city, culture, scoring, or cost fields produce provisional list status.
+- Add tests for publish-safe exclusion and provisional curated-list behavior before deeper UI work.
+
 ### Phase 1: Route Shell
 
 - Default route becomes `#/rankings`.
@@ -155,6 +164,8 @@ Required checks:
 - `#/lists/:list_slug` resolves for every enabled curated list.
 - A curated list can be applied as filter, boost, or replacement scoring.
 - Publish-safe output excludes private/admin data.
+- Curated list field-readiness metadata prevents high-confidence claims from missing fields.
+- AAMC grid caveat text appears wherever AAMC rate/band context is exposed.
 - Site payload active school count matches `data/school_master.csv`.
 - AAMC grid has 110 rows when source integration has been run.
 - Puerto Rico remains excluded from active school data.
@@ -167,6 +178,7 @@ Stop and report a blocker only if:
 - tests fail for reasons unrelated to the current work and cannot be isolated;
 - the current tree has conflicting edits in the same files that make the next step unsafe;
 - publish-safe exclusion cannot be implemented without schema or product decisions not covered by these plans;
+- curated-list field readiness cannot be represented without adding schema that conflicts with existing scoring work;
 - required browser/screenshot tooling is unavailable for visual QA after implementation otherwise passes.
 
 ## Do Not Do

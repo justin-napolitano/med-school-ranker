@@ -9,6 +9,7 @@ Without a headless execution plan, a worker could read the product UX docs but s
 Resolution:
 
 - `docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md` defines the independent execution loop, phase order, commands, stop conditions, and handoff format.
+- The headless plan now includes Phase 0 guardrails before route/profile/list feature work.
 
 ### High: Publish-safe mode must remove payloads, not just hide admin routes
 
@@ -18,10 +19,11 @@ Resolution:
 
 - `05_admin_publish_safe.md` requires separate `local_full` and `publish_safe` payload behavior.
 - The headless plan requires publish-safe exclusion tests.
+- The executive plan now makes publish-safe scaffolding a Phase 0 prerequisite.
 
 Residual risk:
 
-- Implementation must actually split product-safe and admin-local payloads before any public publishing.
+- Implementation must actually split product-safe and admin-local payloads before any public publishing. This is now a first-slice requirement, not a late polish task.
 
 ### High: Curated lists depend on missing or immature fields
 
@@ -30,6 +32,7 @@ Lists such as best cities, best culture fit, best public, and best private requi
 Resolution:
 
 - `04_curated_lists_and_scoring_lenses.md` identifies the required field backlog and requires low-confidence labeling when facts are missing.
+- The curated-list plan now requires explicit readiness labels: `ready`, `partial`, or `provisional`.
 
 Residual risk:
 
@@ -96,11 +99,12 @@ Current status:
 
 If this plan is explicitly selected before Phase 2B scoring is complete, start with route shell and admin separation only:
 
-1. Add hash route state.
-2. Make `#/rankings` the default route.
-3. Move dashboard/status pages under `#/admin`.
-4. Add school slug generation.
-5. Add tests for default route, admin route, and profile route resolution.
-6. Run `uv run med-school-build-all` and `uv run pytest`.
+1. Add Phase 0 guardrails: site mode scaffold, payload groups, slug generation, AAMC caveat copy, and curated-list readiness metadata.
+2. Add hash route state.
+3. Make `#/rankings` the default route.
+4. Move dashboard/status pages under `#/admin`.
+5. Add school slug generation if not already completed in Phase 0.
+6. Add tests for publish-safe exclusion, readiness labels, default route, admin route, and profile route resolution.
+7. Run `uv run med-school-build-all` and `uv run pytest`.
 
 This slice creates the product/admin boundary before adding curated-list and profile complexity.

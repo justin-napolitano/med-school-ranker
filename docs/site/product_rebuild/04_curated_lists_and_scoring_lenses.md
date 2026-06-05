@@ -101,6 +101,36 @@ Curated lists need these fields to be reliable:
 
 Until ownership/culture/city facts are source-backed or manually reviewed, lists depending on those fields should show lower confidence.
 
+## Readiness Gate
+
+Before list pages make strong claims, each list must declare field readiness:
+
+```text
+required_fields
+available_fields
+missing_fields
+readiness_label
+confidence_label
+```
+
+Readiness labels:
+
+- `ready`: required fields are present and reviewed.
+- `partial`: some required fields are missing; list can render but must label missing-data caveats.
+- `provisional`: core fields are missing; list may be used as a scaffold only.
+
+Initial expected readiness:
+
+- Best Low Cost: partial, because MD cost data exists but DO tuition coverage is incomplete.
+- Best Admissions Realism: partial, because source-backed MCAT/GPA exists for a subset and AAMC grid is national context.
+- Best Public Schools: provisional until `ownership_type` is populated.
+- Best Private Schools: provisional until `ownership_type` is populated.
+- Best Cities: provisional until city/region/setting facts and user city preferences are populated.
+- Best Culture Fit: provisional until culture-fit evidence or partner-reviewed scores exist.
+- Best Partner Fit: provisional until partner inputs are intentionally populated.
+
+The UI must not call a provisional list "best" without showing the provisional status near the title. Acceptable copy: "Best Cities, provisional" or "City Fit Lens, missing city data."
+
 ## List Page UX
 
 Each list page should include:
@@ -127,13 +157,14 @@ The active lens should be visible in the rankings header.
 ## Implementation Steps
 
 1. Add curated-list and scoring-profile schemas.
-2. Add validation rules for list IDs, slugs, JSON filters, and profile references.
-3. Add default curated-list seed rows.
-4. Add site payload for lists and scoring profiles.
-5. Add `#/lists` index route.
-6. Add `#/lists/:slug` detail route.
-7. Add lens application to rankings.
-8. Add tests for list generation, route rendering, and missing-data behavior.
+2. Add field-readiness fields and validation rules.
+3. Add validation rules for list IDs, slugs, JSON filters, and profile references.
+4. Add default curated-list seed rows.
+5. Add site payload for lists and scoring profiles.
+6. Add `#/lists` index route.
+7. Add `#/lists/:slug` detail route.
+8. Add lens application to rankings.
+9. Add tests for list generation, route rendering, readiness labels, and missing-data behavior.
 
 ## Done Criteria
 
@@ -142,3 +173,4 @@ The active lens should be visible in the rankings header.
 - A list can be applied to rankings as filter, boost, or replacement scoring.
 - Every ranked list row explains why the school appears.
 - Low-confidence lists are labeled honestly.
+- Provisional lists do not present missing-field rankings as source-backed facts.
