@@ -4,6 +4,7 @@ import zipfile
 from pathlib import Path
 
 from med_school_ranker.paths import DATA, OUT, ROOT, SITE_DIR, UPLOAD_ZIP, WORKBOOK_XLSX
+from med_school_ranker.final_list import build_final_application_list
 from med_school_ranker.rankings import build_rankings
 from med_school_ranker.site import build_site
 from med_school_ranker.source_integration import build_source_integration
@@ -65,11 +66,13 @@ def main() -> None:
         raise SystemExit(1)
 
     rankings = build_rankings()
+    final_list = build_final_application_list()
     workbook = build_workbook()
     site = build_site()
     bundle = build_upload_zip()
     print(f"Wrote {len(source_outputs)} source integration file(s)")
     print(f"Wrote {rankings.relative_to(ROOT)}")
+    print(f"Wrote {final_list.relative_to(ROOT)}")
     print(f"Wrote {workbook.relative_to(ROOT)}")
     print(f"Wrote {site.relative_to(ROOT)}")
     print(f"Wrote {bundle.relative_to(ROOT)}")

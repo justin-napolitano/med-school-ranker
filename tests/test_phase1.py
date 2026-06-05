@@ -9,7 +9,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from med_school_ranker import bundle, rankings, reviewer_state, site as site_builder, validation, workbook
+from med_school_ranker import bundle, final_list, rankings, reviewer_state, site as site_builder, validation, workbook
 from med_school_ranker.paths import ROOT
 
 
@@ -163,7 +163,7 @@ def write_minimal_project(
     )
     write_csv(root / "data/manual/school_visibility.csv", validation.SCHOOL_VISIBILITY_COLUMNS, [])
     write_csv(root / "data/manual/school_dossiers.csv", validation.SCHOOL_DOSSIER_COLUMNS, [])
-    write_csv(root / "data/final_application_list.csv", ["school_id", "school_name", "why_kept", "why_cut"], [])
+    write_csv(root / "data/final_application_list.csv", final_list.FINAL_APPLICATION_LIST_COLUMNS, [])
     write_csv(
         root / "data/manual/source_match_overrides.csv",
         [
@@ -622,10 +622,14 @@ def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path,
 
     assert "#/dossiers" in public_routes
     assert "#/research" in public_routes
+    assert "#/application-list" in public_routes
     assert 'section id="dossiers"' in html_text
     assert 'section id="research"' in html_text
+    assert 'section id="applicationList"' in html_text
     assert "function renderDossiers()" in html_text
     assert "function renderResearch()" in html_text
+    assert "function renderApplicationList()" in html_text
+    assert "final_application_list_export.csv" in html_text
     assert "school_visibility_v1" in html_text
     assert "school_dossier_edits_v1" in html_text
     assert "school_visibility_export.csv" in html_text
@@ -805,6 +809,96 @@ def test_reviewer_state_imports_browser_exports(tmp_path):
     assert dossier_count == 1
     assert dossier_rows["school_one"]["notes"] == "Review note"
     assert dossier_rows["school_one"]["source"] == "browser_dossier_export"
+
+
+def test_final_application_list_builder_uses_persisted_review_state(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    write_csv(
+        tmp_path / "data/manual/school_visibility.csv",
+        validation.SCHOOL_VISIBILITY_COLUMNS,
+        [
+            {
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "visibility_state": "hidden",
+                "visibility_reason": "Not a current fit",
+                "hidden_at": "2026-06-05T12:00:00Z",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+                "notes": "",
+            }
+        ],
+    )
+    write_csv(
+        tmp_path / "data/manual/school_dossiers.csv",
+        validation.SCHOOL_DOSSIER_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "research_status": "ready_to_decide",
+                "interest_level": "high",
+                "four_year_happiness": "8",
+                "location_fit": "8",
+                "culture_fit": "7",
+                "regret_index": "6",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "applying",
+                "notes": "Strong fit after review.",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+            },
+            {
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "research_status": "ready_to_decide",
+                "interest_level": "medium",
+                "four_year_happiness": "5",
+                "location_fit": "5",
+                "culture_fit": "5",
+                "regret_index": "4",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "considering",
+                "notes": "Hidden school should not survive.",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+            },
+        ],
+    )
+    write_csv(
+        tmp_path / "data/final_application_list.csv",
+        final_list.FINAL_APPLICATION_LIST_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "why_kept": "Manual rationale.",
+                "assigned_research_owner": "Partner",
+                "primary_deadline": "2026-10-01",
+            }
+        ],
+    )
+
+    output = final_list.build_final_application_list(
+        master_path=tmp_path / "data/school_master.csv",
+        rankings_path=tmp_path / "outputs/calculated_rankings.csv",
+        visibility_path=tmp_path / "data/manual/school_visibility.csv",
+        dossiers_path=tmp_path / "data/manual/school_dossiers.csv",
+        output_path=tmp_path / "data/final_application_list.csv",
+    )
+
+    rows = read_dict_rows(output)
+    assert [row["school_id"] for row in rows] == ["school_one"]
+    assert rows[0]["status"] == "applying"
+    assert rows[0]["priority"] == "highest"
+    assert rows[0]["application_service"] == "AMCAS"
+    assert rows[0]["why_kept"] == "Manual rationale."
+    assert rows[0]["assigned_research_owner"] == "Partner"
+    assert rows[0]["primary_deadline"] == "2026-10-01"
 
 
 def test_school_profile_routes_resolve_for_every_active_school(tmp_path, monkeypatch):

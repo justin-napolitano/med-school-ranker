@@ -86,6 +86,7 @@ PUBLIC_ROUTES = [
     {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
     {"path": "#/dossiers", "label": "Dossiers", "route_type": "public"},
     {"path": "#/research", "label": "Research Queue", "route_type": "public"},
+    {"path": "#/application-list", "label": "Application List", "route_type": "public"},
     {"path": "#/lists", "label": "Curated Lists", "route_type": "public"},
     {"path": "#/compare", "label": "Compare", "route_type": "public"},
     {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
@@ -1032,6 +1033,7 @@ def render_site_html(payload: dict[str, object]) -> str:
     <section id="rankings" class="view"></section>
     <section id="dossiers" class="view"></section>
     <section id="research" class="view"></section>
+    <section id="applicationList" class="view"></section>
     <section id="lists" class="view"></section>
     <section id="listDetail" class="view"></section>
     <section id="compare" class="view"></section>
@@ -1167,6 +1169,7 @@ let filters = {
   rankings: {degree: '', state: '', tier: '', bucket: '', visibility: 'visible', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
   dossiers: {visibility: 'visible', status: '', missing: '', tier: '', rankBand: ''},
   research: {visibility: 'visible', status: '', tier: '', rankBand: '', action: ''},
+  applicationList: {visibility: 'visible', degree: 'MD', status: 'active', tier: '', rankBand: '', interest: '', priority: '', maxRank: ''},
   sources: {sourceMissing: ''},
   quality: {severity: ''},
 };
@@ -1180,10 +1183,13 @@ let dossierState = {};
 
 const VISIBILITY_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'visibility_state', 'visibility_reason', 'hidden_at', 'updated_at', 'source', 'notes'];
 const DOSSIER_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'research_status', 'interest_level', 'four_year_happiness', 'location_fit', 'culture_fit', 'regret_index', 'hard_no_flag', 'hard_no_reason', 'application_decision_status', 'notes'];
+const APPLICATION_EXPORT_HEADERS = ['school_id', 'school_name', 'degree_type', 'city', 'state', 'current_bucket', 'status', 'why_kept', 'why_cut', 'assigned_research_owner', 'next_action', 'priority', 'application_service', 'primary_deadline', 'secondary_fee', 'submitted_primary', 'secondary_received', 'secondary_submitted', 'interview_invite', 'decision', 'notes'];
 const DOSSIER_FIELDS = DOSSIER_EXPORT_HEADERS.filter(field => !['export_schema_version', 'exported_at', 'school_id', 'school_name'].includes(field));
 const RESEARCH_STATUSES = ['not_started', 'skimmed', 'needs_deep_research', 'researched', 'ready_to_decide', 'excluded', 'applied'];
 const INTEREST_LEVELS = ['high', 'medium', 'low', 'none'];
 const DECISION_STATUSES = ['considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted', 'rejected', 'withdrawn', 'not_applying'];
+const APPLICATION_ACTIVE_STATUSES = ['considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted'];
+const APPLICATION_EXCLUDED_STATUSES = ['rejected', 'withdrawn', 'not_applying'];
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
@@ -1250,6 +1256,7 @@ function parseRoute() {
   if (path === '/rankings') return {view: 'rankings', path};
   if (path === '/dossiers') return {view: 'dossiers', path};
   if (path === '/research') return {view: 'research', path};
+  if (path === '/application-list') return {view: 'applicationList', path};
   if (path === '/lists') return {view: 'lists', path};
   if (path.startsWith('/lists/')) return {view: 'listDetail', path, slug: path.split('/')[2] || ''};
   if (path === '/compare') return {view: 'compare', path};
@@ -2241,6 +2248,226 @@ function renderResearch() {
   $('downloadResearchVisibility')?.addEventListener('click', downloadVisibilityExport);
 }
 
+function applicationServiceFor(item) {
+  const degree = String(item.school?.degree_type || '').toUpperCase();
+  if (degree === 'MD') return 'AMCAS';
+  if (degree === 'DO') return 'AACOMAS';
+  return '';
+}
+
+function applicationStatusFor(item) {
+  return dossierFor(item).application_decision_status || 'unselected';
+}
+
+function applicationBucketFor(item) {
+  return item.ranking.application_bucket || item.ranking.suggested_funnel_bucket || item.derived.application_bucket || '';
+}
+
+function applicationRankFor(item) {
+  return parseScore(item.ranking.decision_rank || item.ranking.overall_rank) ?? 9999;
+}
+
+function isActiveApplicationStatus(status) {
+  return APPLICATION_ACTIVE_STATUSES.includes(status);
+}
+
+function applicationPriorityFor(item, status) {
+  const rank = applicationRankFor(item);
+  if (['accepted', 'interview', 'applied', 'applying'].includes(status)) return rank <= 40 ? 'highest' : 'high';
+  if (rank <= 25) return 'highest';
+  if (rank <= 40) return 'high';
+  if (rank <= 75) return 'medium';
+  return 'low';
+}
+
+function applicationNextActionFor(item, status) {
+  const researchStatus = researchStatusFor(item);
+  if (status === 'accepted') return 'Compare offer and revisit final fit';
+  if (status === 'waitlisted') return 'Track waitlist movement and update letters';
+  if (status === 'interview') return 'Prepare for interview';
+  if (status === 'applied') return 'Track secondary, interview, and decision updates';
+  if (status === 'applying') return 'Submit primary and secondary materials';
+  if (['researched', 'ready_to_decide'].includes(researchStatus)) return 'Decide whether to submit application';
+  if (status === 'unselected') return nextResearchAction(item);
+  return 'Research dossier and decide whether to apply';
+}
+
+function applicationWhyKept(item, status) {
+  const parts = [`Marked ${status === 'unselected' ? 'unselected' : status} in school dossier`];
+  const rank = item.ranking.decision_rank || item.ranking.overall_rank;
+  if (rank) parts.push(`Decision Rank ${rank}`);
+  const rankBand = item.ranking.rank_band || item.derived.rank_band;
+  if (rankBand) parts.push(`rank band ${rankBand}`);
+  const tier = item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier;
+  if (tier) parts.push(`admissions tier ${tier}`);
+  const bucket = applicationBucketFor(item);
+  if (bucket) parts.push(`bucket ${bucket}`);
+  const interest = dossierFor(item).interest_level;
+  if (interest) parts.push(`interest ${interest}`);
+  return parts.join('; ') + '.';
+}
+
+function applicationWhyCut(item, status) {
+  if (isSchoolHidden(item)) {
+    const reason = visibilityFor(item).visibility_reason;
+    return reason ? `Hidden: ${reason}` : 'Hidden from current review view.';
+  }
+  if (APPLICATION_EXCLUDED_STATUSES.includes(status)) return `Marked ${status} in school dossier.`;
+  if (truthy(dossierFor(item).hard_no_flag)) return dossierFor(item).hard_no_reason || 'Marked hard no in school dossier.';
+  return '';
+}
+
+function applicationListRows() {
+  const f = filters.applicationList;
+  return filteredSchools().map(item => {
+    const status = applicationStatusFor(item);
+    const priority = applicationPriorityFor(item, status);
+    return {
+      item,
+      status,
+      priority,
+      rank: applicationRankFor(item),
+      dossier: dossierFor(item),
+      hidden: isSchoolHidden(item),
+      bucket: applicationBucketFor(item),
+      service: applicationServiceFor(item),
+      nextAction: applicationNextActionFor(item, status),
+      whyKept: applicationWhyKept(item, status),
+      whyCut: applicationWhyCut(item, status),
+    };
+  }).filter(row => {
+    const item = row.item;
+    const active = isActiveApplicationStatus(row.status);
+    const excluded = APPLICATION_EXCLUDED_STATUSES.includes(row.status) || row.hidden || truthy(row.dossier.hard_no_flag);
+    if (f.visibility === 'visible' && row.hidden) return false;
+    if (f.visibility === 'hidden' && !row.hidden) return false;
+    if (f.degree && item.school.degree_type !== f.degree) return false;
+    if (f.status === 'active' && !active) return false;
+    if (f.status === 'excluded' && !excluded) return false;
+    if (f.status === 'unselected' && row.status !== 'unselected') return false;
+    if (!['', 'all', 'active', 'excluded', 'unselected'].includes(f.status) && row.status !== f.status) return false;
+    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
+    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
+    if (f.interest && row.dossier.interest_level !== f.interest) return false;
+    if (f.priority && row.priority !== f.priority) return false;
+    if (f.maxRank && row.rank > Number(f.maxRank)) return false;
+    return true;
+  }).sort((a, b) => {
+    const priorityOrder = {highest: 0, high: 1, medium: 2, low: 3};
+    const priorityDelta = (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9);
+    if (priorityDelta) return priorityDelta;
+    if (a.rank !== b.rank) return a.rank - b.rank;
+    return String(a.item.school.school_name).localeCompare(String(b.item.school.school_name));
+  });
+}
+
+function finalApplicationRecords() {
+  return applicationListRows().map(row => ({
+    school_id: schoolId(row.item),
+    school_name: row.item.school.school_name || '',
+    degree_type: row.item.school.degree_type || '',
+    city: row.item.school.city || '',
+    state: row.item.school.state || '',
+    current_bucket: row.bucket,
+    status: row.status === 'unselected' ? '' : row.status,
+    why_kept: isActiveApplicationStatus(row.status) ? row.whyKept : '',
+    why_cut: row.whyCut,
+    assigned_research_owner: '',
+    next_action: row.nextAction,
+    priority: row.priority,
+    application_service: row.service,
+    primary_deadline: '',
+    secondary_fee: '',
+    submitted_primary: '',
+    secondary_received: '',
+    secondary_submitted: '',
+    interview_invite: '',
+    decision: row.status === 'unselected' ? '' : row.status,
+    notes: row.dossier.notes || '',
+  }));
+}
+
+function downloadFinalApplicationList() {
+  downloadCsv('final_application_list_export.csv', APPLICATION_EXPORT_HEADERS, finalApplicationRecords());
+}
+
+function renderApplicationListFilters() {
+  const degrees = unique(rows('schools').map(s => s.school.degree_type)).sort();
+  const tiers = unique(rows('schools').map(s => s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)).sort();
+  const rankBands = unique(rows('schools').map(s => s.ranking.rank_band || s.derived.rank_band)).sort();
+  const f = filters.applicationList;
+  const decisionStatusOptions = DECISION_STATUSES
+    .map(value => `<option value="${value}" ${String(f.status || '') === value ? 'selected' : ''}>${labelize(value)}</option>`)
+    .join('');
+  return `<div class="filters">
+    <label>Visibility <select id="applicationVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
+    <label>Degree <select id="applicationDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
+    <label>Application Status <select id="applicationStatus"><option value="active" ${f.status === 'active' ? 'selected' : ''}>Active shortlist</option><option value="all" ${f.status === 'all' ? 'selected' : ''}>All</option><option value="unselected" ${f.status === 'unselected' ? 'selected' : ''}>Unselected</option><option value="excluded" ${f.status === 'excluded' ? 'selected' : ''}>Excluded/cut</option>${decisionStatusOptions}</select></label>
+    <label>Interest <select id="applicationInterest">${labeledOptions(INTEREST_LEVELS, f.interest)}</select></label>
+    <label>Priority <select id="applicationPriority"><option value="" ${f.priority === '' ? 'selected' : ''}>All</option><option value="highest" ${f.priority === 'highest' ? 'selected' : ''}>Highest</option><option value="high" ${f.priority === 'high' ? 'selected' : ''}>High</option><option value="medium" ${f.priority === 'medium' ? 'selected' : ''}>Medium</option><option value="low" ${f.priority === 'low' ? 'selected' : ''}>Low</option></select></label>
+    <label>Admissions Tier <select id="applicationTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
+    <label>Rank Band <select id="applicationRankBand"><option value="" ${f.rankBand === '' ? 'selected' : ''}>All</option>${optionTags(rankBands, f.rankBand)}</select></label>
+    <label>Max Rank <select id="applicationMaxRank"><option value="" ${f.maxRank === '' ? 'selected' : ''}>All</option><option value="25" ${f.maxRank === '25' ? 'selected' : ''}>Top 25</option><option value="35" ${f.maxRank === '35' ? 'selected' : ''}>Top 35</option><option value="50" ${f.maxRank === '50' ? 'selected' : ''}>Top 50</option><option value="75" ${f.maxRank === '75' ? 'selected' : ''}>Top 75</option></select></label>
+  </div>`;
+}
+
+function renderApplicationList() {
+  const tableRows = applicationListRows();
+  const activeCandidates = rows('schools').filter(item => !isSchoolHidden(item) && isActiveApplicationStatus(applicationStatusFor(item)));
+  const submittedCandidates = activeCandidates.filter(item => ['applying', 'applied', 'interview', 'accepted', 'waitlisted'].includes(applicationStatusFor(item)));
+  const excludedCandidates = rows('schools').filter(item => isSchoolHidden(item) || APPLICATION_EXCLUDED_STATUSES.includes(applicationStatusFor(item)));
+  $('applicationList').innerHTML = `<h2>Final Application List</h2>
+    <div class="caveat">This view is driven by persisted visibility and dossier state. Use dossier status to move schools into the active shortlist, then export the current view or run <code>uv run med-school-build-final-list</code> to write the repo CSV.</div>
+    <div class="grid">
+      ${metric('Active candidates', activeCandidates.length)}
+      ${metric('Target range', '25-35')}
+      ${metric('Submitted/applying', submittedCandidates.length)}
+      ${metric('Excluded/cut', excludedCandidates.length)}
+      ${metric('Rows in view', tableRows.length)}
+    </div>
+    <div class="inline-actions" style="margin-bottom:12px">
+      <button type="button" id="downloadFinalApplicationList">Download Current View CSV</button>
+      <button type="button" id="downloadApplicationDossiers">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadApplicationVisibility">Download Visibility CSV</button>
+    </div>
+    ${renderApplicationListFilters()}
+    ${table([
+      {key:'rank', label:'Decision Rank', render:r=>r.rank === 9999 ? 'Missing' : r.rank},
+      {key:'item.school.school_name', label:'School', render:r=>linkSchool(r.item)},
+      {key:'item.school.degree_type', label:'Degree', render:r=>badge(r.item.school.degree_type)},
+      {key:'item.school.city', label:'Location', render:r=>`${missing(r.item.school.city)}, ${missing(r.item.school.state)}`},
+      {key:'priority', label:'Priority', render:r=>badge(labelize(r.priority), r.priority === 'highest' || r.priority === 'high' ? 'good' : '')},
+      {key:'status', label:'Application Status', render:r=>badge(labelize(r.status), isActiveApplicationStatus(r.status) ? 'good' : APPLICATION_EXCLUDED_STATUSES.includes(r.status) ? 'warn' : '')},
+      {key:'research', label:'Research Status', render:r=>labelize(researchStatusFor(r.item))},
+      {key:'interest', label:'Interest', render:r=>labelize(r.dossier.interest_level)},
+      {key:'tier', label:'Admissions Tier', render:r=>missing(r.item.ranking.admissions_fit_tier || r.item.ranking.dynamic_tier || r.item.derived.admissions_fit_tier)},
+      {key:'rankBand', label:'Rank Band', render:r=>missing(r.item.ranking.rank_band || r.item.derived.rank_band)},
+      {key:'bucket', label:'Bucket', render:r=>missing(r.bucket)},
+      {key:'service', label:'Service', render:r=>missing(r.service)},
+      {key:'nextAction', label:'Next Action', render:r=>r.nextAction},
+      {key:'why', label:'Rationale', render:r=>isActiveApplicationStatus(r.status) ? r.whyKept : r.whyCut || 'No cut rationale'},
+      {key:'visibility', label:'Visibility', render:r=>visibilityBadge(r.item)},
+      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Open</a>${r.hidden ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(r.item))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(r.item))}">Hide</button>`}</div>`},
+    ], tableRows, 'applicationList')}`;
+  const bindings = {
+    applicationVisibility: 'visibility',
+    applicationDegree: 'degree',
+    applicationStatus: 'status',
+    applicationInterest: 'interest',
+    applicationPriority: 'priority',
+    applicationTier: 'tier',
+    applicationRankBand: 'rankBand',
+    applicationMaxRank: 'maxRank',
+  };
+  Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    filters.applicationList[key] = event.target.value;
+    renderApplicationList();
+  }));
+  $('downloadFinalApplicationList')?.addEventListener('click', downloadFinalApplicationList);
+  $('downloadApplicationDossiers')?.addEventListener('click', downloadDossierExport);
+  $('downloadApplicationVisibility')?.addEventListener('click', downloadVisibilityExport);
+}
+
 function renderProfile() {
   const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
   if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
@@ -2279,7 +2506,7 @@ function renderProfile() {
         {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
       ], item.data_quality || [], 'detailIssues')}
     </div>` : '';
-  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Dossiers</a><a href="#/research">Research Queue</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
+  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Dossiers</a><a href="#/research">Research Queue</a><a href="#/application-list">Application List</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
     <h2>${item.school.school_name}</h2>
     <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl} · ${visibilityBadge(item)}</p>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
@@ -2611,6 +2838,7 @@ function render() {
   if (currentRoute.view === 'rankings') renderRankings();
   if (currentRoute.view === 'dossiers') renderDossiers();
   if (currentRoute.view === 'research') renderResearch();
+  if (currentRoute.view === 'applicationList') renderApplicationList();
   if (currentRoute.view === 'lists') renderLists();
   if (currentRoute.view === 'listDetail') renderListDetail();
   if (currentRoute.view === 'compare') renderCompare();
