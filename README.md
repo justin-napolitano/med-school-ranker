@@ -8,6 +8,7 @@ Start here before expanding the seed data model:
 
 - [Executive Plan](docs/EXEC_PLAN.md)
 - [Headless Execution Plan: Phase 1](docs/HEADLESS_EXECUTION_PLAN.md)
+- [Static Review Site Executive Plan](docs/SITE_EXEC_PLAN.md)
 - [Data Architecture](docs/plans/data_architecture.md)
 - [School Universe](docs/plans/school_universe.md)
 - [Applicant Profiles](docs/plans/applicant_profiles.md)
@@ -21,6 +22,19 @@ Start here before expanding the seed data model:
 - [Workbook and Export](docs/plans/workbook_and_export.md)
 - [Validation and QA](docs/plans/validation_and_qa.md)
 - [Governance](docs/plans/governance.md)
+
+Static site page/menu/table plans:
+
+- [Navigation and Layout](docs/site/navigation_and_layout.md)
+- [Dashboard Page](docs/site/dashboard_page.md)
+- [Rankings Page](docs/site/rankings_page.md)
+- [School Detail Page](docs/site/school_detail_page.md)
+- [Partner Review Page](docs/site/partner_review_page.md)
+- [Admissions Sources Page](docs/site/admissions_sources_page.md)
+- [Data Quality Page](docs/site/data_quality_page.md)
+- [Plans Page](docs/site/plans_page.md)
+- [Tables and Filters](docs/site/tables_and_filters.md)
+- [Build and Deploy](docs/site/build_and_deploy.md)
 
 ## Files
 
