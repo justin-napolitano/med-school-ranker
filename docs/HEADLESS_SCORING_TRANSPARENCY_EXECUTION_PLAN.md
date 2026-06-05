@@ -21,6 +21,7 @@ Read these first:
 - `docs/scoring_transparency/01_score_model_contract.md`
 - `docs/scoring_transparency/02_score_contributions_output.md`
 - `docs/scoring_transparency/05_validation_privacy_and_qa.md`
+- `docs/scoring_transparency/06_methodology_and_personal_inputs.md`
 
 Read these only as implementation context:
 
@@ -41,6 +42,8 @@ Read these only as implementation context:
 - Do not remove existing output columns unless the plan explicitly says the migration is complete.
 - Do not treat missing values as zero.
 - Do not make `school_master.csv` the canonical home for imported facts.
+- Do not ask users to manually edit final ranks; subjective changes should happen through controlled input fields.
+- Do not put exact private applicant values into public outputs; use bands, deltas, and public methodology tables.
 - Prefer additive outputs first.
 
 ## Phase Order
@@ -52,7 +55,9 @@ Tasks:
 - Confirm clean or understandable git state.
 - Inspect current ranking headers and scorer formulas.
 - Add or refine field definitions for rank/explainability terminology if needed.
+- Add or refine deterministic methodology docs/tables for MCAT, GPA, OOS, cost, confidence, and subjective rubrics.
 - Decide exact output names before editing code:
+  - `outputs/scoring_methodology.csv`
   - `outputs/score_contributions.csv`
   - `outputs/private/score_contributions.private.csv`
   - `outputs/score_explanations.csv` if separate explanations are clearer than adding fields to rankings.
@@ -74,6 +79,7 @@ Tasks:
 - Include the columns specified in `02_score_contributions_output.md`.
 - Public build uses public/template profiles only.
 - Private build writes contribution rows only under `outputs/private/`.
+- Public/display values should prefer bands and deltas rather than exact private applicant values.
 - Add tests proving contribution math and private-output placement.
 
 Verification:
@@ -89,6 +95,7 @@ Expected result:
 - Public contribution CSV exists and contains no private profile rows.
 - Private contribution CSV exists only locally under ignored `outputs/private/` when private command is run.
 - Weighted contribution sums are explainable and stable.
+- Public methodology tables explain possible score outcomes without requiring a private profile.
 
 ### Phase 2: Rank Confidence and Explanation Fields
 
@@ -118,6 +125,7 @@ Tasks:
 - Add contribution/audit table data to the site payload.
 - Add workbook tab or section for scoring audit.
 - Show exact rank, rank band, confidence, and top contributors.
+- Add a methodology section/page covering deterministic formulas and dropdown rubrics.
 - Keep private contribution payloads out of public site builds.
 
 Verification:

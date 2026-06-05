@@ -58,6 +58,10 @@ component_column
 component_label
 raw_applicant_value
 raw_school_value
+applicant_value_band
+school_value_band
+delta_value
+delta_band
 raw_context
 normalized_score
 component_weight
@@ -92,6 +96,21 @@ component_coverage_status = present | missing | excluded | warning
 
 If future behavior changes to penalize missing data directly, the contribution output must make that explicit.
 
+## Display and Privacy Policy
+
+Use exact raw values only where they are public school facts or local private outputs.
+
+Public-safe contribution displays should prefer:
+
+- MCAT band instead of exact private MCAT.
+- GPA band instead of exact private GPA.
+- MCAT delta band instead of exact applicant-school delta when the applicant value is private.
+- GPA delta band instead of exact applicant-school delta when the applicant value is private.
+- Relationship labels such as `same_state`, `oos_policy_accepts`, `oos_policy_unknown`.
+- Cost percentile band instead of unnecessary exact personal debt assumptions.
+
+Even if applicant values are banded, a ranking generated from a real applicant profile is still private-derived. Keep real-profile ranking and contribution outputs under ignored private paths unless a separate publish-safe anonymization process is explicitly designed.
+
 ## Source Type Values
 
 Suggested controlled values:
@@ -120,6 +139,7 @@ Add tests for:
 - hard-no rows are visible but excluded;
 - private contribution output is ignored by upload bundle behavior;
 - public output does not contain private profile IDs.
+- public output does not expose exact private applicant values.
 
 ## Done Criteria
 

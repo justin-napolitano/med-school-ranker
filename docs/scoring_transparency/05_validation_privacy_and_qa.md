@@ -19,6 +19,7 @@ Add or preserve validation for:
 - missing values are marked missing instead of scored as zero;
 - hard-no rows are visible but excluded from rank;
 - AAMC grid context is labeled as national aggregate MD data.
+- public methodology tables contain possible score bands and formulas, not real applicant-specific rank order.
 
 ## Required Privacy Checks
 
@@ -27,6 +28,7 @@ Public outputs must not contain:
 - real applicant profile IDs;
 - real applicant names;
 - private GPA/MCAT profile rows;
+- exact private applicant MCAT/GPA values;
 - private partner notes;
 - private-derived rankings;
 - private-derived contribution rows.
@@ -86,6 +88,7 @@ Test cases should cover:
 - low coverage but high score;
 - public build with template profile;
 - private build with ignored local profile.
+- banded public methodology output with no exact private applicant values.
 
 ## Done Criteria
 

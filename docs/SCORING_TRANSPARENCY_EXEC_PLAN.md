@@ -42,6 +42,23 @@ Pain points:
 - Exact rank should be paired with rank bands and confidence labels.
 - Backward compatibility matters: keep existing output columns until downstream workbook/site usage is migrated.
 
+## Resolved Decisions
+
+- Main display label: use `Decision Rank`; keep `overall_rank` as a compatibility column.
+- Missing component data affects coverage and `rank_confidence`, not the numeric score, unless a future scenario explicitly adds a missing-data penalty.
+- Contribution math uses `present_components_only` as the default weight basis.
+- Rank confidence thresholds:
+  - `high`: score coverage is at least 80% and no severe warnings are present.
+  - `medium`: score coverage is 60-79%.
+  - `partial`: score coverage is 40-59%.
+  - `provisional`: score coverage is below 40% or the rank is mostly scaffolded.
+  - `excluded`: the row is visible but excluded by hard-no or manual exclusion.
+- First implementation target: score contribution outputs before rollup migration.
+- Methodology must be deterministic and documented in a reviewer-facing section.
+- Public methodology outputs should use bands, deltas, rubrics, and formula tables rather than exact private applicant values.
+- A ranking generated from a real applicant profile remains private-derived even when display values are banded, because the ordering itself reveals fit.
+- Personal/normative inputs should be controlled dropdown or rubric values; users should change subjective component inputs, not manually edit final ranks.
+
 ## Target User Experience
 
 For any ranked school, the reviewer should be able to answer:
@@ -77,6 +94,7 @@ data/
     private/
       applicant_profiles.local.csv
 outputs/
+  scoring_methodology.csv
   school_decision_rollup.csv
   calculated_rankings.csv
   score_contributions.csv
@@ -96,6 +114,7 @@ outputs/
 - Preserve `overall_rank` for compatibility, but expose a clearer label such as `decision_rank`.
 - Define component contribution columns and long-form contribution output.
 - Define rank confidence labels.
+- Define deterministic methodology tables and partner-facing dropdown/rubric inputs.
 - Define private/public output rules before generating any private explainability files.
 
 ### Phase 1: Score Contributions Output
@@ -103,7 +122,8 @@ outputs/
 - Generate `outputs/score_contributions.csv`.
 - Generate `outputs/private/score_contributions.private.csv` only for private runs.
 - Each row represents one component for one profile-school pair.
-- Include raw input, normalized score, weight, contribution, source, confidence, missing-data status, and formula note.
+- Include banded/display-safe input, normalized score, weight, contribution, source, confidence, missing-data status, and formula note.
+- Keep exact private applicant values out of public outputs; use applicant bands, school bands, and delta bands where possible.
 
 ### Phase 2: Rank Explanations
 
@@ -126,8 +146,9 @@ outputs/
 
 - Add a "Why This Rank?" detail panel.
 - Add a scoring audit table in the workbook.
-- Show raw input, score, weight, contribution, source, and confidence.
+- Show display-safe input bands, score, weight, contribution, source, and confidence.
 - Show exact rank and rank band together.
+- Add a Methodology section explaining formulas, score bands, confidence labels, and subjective dropdown rubrics.
 
 ### Phase 5: Deeper Normalization
 
@@ -142,6 +163,7 @@ outputs/
 - [Rollup Tables and Normalization](scoring_transparency/03_rollup_tables_and_normalization.md)
 - [Rank Explanation Views](scoring_transparency/04_rank_explanation_views.md)
 - [Validation, Privacy, and QA](scoring_transparency/05_validation_privacy_and_qa.md)
+- [Methodology and Personal Input Controls](scoring_transparency/06_methodology_and_personal_inputs.md)
 
 ## Headless Execution
 

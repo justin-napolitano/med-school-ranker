@@ -48,18 +48,34 @@ Suggested rank bands:
 
 Suggested rank confidence:
 
-- `high`: strong coverage and no severe source warnings.
-- `medium`: enough scored components for directional use, but some missing or low-quality fields.
-- `partial`: score exists but important components are missing.
-- `provisional`: rank is mostly scaffolded or driven by a narrow subset of fields.
+- `high`: score coverage is at least 80% and no severe warnings are present.
+- `medium`: score coverage is 60-79%.
+- `partial`: score coverage is 40-59%.
+- `provisional`: score coverage is below 40% or the rank is mostly scaffolded.
 - `excluded`: row is intentionally kept visible but removed from ranking.
+
+## Missing Data Policy
+
+Default behavior:
+
+- Missing components are excluded from the numeric weighted average.
+- Missing components lower score coverage and can lower `rank_confidence`.
+- Missing components are never silently scored as zero.
+- Any future missing-data penalty must be scenario-specific and explicitly labeled.
+
+Default contribution denominator:
+
+```text
+weight_basis = present_components_only
+```
 
 ## Formula Transparency
 
 Every score component should expose:
 
-- raw applicant input where relevant;
-- raw school input where relevant;
+- display-safe applicant input band where relevant;
+- display-safe school input band where relevant;
+- delta band or relationship where relevant;
 - formula note;
 - normalized component score;
 - score group;
@@ -75,6 +91,7 @@ Every score component should expose:
 - Add `decision_rank` or `decision_rank_label` as display fields rather than renaming columns immediately.
 - Keep existing scenario rank columns.
 - Add explanation fields additively.
+- Keep exact private applicant values out of public outputs.
 
 ## Done Criteria
 
