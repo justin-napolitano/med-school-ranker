@@ -868,9 +868,9 @@
     "status": "implemented"
   },
   {
-    "current_decision_summary": "Next executable slice: consolidate Rankings inline controls, Application List shortlist workflow, Compare side-by-side review, dossier-style profile actions, and plan-index cleanup before visual design.",
+    "current_decision_summary": "Rankings inline controls, Application List shortlist workflow, Compare side-by-side review, dossier-style profile actions, and plan-index cleanup are implemented.",
     "doc_path": "docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md",
-    "next_action": "Execute next before beginning the visual design pass.",
+    "next_action": "Begin the visual design pass with functional workflows in place.",
     "owner": "user",
     "phase": "phase_2d",
     "plan_id": "site_ux_slice_i_pre_design_functional_ux",
@@ -879,6 +879,6 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   }
 ]

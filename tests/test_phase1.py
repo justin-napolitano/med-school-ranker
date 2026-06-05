@@ -629,7 +629,13 @@ def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path,
     assert "function renderDossiers()" in html_text
     assert "function renderResearch()" in html_text
     assert "function renderApplicationList()" in html_text
+    assert "function renderCompare()" in html_text
     assert "final_application_list_export.csv" in html_text
+    assert "add-compare" in html_text
+    assert "Review Actions" in html_text
+    assert "downloadRankingDossiers" in html_text
+    assert "downloadProfileDossierState" in html_text
+    assert "Application decision" in html_text
     assert "school_visibility_v1" in html_text
     assert "school_dossier_edits_v1" in html_text
     assert "school_visibility_export.csv" in html_text
