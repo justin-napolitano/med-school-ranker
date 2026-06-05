@@ -8,6 +8,8 @@ Generate transparent, scenario-aware rankings from separate data layers while pr
 
 This plan covers weighted scores, scenario models, dynamic tiers, data completeness, score explanations, and ranking output generation.
 
+It does not cover a trained school-specific admissions probability model. That is future scope and is documented in [Predictive Admissions Model Future Scope](../PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md).
+
 ## Inputs
 
 - School master or generated aggregate.

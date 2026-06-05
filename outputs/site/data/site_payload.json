@@ -128348,7 +128348,7 @@
       "DO": 74,
       "MD": 159
     },
-    "generated_at": "2026-06-05T06:10:15+00:00",
+    "generated_at": "2026-06-05T06:21:20+00:00",
     "site_privacy_mode": "local_full"
   },
   "partner_inputs": [
@@ -131443,6 +131443,20 @@
       "reviewer": "tbd",
       "source_of_truth": "markdown",
       "status": "seeded"
+    },
+    {
+      "current_decision_summary": "School-specific predictive probability is intentionally out of current scope until calibrated training data, model governance, and privacy controls exist.",
+      "doc_path": "docs/PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md",
+      "next_action": "Do not implement now; revisit only after deterministic fit scoring and data readiness checklist are complete.",
+      "owner": "user",
+      "phase": "future",
+      "plan_id": "predictive_admissions_model_future",
+      "plan_name": "Predictive Admissions Model Future Scope",
+      "plan_type": "subplan",
+      "priority": "low",
+      "reviewer": "tbd",
+      "source_of_truth": "markdown",
+      "status": "future_scope"
     },
     {
       "current_decision_summary": "Urban preference, geography filters, demographic context, and partner-entered normative scores are first-class inputs.",
@@ -346871,7 +346885,7 @@
       "school_master_rows": 233,
       "source_review_queue_rows": 1034
     },
-    "generated_at": "2026-06-05T06:10:15+00:00",
+    "generated_at": "2026-06-05T06:21:20+00:00",
     "manual_override_count": 0,
     "mcat_gpa": {
       "agreement_counts": {

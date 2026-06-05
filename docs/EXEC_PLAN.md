@@ -33,6 +33,7 @@ The system should help answer questions like:
 - Do not treat all GPA/MCAT, cost, match, or culture data as equally reliable.
 - Do not scrape paid, login-gated, or restricted data sources unless rights and access are clear.
 - Do not collapse MD programs, DO schools, branch campuses, and additional locations without documenting the application-unit assumption.
+- Do not implement school-specific predictive admissions probability until the future-scope model plan and data readiness checklist are satisfied.
 
 ## Core Principles
 
@@ -90,6 +91,7 @@ The project is divided into subplans:
 - [Admissions Stats](plans/admissions_stats.md)
 - [Cost and Debt](plans/cost_and_debt.md)
 - [Admissions Probability](plans/admissions_probability.md)
+- [Predictive Admissions Model Future Scope](PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md)
 - [Attendance Preference](plans/attendance_preference.md)
 - [Residency and Match](plans/residency_and_match.md)
 - [Hidden Curriculum](plans/hidden_curriculum.md)

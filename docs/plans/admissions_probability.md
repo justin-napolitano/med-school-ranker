@@ -8,6 +8,8 @@ Model admissions realism separately from desire to attend, using applicant fit a
 
 This plan covers MCAT fit, GPA fit, OOS friendliness, mission fit, research fit, clinical fit, regional preference, and application risk.
 
+School-specific predictive probability is explicitly out of current scope. The future design is documented separately in [Predictive Admissions Model Future Scope](../PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md).
+
 ## Inputs
 
 - Applicant profile values.
@@ -61,7 +63,7 @@ Recommended fields:
 
 ## Open Questions
 
-- Should admissions tiers be based on 1-10 scores or estimated probability ranges?
+- Should admissions tiers be based on 1-10 fit scores or broad risk bands?
 - How should mission-heavy public schools be handled?
 - Should the system recommend minimum numbers of likely, target, reach, and dream applications?
 
