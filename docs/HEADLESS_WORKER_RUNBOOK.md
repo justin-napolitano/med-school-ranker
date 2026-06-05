@@ -7,8 +7,8 @@ This runbook tells a headless worker how to continue the project without relying
 The current next executable phase is:
 
 ```text
-Slice I: Pre-Design Functional UX Consolidation
-docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md
+Site Data Modeling Node Slice
+docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md
 ```
 
 ## Repository
@@ -42,13 +42,15 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 For the current next phase, read in this order:
 
-1. `docs/SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md`
-2. `docs/HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md`
-3. `docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md`
-4. `docs/site/product_rebuild/02_rankings_and_list_builder.md`
-5. `docs/site/product_rebuild/03_school_profiles.md`
-6. `docs/site/product_rebuild/06_visual_reporting_quality.md`
-7. `docs/EXEC_PLAN.md`
+1. `docs/SITE_DATA_MODELING_EXEC_PLAN.md`
+2. `docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md`
+3. `docs/site/data_modeling/01_canonical_domain_tables.md`
+4. `docs/site/data_modeling/02_json_node_contracts.md`
+5. `docs/site/data_modeling/03_card_surfaces_and_profile_sections.md`
+6. `docs/site/data_modeling/04_admin_public_payload_separation.md`
+7. `docs/site/data_modeling/06_validation_privacy_and_qa.md`
+8. `docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md`
+9. `docs/EXEC_PLAN.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -87,15 +89,15 @@ Use this prompt for the next headless execution session:
 ```text
 You are working in /Users/justin/repos/med-school-ranker.
 
-Execute docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md end to end.
+Execute docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md end to end.
 
 Follow docs/HEADLESS_WORKER_RUNBOOK.md first. Start from a clean status check and create a clean implementation branch if needed.
 
-This is a functional UX consolidation slice before visual design. Improve Rankings inline review controls, Application List shortlist workflow, Compare side-by-side review, and school profile dossier actions. Update the plan index so implemented UX slices and Slice I status are accurate.
+This is the first data-modeling implementation slice. Add generated JSON read-model nodes under outputs/site/data/nodes for school facts, school cards, school profiles, ranking cards, compare cards, list nodes, methodology nodes, and admin status nodes. Preserve current CSV/workbook/static-site outputs and keep site_payload.json backward compatible.
 
-Do not perform a full visual redesign. Do not scrape or download data. Do not change scoring formulas. Do not implement predictive admissions probability. Do not add backend persistence or private data to committed outputs. Keep browser state export/import compatible with the existing reviewer-state and final-list builder paths.
+Do not perform a visual redesign. Do not migrate to Postgres. Do not change scoring formulas. Do not implement predictive admissions probability. Do not scrape or download data. Do not add backend persistence. Do not commit private data or private-derived outputs.
 
-Regenerate workbook, site, upload zip, and data quality outputs. Add or update tests. Run uv run pytest, uv run med-school-validate, uv run med-school-build-all, uv run med-school-build-final-list, git diff --check, and the upload-bundle privacy check. Commit only public-safe code/docs/data/generated outputs.
+Add tests for node shape, stable IDs, counts, publish-safe exclusion, and private-path guardrails. Regenerate workbook, site, upload zip, and data quality outputs. Run uv run pytest, uv run med-school-validate, uv run med-school-build-all, git diff --check, and the upload-bundle privacy check. Commit only public-safe code/docs/data/generated outputs.
 ```
 
 ## Required Final Verification

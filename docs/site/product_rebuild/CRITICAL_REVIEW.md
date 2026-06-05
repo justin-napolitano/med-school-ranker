@@ -91,13 +91,13 @@ A headless worker can run independently if all are true:
 
 Current status:
 
-- Executable when explicitly selected, but recommended after Phase 2B deterministic scoring.
-- If run before scoring, start only with route shell/admin separation/publish-safe scaffolding.
-- Data-contract and generator-splitting work can proceed separately, but scoring-dependent product UX should not overclaim.
+- Executable when explicitly selected, but recommended after the site data-modeling/card-contract slice.
+- If run before node/card contracts exist, start only with route shell/admin separation/publish-safe scaffolding.
+- Data-contract and generator-splitting work should proceed first; product UX should not overclaim admin-shaped aggregate payloads as final product cards.
 
 ## Recommended First Worker Slice
 
-If this plan is explicitly selected before Phase 2B scoring is complete, start with route shell and admin separation only:
+If this plan is explicitly selected before data-modeling contracts are complete, start with route shell and admin separation only:
 
 1. Add Phase 0 guardrails: site mode scaffold, payload groups, slug generation, AAMC caveat copy, and curated-list readiness metadata.
 2. Add hash route state.

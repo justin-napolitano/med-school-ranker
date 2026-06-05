@@ -2,9 +2,9 @@
 
 ## Current Status
 
-This plan is executable when the product-site rebuild is explicitly selected. The recommended next project phase is currently Phase 2B deterministic scoring in `docs/HEADLESS_SCORING_EXECUTION_PLAN.md`.
+This plan is executable when the product-site rebuild is explicitly selected, but it should now run after the site data-modeling/card-contract work in `docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md`.
 
-If this product-site plan is run before Phase 2B scoring is complete, limit the first slice to route shell, admin separation, and publish-safe scaffolding. Do not build scoring-lens behavior that depends on applicant-fit fields that do not exist yet.
+If this product-site plan is run before JSON node/card contracts exist, limit the first slice to route shell, admin separation, and publish-safe scaffolding. Do not build polished card/profile UX that depends on node fields that do not exist yet.
 
 ## Objective
 
@@ -17,13 +17,13 @@ The worker should implement the applicant-facing site upgrade described in [Prod
 - Run non-interactively.
 - Read this plan first, then the product rebuild executive plan and child plans.
 - Work from the current repo state.
-- Do not wait for data-contract or generator-splitting work unless the current state is impossible to build.
+- Do not bypass the data-modeling contract for card/profile surfaces. If card/profile node fields are missing, implement only safe scaffolding or stop with a concrete gap report.
 - Prefer incremental implementation with passing tests after each major phase.
 - Keep generated outputs in sync when source CSVs or site payloads change.
 - Preserve private-data exclusions.
 - Do not introduce a backend.
 - Do not add GitHub Pages deployment wiring in this loop.
-- Do not treat placeholder rankings as final applicant-fit product data.
+- Do not treat admin-shaped aggregate payloads as final product card contracts.
 
 ## Starting Commands
 

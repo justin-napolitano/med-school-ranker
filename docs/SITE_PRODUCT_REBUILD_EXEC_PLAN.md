@@ -1,5 +1,7 @@
 # Product Site Rebuild Executive Plan
 
+Note: this plan should now run after the data-modeling/card-contract work in [Site Data Modeling Executive Plan](SITE_DATA_MODELING_EXEC_PLAN.md). Scoring exists, but the product redesign should consume route-ready JSON nodes and card/profile contracts rather than the current admin-heavy aggregate payload.
+
 ## Objective
 
 Rebuild the static review site into a product-grade medical school ranking and reporting experience that is useful to applicants, not just project administrators.
@@ -20,7 +22,7 @@ The target quality bar is "USNews-worthy or better" in usefulness: strong tables
 - `outputs/site/index.html` is generated as a static local site with embedded JSON.
 - The current payload includes school master rows, rankings, admissions stats, AAMC MCAT/GPA grid context, cost/debt, policies, LOR rows, source-review queues, and quality reports.
 - The current UI is useful but admin-heavy. Dashboard and status views are prominent, while applicant-facing ranking/list/profile workflows need to become the first-class experience.
-- Another worker may continue stabilizing the payload contract and splitting the current monolithic site generator. This plan should not block on that work.
+- Another worker may continue stabilizing the payload contract and splitting the current monolithic site generator. Product UI polish should wait for the site data-modeling node contracts, but admin route maintenance and bug fixes can continue independently.
 
 ## Product Decisions
 
