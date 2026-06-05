@@ -122,6 +122,8 @@ Missing facts should remain missing. Curated list eligibility should degrade gra
 - [Admin Separation and Publish-Safe Mode](site/product_rebuild/05_admin_publish_safe.md)
 - [Visual Design and Reporting Quality](site/product_rebuild/06_visual_reporting_quality.md)
 - [Critical Review](site/product_rebuild/CRITICAL_REVIEW.md)
+- [Site UX Review and School Research Workflow Plan](SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md)
+- [Headless Site UX Review Execution Plan](HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md)
 
 ## Implementation Sequence
 
@@ -178,6 +180,14 @@ Missing facts should remain missing. Curated list eligibility should degrade gra
 - Add screenshot/smoke QA for desktop and mobile.
 - Keep the site scannable and data-dense rather than marketing-like.
 
+### Phase G: Applicant Research Workflow
+
+- Add reversible school visibility controls so schools can be hidden from the working view without deleting them.
+- Add hidden-school review and CSV export.
+- Add school dossier/profile index for every school.
+- Add dossier pages/panels with precomputed values, source-backed facts, missing research prompts, and local editable research fields.
+- Add browser-local CSV exports for dossier edits and visibility decisions.
+
 ## Verification
 
 Required commands:
@@ -199,6 +209,9 @@ Additional site checks:
 - Publish-safe mode excludes private/admin payloads.
 - Field-readiness metadata is present for curated lists and missing fields are not overclaimed.
 - AAMC grid is labeled as national aggregate MD data, not school-specific probability.
+- Screenshot QA artifacts exist for desktop and mobile views when visual QA is run.
+- Schools can be hidden, restored, reviewed, and exported without deleting source rows.
+- School dossiers distinguish precomputed source-backed facts from user-entered research.
 
 ## Definition of Done
 
@@ -210,3 +223,4 @@ The product-site rebuild is done when:
 - school profiles are polished, source-backed, and decision-useful;
 - the site passes build/test verification;
 - publish-safe mode can be generated without leaking local/private/admin data.
+- applicants can use the site as a research workflow, not only as a ranking table.

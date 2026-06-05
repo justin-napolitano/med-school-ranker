@@ -106,6 +106,8 @@ The project is divided into subplans:
 - [Governance](plans/governance.md)
 - [Product Site Rebuild Executive Plan](SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
 - [Headless Product Site Rebuild Execution Plan](HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
+- [Site UX Review and School Research Workflow Plan](SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md)
+- [Headless Site UX Review Execution Plan](HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md)
 
 ## Milestones
 
@@ -180,6 +182,15 @@ Execution details live in [Scoring Transparency and Rollup Executive Plan](SCORI
 
 - Rebuild the static site around applicant-facing rankings, curated lists, school profiles, scoring lenses, and publish-safe mode.
 - Keep this downstream of Phase 2B scoring so the site is not polished around placeholder rank fields.
+
+### Milestone 10: Site UX Review and School Research Workflow
+
+- Run screenshot-based desktop/mobile visual QA.
+- Improve obvious layout and clarity issues based on screenshots.
+- Add reversible hide/restore controls for schools in the working view.
+- Add school dossier/profile pages for every school.
+- Add structured local research fields, missing-information prompts, and CSV exports.
+- Keep source-backed facts, generated scores, and user-entered research clearly separated.
 
 ## Risk Register
 
