@@ -44,6 +44,11 @@ Read these only as implementation context:
 - Do not make `school_master.csv` the canonical home for imported facts.
 - Do not ask users to manually edit final ranks; subjective changes should happen through controlled input fields.
 - Do not put exact private applicant values into public outputs; use bands, deltas, and public methodology tables.
+- For the proof of concept, build interactive reranking for MD schools only.
+- Use AAMC MCAT/GPA bands as selector values.
+- Keep weights fixed in the proof of concept.
+- Keep selector changes in browser memory/local state with CSV export; do not implement writeback.
+- Do not add tie-breaking work in the proof of concept.
 - Prefer additive outputs first.
 
 ## Phase Order
@@ -116,6 +121,35 @@ Verification:
 uv run med-school-build-rankings
 uv run pytest
 ```
+
+### Phase 2.5: MD-Only Interactive Selector Proof Of Concept
+
+Tasks:
+
+- Add a site control surface for AAMC MCAT band, AAMC GPA band, applicant state, and global assumptions.
+- Use precomputed methodology/lookup data to recalculate Decision Rank in the browser.
+- Scope the proof of concept to active MD schools.
+- Exclude DO schools from this interactive reranking view and label the scope clearly.
+- Keep weights fixed.
+- Keep selector state local to the browser.
+- Add CSV download/export for selected profile assumptions and current ranked MD output.
+- Label selected-profile rankings as local/private-derived.
+- Do not implement writeback to local CSV files.
+- Do not implement tie-breaking beyond existing shared-rank behavior.
+
+Verification:
+
+```bash
+uv run med-school-build-site
+uv run pytest
+```
+
+If browser tooling is available, smoke-test that:
+
+- selectors change displayed Decision Rank values;
+- the ranked table remains MD-only;
+- CSV export includes selected assumptions and ranked MD rows;
+- no exact private applicant values appear in public site payloads.
 
 ### Phase 3: Site and Workbook Audit Views
 

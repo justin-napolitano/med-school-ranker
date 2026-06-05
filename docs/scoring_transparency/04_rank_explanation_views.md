@@ -20,6 +20,17 @@ Required display:
 - missing or low-confidence drivers;
 - scenario rank comparison;
 - contribution table with raw value, score, weight, contribution, source, and confidence.
+- local/private-derived badge when selector values are active.
+
+First proof-of-concept interactive controls:
+
+- AAMC MCAT band selector.
+- AAMC GPA band selector.
+- Applicant state selector.
+- Active MD schools only.
+- Browser-local state only.
+- CSV export/download for selected assumptions and current ranked MD rows.
+- No tie-breaking beyond existing shared-rank behavior.
 
 The table should be filterable by:
 

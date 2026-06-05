@@ -32,6 +32,29 @@ The methodology should cover:
 - Missing data behavior.
 - Subjective dropdown/rubric definitions.
 
+## Proof-Of-Concept Scope
+
+The first interactive selector should answer:
+
+```text
+All things being equal, how do active MD schools rank for this selected AAMC band profile and state?
+```
+
+Scope:
+
+- active MD schools only;
+- AAMC MCAT bands;
+- AAMC GPA bands;
+- applicant state selector;
+- fixed weights;
+- local browser state;
+- CSV download/export;
+- no server writeback;
+- no tie-breaking work beyond existing shared-rank behavior;
+- no DO school reranking until DO-specific context and caveats are designed.
+
+DO schools should remain in the broader project, but they are excluded from this proof-of-concept reranking view because the AAMC grid is MD applicant context.
+
 ## Precomputed Score Bands
 
 Where practical, precompute possible deterministic scores as reference rows.
@@ -72,6 +95,25 @@ Preferred control:
 - rubric text visible beside the input.
 
 Users should update these inputs, then regenerate ranks. They should not directly edit `overall_rank`, `decision_rank`, or generated score outputs.
+
+## Selector Order
+
+Implement selectors in this order:
+
+1. Global all-else-equal selectors:
+   - AAMC MCAT band.
+   - AAMC GPA band.
+   - Applicant state.
+   - Global cost sensitivity if needed later.
+2. School-specific subjective dropdowns:
+   - four-year happiness;
+   - location fit;
+   - culture fit;
+   - regret index;
+   - hard-no flag/reason.
+3. Weight controls only after the fixed-weight proof of concept is trusted.
+
+The first release should not try to solve all 200 school-specific personal scores at once.
 
 ## Suggested 1-10 Rubric
 

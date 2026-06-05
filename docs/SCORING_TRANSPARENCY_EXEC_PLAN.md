@@ -58,6 +58,13 @@ Pain points:
 - Public methodology outputs should use bands, deltas, rubrics, and formula tables rather than exact private applicant values.
 - A ranking generated from a real applicant profile remains private-derived even when display values are banded, because the ordering itself reveals fit.
 - Personal/normative inputs should be controlled dropdown or rubric values; users should change subjective component inputs, not manually edit final ranks.
+- Proof of concept is MD-only. Exclude DO schools from the first interactive selector/reranking view because AAMC bands are MD applicant context.
+- Use AAMC MCAT/GPA bands as the profile selector granularity.
+- First interactive question: all things being equal, how do MD schools rank for this banded profile and state?
+- Add school-specific subjective dropdowns after the all-else-equal profile view is working.
+- Selector changes are local browser state first; support CSV download/export. Do not implement writeback yet.
+- Keep weights fixed in the proof of concept.
+- Do not add tie-breaking work in the proof of concept; let users review tied/near-tied schools.
 
 ## Target User Experience
 
@@ -125,6 +132,18 @@ outputs/
 - Include banded/display-safe input, normalized score, weight, contribution, source, confidence, missing-data status, and formula note.
 - Keep exact private applicant values out of public outputs; use applicant bands, school bands, and delta bands where possible.
 
+### Phase 1.5: MD-Only Interactive Selector Proof Of Concept
+
+- Add browser-local selectors for AAMC MCAT band, AAMC GPA band, applicant state, and a small set of global assumptions.
+- Recalculate Decision Rank in the browser for active MD schools only.
+- Keep DO rows out of the proof-of-concept selector/reranking view.
+- Keep weights fixed.
+- Store selector changes in browser memory/local state only.
+- Add CSV download/export for selected profile assumptions and current ranked MD output.
+- Label selected-profile rankings as local/private-derived.
+- Do not implement server-side writeback.
+- Do not implement tie-breaking beyond the existing rank behavior.
+
 ### Phase 2: Rank Explanations
 
 - Generate concise explanation fields:
@@ -149,6 +168,7 @@ outputs/
 - Show display-safe input bands, score, weight, contribution, source, and confidence.
 - Show exact rank and rank band together.
 - Add a Methodology section explaining formulas, score bands, confidence labels, and subjective dropdown rubrics.
+- In the first site pass, prioritize the MD-only interactive selector and CSV export over full workbook parity.
 
 ### Phase 5: Deeper Normalization
 
