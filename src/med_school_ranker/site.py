@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import html
 import json
+import os
+import re
 import shutil
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -58,6 +61,174 @@ JSON_OUTPUTS = {
     "cost_and_debt_review": COST_AND_DEBT_REVIEW_CSV,
     "project_subplans": ROOT / "data/project_subplans.csv",
 }
+
+SITE_MODE_LOCAL_FULL = "local_full"
+SITE_MODE_PUBLISH_SAFE = "publish_safe"
+SITE_MODES = {SITE_MODE_LOCAL_FULL, SITE_MODE_PUBLISH_SAFE}
+DEFAULT_ROUTE = "#/rankings"
+
+AAMC_GRID_CAVEAT = (
+    "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical "
+    "school applicants and acceptees; it is not a school-specific acceptance probability."
+)
+
+PUBLIC_ROUTES = [
+    {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
+    {"path": "#/lists", "label": "Curated Lists", "route_type": "public"},
+    {"path": "#/compare", "label": "Compare", "route_type": "public"},
+    {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
+    {"path": "#/sources", "label": "Sources", "route_type": "public"},
+]
+
+ADMIN_ROUTES = [
+    {"path": "#/admin", "label": "Admin Overview", "route_type": "admin"},
+    {"path": "#/admin/sources", "label": "Source Review", "route_type": "admin"},
+    {"path": "#/admin/data-quality", "label": "Data Quality", "route_type": "admin"},
+    {"path": "#/admin/build", "label": "Build Status", "route_type": "admin"},
+]
+
+PRODUCT_PUBLIC_JSON_KEYS = {
+    "school_master",
+    "calculated_rankings",
+    "aamc_mcat_gpa_grid",
+    "admissions_stats",
+    "cost_and_debt",
+    "admissions_policies",
+    "letter_requirements",
+}
+
+PRODUCT_LOCAL_KEYS = {"applicant_profiles", "partner_inputs"}
+ADMIN_LOCAL_KEYS = {
+    "source_status",
+    "source_match_overrides",
+    "source_review_queue",
+    "admissions_source_queue",
+    "data_quality_report",
+    "source_integration_report",
+    "source_match_review",
+    "admissions_stats_candidates",
+    "admissions_stats_conflicts",
+    "cost_and_debt_candidates",
+    "cost_and_debt_review",
+    "project_subplans",
+}
+
+PUBLIC_STRIPPED_FIELDS = {
+    "hard_no_flag",
+    "hard_no_reason",
+    "source_snapshot_path",
+    "source_table",
+    "source_row_number",
+    "source_table_row_number",
+    "source_file",
+    "raw_file",
+    "local_file_path",
+    "review_notes",
+    "reviewed_by",
+}
+
+CURATED_LIST_DEFINITIONS = [
+    {
+        "list_id": "best_cities",
+        "title": "Best Cities",
+        "category": "location",
+        "description": "Location-focused scaffold for schools in stronger city and setting contexts.",
+        "route_enabled": "TRUE",
+        "required_fields": ["city", "region", "city_fit_score"],
+        "core_fields": ["region", "city_fit_score"],
+        "scoring_profile_id": "city_fit",
+        "default_apply_mode": "scoring_boost",
+        "methodology_notes": "Requires sourced region, setting, and city-fit facts before strong claims.",
+        "missing_data_behavior": "Label provisional until city and region facts are populated.",
+    },
+    {
+        "list_id": "best_culture_fit",
+        "title": "Best Culture Fit",
+        "category": "culture",
+        "description": "Culture-fit scaffold for future evidence-backed culture and fit scores.",
+        "route_enabled": "TRUE",
+        "required_fields": ["culture_fit_score", "culture_evidence_status"],
+        "core_fields": ["culture_fit_score", "culture_evidence_status"],
+        "scoring_profile_id": "culture_fit",
+        "default_apply_mode": "scoring_boost",
+        "methodology_notes": "Requires explicit culture evidence or reviewed fit scores.",
+        "missing_data_behavior": "Label provisional until culture evidence exists.",
+    },
+    {
+        "list_id": "best_public_schools",
+        "title": "Best Public Schools",
+        "category": "ownership",
+        "description": "Public-school scaffold for future ownership-backed filtering and scoring.",
+        "route_enabled": "TRUE",
+        "required_fields": ["ownership_type"],
+        "core_fields": ["ownership_type"],
+        "scoring_profile_id": "public_value",
+        "default_apply_mode": "filter_only",
+        "methodology_notes": "Requires source-backed ownership type before public/private claims.",
+        "missing_data_behavior": "Label provisional until ownership type is populated.",
+    },
+    {
+        "list_id": "best_private_schools",
+        "title": "Best Private Schools",
+        "category": "ownership",
+        "description": "Private-school scaffold for future ownership-backed filtering and scoring.",
+        "route_enabled": "TRUE",
+        "required_fields": ["ownership_type"],
+        "core_fields": ["ownership_type"],
+        "scoring_profile_id": "private_value",
+        "default_apply_mode": "filter_only",
+        "methodology_notes": "Requires source-backed ownership type before public/private claims.",
+        "missing_data_behavior": "Label provisional until ownership type is populated.",
+    },
+    {
+        "list_id": "best_low_cost",
+        "title": "Best Low Cost",
+        "category": "cost",
+        "description": "Cost-focused list using available tuition and cost-of-attendance rows.",
+        "route_enabled": "TRUE",
+        "required_fields": [
+            "in_state_tuition_fees_insurance",
+            "out_state_tuition_fees_insurance",
+            "estimated_coa_in_state",
+            "estimated_coa_out_state",
+        ],
+        "core_fields": ["in_state_tuition_fees_insurance", "out_state_tuition_fees_insurance"],
+        "scoring_profile_id": "low_cost",
+        "default_apply_mode": "replace_scoring",
+        "methodology_notes": "MD AAMC cost rows are partially available; DO tuition coverage is incomplete.",
+        "missing_data_behavior": "Render with partial status and missing-cost caveats.",
+    },
+    {
+        "list_id": "best_admissions_realism",
+        "title": "Best Admissions Realism",
+        "category": "admissions",
+        "description": "Admissions-realism list using published MCAT/GPA stats where source-backed.",
+        "route_enabled": "TRUE",
+        "required_fields": [
+            "published_mcat_average",
+            "published_gpa_average",
+            "aamc_acceptance_rate_band",
+        ],
+        "core_fields": ["published_mcat_average", "published_gpa_average"],
+        "scoring_profile_id": "admissions_realism",
+        "default_apply_mode": "scoring_boost",
+        "methodology_notes": AAMC_GRID_CAVEAT,
+        "missing_data_behavior": "Render with partial status and national-grid caveats.",
+    },
+    {
+        "list_id": "best_partner_fit",
+        "title": "Best Partner Fit",
+        "category": "local_review",
+        "description": "Local-only partner-fit scaffold for reviewed partner preferences.",
+        "route_enabled": "TRUE",
+        "required_fields": ["partner_fit_score", "partner_review_status"],
+        "core_fields": ["partner_fit_score", "partner_review_status"],
+        "scoring_profile_id": "partner_fit",
+        "default_apply_mode": "scoring_boost",
+        "methodology_notes": "Requires intentionally populated partner inputs before use.",
+        "missing_data_behavior": "Label provisional until partner inputs are intentionally populated.",
+    },
+]
 
 SOURCE_TABLE_DIR = ROOT / "data/source_tables"
 SOURCE_DIFFS_DIR = OUT / "source_diffs"
@@ -206,6 +377,173 @@ def csv_file_count(path: Path) -> int:
     return len(list(path.glob("*.csv"))) if path.exists() else 0
 
 
+def validate_site_mode(site_mode: str) -> str:
+    if site_mode not in SITE_MODES:
+        raise ValueError(f"Unsupported site mode '{site_mode}'. Expected one of: {', '.join(sorted(SITE_MODES))}.")
+    return site_mode
+
+
+def slugify(value: str, fallback: str = "item") -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", str(value or "").strip().lower()).strip("-")
+    return slug or fallback
+
+
+def unique_slug(base: str, used_slugs: set[str]) -> str:
+    slug = base
+    suffix = 2
+    while slug in used_slugs:
+        slug = f"{base}-{suffix}"
+        suffix += 1
+    used_slugs.add(slug)
+    return slug
+
+
+def school_slug_for(row: dict[str, str], used_slugs: set[str]) -> str:
+    existing = row.get("school_slug", "").strip() or row.get("profile_slug", "").strip()
+    base = slugify(existing or row.get("school_name") or row.get("school_id"), row.get("school_id", "school"))
+    return unique_slug(base, used_slugs)
+
+
+def list_slug_for(row: dict[str, object], used_slugs: set[str]) -> str:
+    existing = str(row.get("slug", "") or "").strip()
+    base = slugify(existing or str(row.get("title", "") or row.get("list_id", "")), str(row.get("list_id", "list")))
+    return unique_slug(base, used_slugs)
+
+
+def public_row(row: dict[str, str]) -> dict[str, str]:
+    return {key: value for key, value in row.items() if key not in PUBLIC_STRIPPED_FIELDS}
+
+
+def payload_groups(site_mode: str) -> dict[str, list[str]]:
+    groups = {
+        "product_public": [
+            "meta",
+            "routes",
+            "copy",
+            "schools",
+            "school_profiles",
+            "school_master",
+            "calculated_rankings",
+            "curated_lists",
+            "aamc_mcat_gpa_grid",
+            "admissions_stats",
+            "cost_and_debt",
+            "admissions_policies",
+            "letter_requirements",
+            "public_sources",
+        ],
+        "product_local": sorted(PRODUCT_LOCAL_KEYS),
+        "admin_local": sorted(ADMIN_LOCAL_KEYS),
+    }
+    if site_mode == SITE_MODE_PUBLISH_SAFE:
+        return {"product_public": groups["product_public"], "product_local": [], "admin_local": []}
+    return groups
+
+
+def field_counts_by_school(
+    school_master: list[dict[str, str]],
+    rankings: list[dict[str, str]],
+    admissions_stats: list[dict[str, str]],
+    cost_and_debt: list[dict[str, str]],
+    partner_inputs: list[dict[str, str]],
+) -> dict[str, int]:
+    counts: dict[str, set[str]] = defaultdict(set)
+    row_groups = [school_master, rankings, admissions_stats, cost_and_debt, partner_inputs]
+    for rows in row_groups:
+        for row in rows:
+            school_id = row.get("school_id", "").strip()
+            if not school_id:
+                continue
+            for field, value in row.items():
+                if str(value or "").strip():
+                    counts[field].add(school_id)
+    return {field: len(school_ids) for field, school_ids in counts.items()}
+
+
+def curated_list_readiness(
+    definition: dict[str, object],
+    field_counts: dict[str, int],
+    active_school_count: int,
+) -> dict[str, object]:
+    required_fields = [str(field) for field in definition["required_fields"]]
+    core_fields = [str(field) for field in definition.get("core_fields", required_fields)]
+    available_fields = [field for field in required_fields if field_counts.get(field, 0) > 0]
+    missing_fields = [field for field in required_fields if field not in available_fields]
+    core_missing = [field for field in core_fields if field not in available_fields]
+    coverage_by_field = {
+        field: {
+            "populated_school_count": field_counts.get(field, 0),
+            "active_school_count": active_school_count,
+        }
+        for field in required_fields
+    }
+    coverage_ratio = (
+        min((field_counts.get(field, 0) / active_school_count for field in required_fields), default=0)
+        if active_school_count
+        else 0
+    )
+    if core_missing:
+        readiness_label = "provisional"
+    elif missing_fields or coverage_ratio < 0.95:
+        readiness_label = "partial"
+    else:
+        readiness_label = "ready"
+    confidence_label = {
+        "ready": "source-backed",
+        "partial": "partial coverage",
+        "provisional": "provisional",
+    }[readiness_label]
+    return {
+        "required_fields": required_fields,
+        "available_fields": available_fields,
+        "missing_fields": missing_fields,
+        "core_missing_fields": core_missing,
+        "coverage_by_field": coverage_by_field,
+        "readiness_label": readiness_label,
+        "confidence_label": confidence_label,
+    }
+
+
+def build_curated_lists(
+    school_master: list[dict[str, str]],
+    rankings: list[dict[str, str]],
+    admissions_stats: list[dict[str, str]],
+    cost_and_debt: list[dict[str, str]],
+    partner_inputs: list[dict[str, str]],
+) -> list[dict[str, object]]:
+    field_counts = field_counts_by_school(school_master, rankings, admissions_stats, cost_and_debt, partner_inputs)
+    used_slugs: set[str] = set()
+    active_school_count = len(school_master)
+    curated_lists = []
+    for definition in CURATED_LIST_DEFINITIONS:
+        row = dict(definition)
+        row["slug"] = list_slug_for(row, used_slugs)
+        row["route"] = f"#/lists/{row['slug']}"
+        row.update(curated_list_readiness(row, field_counts, active_school_count))
+        curated_lists.append(row)
+    return curated_lists
+
+
+def public_source_summary(rows: Iterable[dict[str, str]]) -> list[dict[str, str]]:
+    sources: dict[tuple[str, str], dict[str, str]] = {}
+    for row in rows:
+        name = row.get("source_name", "").strip()
+        url = row.get("source_url", "").strip()
+        if not name and not url:
+            continue
+        key = (name, url)
+        sources.setdefault(
+            key,
+            {
+                "source_name": name or "Source",
+                "source_url": url,
+                "row_count": "0",
+            },
+        )
+        sources[key]["row_count"] = str(int(sources[key]["row_count"]) + 1)
+    return sorted(sources.values(), key=lambda row: (row["source_name"], row["source_url"]))
+
+
 def source_table_counts() -> dict[str, int]:
     if not SOURCE_TABLE_DIR.exists():
         return {}
@@ -349,8 +687,10 @@ def suggested_next_action(
     return "review ranking"
 
 
-def build_site_payload() -> dict[str, object]:
-    school_master = read_csv(MASTER_CSV)
+def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, object]:
+    site_mode = validate_site_mode(site_mode)
+    publish_safe = site_mode == SITE_MODE_PUBLISH_SAFE
+    school_master_raw = read_csv(MASTER_CSV)
     rankings = read_csv(RANKINGS_CSV)
     applicant_profiles = read_csv(APPLICANT_PROFILES_CSV)
     admissions_stats = read_csv(ADMISSIONS_STATS_CSV)
@@ -364,6 +704,42 @@ def build_site_payload() -> dict[str, object]:
     source_queue = read_csv(ADMISSIONS_SOURCE_QUEUE_CSV)
     data_quality = read_csv(DATA_QUALITY_REPORT_CSV)
     project_subplans = read_csv(ROOT / "data/project_subplans.csv")
+
+    used_school_slugs: set[str] = set()
+    school_slugs_by_id: dict[str, str] = {}
+    school_master = []
+    for row in school_master_raw:
+        school = dict(row)
+        school_id = school.get("school_id", "").strip()
+        school_slug = school_slug_for(school, used_school_slugs)
+        school["school_slug"] = school_slug
+        school["profile_route"] = f"#/schools/{school_slug}"
+        if school_id:
+            school_slugs_by_id[school_id] = school_slug
+        school_master.append(school)
+
+    def with_school_route(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+        routed_rows = []
+        for row in rows:
+            routed = dict(row)
+            school_id = routed.get("school_id", "").strip()
+            school_slug = school_slugs_by_id.get(school_id, "")
+            if school_slug:
+                routed["school_slug"] = school_slug
+                routed["profile_route"] = f"#/schools/{school_slug}"
+            routed_rows.append(routed)
+        return routed_rows
+
+    rankings = with_school_route(rankings)
+    admissions_stats = with_school_route(admissions_stats)
+    cost_and_debt = with_school_route(cost_and_debt)
+    admissions_policies = with_school_route(admissions_policies)
+    letter_requirements = with_school_route(letter_requirements)
+    partner_inputs = with_school_route(partner_inputs)
+    source_match_overrides = with_school_route(source_match_overrides)
+    source_review_queue = with_school_route(source_review_queue)
+    source_queue = with_school_route(source_queue)
+    data_quality = with_school_route(data_quality)
 
     rankings_by_school = first_by_school(rankings)
     partner_by_school = first_by_school(partner_inputs)
@@ -400,38 +776,32 @@ def build_site_payload() -> dict[str, object]:
         review_rows = source_reviews_by_school.get(school_id, [])
         warning_count = warning_counts[school_id]
         error_count = error_counts[school_id]
-        schools.append(
-            {
-                "school": school,
-                "ranking": rankings_by_school.get(school_id, {}),
-                "partner_input": partner_row,
-                "admissions_source": source_row,
-                "admissions_stats": stats_row,
-                "cost_and_debt": cost_row,
-                "admissions_policies": policy_rows,
-                "letter_requirements": letter_rows,
-                "source_review_queue": review_rows,
-                "data_quality": issues_by_school.get(school_id, []),
-                "derived": {
+        school_slug = school.get("school_slug", "")
+        ranking_row = rankings_by_school.get(school_id, {})
+        derived = {
+            "admissions_stats_present": "yes" if has_admissions_stats(stats_row) else "no",
+            "admissions_fit_tier": ranking_row.get("admissions_fit_tier", "").strip() or ranking_row.get("dynamic_tier", "").strip() or "missing",
+            "application_bucket": ranking_row.get("application_bucket", "").strip() or ranking_row.get("suggested_funnel_bucket", "").strip() or "missing",
+            "admissions_data_quality_band": ranking_row.get("stats_data_quality_band", "").strip() or stats_row.get("data_quality_band", "").strip() or "missing",
+            "published_mcat_band": ranking_row.get("published_mcat_band", "").strip() or stats_row.get("published_mcat_band", "").strip() or "missing",
+            "published_gpa_band": ranking_row.get("published_gpa_band", "").strip() or stats_row.get("published_gpa_band", "").strip() or "missing",
+            "aamc_acceptance_rate_band": stats_row.get("aamc_acceptance_rate_band", "").strip() or "missing",
+            "cost_basis_present": "yes" if ranking_row.get("cost_basis", "").strip() else "no",
+            "cost_data_present": "yes" if cost_row else "no",
+            "missing_score_status": "missing" if ranking_row.get("missing_score_inputs", "").strip() else "complete",
+            "score_warning_status": "warning" if ranking_row.get("score_warnings", "").strip() else "clear",
+            "admissions_policy_count": len(policy_rows),
+            "letter_requirement_count": len(letter_rows),
+        }
+        if not publish_safe:
+            derived.update(
+                {
                     "warning_count": warning_count,
                     "error_count": error_count,
                     "partner_input_status": "present" if has_partner_input(partner_row) else "missing",
                     "partner_notes_indicator": "yes" if partner_row.get("partner_notes", "").strip() else "no",
-                    "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")) or is_truthy(rankings_by_school.get(school_id, {}).get("hard_no_flag")),
-                    "excluded_from_rank": is_truthy(rankings_by_school.get(school_id, {}).get("excluded_from_rank")),
-                    "admissions_stats_present": "yes" if has_admissions_stats(stats_row) else "no",
-                    "admissions_fit_tier": rankings_by_school.get(school_id, {}).get("admissions_fit_tier", "").strip() or "missing",
-                    "application_bucket": rankings_by_school.get(school_id, {}).get("application_bucket", "").strip() or "missing",
-                    "admissions_data_quality_band": rankings_by_school.get(school_id, {}).get("stats_data_quality_band", "").strip() or stats_row.get("data_quality_band", "").strip() or "missing",
-                    "published_mcat_band": rankings_by_school.get(school_id, {}).get("published_mcat_band", "").strip() or stats_row.get("published_mcat_band", "").strip() or "missing",
-                    "published_gpa_band": rankings_by_school.get(school_id, {}).get("published_gpa_band", "").strip() or stats_row.get("published_gpa_band", "").strip() or "missing",
-                    "aamc_acceptance_rate_band": stats_row.get("aamc_acceptance_rate_band", "").strip() or "missing",
-                    "cost_data_present": "yes" if cost_row else "no",
-                    "cost_basis_present": "yes" if rankings_by_school.get(school_id, {}).get("cost_basis", "").strip() else "no",
-                    "missing_score_status": "missing" if rankings_by_school.get(school_id, {}).get("missing_score_inputs", "").strip() else "complete",
-                    "score_warning_status": "warning" if rankings_by_school.get(school_id, {}).get("score_warnings", "").strip() else "clear",
-                    "admissions_policy_count": len(policy_rows),
-                    "letter_requirement_count": len(letter_rows),
+                    "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")) or is_truthy(ranking_row.get("hard_no_flag")),
+                    "excluded_from_rank": is_truthy(ranking_row.get("excluded_from_rank")),
                     "source_review_count": len(review_rows),
                     "source_queue_status": source_row.get("source_status", "").strip() or "not_started",
                     "suggested_next_action": suggested_next_action(
@@ -440,9 +810,29 @@ def build_site_payload() -> dict[str, object]:
                         warning_count,
                         error_count,
                     ),
-                },
-            }
-        )
+                }
+            )
+        item = {
+            "school_slug": school_slug,
+            "profile_route": f"#/schools/{school_slug}",
+            "school": public_row(school) if publish_safe else school,
+            "ranking": public_row(ranking_row) if publish_safe else ranking_row,
+            "admissions_stats": public_row(stats_row) if publish_safe else stats_row,
+            "cost_and_debt": public_row(cost_row) if publish_safe else cost_row,
+            "admissions_policies": [public_row(row) for row in policy_rows] if publish_safe else policy_rows,
+            "letter_requirements": [public_row(row) for row in letter_rows] if publish_safe else letter_rows,
+            "derived": derived,
+        }
+        if not publish_safe:
+            item.update(
+                {
+                    "partner_input": partner_row,
+                    "admissions_source": source_row,
+                    "source_review_queue": review_rows,
+                    "data_quality": issues_by_school.get(school_id, []),
+                }
+            )
+        schools.append(item)
 
     degree_counts = Counter(row.get("degree_type", "Unknown") or "Unknown" for row in school_master)
     status = source_status(
@@ -455,43 +845,114 @@ def build_site_payload() -> dict[str, object]:
         project_subplans,
         source_match_overrides,
     )
-    return {
+    curated_lists = build_curated_lists(
+        school_master,
+        rankings,
+        admissions_stats,
+        cost_and_debt,
+        partner_inputs if not publish_safe else [],
+    )
+    school_profiles = [
+        {
+            "school_id": school.get("school_id", ""),
+            "school_slug": school.get("school_slug", ""),
+            "route": school.get("profile_route", ""),
+            "school_name": school.get("school_name", ""),
+            "degree_type": school.get("degree_type", ""),
+            "city": school.get("city", ""),
+            "state": school.get("state", ""),
+        }
+        for school in school_master
+    ]
+    public_sources = public_source_summary(
+        list(school_master)
+        + list(aamc_mcat_gpa_grid)
+        + list(admissions_stats)
+        + list(cost_and_debt)
+        + list(admissions_policies)
+        + list(letter_requirements)
+    )
+    groups = payload_groups(site_mode)
+    payload: dict[str, object] = {
         "meta": {
-            "site_privacy_mode": "local_full",
+            "site_mode": site_mode,
+            "site_privacy_mode": site_mode,
             "active_school_count": len(school_master),
             "degree_counts": dict(sorted(degree_counts.items())),
             "generated_at": status["generated_at"],
+            "default_route": DEFAULT_ROUTE,
+            "payload_groups": groups,
         },
-        "source_status": status,
+        "routes": {
+            "default": DEFAULT_ROUTE,
+            "public": PUBLIC_ROUTES,
+            "admin": ADMIN_ROUTES if site_mode == SITE_MODE_LOCAL_FULL else [],
+            "school_profile_pattern": "#/schools/:school_slug",
+            "curated_list_pattern": "#/lists/:list_slug",
+        },
+        "copy": {
+            "aamc_grid_caveat": AAMC_GRID_CAVEAT,
+            "curated_list_readiness": {
+                "ready": "Required fields are populated at high coverage and can support source-backed list claims.",
+                "partial": "Some required fields are present, but coverage gaps require visible caveats.",
+                "provisional": "Core fields are missing; the list is a scaffold and should not make strong claims.",
+            },
+        },
         "schools": schools,
-        "school_master": school_master,
-        "calculated_rankings": rankings,
-        "applicant_profiles": applicant_profiles,
-        "aamc_mcat_gpa_grid": aamc_mcat_gpa_grid,
-        "admissions_stats": admissions_stats,
-        "cost_and_debt": cost_and_debt,
-        "admissions_policies": admissions_policies,
-        "letter_requirements": letter_requirements,
-        "partner_inputs": partner_inputs,
-        "source_match_overrides": source_match_overrides,
-        "source_review_queue": source_review_queue,
-        "admissions_source_queue": source_queue,
-        "data_quality_report": data_quality,
-        "project_subplans": project_subplans,
+        "school_profiles": school_profiles,
+        "school_master": [public_row(row) for row in school_master] if publish_safe else school_master,
+        "calculated_rankings": [public_row(row) for row in rankings] if publish_safe else rankings,
+        "curated_lists": curated_lists,
+        "aamc_mcat_gpa_grid": [public_row(row) for row in aamc_mcat_gpa_grid] if publish_safe else aamc_mcat_gpa_grid,
+        "admissions_stats": [public_row(row) for row in admissions_stats] if publish_safe else admissions_stats,
+        "cost_and_debt": [public_row(row) for row in cost_and_debt] if publish_safe else cost_and_debt,
+        "admissions_policies": [public_row(row) for row in admissions_policies] if publish_safe else admissions_policies,
+        "letter_requirements": [public_row(row) for row in letter_requirements] if publish_safe else letter_requirements,
+        "public_sources": public_sources,
     }
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        payload.update(
+            {
+                "source_status": status,
+                "applicant_profiles": applicant_profiles,
+                "partner_inputs": partner_inputs,
+                "source_match_overrides": source_match_overrides,
+                "source_review_queue": source_review_queue,
+                "admissions_source_queue": source_queue,
+                "data_quality_report": data_quality,
+                "project_subplans": project_subplans,
+            }
+        )
+    return payload
 
 
-def write_site_json(payload: dict[str, object]) -> None:
+def write_site_json(payload: dict[str, object], site_mode: str) -> None:
     data_dir = SITE_DIR / "data"
-    for key, source in JSON_OUTPUTS.items():
-        write_json(data_dir / f"{key}.json", read_csv(source))
-    write_json(data_dir / "source_status.json", payload["source_status"])
+    json_keys = set(PRODUCT_PUBLIC_JSON_KEYS)
+    if site_mode == SITE_MODE_LOCAL_FULL:
+        json_keys.update(JSON_OUTPUTS)
+        json_keys.add("source_status")
+    for key in sorted(json_keys):
+        if key in payload:
+            write_json(data_dir / f"{key}.json", payload[key])
+        elif key in JSON_OUTPUTS:
+            write_json(data_dir / f"{key}.json", read_csv(JSON_OUTPUTS[key]))
+    write_json(data_dir / "curated_lists.json", payload["curated_lists"])
+    write_json(data_dir / "school_profiles.json", payload["school_profiles"])
+    write_json(data_dir / "public_sources.json", payload["public_sources"])
     write_json(data_dir / "site_payload.json", payload)
 
 
 def render_site_html(payload: dict[str, object]) -> str:
     payload_json = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
     escaped_payload = html.escape(payload_json, quote=False)
+    public_nav = "\n    ".join(
+        f'<a data-route="{route["path"]}" href="{route["path"]}">{html.escape(route["label"])}</a>'
+        for route in payload["routes"]["public"]  # type: ignore[index]
+    )
+    admin_nav = ""
+    if payload["routes"]["admin"]:  # type: ignore[index]
+        admin_nav = '\n    <a data-route="#/admin" href="#/admin" class="admin-link">Admin</a>'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -504,31 +965,24 @@ def render_site_html(payload: dict[str, object]) -> str:
   <header class="app-header">
     <div>
       <h1>Medical School Ranker</h1>
-      <p id="summaryText">Static local review dashboard</p>
+      <p id="summaryText">Applicant-facing rankings and school profiles</p>
     </div>
     <label class="search-label">Search
       <input id="globalSearch" type="search" placeholder="School, city, state">
     </label>
   </header>
-  <nav class="tabs" aria-label="Primary views">
-    <button data-view="dashboard" class="active">Dashboard</button>
-    <button data-view="status">Status</button>
-    <button data-view="rankings">Rankings</button>
-    <button data-view="detail">School Detail</button>
-    <button data-view="partner">Partner Review</button>
-    <button data-view="sources">Admissions Sources</button>
-    <button data-view="quality">Data Quality</button>
-    <button data-view="plans">Plans</button>
+  <nav class="tabs" aria-label="Primary routes">
+    {public_nav}{admin_nav}
   </nav>
   <main>
-    <section id="dashboard" class="view active"></section>
-    <section id="status" class="view"></section>
     <section id="rankings" class="view"></section>
-    <section id="detail" class="view"></section>
-    <section id="partner" class="view"></section>
+    <section id="lists" class="view"></section>
+    <section id="listDetail" class="view"></section>
+    <section id="compare" class="view"></section>
+    <section id="profile" class="view"></section>
+    <section id="methodology" class="view"></section>
     <section id="sources" class="view"></section>
-    <section id="quality" class="view"></section>
-    <section id="plans" class="view"></section>
+    <section id="admin" class="view"></section>
   </main>
   <script type="application/json" id="site-data">{escaped_payload}</script>
   <script>{JS}</script>
@@ -585,7 +1039,7 @@ input, select {
   background: #eaf0f6;
   overflow-x: auto;
 }
-button {
+.tabs a, button {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 10px;
@@ -593,8 +1047,9 @@ button {
   color: #203347;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
 }
-button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tabs a.active, button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 main { padding: 18px; }
 .view { display: none; }
 .view.active { display: block; }
@@ -616,8 +1071,14 @@ tr:hover td { background: #f8fbfd; }
 .badge.warn { color: var(--warn); border-color: #e6c773; background: #fff8df; }
 .badge.error { color: var(--error); border-color: #e7aaaa; background: #fff0f0; }
 .badge.good { color: #17623a; border-color: #a9d6bb; background: #eefaf2; }
+.badge.provisional { color: var(--warn); border-color: #e6c773; background: #fff8df; }
+.badge.partial { color: #7b5a00; border-color: #d8bf72; background: #fff9e8; }
+.badge.ready { color: #17623a; border-color: #a9d6bb; background: #eefaf2; }
 .muted { color: var(--muted); }
 .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.route-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.route-tools a { color: var(--accent); }
+.caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; }
 a { color: var(--accent); }
 @media (max-width: 760px) {
   .app-header { display: grid; align-items: stretch; }
@@ -629,17 +1090,24 @@ a { color: var(--accent); }
 
 JS = r"""
 const payload = JSON.parse(document.getElementById('site-data').textContent);
-let currentView = 'dashboard';
-let selectedSchoolId = payload.schools[0]?.school?.school_id || '';
+const DEFAULT_ROUTE = payload.routes?.default || '#/rankings';
+const ADMIN_ENABLED = (payload.routes?.admin || []).length > 0;
+let currentRoute = {view: 'rankings', path: '/rankings'};
 let sortState = {};
 let filters = {
   rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
   sources: {sourceMissing: ''},
+  quality: {severity: ''},
 };
 
 const $ = (id) => document.getElementById(id);
+const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
-const truthy = (value) => ['1','true','t','yes','y'].includes(String(value || '').toLowerCase());
+const routeHash = (path) => path.startsWith('#') ? path : `#${path}`;
+const routePath = (hash) => {
+  const cleaned = String(hash || '').replace(/^#/, '') || '/rankings';
+  return cleaned === '/' ? '/rankings' : cleaned;
+};
 const schoolText = (item) => [
   item.school.school_name,
   item.school.city,
@@ -649,19 +1117,41 @@ const schoolText = (item) => [
 
 function filteredSchools() {
   const query = $('globalSearch').value.trim().toLowerCase();
-  return payload.schools.filter(item => !query || schoolText(item).includes(query));
+  return rows('schools').filter(item => !query || schoolText(item).includes(query));
 }
 
-function setView(view) {
-  currentView = view;
-  document.querySelectorAll('.tabs button').forEach(btn => btn.classList.toggle('active', btn.dataset.view === view));
+function parseRoute() {
+  const path = routePath(window.location.hash);
+  if (path.startsWith('/admin') && !ADMIN_ENABLED) return {view: 'rankings', path: '/rankings'};
+  if (path === '/rankings') return {view: 'rankings', path};
+  if (path === '/lists') return {view: 'lists', path};
+  if (path.startsWith('/lists/')) return {view: 'listDetail', path, slug: path.split('/')[2] || ''};
+  if (path === '/compare') return {view: 'compare', path};
+  if (path.startsWith('/schools/')) return {view: 'profile', path, slug: path.split('/')[2] || ''};
+  if (path === '/methodology') return {view: 'methodology', path};
+  if (path === '/sources') return {view: 'sources', path};
+  if (path.startsWith('/admin')) return {view: 'admin', path};
+  return {view: 'rankings', path: '/rankings'};
+}
+
+function ensureDefaultRoute() {
+  if (!window.location.hash || window.location.hash === '#' || window.location.hash === '#/') {
+    window.location.replace(DEFAULT_ROUTE);
+    return true;
+  }
+  return false;
+}
+
+function setActiveSection(view) {
   document.querySelectorAll('.view').forEach(section => section.classList.toggle('active', section.id === view));
-  render();
 }
 
-function openDetail(schoolId) {
-  selectedSchoolId = schoolId;
-  setView('detail');
+function setActiveNav(path) {
+  document.querySelectorAll('.tabs a').forEach(link => {
+    const navPath = routePath(link.dataset.route);
+    const active = navPath === path || (path.startsWith('/lists/') && navPath === '/lists') || (path.startsWith('/admin') && navPath === '/admin');
+    link.classList.toggle('active', active);
+  });
 }
 
 function metric(label, value) {
@@ -669,12 +1159,12 @@ function metric(label, value) {
 }
 
 function badge(text, type='') {
-  return `<span class="badge ${type}">${text}</span>`;
+  return `<span class="badge ${type}">${missing(text)}</span>`;
 }
 
-function table(headers, rows, key) {
+function table(headers, tableRows, key) {
   const head = headers.map(h => `<th data-key="${h.key}" data-table="${key}">${h.label}</th>`).join('');
-  const body = rows.map(row => `<tr>${headers.map(h => `<td>${h.render(row)}</td>`).join('')}</tr>`).join('');
+  const body = tableRows.map(row => `<tr>${headers.map(h => `<td>${h.render(row)}</td>`).join('')}</tr>`).join('');
   return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body || `<tr><td colspan="${headers.length}">No rows</td></tr>`}</tbody></table></div>`;
 }
 
@@ -682,9 +1172,9 @@ function optionTags(values, selected) {
   return values.map(value => `<option value="${value}" ${value === selected ? 'selected' : ''}>${value}</option>`).join('');
 }
 
-function sortRows(rows, tableKey, defaultKey, defaultDir='asc') {
+function sortRows(tableRows, tableKey, defaultKey, defaultDir='asc') {
   const state = sortState[tableKey] || {key: defaultKey, dir: defaultDir};
-  return [...rows].sort((a, b) => {
+  return [...tableRows].sort((a, b) => {
     const av = String(state.get ? state.get(a) : state.key.split('.').reduce((o,k)=>o?.[k], a) || '').toLowerCase();
     const bv = String(state.get ? state.get(b) : state.key.split('.').reduce((o,k)=>o?.[k], b) || '').toLowerCase();
     const an = Number(av), bn = Number(bv);
@@ -693,12 +1183,323 @@ function sortRows(rows, tableKey, defaultKey, defaultDir='asc') {
   });
 }
 
-function warningCount() { return payload.data_quality_report.filter(i => i.severity === 'warning').length; }
-function errorCount() { return payload.data_quality_report.filter(i => i.severity === 'error').length; }
+function dataQualityRows() { return rows('data_quality_report'); }
+function warningCount() { return dataQualityRows().filter(i => i.severity === 'warning').length; }
+function errorCount() { return dataQualityRows().filter(i => i.severity === 'error').length; }
 function sourceStatus() { return payload.source_status || {}; }
 function sourceMetric(path, fallback='0') {
   const value = path.split('.').reduce((obj, key) => obj?.[key], sourceStatus());
   return value === undefined || value === null || value === '' ? fallback : value;
+}
+
+function linkSchool(item) {
+  return `<a href="${item.profile_route || `#/schools/${item.school_slug}`}">${item.school.school_name}</a>`;
+}
+
+function readinessBadge(list) {
+  return badge(list.readiness_label, list.readiness_label);
+}
+
+function rankingFilters() {
+  const degrees = [...new Set(rows('schools').map(s => s.school.degree_type).filter(Boolean))].sort();
+  const states = [...new Set(rows('schools').map(s => s.school.state).filter(Boolean))].sort();
+  const tiers = [...new Set(rows('schools').map(s => s.derived.admissions_fit_tier).filter(Boolean))].sort();
+  const buckets = [...new Set(rows('schools').map(s => s.derived.application_bucket).filter(Boolean))].sort();
+  const qualities = [...new Set(rows('schools').map(s => s.derived.admissions_data_quality_band).filter(Boolean))].sort();
+  const mcatBands = [...new Set(rows('schools').map(s => s.derived.published_mcat_band).filter(Boolean))].sort();
+  const gpaBands = [...new Set(rows('schools').map(s => s.derived.published_gpa_band).filter(Boolean))].sort();
+  const aamcRateBands = [...new Set(rows('schools').map(s => s.derived.aamc_acceptance_rate_band).filter(Boolean))].sort();
+  const f = filters.rankings;
+  const adminFilters = ADMIN_ENABLED ? `
+      <label>Hard No <select id="rankHardNo"><option value="" ${f.hardNo === '' ? 'selected' : ''}>All</option><option value="yes" ${f.hardNo === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${f.hardNo === 'no' ? 'selected' : ''}>No</option></select></label>
+      <label>Rankable <select id="rankExcluded"><option value="" ${f.excluded === '' ? 'selected' : ''}>All</option><option value="yes" ${f.excluded === 'yes' ? 'selected' : ''}>Excluded</option><option value="no" ${f.excluded === 'no' ? 'selected' : ''}>Rankable</option></select></label>
+      <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>
+      <label>Partner <select id="rankPartner"><option value="" ${f.partner === '' ? 'selected' : ''}>All</option><option value="present" ${f.partner === 'present' ? 'selected' : ''}>Present</option><option value="missing" ${f.partner === 'missing' ? 'selected' : ''}>Missing</option></select></label>` : '';
+  return `
+    <div class="filters">
+      <label>Degree <select id="rankDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
+      <label>State <select id="rankState"><option value="" ${f.state === '' ? 'selected' : ''}>All</option>${optionTags(states, f.state)}</select></label>
+      <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
+      <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
+      ${adminFilters}
+      <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
+      <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
+      <label>GPA Band <select id="rankGpaBand"><option value="" ${f.gpaBand === '' ? 'selected' : ''}>All</option>${optionTags(gpaBands, f.gpaBand)}</select></label>
+      <label>AAMC Rate Band <select id="rankAamcRateBand"><option value="" ${f.aamcRateBand === '' ? 'selected' : ''}>All</option>${optionTags(aamcRateBands, f.aamcRateBand)}</select></label>
+      <label>Missing Scores <select id="rankMissingScore"><option value="" ${f.missingScore === '' ? 'selected' : ''}>All</option><option value="missing" ${f.missingScore === 'missing' ? 'selected' : ''}>Missing</option><option value="complete" ${f.missingScore === 'complete' ? 'selected' : ''}>Complete</option></select></label>
+      <label>Score Warnings <select id="rankScoreWarning"><option value="" ${f.scoreWarning === '' ? 'selected' : ''}>All</option><option value="warning" ${f.scoreWarning === 'warning' ? 'selected' : ''}>Has warnings</option><option value="clear" ${f.scoreWarning === 'clear' ? 'selected' : ''}>Clear</option></select></label>
+    </div>`;
+}
+
+function rankingsRows() {
+  const {degree, state, tier, bucket, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
+  return filteredSchools().filter(s => {
+    if (degree && s.school.degree_type !== degree) return false;
+    if (state && s.school.state !== state) return false;
+    if (tier && s.derived.admissions_fit_tier !== tier) return false;
+    if (bucket && s.derived.application_bucket !== bucket) return false;
+    if (ADMIN_ENABLED && hardNo === 'yes' && !s.derived.hard_no_flag) return false;
+    if (ADMIN_ENABLED && hardNo === 'no' && s.derived.hard_no_flag) return false;
+    if (ADMIN_ENABLED && excluded === 'yes' && !s.derived.excluded_from_rank) return false;
+    if (ADMIN_ENABLED && excluded === 'no' && s.derived.excluded_from_rank) return false;
+    if (ADMIN_ENABLED && warnings === 'yes' && s.derived.warning_count < 1) return false;
+    if (ADMIN_ENABLED && warnings === 'no' && s.derived.warning_count > 0) return false;
+    if (ADMIN_ENABLED && partner && s.derived.partner_input_status !== partner) return false;
+    if (quality && s.derived.admissions_data_quality_band !== quality) return false;
+    if (mcatBand && s.derived.published_mcat_band !== mcatBand) return false;
+    if (gpaBand && s.derived.published_gpa_band !== gpaBand) return false;
+    if (aamcRateBand && s.derived.aamc_acceptance_rate_band !== aamcRateBand) return false;
+    if (missingScore && s.derived.missing_score_status !== missingScore) return false;
+    if (scoreWarning && s.derived.score_warning_status !== scoreWarning) return false;
+    return true;
+  });
+}
+
+function renderRankings() {
+  $('rankings').innerHTML = `<h2>Rankings</h2><div class="caveat">${payload.copy.aamc_grid_caveat}</div>${rankingFilters()}<div id="rankTable"></div>`;
+  const bindings = {
+    rankDegree: 'degree',
+    rankState: 'state',
+    rankTier: 'tier',
+    rankBucket: 'bucket',
+    rankQuality: 'quality',
+    rankMcatBand: 'mcatBand',
+    rankGpaBand: 'gpaBand',
+    rankAamcRateBand: 'aamcRateBand',
+    rankMissingScore: 'missingScore',
+    rankScoreWarning: 'scoreWarning',
+  };
+  if (ADMIN_ENABLED) {
+    bindings.rankHardNo = 'hardNo';
+    bindings.rankExcluded = 'excluded';
+    bindings.rankWarnings = 'warnings';
+    bindings.rankPartner = 'partner';
+  }
+  Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    filters.rankings[key] = event.target.value;
+    renderRankingTable();
+  }));
+  renderRankingTable();
+}
+
+function renderRankingTable() {
+  const visibleRows = sortRows(rankingsRows(), 'rankings', 'ranking.overall_rank');
+  const columns = [
+    {key:'ranking.overall_rank', label:'Rank', render:s=>missing(s.ranking.overall_rank)},
+    {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
+    {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
+    {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+    {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
+    {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket || s.ranking.suggested_funnel_bucket)},
+    {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
+    {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
+    {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
+    {key:'ranking.admissions_mcat_fit_score', label:'MCAT Fit', render:s=>missing(s.ranking.admissions_mcat_fit_score)},
+    {key:'ranking.admissions_gpa_fit_score', label:'GPA Fit', render:s=>missing(s.ranking.admissions_gpa_fit_score)},
+    {key:'ranking.admissions_oos_friendliness_score', label:'OOS Fit', render:s=>missing(s.ranking.admissions_oos_friendliness_score)},
+    {key:'ranking.attendance_cost_score', label:'Cost Fit', render:s=>missing(s.ranking.attendance_cost_score)},
+    {key:'ranking.data_completeness_score', label:'Data', render:s=>missing(s.ranking.data_completeness_score)},
+    {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
+    {key:'ranking.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
+    {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
+    {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
+    {key:'derived.aamc_acceptance_rate_band', label:'AAMC Band', render:s=>missing(s.ranking.profile_aamc_acceptance_rate_band || s.derived.aamc_acceptance_rate_band)},
+    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>missing(s.ranking.score_warnings)},
+  ];
+  if (ADMIN_ENABLED) {
+    columns.push(
+      {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
+      {key:'derived.excluded_from_rank', label:'Excluded', render:s=>s.derived.excluded_from_rank ? badge('Excluded', 'warn') : ''},
+      {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
+      {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status}
+    );
+  }
+  $('rankTable').innerHTML = `<p>${visibleRows.length} visible schools</p>` + table(columns, visibleRows, 'rankings');
+}
+
+function renderLists() {
+  $('lists').innerHTML = `<h2>Curated Lists</h2>
+    <div class="caveat">${payload.copy.curated_list_readiness.provisional}</div>
+    ${table([
+      {key:'title', label:'List', render:list=>`<a href="${list.route}">${list.title}</a>`},
+      {key:'category', label:'Category', render:list=>missing(list.category)},
+      {key:'readiness_label', label:'Readiness', render:list=>readinessBadge(list)},
+      {key:'default_apply_mode', label:'Apply Mode', render:list=>missing(list.default_apply_mode)},
+      {key:'missing_fields', label:'Missing Fields', render:list=>(list.missing_fields || []).join(', ') || 'None'},
+      {key:'missing_data_behavior', label:'Missing Data Behavior', render:list=>missing(list.missing_data_behavior)},
+    ], rows('curated_lists'), 'lists')}`;
+}
+
+function renderListDetail() {
+  const list = rows('curated_lists').find(item => item.slug === currentRoute.slug);
+  if (!list) {
+    $('listDetail').innerHTML = '<h2>List not found</h2><p><a href="#/lists">Back to curated lists</a></p>';
+    return;
+  }
+  $('listDetail').innerHTML = `<div class="route-tools"><a href="#/lists">All lists</a><a href="#/rankings">Rankings</a></div>
+    <h2>${list.title} ${readinessBadge(list)}</h2>
+    <p>${list.description}</p>
+    <div class="detail-grid">
+      ${detailPanel('Readiness', [
+        ['Label', list.readiness_label],
+        ['Confidence', list.confidence_label],
+        ['Required fields', (list.required_fields || []).join(', ')],
+        ['Available fields', (list.available_fields || []).join(', ') || 'None'],
+        ['Missing fields', (list.missing_fields || []).join(', ') || 'None'],
+      ])}
+      ${detailPanel('Lens', [
+        ['Scoring profile', list.scoring_profile_id],
+        ['Default apply mode', list.default_apply_mode],
+        ['Methodology', list.methodology_notes],
+        ['Missing data behavior', list.missing_data_behavior],
+      ])}
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <h3>School Universe Preview</h3>
+      ${table([
+        {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
+        {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
+        {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+        {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
+        {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
+      ], sortRows(filteredSchools(), `list-${list.slug}`, 'ranking.overall_rank').slice(0, 50), `list-${list.slug}`)}
+    </div>`;
+}
+
+function renderCompare() {
+  $('compare').innerHTML = `<h2>Compare</h2>
+    <p>Comparison routing is separated from admin views; selected-school state will be layered onto this product route in a later slice.</p>
+    ${table([
+      {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
+      {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
+      {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+      {key:'admissions_stats.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.admissions_stats.published_mcat_average)},
+      {key:'admissions_stats.published_gpa_average', label:'GPA Avg', render:s=>missing(s.admissions_stats.published_gpa_average)},
+      {key:'cost_and_debt.estimated_coa_out_state', label:'OOS COA', render:s=>missing(s.cost_and_debt.estimated_coa_out_state)},
+    ], sortRows(filteredSchools(), 'compare', 'ranking.overall_rank').slice(0, 25), 'compare')}`;
+}
+
+function renderProfile() {
+  const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
+  if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
+  const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
+  const adminPanels = ADMIN_ENABLED ? `
+      ${detailPanel('Partner Review', [
+        ['Could live here', item.partner_input?.could_live_here_4_years_score],
+        ['Location fit', item.partner_input?.location_fit_score],
+        ['Culture fit', item.partner_input?.culture_fit_score],
+        ['Regret index', item.partner_input?.regret_index_score],
+        ['Hard no', item.derived.hard_no_flag ? 'Yes' : 'No'],
+        ['Reason', item.partner_input?.hard_no_reason],
+        ['Notes', item.partner_input?.partner_notes],
+      ])}
+      ${detailPanel('Admin Source Review', [
+        ['Source status', item.derived.source_queue_status],
+        ['Candidate URL', item.admissions_source?.candidate_source_url],
+        ['Source review rows', item.derived.source_review_count],
+        ['Warnings', item.derived.warning_count],
+        ['Errors', item.derived.error_count],
+        ['Next action', item.derived.suggested_next_action],
+      ])}` : '';
+  const issuesPanel = ADMIN_ENABLED ? `<div class="panel" style="margin-top:12px">
+      <h3>Issues</h3>
+      ${table([
+        {key:'severity', label:'Severity', render:i=>badge(i.severity, i.severity)},
+        {key:'file', label:'File', render:i=>i.file},
+        {key:'field', label:'Field', render:i=>i.field},
+        {key:'message', label:'Message', render:i=>i.message},
+        {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
+      ], item.data_quality || [], 'detailIssues')}
+    </div>` : '';
+  $('profile').innerHTML = `<div class="route-tools"><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
+    <h2>${item.school.school_name}</h2>
+    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl}</p>
+    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    <div class="detail-grid">
+      ${detailPanel('Identity', [
+        ['School ID', item.school.school_id],
+        ['Parent', item.school.parent_school_name],
+        ['Campus', item.school.campus_name],
+        ['Accreditation', item.school.accreditation_status],
+      ])}
+      ${detailPanel('Ranking', [
+        ['Profile', item.ranking.profile_name],
+        ['Overall rank', item.ranking.overall_rank],
+        ['Admissions tier', item.ranking.admissions_fit_tier || item.ranking.dynamic_tier],
+        ['Bucket', item.ranking.application_bucket || item.ranking.suggested_funnel_bucket],
+        ['Admissions', item.ranking.admissions_score],
+        ['Attendance', item.ranking.attendance_score],
+        ['MCAT fit', item.ranking.admissions_mcat_fit_score],
+        ['GPA fit', item.ranking.admissions_gpa_fit_score],
+        ['OOS fit', item.ranking.admissions_oos_friendliness_score],
+        ['Cost fit', item.ranking.attendance_cost_score],
+        ['Data completeness', item.ranking.data_completeness_score],
+        ['Missing score inputs', item.ranking.missing_score_inputs],
+        ['Score warnings', item.ranking.score_warnings],
+        ['Positive drivers', item.ranking.top_positive_drivers],
+        ['Negative drivers', item.ranking.top_negative_drivers],
+      ])}
+      ${detailPanel('Admissions Facts', [
+        ['Stats present', item.derived.admissions_stats_present],
+        ['Published source count', item.admissions_stats.published_source_count],
+        ['Published MCAT average', item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average],
+        ['Published GPA average', item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average],
+        ['School MCAT used for fit', item.ranking.school_mcat_for_fit],
+        ['School GPA used for fit', item.ranking.school_gpa_for_fit],
+        ['Profile MCAT band', item.ranking.profile_aamc_mcat_band],
+        ['Profile GPA band', item.ranking.profile_aamc_gpa_band],
+        ['Profile AAMC national rate', item.ranking.profile_aamc_acceptance_rate],
+        ['Profile AAMC national rate band', item.ranking.profile_aamc_acceptance_rate_band],
+        ['MCAT band', item.ranking.published_mcat_band || item.admissions_stats.published_mcat_band],
+        ['GPA band', item.ranking.published_gpa_band || item.admissions_stats.published_gpa_band],
+        ['AAMC grid rate', item.admissions_stats.aamc_acceptance_rate],
+        ['AAMC rate band', item.admissions_stats.aamc_acceptance_rate_band],
+        ['Confidence', item.admissions_stats.data_confidence],
+      ])}
+      ${detailPanel('Cost and Debt', [
+        ['Cost data present', item.derived.cost_data_present],
+        ['In-state tuition+fees+insurance', item.cost_and_debt.in_state_tuition_fees_insurance],
+        ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
+        ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
+        ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
+        ['Applicant cost basis', item.ranking.cost_basis],
+        ['Adjusted cost basis', item.ranking.cost_basis_adjusted],
+        ['Confidence', item.cost_and_debt.data_confidence],
+      ])}
+      ${detailPanel('Public Source Coverage', [
+        ['Admissions policy rows', item.derived.admissions_policy_count],
+        ['Letter requirement rows', item.derived.letter_requirement_count],
+      ])}
+      ${adminPanels}
+    </div>
+    ${issuesPanel}`;
+}
+
+function detailPanel(title, panelRows) {
+  return `<div class="panel"><h3>${title}</h3>${panelRows.map(([k,v])=>`<p><strong>${k}:</strong> ${missing(v)}</p>`).join('')}</div>`;
+}
+
+function renderMethodology() {
+  const readinessRows = Object.entries(payload.copy.curated_list_readiness || {}).map(([label, text]) => ({label, text}));
+  $('methodology').innerHTML = `<h2>Methodology</h2>
+    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    <div class="panel">
+      <h3>Curated List Readiness</h3>
+      ${table([
+        {key:'label', label:'Label', render:r=>badge(r.label, r.label)},
+        {key:'text', label:'Meaning', render:r=>r.text},
+      ], readinessRows, 'readiness')}
+    </div>`;
+}
+
+function renderSources() {
+  $('sources').innerHTML = `<h2>Sources</h2>
+    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    ${table([
+      {key:'source_name', label:'Source', render:s=>missing(s.source_name)},
+      {key:'source_url', label:'URL', render:s=>s.source_url ? `<a href="${s.source_url}" target="_blank">Open</a>` : 'Missing'},
+      {key:'row_count', label:'Rows', render:s=>missing(s.row_count)},
+    ], rows('public_sources'), 'publicSources')}`;
 }
 
 function renderStatusSummary() {
@@ -717,21 +1518,32 @@ function renderStatusSummary() {
       ${metric('Canonical cost rows', sourceMetric('canonical_counts.cost_and_debt_rows'))}
       ${metric('Open source reviews', sourceMetric('canonical_counts.open_source_review_rows'))}
     </div>
-    <p>Generated ${missing(payload.meta.generated_at)}. Canonical rows are promoted only when source match and confidence rules pass; unresolved rows remain visible in review outputs.</p>
+    <p>Generated ${missing(payload.meta.generated_at)}.</p>
   </div>`;
 }
 
-function renderDashboard() {
+function objectRows(obj) {
+  return Object.entries(obj || {}).map(([key, value]) => ({key, value}));
+}
+
+function adminNav() {
+  return `<div class="route-tools">
+    <a href="#/admin">Overview</a>
+    <a href="#/admin/sources">Source Review</a>
+    <a href="#/admin/data-quality">Data Quality</a>
+    <a href="#/admin/build">Build Status</a>
+  </div>`;
+}
+
+function renderAdminOverview() {
   const schools = filteredSchools();
-  const md = payload.schools.filter(s => s.school.degree_type === 'MD').length;
-  const degreeDo = payload.schools.filter(s => s.school.degree_type === 'DO').length;
-  const partnerPresent = payload.schools.filter(s => s.derived.partner_input_status === 'present').length;
-  const hardNo = payload.schools.filter(s => s.derived.hard_no_flag).length;
-  const sourceFound = payload.schools.filter(s => s.admissions_source.candidate_source_url).length;
-  const priority = schools
-    .filter(s => s.derived.suggested_next_action !== 'review ranking')
-    .slice(0, 20);
-  $('dashboard').innerHTML = `
+  const md = rows('schools').filter(s => s.school.degree_type === 'MD').length;
+  const degreeDo = rows('schools').filter(s => s.school.degree_type === 'DO').length;
+  const partnerPresent = rows('schools').filter(s => s.derived.partner_input_status === 'present').length;
+  const hardNo = rows('schools').filter(s => s.derived.hard_no_flag).length;
+  const sourceFound = rows('schools').filter(s => s.admissions_source?.candidate_source_url).length;
+  const priority = schools.filter(s => s.derived.suggested_next_action !== 'review ranking').slice(0, 20);
+  $('admin').innerHTML = `${adminNav()}<h2>Admin Overview</h2>
     <div class="grid">
       ${metric('Active schools', payload.meta.active_school_count)}
       ${metric('MD', md)}
@@ -744,285 +1556,59 @@ function renderDashboard() {
     </div>
     ${renderStatusSummary()}
     <div class="panel">
-      <h2>Top Research Priorities</h2>
+      <h3>Top Research Priorities</h3>
       ${table([
         {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
         {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
-        {key:'school.city', label:'City', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+        {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
         {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
         {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status},
         {key:'derived.suggested_next_action', label:'Next Action', render:s=>s.derived.suggested_next_action},
-      ], priority, 'dashboard')}
+      ], priority, 'adminPriority')}
     </div>`;
 }
 
-function linkSchool(item) {
-  return `<a href="#" data-school="${item.school.school_id}">${item.school.school_name}</a>`;
-}
-
-function rankingFilters() {
-  const degrees = [...new Set(payload.schools.map(s => s.school.degree_type).filter(Boolean))].sort();
-  const states = [...new Set(payload.schools.map(s => s.school.state).filter(Boolean))].sort();
-  const tiers = [...new Set(payload.schools.map(s => s.derived.admissions_fit_tier).filter(Boolean))].sort();
-  const buckets = [...new Set(payload.schools.map(s => s.derived.application_bucket).filter(Boolean))].sort();
-  const qualities = [...new Set(payload.schools.map(s => s.derived.admissions_data_quality_band).filter(Boolean))].sort();
-  const mcatBands = [...new Set(payload.schools.map(s => s.derived.published_mcat_band).filter(Boolean))].sort();
-  const gpaBands = [...new Set(payload.schools.map(s => s.derived.published_gpa_band).filter(Boolean))].sort();
-  const aamcRateBands = [...new Set(payload.schools.map(s => s.derived.aamc_acceptance_rate_band).filter(Boolean))].sort();
-  const f = filters.rankings;
-  return `
-    <div class="filters">
-      <label>Degree <select id="rankDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
-      <label>State <select id="rankState"><option value="" ${f.state === '' ? 'selected' : ''}>All</option>${optionTags(states, f.state)}</select></label>
-      <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
-      <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
-      <label>Hard No <select id="rankHardNo"><option value="" ${f.hardNo === '' ? 'selected' : ''}>All</option><option value="yes" ${f.hardNo === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${f.hardNo === 'no' ? 'selected' : ''}>No</option></select></label>
-      <label>Rankable <select id="rankExcluded"><option value="" ${f.excluded === '' ? 'selected' : ''}>All</option><option value="yes" ${f.excluded === 'yes' ? 'selected' : ''}>Excluded</option><option value="no" ${f.excluded === 'no' ? 'selected' : ''}>Rankable</option></select></label>
-      <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>
-      <label>Partner <select id="rankPartner"><option value="" ${f.partner === '' ? 'selected' : ''}>All</option><option value="present" ${f.partner === 'present' ? 'selected' : ''}>Present</option><option value="missing" ${f.partner === 'missing' ? 'selected' : ''}>Missing</option></select></label>
-      <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
-      <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
-      <label>GPA Band <select id="rankGpaBand"><option value="" ${f.gpaBand === '' ? 'selected' : ''}>All</option>${optionTags(gpaBands, f.gpaBand)}</select></label>
-      <label>AAMC Rate Band <select id="rankAamcRateBand"><option value="" ${f.aamcRateBand === '' ? 'selected' : ''}>All</option>${optionTags(aamcRateBands, f.aamcRateBand)}</select></label>
-      <label>Missing Scores <select id="rankMissingScore"><option value="" ${f.missingScore === '' ? 'selected' : ''}>All</option><option value="missing" ${f.missingScore === 'missing' ? 'selected' : ''}>Missing</option><option value="complete" ${f.missingScore === 'complete' ? 'selected' : ''}>Complete</option></select></label>
-      <label>Score Warnings <select id="rankScoreWarning"><option value="" ${f.scoreWarning === '' ? 'selected' : ''}>All</option><option value="warning" ${f.scoreWarning === 'warning' ? 'selected' : ''}>Has warnings</option><option value="clear" ${f.scoreWarning === 'clear' ? 'selected' : ''}>Clear</option></select></label>
-    </div>`;
-}
-
-function rankingsRows() {
-  const {degree, state, tier, bucket, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
-  return filteredSchools().filter(s => {
-    if (degree && s.school.degree_type !== degree) return false;
-    if (state && s.school.state !== state) return false;
-    if (tier && s.derived.admissions_fit_tier !== tier) return false;
-    if (bucket && s.derived.application_bucket !== bucket) return false;
-    if (hardNo === 'yes' && !s.derived.hard_no_flag) return false;
-    if (hardNo === 'no' && s.derived.hard_no_flag) return false;
-    if (excluded === 'yes' && !s.derived.excluded_from_rank) return false;
-    if (excluded === 'no' && s.derived.excluded_from_rank) return false;
-    if (warnings === 'yes' && s.derived.warning_count < 1) return false;
-    if (warnings === 'no' && s.derived.warning_count > 0) return false;
-    if (partner && s.derived.partner_input_status !== partner) return false;
-    if (quality && s.derived.admissions_data_quality_band !== quality) return false;
-    if (mcatBand && s.derived.published_mcat_band !== mcatBand) return false;
-    if (gpaBand && s.derived.published_gpa_band !== gpaBand) return false;
-    if (aamcRateBand && s.derived.aamc_acceptance_rate_band !== aamcRateBand) return false;
-    if (missingScore && s.derived.missing_score_status !== missingScore) return false;
-    if (scoreWarning && s.derived.score_warning_status !== scoreWarning) return false;
-    return true;
-  });
-}
-
-function renderRankings() {
-  $('rankings').innerHTML = `<h2>Rankings</h2>${rankingFilters()}<div id="rankTable"></div>`;
-  const bindings = {
-    rankDegree: 'degree',
-    rankState: 'state',
-    rankTier: 'tier',
-    rankBucket: 'bucket',
-    rankHardNo: 'hardNo',
-    rankExcluded: 'excluded',
-    rankWarnings: 'warnings',
-    rankPartner: 'partner',
-    rankQuality: 'quality',
-    rankMcatBand: 'mcatBand',
-    rankGpaBand: 'gpaBand',
-    rankAamcRateBand: 'aamcRateBand',
-    rankMissingScore: 'missingScore',
-    rankScoreWarning: 'scoreWarning',
-  };
-  Object.entries(bindings).forEach(([id, key]) => $(id).addEventListener('change', event => {
-    filters.rankings[key] = event.target.value;
-    renderRankingTable();
-  }));
-  renderRankingTable();
-}
-
-function renderRankingTable() {
-  const rows = sortRows(rankingsRows(), 'rankings', 'ranking.overall_rank');
-  $('rankTable').innerHTML = `<p>${rows.length} visible schools</p>` + table([
-    {key:'ranking.overall_rank', label:'Rank', render:s=>missing(s.ranking.overall_rank)},
-    {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
-    {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
-    {key:'school.city', label:'City', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-    {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier)},
-    {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket)},
-    {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
-    {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
-    {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
-    {key:'ranking.admissions_mcat_fit_score', label:'MCAT Fit', render:s=>missing(s.ranking.admissions_mcat_fit_score)},
-    {key:'ranking.admissions_gpa_fit_score', label:'GPA Fit', render:s=>missing(s.ranking.admissions_gpa_fit_score)},
-    {key:'ranking.admissions_oos_friendliness_score', label:'OOS Fit', render:s=>missing(s.ranking.admissions_oos_friendliness_score)},
-    {key:'ranking.attendance_cost_score', label:'Cost Fit', render:s=>missing(s.ranking.attendance_cost_score)},
-    {key:'ranking.data_completeness_score', label:'Data', render:s=>missing(s.ranking.data_completeness_score)},
-    {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
-    {key:'ranking.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.ranking.published_mcat_average)},
-    {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average)},
-    {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
-    {key:'derived.published_mcat_band', label:'MCAT Band', render:s=>missing(s.derived.published_mcat_band)},
-    {key:'derived.published_gpa_band', label:'GPA Band', render:s=>missing(s.derived.published_gpa_band)},
-    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>missing(s.ranking.score_warnings)},
-    {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
-    {key:'derived.excluded_from_rank', label:'Excluded', render:s=>s.derived.excluded_from_rank ? badge('Excluded', 'warn') : ''},
-    {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
-    {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status},
-  ], rows, 'rankings');
-}
-
-function renderDetail() {
-  const item = payload.schools.find(s => s.school.school_id === selectedSchoolId) || payload.schools[0];
-  if (!item) { $('detail').innerHTML = '<p>No school selected.</p>'; return; }
-  selectedSchoolId = item.school.school_id;
-  const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
-  $('detail').innerHTML = `
-    <h2>${item.school.school_name}</h2>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl}</p>
-    <div class="detail-grid">
-      ${detailPanel('Identity', [
-        ['School ID', item.school.school_id],
-        ['Parent', item.school.parent_school_name],
-        ['Campus', item.school.campus_name],
-        ['Accreditation', item.school.accreditation_status],
-      ])}
-      ${detailPanel('Ranking', [
-        ['Profile', item.ranking.profile_name],
-        ['Overall rank', item.ranking.overall_rank],
-        ['Admissions tier', item.ranking.admissions_fit_tier],
-        ['Bucket', item.ranking.application_bucket],
-        ['Admissions', item.ranking.admissions_score],
-        ['Attendance', item.ranking.attendance_score],
-        ['MCAT fit', item.ranking.admissions_mcat_fit_score],
-        ['GPA fit', item.ranking.admissions_gpa_fit_score],
-        ['OOS fit', item.ranking.admissions_oos_friendliness_score],
-        ['Cost fit', item.ranking.attendance_cost_score],
-        ['Data completeness', item.ranking.data_completeness_score],
-        ['Excluded from rank', item.ranking.excluded_from_rank],
-        ['Missing score inputs', item.ranking.missing_score_inputs],
-        ['Score warnings', item.ranking.score_warnings],
-        ['Positive drivers', item.ranking.top_positive_drivers],
-        ['Negative drivers', item.ranking.top_negative_drivers],
-      ])}
-      ${detailPanel('Partner Review', [
-        ['Could live here', item.partner_input.could_live_here_4_years_score],
-        ['Location fit', item.partner_input.location_fit_score],
-        ['Culture fit', item.partner_input.culture_fit_score],
-        ['Regret index', item.partner_input.regret_index_score],
-        ['Hard no', item.derived.hard_no_flag ? 'Yes' : 'No'],
-        ['Reason', item.partner_input.hard_no_reason],
-        ['Notes', item.partner_input.partner_notes],
-      ])}
-      ${detailPanel('Admissions Research', [
-        ['Source status', item.derived.source_queue_status],
-        ['Candidate URL', item.admissions_source.candidate_source_url],
-        ['Stats present', item.derived.admissions_stats_present],
-        ['Published source count', item.admissions_stats.published_source_count],
-        ['Published MCAT average', item.admissions_stats.published_mcat_average],
-        ['Published GPA average', item.admissions_stats.published_gpa_average],
-        ['School MCAT used for fit', item.ranking.school_mcat_for_fit],
-        ['School GPA used for fit', item.ranking.school_gpa_for_fit],
-        ['Profile MCAT band', item.ranking.profile_aamc_mcat_band],
-        ['Profile GPA band', item.ranking.profile_aamc_gpa_band],
-        ['Profile AAMC national rate', item.ranking.profile_aamc_acceptance_rate],
-        ['Profile AAMC national rate band', item.ranking.profile_aamc_acceptance_rate_band],
-        ['MCAT spread', item.admissions_stats.published_mcat_spread],
-        ['GPA spread', item.admissions_stats.published_gpa_spread],
-        ['Data quality', item.admissions_stats.data_quality_band],
-        ['MCAT band', item.admissions_stats.published_mcat_band],
-        ['GPA band', item.admissions_stats.published_gpa_band],
-        ['AAMC grid rate', item.admissions_stats.aamc_acceptance_rate],
-        ['AAMC rate band', item.admissions_stats.aamc_acceptance_rate_band],
-        ['Confidence', item.admissions_stats.data_confidence],
-      ])}
-      ${detailPanel('Cost and Debt', [
-        ['Cost data present', item.derived.cost_data_present],
-        ['In-state tuition+fees+insurance', item.cost_and_debt.in_state_tuition_fees_insurance],
-        ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
-        ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
-        ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
-        ['Applicant cost basis', item.ranking.cost_basis],
-        ['Adjusted cost basis', item.ranking.cost_basis_adjusted],
-        ['Confidence', item.cost_and_debt.data_confidence],
-      ])}
-      ${detailPanel('Source Coverage', [
-        ['Admissions policy rows', item.derived.admissions_policy_count],
-        ['Letter requirement rows', item.derived.letter_requirement_count],
-        ['Source review rows', item.derived.source_review_count],
-      ])}
-      ${detailPanel('Data Quality', [
-        ['Warnings', item.derived.warning_count],
-        ['Errors', item.derived.error_count],
-        ['Next action', item.derived.suggested_next_action],
-      ])}
-    </div>
-    <div class="panel" style="margin-top:12px">
-      <h3>Issues</h3>
-      ${table([
-        {key:'severity', label:'Severity', render:i=>badge(i.severity, i.severity)},
-        {key:'file', label:'File', render:i=>i.file},
-        {key:'field', label:'Field', render:i=>i.field},
-        {key:'message', label:'Message', render:i=>i.message},
-        {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
-      ], item.data_quality, 'detailIssues')}
-    </div>`;
-}
-
-function detailPanel(title, rows) {
-  return `<div class="panel"><h3>${title}</h3>${rows.map(([k,v])=>`<p><strong>${k}:</strong> ${missing(v)}</p>`).join('')}</div>`;
-}
-
-function renderPartner() {
-  const rows = filteredSchools();
-  $('partner').innerHTML = `<h2>Partner Review</h2>` + table([
-    {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
-    {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
-    {key:'school.city', label:'City', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-    {key:'partner_input.could_live_here_4_years_score', label:'4 Years', render:s=>missing(s.partner_input.could_live_here_4_years_score)},
-    {key:'partner_input.location_fit_score', label:'Location', render:s=>missing(s.partner_input.location_fit_score)},
-    {key:'partner_input.culture_fit_score', label:'Culture', render:s=>missing(s.partner_input.culture_fit_score)},
-    {key:'partner_input.regret_index_score', label:'Regret', render:s=>missing(s.partner_input.regret_index_score)},
-    {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
-    {key:'partner_input.partner_notes', label:'Notes', render:s=>missing(s.partner_input.partner_notes)},
-  ], rows, 'partner');
-}
-
-function renderSources() {
+function renderAdminSources() {
   const current = filters.sources.sourceMissing;
-  $('sources').innerHTML = `<h2>Admissions Sources</h2>
+  $('admin').innerHTML = `${adminNav()}<h2>Source Review</h2>
     <div class="filters"><label>Source URL <select id="sourceMissing"><option value="">All</option><option value="missing">Missing</option><option value="present">Present</option></select></label></div>
     <div id="sourceTable"></div>`;
   $('sourceMissing').value = current;
   $('sourceMissing').addEventListener('change', event => {
     filters.sources.sourceMissing = event.target.value;
-    renderSourceTable();
+    renderAdminSourceTable();
   });
-  renderSourceTable();
+  renderAdminSourceTable();
 }
 
-function renderSourceTable() {
-  const rows = filteredSchools().filter(s => {
+function renderAdminSourceTable() {
+  const tableRows = filteredSchools().filter(s => {
     const filter = filters.sources.sourceMissing;
-    return !filter || (filter === 'missing' ? !s.admissions_source.candidate_source_url : !!s.admissions_source.candidate_source_url);
+    return !filter || (filter === 'missing' ? !s.admissions_source?.candidate_source_url : !!s.admissions_source?.candidate_source_url);
   });
   $('sourceTable').innerHTML = table([
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
-    {key:'school.city', label:'City', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-    {key:'admissions_source.candidate_source_url', label:'Candidate URL', render:s=>s.admissions_source.candidate_source_url ? `<a href="${s.admissions_source.candidate_source_url}" target="_blank">Open</a>` : 'Missing'},
+    {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+    {key:'admissions_source.candidate_source_url', label:'Candidate URL', render:s=>s.admissions_source?.candidate_source_url ? `<a href="${s.admissions_source.candidate_source_url}" target="_blank">Open</a>` : 'Missing'},
     {key:'derived.source_queue_status', label:'Source Status', render:s=>s.derived.source_queue_status},
     {key:'derived.admissions_stats_present', label:'Stats', render:s=>s.derived.admissions_stats_present},
-    {key:'admissions_source.notes', label:'Notes', render:s=>missing(s.admissions_source.notes)},
-  ], rows, 'sources');
+    {key:'admissions_source.notes', label:'Notes', render:s=>missing(s.admissions_source?.notes)},
+  ], tableRows, 'adminSources');
 }
 
-function renderQuality() {
-  const severity = $('qualitySeverity')?.value || '';
-  const rows = payload.data_quality_report.filter(i => !severity || i.severity === severity);
-  $('quality').innerHTML = `<h2>Data Quality</h2>
+function renderAdminQuality() {
+  const severity = filters.quality.severity;
+  const issueRows = dataQualityRows().filter(i => !severity || i.severity === severity);
+  $('admin').innerHTML = `${adminNav()}<h2>Data Quality</h2>
     <div class="grid">${metric('Errors', errorCount())}${metric('Warnings', warningCount())}</div>
     <div class="filters"><label>Severity <select id="qualitySeverity"><option value="">All</option><option value="error">Error</option><option value="warning">Warning</option><option value="info">Info</option></select></label></div>
     <div id="qualityTable"></div>`;
   $('qualitySeverity').value = severity;
-  $('qualitySeverity').addEventListener('change', renderQuality);
+  $('qualitySeverity').addEventListener('change', event => {
+    filters.quality.severity = event.target.value;
+    renderAdminQuality();
+  });
   $('qualityTable').innerHTML = table([
     {key:'severity', label:'Severity', render:i=>badge(i.severity, i.severity)},
     {key:'file', label:'File', render:i=>i.file},
@@ -1030,32 +1616,16 @@ function renderQuality() {
     {key:'field', label:'Field', render:i=>i.field},
     {key:'message', label:'Message', render:i=>i.message},
     {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
-  ], rows, 'quality');
+  ], issueRows, 'adminQuality');
 }
 
-function renderPlans() {
-  $('plans').innerHTML = `<h2>Plans</h2>` + table([
-    {key:'plan_name', label:'Plan', render:p=>p.plan_name},
-    {key:'status', label:'Status', render:p=>badge(p.status)},
-    {key:'priority', label:'Priority', render:p=>p.priority},
-    {key:'phase', label:'Phase', render:p=>p.phase},
-    {key:'current_decision_summary', label:'Decision', render:p=>p.current_decision_summary},
-    {key:'next_action', label:'Next Action', render:p=>p.next_action},
-    {key:'doc_path', label:'Doc', render:p=>p.doc_path},
-  ], payload.project_subplans, 'plans');
-}
-
-function objectRows(obj) {
-  return Object.entries(obj || {}).map(([key, value]) => ({key, value}));
-}
-
-function renderStatus() {
+function renderAdminBuild() {
   const status = sourceStatus();
   const canonical = status.canonical_counts || {};
   const tuition = status.tuition || {};
   const mcat = status.mcat_gpa || {};
   const raw = status.raw_aamc_files || {};
-  $('status').innerHTML = `<h2>Current Status</h2>
+  $('admin').innerHTML = `${adminNav()}<h2>Build Status</h2>
     ${renderStatusSummary()}
     <div class="detail-grid">
       ${detailPanel('Canonical Model Coverage', [
@@ -1066,20 +1636,12 @@ function renderStatus() {
         ['Letter requirement rows', canonical.letter_requirement_rows],
         ['Source review rows', canonical.source_review_queue_rows],
         ['Open source reviews', canonical.open_source_review_rows],
-        ['Median MCAT populated', canonical.school_master_median_mcat_populated],
-        ['Median GPA populated', canonical.school_master_median_gpa_populated],
-        ['In-state tuition populated', canonical.school_master_in_state_tuition_populated],
-        ['Out-state tuition populated', canonical.school_master_out_state_tuition_populated],
-        ['COA in-state populated', canonical.school_master_estimated_coa_in_state_populated],
-        ['COA out-state populated', canonical.school_master_estimated_coa_out_state_populated],
       ])}
       ${detailPanel('AAMC Tuition Source', [
         ['Parsed rows', tuition.parsed_rows],
         ['Patch candidates', tuition.patch_candidates],
         ['Safe after gap review', tuition.safe_rows_after_gap_review],
         ['Ambiguous high-confidence', tuition.ambiguous_high_confidence_rows],
-        ['Join review/no-match', tuition.join_review_or_no_match_rows],
-        ['MD not safe yet', tuition.md_rows_not_safe_yet],
         ['DO missing tuition', tuition.do_rows_missing_tuition],
       ])}
       ${detailPanel('Raw and Parsed Sources', [
@@ -1107,50 +1669,47 @@ function renderStatus() {
         ], objectRows(mcat.agreement_counts), 'statusAgreement')}
       </div>
       <div class="panel">
-        <h3>GPA/MCAT Data Quality</h3>
-        ${table([
-          {key:'key', label:'Band', render:r=>r.key},
-          {key:'value', label:'Rows', render:r=>r.value},
-        ], objectRows(mcat.quality_counts), 'statusQuality')}
-      </div>
-      <div class="panel">
         <h3>GPA/MCAT Sources</h3>
         ${table([
           {key:'key', label:'Source', render:r=>r.key},
           {key:'value', label:'Rows', render:r=>r.value},
         ], objectRows(mcat.source_counts), 'statusSources')}
       </div>
-    </div>
-    <div class="panel" style="margin-top:12px">
-      <h3>Phase 2A Plan Status</h3>
-      ${table([
-        {key:'plan_id', label:'Plan', render:p=>p.plan_name},
-        {key:'status', label:'Status', render:p=>badge(p.status)},
-        {key:'priority', label:'Priority', render:p=>p.priority},
-        {key:'current_decision_summary', label:'Current Decision', render:p=>p.current_decision_summary},
-        {key:'next_action', label:'Next Action', render:p=>p.next_action},
-        {key:'doc_path', label:'Doc', render:p=>p.doc_path},
-      ], status.source_plans || [], 'statusPlans')}
     </div>`;
 }
 
-function render() {
-  $('summaryText').textContent = `${payload.meta.active_school_count} active schools · ${warningCount()} warnings · ${errorCount()} errors`;
-  if (currentView === 'dashboard') renderDashboard();
-  if (currentView === 'status') renderStatus();
-  if (currentView === 'rankings') renderRankings();
-  if (currentView === 'detail') renderDetail();
-  if (currentView === 'partner') renderPartner();
-  if (currentView === 'sources') renderSources();
-  if (currentView === 'quality') renderQuality();
-  if (currentView === 'plans') renderPlans();
-  document.querySelectorAll('[data-school]').forEach(el => el.addEventListener('click', event => {
-    event.preventDefault();
-    openDetail(el.dataset.school);
-  }));
+function renderAdmin() {
+  if (!ADMIN_ENABLED) {
+    $('admin').innerHTML = '<h2>Not available</h2><p><a href="#/rankings">Back to rankings</a></p>';
+    return;
+  }
+  if (currentRoute.path === '/admin/sources') return renderAdminSources();
+  if (currentRoute.path === '/admin/data-quality') return renderAdminQuality();
+  if (currentRoute.path === '/admin/build') return renderAdminBuild();
+  return renderAdminOverview();
 }
 
-document.querySelectorAll('.tabs button').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
+function render() {
+  if (ensureDefaultRoute()) return;
+  currentRoute = parseRoute();
+  if (routeHash(currentRoute.path) !== window.location.hash && window.location.hash) {
+    window.location.replace(routeHash(currentRoute.path));
+    return;
+  }
+  $('summaryText').textContent = `${payload.meta.active_school_count} active schools · ${payload.meta.site_mode} mode`;
+  setActiveNav(currentRoute.path);
+  setActiveSection(currentRoute.view);
+  if (currentRoute.view === 'rankings') renderRankings();
+  if (currentRoute.view === 'lists') renderLists();
+  if (currentRoute.view === 'listDetail') renderListDetail();
+  if (currentRoute.view === 'compare') renderCompare();
+  if (currentRoute.view === 'profile') renderProfile();
+  if (currentRoute.view === 'methodology') renderMethodology();
+  if (currentRoute.view === 'sources') renderSources();
+  if (currentRoute.view === 'admin') renderAdmin();
+}
+
+window.addEventListener('hashchange', render);
 $('globalSearch').addEventListener('input', render);
 document.addEventListener('click', event => {
   const th = event.target.closest('th[data-key]');
@@ -1165,17 +1724,26 @@ render();
 """
 
 
-def build_site() -> Path:
+def build_site(site_mode: str = SITE_MODE_LOCAL_FULL) -> Path:
+    site_mode = validate_site_mode(site_mode)
     OUT.mkdir(parents=True, exist_ok=True)
     if SITE_DIR.exists():
         shutil.rmtree(SITE_DIR)
     SITE_DIR.mkdir(parents=True, exist_ok=True)
-    payload = build_site_payload()
-    write_site_json(payload)
+    payload = build_site_payload(site_mode=site_mode)
+    write_site_json(payload, site_mode=site_mode)
     SITE_INDEX_HTML.write_text(render_site_html(payload), encoding="utf-8")
     return SITE_INDEX_HTML
 
 
 def main() -> None:
-    output = build_site()
-    print(f"Wrote {output.relative_to(ROOT)}")
+    parser = argparse.ArgumentParser(description="Build the static medical school ranker site.")
+    parser.add_argument(
+        "--site-mode",
+        choices=sorted(SITE_MODES),
+        default=os.environ.get("MED_SCHOOL_SITE_MODE", SITE_MODE_LOCAL_FULL),
+        help="Use local_full for local review or publish_safe for public-safe payload output.",
+    )
+    args = parser.parse_args()
+    output = build_site(site_mode=args.site_mode)
+    print(f"Wrote {output.relative_to(ROOT)} ({args.site_mode})")

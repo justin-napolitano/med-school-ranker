@@ -1,0 +1,299 @@
+[
+  {
+    "available_fields": [
+      "city"
+    ],
+    "category": "location",
+    "confidence_label": "provisional",
+    "core_fields": [
+      "region",
+      "city_fit_score"
+    ],
+    "core_missing_fields": [
+      "region",
+      "city_fit_score"
+    ],
+    "coverage_by_field": {
+      "city": {
+        "active_school_count": 233,
+        "populated_school_count": 233
+      },
+      "city_fit_score": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      },
+      "region": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      }
+    },
+    "default_apply_mode": "scoring_boost",
+    "description": "Location-focused scaffold for schools in stronger city and setting contexts.",
+    "list_id": "best_cities",
+    "methodology_notes": "Requires sourced region, setting, and city-fit facts before strong claims.",
+    "missing_data_behavior": "Label provisional until city and region facts are populated.",
+    "missing_fields": [
+      "region",
+      "city_fit_score"
+    ],
+    "readiness_label": "provisional",
+    "required_fields": [
+      "city",
+      "region",
+      "city_fit_score"
+    ],
+    "route": "#/lists/best-cities",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "city_fit",
+    "slug": "best-cities",
+    "title": "Best Cities"
+  },
+  {
+    "available_fields": [],
+    "category": "culture",
+    "confidence_label": "provisional",
+    "core_fields": [
+      "culture_fit_score",
+      "culture_evidence_status"
+    ],
+    "core_missing_fields": [
+      "culture_fit_score",
+      "culture_evidence_status"
+    ],
+    "coverage_by_field": {
+      "culture_evidence_status": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      },
+      "culture_fit_score": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      }
+    },
+    "default_apply_mode": "scoring_boost",
+    "description": "Culture-fit scaffold for future evidence-backed culture and fit scores.",
+    "list_id": "best_culture_fit",
+    "methodology_notes": "Requires explicit culture evidence or reviewed fit scores.",
+    "missing_data_behavior": "Label provisional until culture evidence exists.",
+    "missing_fields": [
+      "culture_fit_score",
+      "culture_evidence_status"
+    ],
+    "readiness_label": "provisional",
+    "required_fields": [
+      "culture_fit_score",
+      "culture_evidence_status"
+    ],
+    "route": "#/lists/best-culture-fit",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "culture_fit",
+    "slug": "best-culture-fit",
+    "title": "Best Culture Fit"
+  },
+  {
+    "available_fields": [],
+    "category": "ownership",
+    "confidence_label": "provisional",
+    "core_fields": [
+      "ownership_type"
+    ],
+    "core_missing_fields": [
+      "ownership_type"
+    ],
+    "coverage_by_field": {
+      "ownership_type": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      }
+    },
+    "default_apply_mode": "filter_only",
+    "description": "Public-school scaffold for future ownership-backed filtering and scoring.",
+    "list_id": "best_public_schools",
+    "methodology_notes": "Requires source-backed ownership type before public/private claims.",
+    "missing_data_behavior": "Label provisional until ownership type is populated.",
+    "missing_fields": [
+      "ownership_type"
+    ],
+    "readiness_label": "provisional",
+    "required_fields": [
+      "ownership_type"
+    ],
+    "route": "#/lists/best-public-schools",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "public_value",
+    "slug": "best-public-schools",
+    "title": "Best Public Schools"
+  },
+  {
+    "available_fields": [],
+    "category": "ownership",
+    "confidence_label": "provisional",
+    "core_fields": [
+      "ownership_type"
+    ],
+    "core_missing_fields": [
+      "ownership_type"
+    ],
+    "coverage_by_field": {
+      "ownership_type": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      }
+    },
+    "default_apply_mode": "filter_only",
+    "description": "Private-school scaffold for future ownership-backed filtering and scoring.",
+    "list_id": "best_private_schools",
+    "methodology_notes": "Requires source-backed ownership type before public/private claims.",
+    "missing_data_behavior": "Label provisional until ownership type is populated.",
+    "missing_fields": [
+      "ownership_type"
+    ],
+    "readiness_label": "provisional",
+    "required_fields": [
+      "ownership_type"
+    ],
+    "route": "#/lists/best-private-schools",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "private_value",
+    "slug": "best-private-schools",
+    "title": "Best Private Schools"
+  },
+  {
+    "available_fields": [
+      "in_state_tuition_fees_insurance",
+      "out_state_tuition_fees_insurance",
+      "estimated_coa_in_state",
+      "estimated_coa_out_state"
+    ],
+    "category": "cost",
+    "confidence_label": "partial coverage",
+    "core_fields": [
+      "in_state_tuition_fees_insurance",
+      "out_state_tuition_fees_insurance"
+    ],
+    "core_missing_fields": [],
+    "coverage_by_field": {
+      "estimated_coa_in_state": {
+        "active_school_count": 233,
+        "populated_school_count": 151
+      },
+      "estimated_coa_out_state": {
+        "active_school_count": 233,
+        "populated_school_count": 151
+      },
+      "in_state_tuition_fees_insurance": {
+        "active_school_count": 233,
+        "populated_school_count": 151
+      },
+      "out_state_tuition_fees_insurance": {
+        "active_school_count": 233,
+        "populated_school_count": 151
+      }
+    },
+    "default_apply_mode": "replace_scoring",
+    "description": "Cost-focused list using available tuition and cost-of-attendance rows.",
+    "list_id": "best_low_cost",
+    "methodology_notes": "MD AAMC cost rows are partially available; DO tuition coverage is incomplete.",
+    "missing_data_behavior": "Render with partial status and missing-cost caveats.",
+    "missing_fields": [],
+    "readiness_label": "partial",
+    "required_fields": [
+      "in_state_tuition_fees_insurance",
+      "out_state_tuition_fees_insurance",
+      "estimated_coa_in_state",
+      "estimated_coa_out_state"
+    ],
+    "route": "#/lists/best-low-cost",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "low_cost",
+    "slug": "best-low-cost",
+    "title": "Best Low Cost"
+  },
+  {
+    "available_fields": [
+      "published_mcat_average",
+      "published_gpa_average",
+      "aamc_acceptance_rate_band"
+    ],
+    "category": "admissions",
+    "confidence_label": "partial coverage",
+    "core_fields": [
+      "published_mcat_average",
+      "published_gpa_average"
+    ],
+    "core_missing_fields": [],
+    "coverage_by_field": {
+      "aamc_acceptance_rate_band": {
+        "active_school_count": 233,
+        "populated_school_count": 101
+      },
+      "published_gpa_average": {
+        "active_school_count": 233,
+        "populated_school_count": 101
+      },
+      "published_mcat_average": {
+        "active_school_count": 233,
+        "populated_school_count": 102
+      }
+    },
+    "default_apply_mode": "scoring_boost",
+    "description": "Admissions-realism list using published MCAT/GPA stats where source-backed.",
+    "list_id": "best_admissions_realism",
+    "methodology_notes": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
+    "missing_data_behavior": "Render with partial status and national-grid caveats.",
+    "missing_fields": [],
+    "readiness_label": "partial",
+    "required_fields": [
+      "published_mcat_average",
+      "published_gpa_average",
+      "aamc_acceptance_rate_band"
+    ],
+    "route": "#/lists/best-admissions-realism",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "admissions_realism",
+    "slug": "best-admissions-realism",
+    "title": "Best Admissions Realism"
+  },
+  {
+    "available_fields": [],
+    "category": "local_review",
+    "confidence_label": "provisional",
+    "core_fields": [
+      "partner_fit_score",
+      "partner_review_status"
+    ],
+    "core_missing_fields": [
+      "partner_fit_score",
+      "partner_review_status"
+    ],
+    "coverage_by_field": {
+      "partner_fit_score": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      },
+      "partner_review_status": {
+        "active_school_count": 233,
+        "populated_school_count": 0
+      }
+    },
+    "default_apply_mode": "scoring_boost",
+    "description": "Local-only partner-fit scaffold for reviewed partner preferences.",
+    "list_id": "best_partner_fit",
+    "methodology_notes": "Requires intentionally populated partner inputs before use.",
+    "missing_data_behavior": "Label provisional until partner inputs are intentionally populated.",
+    "missing_fields": [
+      "partner_fit_score",
+      "partner_review_status"
+    ],
+    "readiness_label": "provisional",
+    "required_fields": [
+      "partner_fit_score",
+      "partner_review_status"
+    ],
+    "route": "#/lists/best-partner-fit",
+    "route_enabled": "TRUE",
+    "scoring_profile_id": "partner_fit",
+    "slug": "best-partner-fit",
+    "title": "Best Partner Fit"
+  }
+]

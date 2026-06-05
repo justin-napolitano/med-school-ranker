@@ -236,9 +236,19 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(site_builder, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
     monkeypatch.setattr(site_builder, "AAMC_MCAT_GPA_GRID_CSV", root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
+    monkeypatch.setattr(site_builder, "COST_AND_DEBT_CSV", root / "data/normalized/cost_and_debt.csv")
+    monkeypatch.setattr(site_builder, "ADMISSIONS_POLICIES_CSV", root / "data/normalized/admissions_policies.csv")
+    monkeypatch.setattr(site_builder, "LETTER_REQUIREMENTS_CSV", root / "data/normalized/letter_requirements.csv")
     monkeypatch.setattr(site_builder, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
     monkeypatch.setattr(site_builder, "SOURCE_MATCH_OVERRIDES_CSV", root / "data/manual/source_match_overrides.csv")
+    monkeypatch.setattr(site_builder, "SOURCE_REVIEW_QUEUE_CSV", root / "data/manual/source_review_queue.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_SOURCE_QUEUE_CSV", root / "data/manual/admissions_source_queue.csv")
+    monkeypatch.setattr(site_builder, "SOURCE_INTEGRATION_REPORT_CSV", out / "source_integration_report.csv")
+    monkeypatch.setattr(site_builder, "SOURCE_MATCH_REVIEW_CSV", out / "source_match_review.csv")
+    monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CANDIDATES_CSV", out / "admissions_stats_candidates.csv")
+    monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CONFLICTS_CSV", out / "admissions_stats_conflicts.csv")
+    monkeypatch.setattr(site_builder, "COST_AND_DEBT_CANDIDATES_CSV", out / "cost_and_debt_candidates.csv")
+    monkeypatch.setattr(site_builder, "COST_AND_DEBT_REVIEW_CSV", out / "cost_and_debt_review.csv")
     monkeypatch.setattr(site_builder, "DATA_QUALITY_REPORT_CSV", out / "data_quality_report.csv")
     monkeypatch.setattr(site_builder, "SITE_DIR", site_dir)
     monkeypatch.setattr(site_builder, "SITE_INDEX_HTML", site_dir / "index.html")
@@ -272,6 +282,16 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
         },
     )
     return site_dir
+
+
+def extract_embedded_payload(html_text: str) -> dict:
+    embedded_match = re.search(
+        r'<script type="application/json" id="site-data">(.*?)</script>',
+        html_text,
+        re.DOTALL,
+    )
+    assert embedded_match is not None
+    return json.loads(unescape(embedded_match.group(1)))
 
 
 def test_ranking_generation_runs(tmp_path, monkeypatch):
@@ -381,16 +401,15 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
     html_text = output.read_text()
     assert 'id="site-data"' in html_text
 
-    embedded_match = re.search(
-        r'<script type="application/json" id="site-data">(.*?)</script>',
-        html_text,
-        re.DOTALL,
-    )
-    assert embedded_match is not None
-    embedded_payload = json.loads(unescape(embedded_match.group(1)))
+    embedded_payload = extract_embedded_payload(html_text)
 
     master_rows = site_builder.read_csv(tmp_path / "data/school_master.csv")
     assert embedded_payload["meta"]["active_school_count"] == len(master_rows)
+    assert embedded_payload["meta"]["site_mode"] == "local_full"
+    assert embedded_payload["routes"]["default"] == "#/rankings"
+    assert embedded_payload["routes"]["admin"]
+    assert all(school["school_slug"] for school in embedded_payload["schools"])
+    assert all(school["profile_route"].startswith("#/schools/") for school in embedded_payload["schools"])
     assert all(school["school"].get("state") != "Puerto Rico" for school in embedded_payload["schools"])
 
     required_json = [
@@ -415,10 +434,168 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
         "cost_and_debt_review.json",
         "project_subplans.json",
         "source_status.json",
+        "curated_lists.json",
+        "school_profiles.json",
+        "public_sources.json",
         "site_payload.json",
     ]
     for filename in required_json:
         json.loads((site_dir / "data" / filename).read_text())
+
+
+def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp_path, monkeypatch):
+    secret = "super_secret_partner_review_value"
+    partner_row = {
+        "applicant_profile_id": "template_profile",
+        "school_id": "school_one",
+        "school_name": "School One",
+        "could_live_here_4_years_score": "8",
+        "location_fit_score": "7",
+        "culture_fit_score": "6",
+        "regret_index_score": "2",
+        "hard_no_flag": "FALSE",
+        "hard_no_reason": "",
+        "partner_notes": secret,
+    }
+    write_minimal_project(tmp_path, partner_rows=[partner_row])
+    write_csv(
+        tmp_path / "data/manual/admissions_source_queue.csv",
+        validation.ADMISSIONS_SOURCE_QUEUE_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "degree_type": "MD",
+                "candidate_source_url": "https://example.edu/admissions",
+                "source_status": "found",
+                "extraction_status": "",
+                "review_status": "",
+                "last_checked": "",
+                "notes": secret,
+            }
+        ],
+    )
+    source_review_row = {field: "" for field in validation.SOURCE_REVIEW_QUEUE_COLUMNS}
+    for field in source_review_row:
+        if "note" in field:
+            source_review_row[field] = secret
+    write_csv(tmp_path / "data/manual/source_review_queue.csv", validation.SOURCE_REVIEW_QUEUE_COLUMNS, [source_review_row])
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    site_dir = patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site(site_mode="publish_safe")
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+
+    assert embedded_payload["meta"]["site_mode"] == "publish_safe"
+    assert embedded_payload["routes"]["admin"] == []
+    assert "partner_inputs" not in embedded_payload
+    assert "source_review_queue" not in embedded_payload
+    assert "admissions_source_queue" not in embedded_payload
+    assert "data_quality_report" not in embedded_payload
+    assert "source_status" not in embedded_payload
+    assert all("partner_input" not in school for school in embedded_payload["schools"])
+    assert all("admissions_source" not in school for school in embedded_payload["schools"])
+    assert secret not in html_text
+
+    generated_names = {path.relative_to(site_dir).as_posix() for path in site_dir.rglob("*") if path.is_file()}
+    assert "data/partner_inputs.json" not in generated_names
+    assert "data/source_review_queue.json" not in generated_names
+    assert "data/admissions_source_queue.json" not in generated_names
+    assert "data/source_status.json" not in generated_names
+    for path in site_dir.rglob("*"):
+        if path.is_file():
+            assert secret not in path.read_text(errors="ignore")
+
+
+def test_curated_list_readiness_metadata_uses_ready_partial_provisional_semantics(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    cost_row = {field: "" for field in validation.COST_AND_DEBT_COLUMNS}
+    cost_row.update(
+        {
+            "school_id": "school_one",
+            "school_name": "School One",
+            "degree_type": "MD",
+            "in_state_tuition_fees_insurance": "40000",
+            "out_state_tuition_fees_insurance": "65000",
+            "estimated_coa_in_state": "72000",
+            "estimated_coa_out_state": "97000",
+        }
+    )
+    stats_row = {field: "" for field in validation.ADMISSIONS_STATS_COLUMNS}
+    stats_row.update(
+        {
+            "school_id": "school_one",
+            "school_name": "School One",
+            "degree_type": "MD",
+            "published_mcat_average": "511",
+            "published_gpa_average": "3.75",
+            "published_mcat_band": "510-513",
+            "published_gpa_band": "3.60-3.79",
+            "aamc_acceptance_rate_band": "40-54.9%",
+            "data_quality_band": "high",
+        }
+    )
+    write_csv(tmp_path / "data/normalized/cost_and_debt.csv", validation.COST_AND_DEBT_COLUMNS, [cost_row])
+    write_csv(tmp_path / "data/normalized/admissions_stats.csv", validation.ADMISSIONS_STATS_COLUMNS, [stats_row])
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    payload = site_builder.build_site_payload()
+    lists = {row["list_id"]: row for row in payload["curated_lists"]}
+
+    assert lists["best_low_cost"]["readiness_label"] == "partial"
+    assert lists["best_admissions_realism"]["readiness_label"] == "partial"
+    assert lists["best_public_schools"]["readiness_label"] == "provisional"
+    assert lists["best_private_schools"]["readiness_label"] == "provisional"
+    assert lists["best_cities"]["readiness_label"] == "provisional"
+    assert lists["best_culture_fit"]["readiness_label"] == "provisional"
+    assert {"ready", "partial", "provisional"} == set(payload["copy"]["curated_list_readiness"])
+    assert "school-specific acceptance probability" in payload["copy"]["aamc_grid_caveat"]
+    assert all(row["slug"] and row["route"] == f"#/lists/{row['slug']}" for row in payload["curated_lists"])
+
+
+def test_default_rankings_route_and_admin_route_are_separated(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+
+    assert embedded_payload["routes"]["default"] == "#/rankings"
+    assert embedded_payload["routes"]["public"][0]["path"] == "#/rankings"
+    assert any(route["path"] == "#/admin" for route in embedded_payload["routes"]["admin"])
+    assert 'data-route="#/rankings"' in html_text
+    assert 'data-route="#/admin"' in html_text
+    assert 'data-view="dashboard"' not in html_text
+
+
+def test_school_profile_routes_resolve_for_every_active_school(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    payload = site_builder.build_site_payload()
+    profiles_by_slug = {profile["school_slug"]: profile for profile in payload["school_profiles"]}
+    school_slugs = [school["school_slug"] for school in payload["schools"]]
+
+    assert len(profiles_by_slug) == len(payload["schools"])
+    assert len(set(school_slugs)) == len(school_slugs)
+    for school in payload["schools"]:
+        slug = school["school_slug"]
+        assert slug in profiles_by_slug
+        assert school["profile_route"] == f"#/schools/{slug}"
+        assert profiles_by_slug[slug]["route"] == school["profile_route"]
 
 
 def test_site_output_does_not_copy_private_data(tmp_path, monkeypatch):

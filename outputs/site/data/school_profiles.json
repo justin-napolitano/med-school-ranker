@@ -1,0 +1,2099 @@
+[
+  {
+    "city": "Auburn",
+    "degree_type": "DO",
+    "route": "#/schools/edward-via-college-of-osteopathic-medicine",
+    "school_id": "do_vcom_auburn_campus_edward_via_college_of_osteopathic_medicine_auburn_alabama",
+    "school_name": "Edward Via College of Osteopathic Medicine",
+    "school_slug": "edward-via-college-of-osteopathic-medicine",
+    "state": "Alabama"
+  },
+  {
+    "city": "Dothan",
+    "degree_type": "DO",
+    "route": "#/schools/alabama-college-of-osteopathic-medicine",
+    "school_id": "do_acom_alabama_college_of_osteopathic_medicine_dothan_alabama",
+    "school_name": "Alabama College of Osteopathic Medicine",
+    "school_slug": "alabama-college-of-osteopathic-medicine",
+    "state": "Alabama"
+  },
+  {
+    "city": "Glendale",
+    "degree_type": "DO",
+    "route": "#/schools/midwestern-university-arizona-college-of-osteopathic-medicine",
+    "school_id": "do_mwu_azcom_midwestern_university_arizona_college_of_osteopathic_medicine_glendale",
+    "school_name": "Midwestern University Arizona College of Osteopathic Medicine",
+    "school_slug": "midwestern-university-arizona-college-of-osteopathic-medicine",
+    "state": "Arizona"
+  },
+  {
+    "city": "Mesa",
+    "degree_type": "DO",
+    "route": "#/schools/a-t-still-university-school-of-osteopathic-medicine-in-arizona",
+    "school_id": "do_atsu_soma_a_t_still_university_school_of_osteopathic_medicine_in_arizona_mesa_ar",
+    "school_name": "A.T. Still University, School of Osteopathic Medicine in Arizona",
+    "school_slug": "a-t-still-university-school-of-osteopathic-medicine-in-arizona",
+    "state": "Arizona"
+  },
+  {
+    "city": "Phoenix",
+    "degree_type": "DO",
+    "route": "#/schools/the-valley-college-of-osteopathic-medicine",
+    "school_id": "do_tvcom_the_valley_college_of_osteopathic_medicine_phoenix_arizona",
+    "school_name": "The Valley College of Osteopathic Medicine",
+    "school_slug": "the-valley-college-of-osteopathic-medicine",
+    "state": "Arizona"
+  },
+  {
+    "city": "Fort Smith",
+    "degree_type": "DO",
+    "route": "#/schools/arkansas-college-of-osteopathic-medicine",
+    "school_id": "do_arcom_arkansas_college_of_osteopathic_medicine_fort_smith_arkansas",
+    "school_name": "Arkansas College of Osteopathic Medicine",
+    "school_slug": "arkansas-college-of-osteopathic-medicine",
+    "state": "Arkansas"
+  },
+  {
+    "city": "Jonesboro",
+    "degree_type": "DO",
+    "route": "#/schools/new-york-institute-of-technology-college-of-osteopathic-medicine-at-arkansas-state",
+    "school_id": "do_nyitcom_jonesboro_new_york_institute_of_technology_college_of_osteopathic_medici",
+    "school_name": "New York Institute of Technology College of Osteopathic Medicine at Arkansas State",
+    "school_slug": "new-york-institute-of-technology-college-of-osteopathic-medicine-at-arkansas-state",
+    "state": "Arkansas"
+  },
+  {
+    "city": "Clovis",
+    "degree_type": "DO",
+    "route": "#/schools/california-health-sciences-university-college-of-osteopathic-medicine",
+    "school_id": "do_chsu_com_california_health_sciences_university_college_of_osteopathic_medicine_c",
+    "school_name": "California Health Sciences University College of Osteopathic Medicine",
+    "school_slug": "california-health-sciences-university-college-of-osteopathic-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Pomona",
+    "degree_type": "DO",
+    "route": "#/schools/western-university-of-health-sciences-college-of-osteopathic-medicine-of-the-pacific",
+    "school_id": "do_westernu_comp_western_university_of_health_sciences_college_of_osteopathic_medic",
+    "school_name": "Western University of Health Sciences College of Osteopathic Medicine of the Pacific",
+    "school_slug": "western-university-of-health-sciences-college-of-osteopathic-medicine-of-the-pacific",
+    "state": "California"
+  },
+  {
+    "city": "Vallejo",
+    "degree_type": "DO",
+    "route": "#/schools/touro-university-college-of-osteopathic-medicine-california",
+    "school_id": "do_tucom_touro_university_college_of_osteopathic_medicine_california_vallejo_califo",
+    "school_name": "Touro University College of Osteopathic Medicine-California",
+    "school_slug": "touro-university-college-of-osteopathic-medicine-california",
+    "state": "California"
+  },
+  {
+    "city": "Greely",
+    "degree_type": "DO",
+    "route": "#/schools/university-of-northern-colorado-college-of-osteopathic-medicine",
+    "school_id": "do_unc_com_university_of_northern_colorado_college_of_osteopathic_medicine_greely_c",
+    "school_name": "University of Northern Colorado College of Osteopathic Medicine",
+    "school_slug": "university-of-northern-colorado-college-of-osteopathic-medicine",
+    "state": "Colorado"
+  },
+  {
+    "city": "Parker",
+    "degree_type": "DO",
+    "route": "#/schools/rocky-vista-university-college-of-osteopathic-medicine",
+    "school_id": "do_rvucom_rocky_vista_university_college_of_osteopathic_medicine_parker_colorado",
+    "school_name": "Rocky Vista University College of Osteopathic Medicine",
+    "school_slug": "rocky-vista-university-college-of-osteopathic-medicine",
+    "state": "Colorado"
+  },
+  {
+    "city": "Bradenton",
+    "degree_type": "DO",
+    "route": "#/schools/lake-erie-college-of-osteopathic-medicine-bradenton",
+    "school_id": "do_lecom_bradenton_lake_erie_college_of_osteopathic_medicine_bradenton_bradenton_fl",
+    "school_name": "Lake Erie College of Osteopathic Medicine \u2013 Bradenton",
+    "school_slug": "lake-erie-college-of-osteopathic-medicine-bradenton",
+    "state": "Florida"
+  },
+  {
+    "city": "Celebration",
+    "degree_type": "DO",
+    "route": "#/schools/orlando-college-of-osteopathic-medicine",
+    "school_id": "do_ocom_orlando_college_of_osteopathic_medicine_celebration_florida",
+    "school_name": "Orlando College of Osteopathic Medicine",
+    "school_slug": "orlando-college-of-osteopathic-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Clearwater",
+    "degree_type": "DO",
+    "route": "#/schools/nova-southeastern-university-dr-kiran-c-patel-college-of-osteopathic-medicine",
+    "school_id": "do_nsu_kpcom_clearwater_nova_southeastern_university_dr_kiran_c_patel_college_of_os",
+    "school_name": "Nova Southeastern University \u2013 Dr. Kiran C. Patel College of Osteopathic Medicine",
+    "school_slug": "nova-southeastern-university-dr-kiran-c-patel-college-of-osteopathic-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Fort Lauderdale",
+    "degree_type": "DO",
+    "route": "#/schools/nova-southeastern-university-dr-kiran-c-patel-college-of-osteopathic-medicine-2",
+    "school_id": "do_nsu_kpcom_nova_southeastern_university_dr_kiran_c_patel_college_of_osteopathic_m",
+    "school_name": "Nova Southeastern University \u2013 Dr. Kiran C. Patel College of Osteopathic Medicine",
+    "school_slug": "nova-southeastern-university-dr-kiran-c-patel-college-of-osteopathic-medicine-2",
+    "state": "Florida"
+  },
+  {
+    "city": "Jacksonville",
+    "degree_type": "DO",
+    "route": "#/schools/lake-erie-college-of-osteopathic-medicine-jacksonville",
+    "school_id": "do_lecom_jacksonville_lake_erie_college_of_osteopathic_medicine_jacksonville_jackso",
+    "school_name": "Lake Erie College of Osteopathic Medicine \u2013 Jacksonville",
+    "school_slug": "lake-erie-college-of-osteopathic-medicine-jacksonville",
+    "state": "Florida"
+  },
+  {
+    "city": "Melbourne",
+    "degree_type": "DO",
+    "route": "#/schools/burrell-college-school-of-osteopathic-medicine-florida",
+    "school_id": "do_bcsom_fl_burrell_college_school_of_osteopathic_medicine_florida_melbourne_florid",
+    "school_name": "Burrell College School of Osteopathic Medicine, Florida",
+    "school_slug": "burrell-college-school-of-osteopathic-medicine-florida",
+    "state": "Florida"
+  },
+  {
+    "city": "Orange Park",
+    "degree_type": "DO",
+    "route": "#/schools/lincoln-memorial-university-debusk-college-of-osteopathic-medicine-orange-park",
+    "school_id": "do_lmu_dcom_orange_park_lincoln_memorial_university_debusk_college_of_osteopathic_m",
+    "school_name": "Lincoln Memorial University-DeBusk College of Osteopathic Medicine \u2013 Orange Park",
+    "school_slug": "lincoln-memorial-university-debusk-college-of-osteopathic-medicine-orange-park",
+    "state": "Florida"
+  },
+  {
+    "city": "Moultrie",
+    "degree_type": "DO",
+    "route": "#/schools/philadelphia-college-of-osteopathic-medicine-south-georgia",
+    "school_id": "do_pcom_south_georgia_philadelphia_college_of_osteopathic_medicine_south_georgia_mo",
+    "school_name": "Philadelphia College of Osteopathic Medicine South Georgia",
+    "school_slug": "philadelphia-college-of-osteopathic-medicine-south-georgia",
+    "state": "Georgia"
+  },
+  {
+    "city": "Suwanee",
+    "degree_type": "DO",
+    "route": "#/schools/philadelphia-college-of-osteopathic-medicine-georgia",
+    "school_id": "do_pcom_georgia_philadelphia_college_of_osteopathic_medicine_georgia_suwanee_georgi",
+    "school_name": "Philadelphia College of Osteopathic Medicine Georgia",
+    "school_slug": "philadelphia-college-of-osteopathic-medicine-georgia",
+    "state": "Georgia"
+  },
+  {
+    "city": "Meridian",
+    "degree_type": "DO",
+    "route": "#/schools/idaho-college-of-osteopathic-medicine",
+    "school_id": "do_icom_idaho_college_of_osteopathic_medicine_meridian_idaho",
+    "school_name": "Idaho College of Osteopathic Medicine",
+    "school_slug": "idaho-college-of-osteopathic-medicine",
+    "state": "Idaho"
+  },
+  {
+    "city": "Chicago",
+    "degree_type": "DO",
+    "route": "#/schools/illinois-college-of-osteopathic-medicine",
+    "school_id": "do_illinoiscom_illinois_college_of_osteopathic_medicine_chicago_illinois",
+    "school_name": "Illinois College of Osteopathic Medicine",
+    "school_slug": "illinois-college-of-osteopathic-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Downers Grove",
+    "degree_type": "DO",
+    "route": "#/schools/midwestern-university-chicago-college-of-osteopathic-medicine",
+    "school_id": "do_mwu_ccom_midwestern_university_chicago_college_of_osteopathic_medicine_downers_g",
+    "school_name": "Midwestern University Chicago College of Osteopathic Medicine",
+    "school_slug": "midwestern-university-chicago-college-of-osteopathic-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Indianapolis",
+    "degree_type": "DO",
+    "route": "#/schools/marian-university-tom-and-julie-wood-college-of-osteopathic-medicine",
+    "school_id": "do_mu_wcom_marian_university_tom_and_julie_wood_college_of_osteopathic_medicine_ind",
+    "school_name": "Marian University Tom and Julie Wood College of Osteopathic Medicine",
+    "school_slug": "marian-university-tom-and-julie-wood-college-of-osteopathic-medicine",
+    "state": "Indiana"
+  },
+  {
+    "city": "West Des Moines",
+    "degree_type": "DO",
+    "route": "#/schools/des-moines-university-college-of-osteopathic-medicine",
+    "school_id": "do_dmu_com_des_moines_university_college_of_osteopathic_medicine_west_des_moines_io",
+    "school_name": "Des Moines University College of Osteopathic Medicine",
+    "school_slug": "des-moines-university-college-of-osteopathic-medicine",
+    "state": "Iowa"
+  },
+  {
+    "city": "Wichita",
+    "degree_type": "DO",
+    "route": "#/schools/kansas-health-sciences-center-kansas-college-of-osteopathic-medicine",
+    "school_id": "do_kansascom_kansas_health_sciences_center_kansas_college_of_osteopathic_medicine_w",
+    "school_name": "Kansas Health Sciences Center Kansas College of Osteopathic Medicine",
+    "school_slug": "kansas-health-sciences-center-kansas-college-of-osteopathic-medicine",
+    "state": "Kansas"
+  },
+  {
+    "city": "Pikeville",
+    "degree_type": "DO",
+    "route": "#/schools/university-of-pikeville-kentucky-college-of-osteopathic-medicine",
+    "school_id": "do_up_kycom_university_of_pikeville_kentucky_college_of_osteopathic_medicine_pikevi",
+    "school_name": "University of Pikeville Kentucky College of Osteopathic Medicine",
+    "school_slug": "university-of-pikeville-kentucky-college-of-osteopathic-medicine",
+    "state": "Kentucky"
+  },
+  {
+    "city": "Monroe",
+    "degree_type": "DO",
+    "route": "#/schools/edward-via-college-of-osteopathic-medicine-louisiana-campus",
+    "school_id": "do_vcom_louisiana_edward_via_college_of_osteopathic_medicine_louisiana_campus_monro",
+    "school_name": "Edward Via College of Osteopathic Medicine-Louisiana Campus",
+    "school_slug": "edward-via-college-of-osteopathic-medicine-louisiana-campus",
+    "state": "Louisiana"
+  },
+  {
+    "city": "Biddeford",
+    "degree_type": "DO",
+    "route": "#/schools/university-of-new-england-college-of-osteopathic-medicine",
+    "school_id": "do_unecom_university_of_new_england_college_of_osteopathic_medicine_biddeford_maine",
+    "school_name": "University of New England College of Osteopathic Medicine",
+    "school_slug": "university-of-new-england-college-of-osteopathic-medicine",
+    "state": "Maine"
+  },
+  {
+    "city": "Hagerstown",
+    "degree_type": "DO",
+    "route": "#/schools/meritus-school-of-osteopathic-medicine",
+    "school_id": "do_msom_meritus_school_of_osteopathic_medicine_hagerstown_maryland",
+    "school_name": "Meritus School of Osteopathic Medicine",
+    "school_slug": "meritus-school-of-osteopathic-medicine",
+    "state": "Maryland"
+  },
+  {
+    "city": "Detroit",
+    "degree_type": "DO",
+    "route": "#/schools/michigan-state-university-college-of-osteopathic-medicine",
+    "school_id": "do_msucom_dmc_michigan_state_university_college_of_osteopathic_medicine_detroit_mic",
+    "school_name": "Michigan State University College of Osteopathic Medicine",
+    "school_slug": "michigan-state-university-college-of-osteopathic-medicine",
+    "state": "Michigan"
+  },
+  {
+    "city": "East Lansing",
+    "degree_type": "DO",
+    "route": "#/schools/michigan-state-university-college-of-osteopathic-medicine-2",
+    "school_id": "do_msucom_michigan_state_university_college_of_osteopathic_medicine_east_lansing_mi",
+    "school_name": "Michigan State University College of Osteopathic Medicine",
+    "school_slug": "michigan-state-university-college-of-osteopathic-medicine-2",
+    "state": "Michigan"
+  },
+  {
+    "city": "Macomb",
+    "degree_type": "DO",
+    "route": "#/schools/michigan-state-university-college-of-osteopathic-medicine-3",
+    "school_id": "do_msucom_muc_michigan_state_university_college_of_osteopathic_medicine_macomb_mich",
+    "school_name": "Michigan State University College of Osteopathic Medicine",
+    "school_slug": "michigan-state-university-college-of-osteopathic-medicine-3",
+    "state": "Michigan"
+  },
+  {
+    "city": "Hattiesburg",
+    "degree_type": "DO",
+    "route": "#/schools/william-carey-university-college-of-osteopathic-medicine",
+    "school_id": "do_wcucom_william_carey_university_college_of_osteopathic_medicine_hattiesburg_miss",
+    "school_name": "William Carey University College of Osteopathic Medicine",
+    "school_slug": "william-carey-university-college-of-osteopathic-medicine",
+    "state": "Mississippi"
+  },
+  {
+    "city": "Joplin",
+    "degree_type": "DO",
+    "route": "#/schools/kansas-city-university-of-medicine-and-biosciences-college-of-osteopathic-medicine",
+    "school_id": "do_kcu_com_joplin_kansas_city_university_of_medicine_and_biosciences_college_of_ost",
+    "school_name": "Kansas City University of Medicine and Biosciences College of Osteopathic Medicine",
+    "school_slug": "kansas-city-university-of-medicine-and-biosciences-college-of-osteopathic-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "Kansas City",
+    "degree_type": "DO",
+    "route": "#/schools/kansas-city-university-of-medicine-and-biosciences-college-of-osteopathic-medicine-2",
+    "school_id": "do_kcu_com_kansas_city_university_of_medicine_and_biosciences_college_of_osteopathi",
+    "school_name": "Kansas City University of Medicine and Biosciences College of Osteopathic Medicine",
+    "school_slug": "kansas-city-university-of-medicine-and-biosciences-college-of-osteopathic-medicine-2",
+    "state": "Missouri"
+  },
+  {
+    "city": "Kirksville",
+    "degree_type": "DO",
+    "route": "#/schools/a-t-still-university-kirksville-college-of-osteopathic-medicine",
+    "school_id": "do_atsu_kcom_a_t_still_university_kirksville_college_of_osteopathic_medicine_kirksv",
+    "school_name": "A.T. Still University \u2013 Kirksville College of Osteopathic Medicine",
+    "school_slug": "a-t-still-university-kirksville-college-of-osteopathic-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "Billings",
+    "degree_type": "DO",
+    "route": "#/schools/rocky-vista-university-montana-college-of-osteopathic-medicine",
+    "school_id": "do_rvu_mcom_rocky_vista_university_montana_college_of_osteopathic_medicine_billings",
+    "school_name": "Rocky Vista University \u2013 Montana College of Osteopathic Medicine",
+    "school_slug": "rocky-vista-university-montana-college-of-osteopathic-medicine",
+    "state": "Montana"
+  },
+  {
+    "city": "Great Falls",
+    "degree_type": "DO",
+    "route": "#/schools/touro-college-of-osteopathic-medicine-great-falls",
+    "school_id": "do_tourocom_great_falls_touro_college_of_osteopathic_medicine_great_falls_great_fal",
+    "school_name": "Touro College of Osteopathic Medicine \u2013 Great Falls",
+    "school_slug": "touro-college-of-osteopathic-medicine-great-falls",
+    "state": "Montana"
+  },
+  {
+    "city": "Henderson",
+    "degree_type": "DO",
+    "route": "#/schools/touro-university-nevada-college-of-osteopathic-medicine",
+    "school_id": "do_tuncom_touro_university_nevada_college_of_osteopathic_medicine_henderson_nevada",
+    "school_name": "Touro University Nevada College of Osteopathic Medicine",
+    "school_slug": "touro-university-nevada-college-of-osteopathic-medicine",
+    "state": "Nevada"
+  },
+  {
+    "city": "Sewell",
+    "degree_type": "DO",
+    "route": "#/schools/rowan-virtua-school-of-osteopathic-medicine",
+    "school_id": "do_rowan_virtuasom_sewell_rowan_virtua_school_of_osteopathic_medicine_sewell_new_je",
+    "school_name": "Rowan-Virtua School of Osteopathic Medicine",
+    "school_slug": "rowan-virtua-school-of-osteopathic-medicine",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Stratford",
+    "degree_type": "DO",
+    "route": "#/schools/rowan-virtua-school-of-osteopathic-medicine-2",
+    "school_id": "do_rowan_virtuasom_rowan_virtua_school_of_osteopathic_medicine_stratford_new_jersey",
+    "school_name": "Rowan-Virtua School of Osteopathic Medicine",
+    "school_slug": "rowan-virtua-school-of-osteopathic-medicine-2",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Las Cruces",
+    "degree_type": "DO",
+    "route": "#/schools/burrell-college-school-of-osteopathic-medicine",
+    "school_id": "do_bcsom_burrell_college_school_of_osteopathic_medicine_las_cruces_new_mexico",
+    "school_name": "Burrell College School of Osteopathic Medicine",
+    "school_slug": "burrell-college-school-of-osteopathic-medicine",
+    "state": "New Mexico"
+  },
+  {
+    "city": "Buffalo",
+    "degree_type": "DO",
+    "route": "#/schools/d-youville-university-college-of-osteopathic-medicine",
+    "school_id": "do_dyu_com_d_youville_university_college_of_osteopathic_medicine_buffalo_new_york",
+    "school_name": "D\u2019Youville University College of Osteopathic Medicine",
+    "school_slug": "d-youville-university-college-of-osteopathic-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "Elmira",
+    "degree_type": "DO",
+    "route": "#/schools/lake-erie-college-of-osteopathic-medicine-elmira",
+    "school_id": "do_lecom_elmira_lake_erie_college_of_osteopathic_medicine_elmira_elmira_new_york",
+    "school_name": "Lake Erie College of Osteopathic Medicine \u2013 Elmira",
+    "school_slug": "lake-erie-college-of-osteopathic-medicine-elmira",
+    "state": "New York"
+  },
+  {
+    "city": "Middletown",
+    "degree_type": "DO",
+    "route": "#/schools/touro-college-of-osteopathic-medicine",
+    "school_id": "do_tourocom_middletown_touro_college_of_osteopathic_medicine_middletown_new_york",
+    "school_name": "Touro College of Osteopathic Medicine",
+    "school_slug": "touro-college-of-osteopathic-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "DO",
+    "route": "#/schools/touro-college-of-osteopathic-medicine-2",
+    "school_id": "do_tourocom_harlem_touro_college_of_osteopathic_medicine_new_york_new_york",
+    "school_name": "Touro College of Osteopathic Medicine",
+    "school_slug": "touro-college-of-osteopathic-medicine-2",
+    "state": "New York"
+  },
+  {
+    "city": "Old Westbury",
+    "degree_type": "DO",
+    "route": "#/schools/new-york-institute-of-technology-college-of-osteopathic-medicine",
+    "school_id": "do_nyitcom_new_york_institute_of_technology_college_of_osteopathic_medicine_old_wes",
+    "school_name": "New York Institute of Technology College of Osteopathic Medicine",
+    "school_slug": "new-york-institute-of-technology-college-of-osteopathic-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "Buies Creek",
+    "degree_type": "DO",
+    "route": "#/schools/campbell-university-jerry-m-wallace-school-of-osteopathic-medicine",
+    "school_id": "do_cusom_campbell_university_jerry_m_wallace_school_of_osteopathic_medicine_buies_c",
+    "school_name": "Campbell University Jerry M. Wallace School of Osteopathic Medicine",
+    "school_slug": "campbell-university-jerry-m-wallace-school-of-osteopathic-medicine",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Athens",
+    "degree_type": "DO",
+    "route": "#/schools/ohio-university-heritage-college-of-osteopathic-medicine",
+    "school_id": "do_ou_hcom_ohio_university_heritage_college_of_osteopathic_medicine_athens_ohio",
+    "school_name": "Ohio University Heritage College of Osteopathic Medicine",
+    "school_slug": "ohio-university-heritage-college-of-osteopathic-medicine",
+    "state": "Ohio"
+  },
+  {
+    "city": "Cleveland",
+    "degree_type": "DO",
+    "route": "#/schools/ohio-university-heritage-college-of-osteopathic-medicine-2",
+    "school_id": "do_ou_hcom_cleveland_ohio_university_heritage_college_of_osteopathic_medicine_cleve",
+    "school_name": "Ohio University Heritage College of Osteopathic Medicine",
+    "school_slug": "ohio-university-heritage-college-of-osteopathic-medicine-2",
+    "state": "Ohio"
+  },
+  {
+    "city": "Dublin",
+    "degree_type": "DO",
+    "route": "#/schools/ohio-university-heritage-college-of-osteopathic-medicine-dublin",
+    "school_id": "do_ou_hcom_dublin_ohio_university_heritage_college_of_osteopathic_medicine_dublin_d",
+    "school_name": "Ohio University Heritage College of Osteopathic Medicine \u2013 Dublin",
+    "school_slug": "ohio-university-heritage-college-of-osteopathic-medicine-dublin",
+    "state": "Ohio"
+  },
+  {
+    "city": "Tahlequah",
+    "degree_type": "DO",
+    "route": "#/schools/oklahoma-state-university-center-for-health-sciences-college-of-osteopathic-medicine-tahlequah",
+    "school_id": "do_osu_com_tahlequah_oklahoma_state_university_center_for_health_sciences_college_o",
+    "school_name": "Oklahoma State University Center for Health Sciences College of Osteopathic Medicine Tahlequah",
+    "school_slug": "oklahoma-state-university-center-for-health-sciences-college-of-osteopathic-medicine-tahlequah",
+    "state": "Oklahoma"
+  },
+  {
+    "city": "Tulsa",
+    "degree_type": "DO",
+    "route": "#/schools/oklahoma-state-university-center-for-health-sciences-college-of-osteopathic-medicine",
+    "school_id": "do_osu_com_oklahoma_state_university_center_for_health_sciences_college_of_osteopat",
+    "school_name": "Oklahoma State University Center for Health Sciences College of Osteopathic Medicine",
+    "school_slug": "oklahoma-state-university-center-for-health-sciences-college-of-osteopathic-medicine",
+    "state": "Oklahoma"
+  },
+  {
+    "city": "Lebanon",
+    "degree_type": "DO",
+    "route": "#/schools/western-university-of-health-sciences-college-of-osteopathic-medicine-of-the-pacific-northwest",
+    "school_id": "do_westernu_comp_northwest_western_university_of_health_sciences_college_of_osteopa",
+    "school_name": "Western University of Health Sciences College of Osteopathic Medicine of the Pacific-Northwest",
+    "school_slug": "western-university-of-health-sciences-college-of-osteopathic-medicine-of-the-pacific-northwest",
+    "state": "Oregon"
+  },
+  {
+    "city": "Erie",
+    "degree_type": "DO",
+    "route": "#/schools/lake-erie-college-of-osteopathic-medicine-erie",
+    "school_id": "do_lecom_lake_erie_college_of_osteopathic_medicine_erie_erie_pennsylvania",
+    "school_name": "Lake Erie College of Osteopathic Medicine \u2013 Erie",
+    "school_slug": "lake-erie-college-of-osteopathic-medicine-erie",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Greensburg",
+    "degree_type": "DO",
+    "route": "#/schools/lake-erie-college-of-osteopathic-medicine-seton-hill",
+    "school_id": "do_lecom_seton_hill_lake_erie_college_of_osteopathic_medicine_seton_hill_greensburg",
+    "school_name": "Lake Erie College of Osteopathic Medicine \u2013\u00a0Seton Hill",
+    "school_slug": "lake-erie-college-of-osteopathic-medicine-seton-hill",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Indiana",
+    "degree_type": "DO",
+    "route": "#/schools/indiana-university-of-pennsylvania-college-of-osteopathic-medicine",
+    "school_id": "do_iupcom_indiana_university_of_pennsylvania_college_of_osteopathic_medicine_indian",
+    "school_name": "Indiana University of Pennsylvania College of Osteopathic Medicine",
+    "school_slug": "indiana-university-of-pennsylvania-college-of-osteopathic-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Philadelphia",
+    "degree_type": "DO",
+    "route": "#/schools/philadelphia-college-of-osteopathic-medicine",
+    "school_id": "do_pcom_philadelphia_college_of_osteopathic_medicine_philadelphia_pennsylvania",
+    "school_name": "Philadelphia College of Osteopathic Medicine",
+    "school_slug": "philadelphia-college-of-osteopathic-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Pittsburgh",
+    "degree_type": "DO",
+    "route": "#/schools/duquesne-university-nasuti-college-of-osteopathic-medicine",
+    "school_id": "do_duqcom_duquesne_university_nasuti_college_of_osteopathic_medicine_pittsburgh_pen",
+    "school_name": "Duquesne University Nasuti College of Osteopathic Medicine",
+    "school_slug": "duquesne-university-nasuti-college-of-osteopathic-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Spartanburg",
+    "degree_type": "DO",
+    "route": "#/schools/edward-via-college-of-osteopathic-medicine-2",
+    "school_id": "do_vcom_carolinas_edward_via_college_of_osteopathic_medicine_spartanburg_south_caro",
+    "school_name": "Edward Via College of Osteopathic Medicine",
+    "school_slug": "edward-via-college-of-osteopathic-medicine-2",
+    "state": "South Carolina"
+  },
+  {
+    "city": "Harrogate",
+    "degree_type": "DO",
+    "route": "#/schools/lincoln-memorial-university-debusk-college-of-osteopathic-medicine",
+    "school_id": "do_lmu_dcom_lincoln_memorial_university_debusk_college_of_osteopathic_medicine_harr",
+    "school_name": "Lincoln Memorial University-DeBusk College of Osteopathic Medicine",
+    "school_slug": "lincoln-memorial-university-debusk-college-of-osteopathic-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Knoxville",
+    "degree_type": "DO",
+    "route": "#/schools/lincoln-memorial-university-debusk-college-of-osteopathic-medicine-knoxville",
+    "school_id": "do_lmu_dcom_knoxville_lincoln_memorial_university_debusk_college_of_osteopathic_med",
+    "school_name": "Lincoln Memorial University-DeBusk College of Osteopathic Medicine \u2013 Knoxville",
+    "school_slug": "lincoln-memorial-university-debusk-college-of-osteopathic-medicine-knoxville",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Memphis",
+    "degree_type": "DO",
+    "route": "#/schools/baptist-health-sciences-university-college-of-osteopathic-medicine",
+    "school_id": "do_bucom_baptist_health_sciences_university_college_of_osteopathic_medicine_memphis",
+    "school_name": "Baptist Health Sciences University College of Osteopathic Medicine",
+    "school_slug": "baptist-health-sciences-university-college-of-osteopathic-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Fort Worth",
+    "degree_type": "DO",
+    "route": "#/schools/university-of-north-texas-health-science-center-texas-college-of-osteopathic-medicine",
+    "school_id": "do_unthsc_tcom_university_of_north_texas_health_science_center_texas_college_of_ost",
+    "school_name": "University of North Texas Health Science Center Texas College of Osteopathic Medicine",
+    "school_slug": "university-of-north-texas-health-science-center-texas-college-of-osteopathic-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Huntsville",
+    "degree_type": "DO",
+    "route": "#/schools/sam-houston-state-university-college-of-osteopathic-medicine",
+    "school_id": "do_shsu_com_sam_houston_state_university_college_of_osteopathic_medicine_huntsville",
+    "school_name": "Sam Houston State University College of Osteopathic Medicine",
+    "school_slug": "sam-houston-state-university-college-of-osteopathic-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "San Antonio",
+    "degree_type": "DO",
+    "route": "#/schools/university-of-the-incarnate-word-school-of-osteopathic-medicine",
+    "school_id": "do_uiwsom_university_of_the_incarnate_word_school_of_osteopathic_medicine_san_anton",
+    "school_name": "University of the Incarnate Word School of Osteopathic Medicine",
+    "school_slug": "university-of-the-incarnate-word-school-of-osteopathic-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Ivins",
+    "degree_type": "DO",
+    "route": "#/schools/rocky-vista-university-college-of-osteopathic-medicine-2",
+    "school_id": "do_rvucom_su_campus_rocky_vista_university_college_of_osteopathic_medicine_ivins_ut",
+    "school_name": "Rocky Vista University College of Osteopathic Medicine",
+    "school_slug": "rocky-vista-university-college-of-osteopathic-medicine-2",
+    "state": "Utah"
+  },
+  {
+    "city": "Provo",
+    "degree_type": "DO",
+    "route": "#/schools/noorda-college-of-osteopathic-medicine",
+    "school_id": "do_noordacom_noorda_college_of_osteopathic_medicine_provo_utah",
+    "school_name": "Noorda College of Osteopathic Medicine",
+    "school_slug": "noorda-college-of-osteopathic-medicine",
+    "state": "Utah"
+  },
+  {
+    "city": "Blacksburg",
+    "degree_type": "DO",
+    "route": "#/schools/edward-via-college-of-osteopathic-medicine-3",
+    "school_id": "do_vcom_virginia_edward_via_college_of_osteopathic_medicine_blacksburg_virginia",
+    "school_name": "Edward Via College of Osteopathic Medicine",
+    "school_slug": "edward-via-college-of-osteopathic-medicine-3",
+    "state": "Virginia"
+  },
+  {
+    "city": "Lynchburg",
+    "degree_type": "DO",
+    "route": "#/schools/liberty-university-college-of-osteopathic-medicine",
+    "school_id": "do_lucom_liberty_university_college_of_osteopathic_medicine_lynchburg_virginia",
+    "school_name": "Liberty University College of Osteopathic Medicine",
+    "school_slug": "liberty-university-college-of-osteopathic-medicine",
+    "state": "Virginia"
+  },
+  {
+    "city": "Yakima",
+    "degree_type": "DO",
+    "route": "#/schools/pacific-northwest-university-of-health-sciences-college-of-osteopathic-medicine",
+    "school_id": "do_pnwu_com_pacific_northwest_university_of_health_sciences_college_of_osteopathic_",
+    "school_name": "Pacific Northwest University of Health Sciences College of Osteopathic Medicine",
+    "school_slug": "pacific-northwest-university-of-health-sciences-college-of-osteopathic-medicine",
+    "state": "Washington"
+  },
+  {
+    "city": "Lewisburg",
+    "degree_type": "DO",
+    "route": "#/schools/west-virginia-school-of-osteopathic-medicine",
+    "school_id": "do_wvsom_west_virginia_school_of_osteopathic_medicine_lewisburg_west_virginia",
+    "school_name": "West Virginia School of Osteopathic Medicine",
+    "school_slug": "west-virginia-school-of-osteopathic-medicine",
+    "state": "West Virginia"
+  },
+  {
+    "city": "Birmingham",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-alabama-at-birmingham-marnix-e-heersink-school-of-medicine",
+    "school_id": "md_university_of_alabama_at_birmingham_marnix_e_heersink_school_of_medicine_birming",
+    "school_name": "University of Alabama at Birmingham Marnix E. Heersink School of Medicine",
+    "school_slug": "university-of-alabama-at-birmingham-marnix-e-heersink-school-of-medicine",
+    "state": "Alabama"
+  },
+  {
+    "city": "Mobile",
+    "degree_type": "MD",
+    "route": "#/schools/frederick-p-whiddon-college-of-medicine-at-the-university-of-south-alabama",
+    "school_id": "md_frederick_p_whiddon_college_of_medicine_at_the_university_of_south_alabama_mobil",
+    "school_name": "Frederick P. Whiddon College of Medicine at the University of South Alabama",
+    "school_slug": "frederick-p-whiddon-college-of-medicine-at-the-university-of-south-alabama",
+    "state": "Alabama"
+  },
+  {
+    "city": "Phoenix",
+    "degree_type": "MD",
+    "route": "#/schools/arizona-state-university-john-shufeldt-school-of-medicine-and-medical-engineering",
+    "school_id": "md_arizona_state_university_john_shufeldt_school_of_medicine_and_medical_engineerin",
+    "school_name": "Arizona State University John Shufeldt School of Medicine and Medical Engineering",
+    "school_slug": "arizona-state-university-john-shufeldt-school-of-medicine-and-medical-engineering",
+    "state": "Arizona"
+  },
+  {
+    "city": "Phoenix",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-arizona-college-of-medicine-phoenix",
+    "school_id": "md_university_of_arizona_college_of_medicine_phoenix_phoenix_arizona",
+    "school_name": "University of Arizona College of Medicine - Phoenix",
+    "school_slug": "university-of-arizona-college-of-medicine-phoenix",
+    "state": "Arizona"
+  },
+  {
+    "city": "Tucson",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-arizona-college-of-medicine-tucson",
+    "school_id": "md_university_of_arizona_college_of_medicine_tucson_tucson_arizona",
+    "school_name": "University of Arizona College of Medicine - Tucson",
+    "school_slug": "university-of-arizona-college-of-medicine-tucson",
+    "state": "Arizona"
+  },
+  {
+    "city": "Bentonville",
+    "degree_type": "MD",
+    "route": "#/schools/alice-l-walton-school-of-medicine",
+    "school_id": "md_alice_l_walton_school_of_medicine_bentonville_arkansas",
+    "school_name": "Alice L. Walton School of Medicine",
+    "school_slug": "alice-l-walton-school-of-medicine",
+    "state": "Arkansas"
+  },
+  {
+    "city": "Little Rock",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-arkansas-for-medical-sciences-college-of-medicine",
+    "school_id": "md_university_of_arkansas_for_medical_sciences_college_of_medicine_little_rock_arka",
+    "school_name": "University of Arkansas for Medical Sciences College of Medicine",
+    "school_slug": "university-of-arkansas-for-medical-sciences-college-of-medicine",
+    "state": "Arkansas"
+  },
+  {
+    "city": "Colton",
+    "degree_type": "MD",
+    "route": "#/schools/california-university-of-science-and-medicine-school-of-medicine",
+    "school_id": "md_california_university_of_science_and_medicine_school_of_medicine_colton_californ",
+    "school_name": "California University of Science and Medicine - School of Medicine",
+    "school_slug": "california-university-of-science-and-medicine-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Davis",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-california-davis-school-of-medicine",
+    "school_id": "md_university_of_california_davis_school_of_medicine_davis_california",
+    "school_name": "University of California, Davis School of Medicine",
+    "school_slug": "university-of-california-davis-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Elk Grove",
+    "degree_type": "MD",
+    "route": "#/schools/california-northstate-university-college-of-medicine",
+    "school_id": "md_california_northstate_university_college_of_medicine_elk_grove_california",
+    "school_name": "California Northstate University College of Medicine",
+    "school_slug": "california-northstate-university-college-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Irvine",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-california-irvine-school-of-medicine",
+    "school_id": "md_university_of_california_irvine_school_of_medicine_irvine_california",
+    "school_name": "University of California, Irvine School of Medicine",
+    "school_slug": "university-of-california-irvine-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Loma Linda",
+    "degree_type": "MD",
+    "route": "#/schools/loma-linda-university-school-of-medicine",
+    "school_id": "md_loma_linda_university_school_of_medicine_loma_linda_california",
+    "school_name": "Loma Linda University School of Medicine",
+    "school_slug": "loma-linda-university-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Los Angeles",
+    "degree_type": "MD",
+    "route": "#/schools/charles-r-drew-university-of-medicine-and-science-college-of-medicine",
+    "school_id": "md_charles_r_drew_university_of_medicine_and_science_college_of_medicine_los_angele",
+    "school_name": "Charles R. Drew University of Medicine and Science College of Medicine",
+    "school_slug": "charles-r-drew-university-of-medicine-and-science-college-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Los Angeles",
+    "degree_type": "MD",
+    "route": "#/schools/david-geffen-school-of-medicine-at-ucla",
+    "school_id": "md_david_geffen_school_of_medicine_at_ucla_los_angeles_california",
+    "school_name": "David Geffen School of Medicine at UCLA",
+    "school_slug": "david-geffen-school-of-medicine-at-ucla",
+    "state": "California"
+  },
+  {
+    "city": "Los Angeles",
+    "degree_type": "MD",
+    "route": "#/schools/keck-school-of-medicine-of-the-university-of-southern-california",
+    "school_id": "md_keck_school_of_medicine_of_the_university_of_southern_california_los_angeles_cal",
+    "school_name": "Keck School of Medicine of the University of Southern California",
+    "school_slug": "keck-school-of-medicine-of-the-university-of-southern-california",
+    "state": "California"
+  },
+  {
+    "city": "Palo Alto",
+    "degree_type": "MD",
+    "route": "#/schools/stanford-university-school-of-medicine",
+    "school_id": "md_stanford_university_school_of_medicine_palo_alto_california",
+    "school_name": "Stanford University School of Medicine",
+    "school_slug": "stanford-university-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Pasadena",
+    "degree_type": "MD",
+    "route": "#/schools/kaiser-permanente-bernard-j-tyson-school-of-medicine",
+    "school_id": "md_kaiser_permanente_bernard_j_tyson_school_of_medicine_pasadena_california",
+    "school_name": "Kaiser Permanente Bernard J. Tyson School of Medicine",
+    "school_slug": "kaiser-permanente-bernard-j-tyson-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Riverside",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-california-riverside-school-of-medicine",
+    "school_id": "md_university_of_california_riverside_school_of_medicine_riverside_california",
+    "school_name": "University of California, Riverside School of Medicine",
+    "school_slug": "university-of-california-riverside-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "San Diego",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-california-san-diego-school-of-medicine",
+    "school_id": "md_university_of_california_san_diego_school_of_medicine_san_diego_california",
+    "school_name": "University of California, San Diego School of Medicine",
+    "school_slug": "university-of-california-san-diego-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "San Francisco",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-california-san-francisco-school-of-medicine",
+    "school_id": "md_university_of_california_san_francisco_school_of_medicine_san_francisco_californ",
+    "school_name": "University of California, San Francisco School of Medicine",
+    "school_slug": "university-of-california-san-francisco-school-of-medicine",
+    "state": "California"
+  },
+  {
+    "city": "Denver",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-colorado-school-of-medicine",
+    "school_id": "md_university_of_colorado_school_of_medicine_denver_colorado",
+    "school_name": "University of Colorado School of Medicine",
+    "school_slug": "university-of-colorado-school-of-medicine",
+    "state": "Colorado"
+  },
+  {
+    "city": "Farmington",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-connecticut-school-of-medicine",
+    "school_id": "md_university_of_connecticut_school_of_medicine_farmington_connecticut",
+    "school_name": "University of Connecticut School of Medicine",
+    "school_slug": "university-of-connecticut-school-of-medicine",
+    "state": "Connecticut"
+  },
+  {
+    "city": "New Haven",
+    "degree_type": "MD",
+    "route": "#/schools/yale-school-of-medicine",
+    "school_id": "md_yale_school_of_medicine_new_haven_connecticut",
+    "school_name": "Yale School of Medicine",
+    "school_slug": "yale-school-of-medicine",
+    "state": "Connecticut"
+  },
+  {
+    "city": "North Haven",
+    "degree_type": "MD",
+    "route": "#/schools/frank-h-netter-md-school-of-medicine-at-quinnipiac-university",
+    "school_id": "md_frank_h_netter_md_school_of_medicine_at_quinnipiac_university_north_haven_connec",
+    "school_name": "Frank H. Netter MD School of Medicine at Quinnipiac University",
+    "school_slug": "frank-h-netter-md-school-of-medicine-at-quinnipiac-university",
+    "state": "Connecticut"
+  },
+  {
+    "city": "Washington",
+    "degree_type": "MD",
+    "route": "#/schools/george-washington-university-school-of-medicine-and-health-sciences",
+    "school_id": "md_george_washington_university_school_of_medicine_and_health_sciences_washington_d",
+    "school_name": "George Washington University School of Medicine and Health Sciences",
+    "school_slug": "george-washington-university-school-of-medicine-and-health-sciences",
+    "state": "District of Columbia"
+  },
+  {
+    "city": "Washington",
+    "degree_type": "MD",
+    "route": "#/schools/georgetown-university-school-of-medicine",
+    "school_id": "md_georgetown_university_school_of_medicine_washington_district_of_columbia",
+    "school_name": "Georgetown University School of Medicine",
+    "school_slug": "georgetown-university-school-of-medicine",
+    "state": "District of Columbia"
+  },
+  {
+    "city": "Washington",
+    "degree_type": "MD",
+    "route": "#/schools/howard-university-college-of-medicine",
+    "school_id": "md_howard_university_college_of_medicine_washington_district_of_columbia",
+    "school_name": "Howard University College of Medicine",
+    "school_slug": "howard-university-college-of-medicine",
+    "state": "District of Columbia"
+  },
+  {
+    "city": "Boca Raton",
+    "degree_type": "MD",
+    "route": "#/schools/charles-e-schmidt-college-of-medicine-at-florida-atlantic-university",
+    "school_id": "md_charles_e_schmidt_college_of_medicine_at_florida_atlantic_university_boca_raton_",
+    "school_name": "Charles E. Schmidt College of Medicine at Florida Atlantic University",
+    "school_slug": "charles-e-schmidt-college-of-medicine-at-florida-atlantic-university",
+    "state": "Florida"
+  },
+  {
+    "city": "Fort Lauderdale",
+    "degree_type": "MD",
+    "route": "#/schools/nova-southeastern-university-dr-kiran-c-patel-college-of-allopathic-medicine",
+    "school_id": "md_nova_southeastern_university_dr_kiran_c_patel_college_of_allopathic_medicine_for",
+    "school_name": "Nova Southeastern University Dr. Kiran C. Patel College of Allopathic Medicine",
+    "school_slug": "nova-southeastern-university-dr-kiran-c-patel-college-of-allopathic-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Gainesville",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-florida-college-of-medicine",
+    "school_id": "md_university_of_florida_college_of_medicine_gainesville_florida",
+    "school_name": "University of Florida College of Medicine",
+    "school_slug": "university-of-florida-college-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Miami",
+    "degree_type": "MD",
+    "route": "#/schools/florida-international-university-herbert-wertheim-college-of-medicine",
+    "school_id": "md_florida_international_university_herbert_wertheim_college_of_medicine_miami_flor",
+    "school_name": "Florida International University Herbert Wertheim College of Medicine",
+    "school_slug": "florida-international-university-herbert-wertheim-college-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Miami",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-miami-leonard-m-miller-school-of-medicine",
+    "school_id": "md_university_of_miami_leonard_m_miller_school_of_medicine_miami_florida",
+    "school_name": "University of Miami Leonard M. Miller School of Medicine",
+    "school_slug": "university-of-miami-leonard-m-miller-school-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Orlando",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-central-florida-college-of-medicine",
+    "school_id": "md_university_of_central_florida_college_of_medicine_orlando_florida",
+    "school_name": "University of Central Florida College of Medicine",
+    "school_slug": "university-of-central-florida-college-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Tallahassee",
+    "degree_type": "MD",
+    "route": "#/schools/florida-state-university-college-of-medicine",
+    "school_id": "md_florida_state_university_college_of_medicine_tallahassee_florida",
+    "school_name": "Florida State University College of Medicine",
+    "school_slug": "florida-state-university-college-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Tampa",
+    "degree_type": "MD",
+    "route": "#/schools/usf-health-morsani-college-of-medicine",
+    "school_id": "md_usf_health_morsani_college_of_medicine_tampa_florida",
+    "school_name": "USF Health Morsani College of Medicine",
+    "school_slug": "usf-health-morsani-college-of-medicine",
+    "state": "Florida"
+  },
+  {
+    "city": "Athens",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-georgia-school-of-medicine",
+    "school_id": "md_university_of_georgia_school_of_medicine_athens_georgia",
+    "school_name": "University of Georgia School of Medicine",
+    "school_slug": "university-of-georgia-school-of-medicine",
+    "state": "Georgia"
+  },
+  {
+    "city": "Atlanta",
+    "degree_type": "MD",
+    "route": "#/schools/emory-university-school-of-medicine",
+    "school_id": "md_emory_university_school_of_medicine_atlanta_georgia",
+    "school_name": "Emory University School of Medicine",
+    "school_slug": "emory-university-school-of-medicine",
+    "state": "Georgia"
+  },
+  {
+    "city": "Atlanta",
+    "degree_type": "MD",
+    "route": "#/schools/morehouse-school-of-medicine",
+    "school_id": "md_morehouse_school_of_medicine_atlanta_georgia",
+    "school_name": "Morehouse School of Medicine",
+    "school_slug": "morehouse-school-of-medicine",
+    "state": "Georgia"
+  },
+  {
+    "city": "Augusta",
+    "degree_type": "MD",
+    "route": "#/schools/medical-college-of-georgia-at-augusta-university",
+    "school_id": "md_medical_college_of_georgia_at_augusta_university_augusta_georgia",
+    "school_name": "Medical College of Georgia at Augusta University",
+    "school_slug": "medical-college-of-georgia-at-augusta-university",
+    "state": "Georgia"
+  },
+  {
+    "city": "Macon",
+    "degree_type": "MD",
+    "route": "#/schools/mercer-university-school-of-medicine",
+    "school_id": "md_mercer_university_school_of_medicine_macon_georgia",
+    "school_name": "Mercer University School of Medicine",
+    "school_slug": "mercer-university-school-of-medicine",
+    "state": "Georgia"
+  },
+  {
+    "city": "Honolulu",
+    "degree_type": "MD",
+    "route": "#/schools/john-a-burns-school-of-medicine-university-of-hawaii-at-manoa",
+    "school_id": "md_john_a_burns_school_of_medicine_university_of_hawaii_at_manoa_honolulu_hawaii",
+    "school_name": "John A. Burns School of Medicine University of Hawaii at Manoa",
+    "school_slug": "john-a-burns-school-of-medicine-university-of-hawaii-at-manoa",
+    "state": "Hawaii"
+  },
+  {
+    "city": "Chicago",
+    "degree_type": "MD",
+    "route": "#/schools/northwestern-university-feinberg-school-of-medicine",
+    "school_id": "md_northwestern_university_feinberg_school_of_medicine_chicago_illinois",
+    "school_name": "Northwestern University Feinberg School of Medicine",
+    "school_slug": "northwestern-university-feinberg-school-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Chicago",
+    "degree_type": "MD",
+    "route": "#/schools/rush-medical-college-of-rush-university-medical-center",
+    "school_id": "md_rush_medical_college_of_rush_university_medical_center_chicago_illinois",
+    "school_name": "Rush Medical College of Rush University Medical Center",
+    "school_slug": "rush-medical-college-of-rush-university-medical-center",
+    "state": "Illinois"
+  },
+  {
+    "city": "Chicago",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-chicago-division-of-the-biological-sciences-the-pritzker-school-of-medicine",
+    "school_id": "md_university_of_chicago_division_of_the_biological_sciences_the_pritzker_school_of",
+    "school_name": "University of Chicago Division of the Biological Sciences, The Pritzker School of Medicine",
+    "school_slug": "university-of-chicago-division-of-the-biological-sciences-the-pritzker-school-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Chicago",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-illinois-college-of-medicine",
+    "school_id": "md_university_of_illinois_college_of_medicine_chicago_illinois",
+    "school_name": "University of Illinois College of Medicine",
+    "school_slug": "university-of-illinois-college-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Maywood",
+    "degree_type": "MD",
+    "route": "#/schools/loyola-university-chicago-stritch-school-of-medicine",
+    "school_id": "md_loyola_university_chicago_stritch_school_of_medicine_maywood_illinois",
+    "school_name": "Loyola University Chicago Stritch School of Medicine",
+    "school_slug": "loyola-university-chicago-stritch-school-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "North Chicago",
+    "degree_type": "MD",
+    "route": "#/schools/chicago-medical-school-at-rosalind-franklin-university-of-medicine-and-science",
+    "school_id": "md_chicago_medical_school_at_rosalind_franklin_university_of_medicine_and_science_n",
+    "school_name": "Chicago Medical School at Rosalind Franklin University of Medicine and Science",
+    "school_slug": "chicago-medical-school-at-rosalind-franklin-university-of-medicine-and-science",
+    "state": "Illinois"
+  },
+  {
+    "city": "Springfield",
+    "degree_type": "MD",
+    "route": "#/schools/southern-illinois-university-school-of-medicine",
+    "school_id": "md_southern_illinois_university_school_of_medicine_springfield_illinois",
+    "school_name": "Southern Illinois University School of Medicine",
+    "school_slug": "southern-illinois-university-school-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Urbana-Champaign",
+    "degree_type": "MD",
+    "route": "#/schools/carle-illinois-college-of-medicine",
+    "school_id": "md_carle_illinois_college_of_medicine_urbana_champaign_illinois",
+    "school_name": "Carle Illinois College of Medicine",
+    "school_slug": "carle-illinois-college-of-medicine",
+    "state": "Illinois"
+  },
+  {
+    "city": "Indianapolis",
+    "degree_type": "MD",
+    "route": "#/schools/indiana-university-school-of-medicine",
+    "school_id": "md_indiana_university_school_of_medicine_indianapolis_indiana",
+    "school_name": "Indiana University School of Medicine",
+    "school_slug": "indiana-university-school-of-medicine",
+    "state": "Indiana"
+  },
+  {
+    "city": "Iowa City",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-iowa-roy-j-and-lucille-a-carver-college-of-medicine",
+    "school_id": "md_university_of_iowa_roy_j_and_lucille_a_carver_college_of_medicine_iowa_city_iowa",
+    "school_name": "University of Iowa Roy J. and Lucille A. Carver College of Medicine",
+    "school_slug": "university-of-iowa-roy-j-and-lucille-a-carver-college-of-medicine",
+    "state": "Iowa"
+  },
+  {
+    "city": "Kansas City",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-kansas-school-of-medicine",
+    "school_id": "md_university_of_kansas_school_of_medicine_kansas_city_kansas",
+    "school_name": "University of Kansas School of Medicine",
+    "school_slug": "university-of-kansas-school-of-medicine",
+    "state": "Kansas"
+  },
+  {
+    "city": "Lexington",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-kentucky-college-of-medicine",
+    "school_id": "md_university_of_kentucky_college_of_medicine_lexington_kentucky",
+    "school_name": "University of Kentucky College of Medicine",
+    "school_slug": "university-of-kentucky-college-of-medicine",
+    "state": "Kentucky"
+  },
+  {
+    "city": "Louisville",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-louisville-school-of-medicine",
+    "school_id": "md_university_of_louisville_school_of_medicine_louisville_kentucky",
+    "school_name": "University of Louisville School of Medicine",
+    "school_slug": "university-of-louisville-school-of-medicine",
+    "state": "Kentucky"
+  },
+  {
+    "city": "New Orleans",
+    "degree_type": "MD",
+    "route": "#/schools/lsu-health-sciences-center-school-of-medicine-in-new-orleans",
+    "school_id": "md_lsu_health_sciences_center_school_of_medicine_in_new_orleans_new_orleans_louisia",
+    "school_name": "LSU Health Sciences Center School of Medicine in New Orleans",
+    "school_slug": "lsu-health-sciences-center-school-of-medicine-in-new-orleans",
+    "state": "Louisiana"
+  },
+  {
+    "city": "New Orleans",
+    "degree_type": "MD",
+    "route": "#/schools/tulane-university-school-of-medicine",
+    "school_id": "md_tulane_university_school_of_medicine_new_orleans_louisiana",
+    "school_name": "Tulane University School of Medicine",
+    "school_slug": "tulane-university-school-of-medicine",
+    "state": "Louisiana"
+  },
+  {
+    "city": "Shreveport",
+    "degree_type": "MD",
+    "route": "#/schools/louisiana-state-university-school-of-medicine-in-shreveport",
+    "school_id": "md_louisiana_state_university_school_of_medicine_in_shreveport_shreveport_louisiana",
+    "school_name": "Louisiana State University School of Medicine in Shreveport",
+    "school_slug": "louisiana-state-university-school-of-medicine-in-shreveport",
+    "state": "Louisiana"
+  },
+  {
+    "city": "Baltimore",
+    "degree_type": "MD",
+    "route": "#/schools/johns-hopkins-university-school-of-medicine",
+    "school_id": "md_johns_hopkins_university_school_of_medicine_baltimore_maryland",
+    "school_name": "Johns Hopkins University School of Medicine",
+    "school_slug": "johns-hopkins-university-school-of-medicine",
+    "state": "Maryland"
+  },
+  {
+    "city": "Baltimore",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-maryland-school-of-medicine",
+    "school_id": "md_university_of_maryland_school_of_medicine_baltimore_maryland",
+    "school_name": "University of Maryland School of Medicine",
+    "school_slug": "university-of-maryland-school-of-medicine",
+    "state": "Maryland"
+  },
+  {
+    "city": "Bethesda",
+    "degree_type": "MD",
+    "route": "#/schools/uniformed-services-university-of-the-health-sciences-f-edward-h-bert-school-of-medicine",
+    "school_id": "md_uniformed_services_university_of_the_health_sciences_f_edward_h_bert_school_of_m",
+    "school_name": "Uniformed Services University of the Health Sciences, F. Edward H\u00e9bert School of Medicine",
+    "school_slug": "uniformed-services-university-of-the-health-sciences-f-edward-h-bert-school-of-medicine",
+    "state": "Maryland"
+  },
+  {
+    "city": "Boston",
+    "degree_type": "MD",
+    "route": "#/schools/boston-university-aram-v-chobanian-edward-avedisian-school-of-medicine",
+    "school_id": "md_boston_university_aram_v_chobanian_and_edward_avedisian_school_of_medicine_bosto",
+    "school_name": "Boston University Aram V. Chobanian & Edward Avedisian School of Medicine",
+    "school_slug": "boston-university-aram-v-chobanian-edward-avedisian-school-of-medicine",
+    "state": "Massachusetts"
+  },
+  {
+    "city": "Boston",
+    "degree_type": "MD",
+    "route": "#/schools/harvard-medical-school",
+    "school_id": "md_harvard_medical_school_boston_massachusetts",
+    "school_name": "Harvard Medical School",
+    "school_slug": "harvard-medical-school",
+    "state": "Massachusetts"
+  },
+  {
+    "city": "Boston",
+    "degree_type": "MD",
+    "route": "#/schools/tufts-university-school-of-medicine",
+    "school_id": "md_tufts_university_school_of_medicine_boston_massachusetts",
+    "school_name": "Tufts University School of Medicine",
+    "school_slug": "tufts-university-school-of-medicine",
+    "state": "Massachusetts"
+  },
+  {
+    "city": "Worcester",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-massachusetts-t-h-chan-school-of-medicine",
+    "school_id": "md_university_of_massachusetts_t_h_chan_school_of_medicine_worcester_massachusetts",
+    "school_name": "University of Massachusetts T.H. Chan School of Medicine",
+    "school_slug": "university-of-massachusetts-t-h-chan-school-of-medicine",
+    "state": "Massachusetts"
+  },
+  {
+    "city": "Ann Arbor",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-michigan-medical-school",
+    "school_id": "md_university_of_michigan_medical_school_ann_arbor_michigan",
+    "school_name": "University of Michigan Medical School",
+    "school_slug": "university-of-michigan-medical-school",
+    "state": "Michigan"
+  },
+  {
+    "city": "Detroit",
+    "degree_type": "MD",
+    "route": "#/schools/wayne-state-university-school-of-medicine",
+    "school_id": "md_wayne_state_university_school_of_medicine_detroit_michigan",
+    "school_name": "Wayne State University School of Medicine",
+    "school_slug": "wayne-state-university-school-of-medicine",
+    "state": "Michigan"
+  },
+  {
+    "city": "East Lansing",
+    "degree_type": "MD",
+    "route": "#/schools/michigan-state-university-college-of-human-medicine",
+    "school_id": "md_michigan_state_university_college_of_human_medicine_east_lansing_michigan",
+    "school_name": "Michigan State University College of Human Medicine",
+    "school_slug": "michigan-state-university-college-of-human-medicine",
+    "state": "Michigan"
+  },
+  {
+    "city": "Kalamazoo",
+    "degree_type": "MD",
+    "route": "#/schools/western-michigan-university-homer-stryker-m-d-school-of-medicine",
+    "school_id": "md_western_michigan_university_homer_stryker_m_d_school_of_medicine_kalamazoo_michi",
+    "school_name": "Western Michigan University Homer Stryker M.D. School of Medicine",
+    "school_slug": "western-michigan-university-homer-stryker-m-d-school-of-medicine",
+    "state": "Michigan"
+  },
+  {
+    "city": "Mount Pleasant",
+    "degree_type": "MD",
+    "route": "#/schools/covenant-healthcare-college-of-medicine-at-central-michigan-university",
+    "school_id": "md_covenant_healthcare_college_of_medicine_at_central_michigan_university_mount_ple",
+    "school_name": "Covenant HealthCare College of Medicine at Central Michigan University",
+    "school_slug": "covenant-healthcare-college-of-medicine-at-central-michigan-university",
+    "state": "Michigan"
+  },
+  {
+    "city": "Rochester",
+    "degree_type": "MD",
+    "route": "#/schools/oakland-university-william-beaumont-school-of-medicine",
+    "school_id": "md_oakland_university_william_beaumont_school_of_medicine_rochester_michigan",
+    "school_name": "Oakland University William Beaumont School of Medicine",
+    "school_slug": "oakland-university-william-beaumont-school-of-medicine",
+    "state": "Michigan"
+  },
+  {
+    "city": "Minneapolis",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-minnesota-medical-school",
+    "school_id": "md_university_of_minnesota_medical_school_minneapolis_minnesota",
+    "school_name": "University of Minnesota Medical School",
+    "school_slug": "university-of-minnesota-medical-school",
+    "state": "Minnesota"
+  },
+  {
+    "city": "Rochester",
+    "degree_type": "MD",
+    "route": "#/schools/mayo-clinic-alix-school-of-medicine",
+    "school_id": "md_mayo_clinic_alix_school_of_medicine_rochester_minnesota",
+    "school_name": "Mayo Clinic Alix School of Medicine",
+    "school_slug": "mayo-clinic-alix-school-of-medicine",
+    "state": "Minnesota"
+  },
+  {
+    "city": "Jackson",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-mississippi-school-of-medicine",
+    "school_id": "md_university_of_mississippi_school_of_medicine_jackson_mississippi",
+    "school_name": "University of Mississippi School of Medicine",
+    "school_slug": "university-of-mississippi-school-of-medicine",
+    "state": "Mississippi"
+  },
+  {
+    "city": "Columbia",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-missouri-columbia-school-of-medicine",
+    "school_id": "md_university_of_missouri_columbia_school_of_medicine_columbia_missouri",
+    "school_name": "University of Missouri-Columbia School of Medicine",
+    "school_slug": "university-of-missouri-columbia-school-of-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "Kansas City",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-missouri-kansas-city-school-of-medicine",
+    "school_id": "md_university_of_missouri_kansas_city_school_of_medicine_kansas_city_missouri",
+    "school_name": "University of Missouri-Kansas City School of Medicine",
+    "school_slug": "university-of-missouri-kansas-city-school-of-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "St. Louis",
+    "degree_type": "MD",
+    "route": "#/schools/saint-louis-university-school-of-medicine",
+    "school_id": "md_saint_louis_university_school_of_medicine_st_louis_missouri",
+    "school_name": "Saint Louis University School of Medicine",
+    "school_slug": "saint-louis-university-school-of-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "St. Louis",
+    "degree_type": "MD",
+    "route": "#/schools/washington-university-in-st-louis-school-of-medicine",
+    "school_id": "md_washington_university_in_st_louis_school_of_medicine_st_louis_missouri",
+    "school_name": "Washington University in St. Louis School of Medicine",
+    "school_slug": "washington-university-in-st-louis-school-of-medicine",
+    "state": "Missouri"
+  },
+  {
+    "city": "Omaha",
+    "degree_type": "MD",
+    "route": "#/schools/creighton-university-school-of-medicine",
+    "school_id": "md_creighton_university_school_of_medicine_omaha_nebraska",
+    "school_name": "Creighton University School of Medicine",
+    "school_slug": "creighton-university-school-of-medicine",
+    "state": "Nebraska"
+  },
+  {
+    "city": "Omaha",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-nebraska-college-of-medicine",
+    "school_id": "md_university_of_nebraska_college_of_medicine_omaha_nebraska",
+    "school_name": "University of Nebraska College of Medicine",
+    "school_slug": "university-of-nebraska-college-of-medicine",
+    "state": "Nebraska"
+  },
+  {
+    "city": "Las Vegas",
+    "degree_type": "MD",
+    "route": "#/schools/kirk-kerkorian-school-of-medicine-at-unlv",
+    "school_id": "md_kirk_kerkorian_school_of_medicine_at_unlv_las_vegas_nevada",
+    "school_name": "Kirk Kerkorian School of Medicine at UNLV",
+    "school_slug": "kirk-kerkorian-school-of-medicine-at-unlv",
+    "state": "Nevada"
+  },
+  {
+    "city": "Las Vegas",
+    "degree_type": "MD",
+    "route": "#/schools/roseman-university-college-of-medicine",
+    "school_id": "md_roseman_university_college_of_medicine_las_vegas_nevada",
+    "school_name": "Roseman University College of Medicine",
+    "school_slug": "roseman-university-college-of-medicine",
+    "state": "Nevada"
+  },
+  {
+    "city": "Reno",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-nevada-reno-school-of-medicine",
+    "school_id": "md_university_of_nevada_reno_school_of_medicine_reno_nevada",
+    "school_name": "University of Nevada, Reno School of Medicine",
+    "school_slug": "university-of-nevada-reno-school-of-medicine",
+    "state": "Nevada"
+  },
+  {
+    "city": "Hanover",
+    "degree_type": "MD",
+    "route": "#/schools/geisel-school-of-medicine-at-dartmouth",
+    "school_id": "md_geisel_school_of_medicine_at_dartmouth_hanover_new_hampshire",
+    "school_name": "Geisel School of Medicine at Dartmouth",
+    "school_slug": "geisel-school-of-medicine-at-dartmouth",
+    "state": "New Hampshire"
+  },
+  {
+    "city": "Camden",
+    "degree_type": "MD",
+    "route": "#/schools/cooper-medical-school-of-rowan-university",
+    "school_id": "md_cooper_medical_school_of_rowan_university_camden_new_jersey",
+    "school_name": "Cooper Medical School of Rowan University",
+    "school_slug": "cooper-medical-school-of-rowan-university",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Newark",
+    "degree_type": "MD",
+    "route": "#/schools/rutgers-new-jersey-medical-school",
+    "school_id": "md_rutgers_new_jersey_medical_school_newark_new_jersey",
+    "school_name": "Rutgers New Jersey Medical School",
+    "school_slug": "rutgers-new-jersey-medical-school",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Nutley",
+    "degree_type": "MD",
+    "route": "#/schools/hackensack-meridian-school-of-medicine",
+    "school_id": "md_hackensack_meridian_school_of_medicine_nutley_new_jersey",
+    "school_name": "Hackensack Meridian School of Medicine",
+    "school_slug": "hackensack-meridian-school-of-medicine",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Piscataway",
+    "degree_type": "MD",
+    "route": "#/schools/rutgers-robert-wood-johnson-medical-school",
+    "school_id": "md_rutgers_robert_wood_johnson_medical_school_piscataway_new_jersey",
+    "school_name": "Rutgers, Robert Wood Johnson Medical School",
+    "school_slug": "rutgers-robert-wood-johnson-medical-school",
+    "state": "New Jersey"
+  },
+  {
+    "city": "Albuquerque",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-new-mexico-school-of-medicine",
+    "school_id": "md_university_of_new_mexico_school_of_medicine_albuquerque_new_mexico",
+    "school_name": "University of New Mexico School of Medicine",
+    "school_slug": "university-of-new-mexico-school-of-medicine",
+    "state": "New Mexico"
+  },
+  {
+    "city": "Albany",
+    "degree_type": "MD",
+    "route": "#/schools/albany-medical-college",
+    "school_id": "md_albany_medical_college_albany_new_york",
+    "school_name": "Albany Medical College",
+    "school_slug": "albany-medical-college",
+    "state": "New York"
+  },
+  {
+    "city": "Brooklyn",
+    "degree_type": "MD",
+    "route": "#/schools/suny-downstate-health-sciences-university-college-of-medicine",
+    "school_id": "md_suny_downstate_health_sciences_university_college_of_medicine_brooklyn_new_york",
+    "school_name": "SUNY Downstate Health Sciences University College of Medicine",
+    "school_slug": "suny-downstate-health-sciences-university-college-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "Buffalo",
+    "degree_type": "MD",
+    "route": "#/schools/jacobs-school-of-medicine-and-biomedical-sciences-at-the-university-at-buffalo",
+    "school_id": "md_jacobs_school_of_medicine_and_biomedical_sciences_at_the_university_at_buffalo_b",
+    "school_name": "Jacobs School of Medicine and Biomedical Sciences at the University at Buffalo",
+    "school_slug": "jacobs-school-of-medicine-and-biomedical-sciences-at-the-university-at-buffalo",
+    "state": "New York"
+  },
+  {
+    "city": "Hempstead",
+    "degree_type": "MD",
+    "route": "#/schools/donald-and-barbara-zucker-school-of-medicine-at-hofstra-northwell",
+    "school_id": "md_donald_and_barbara_zucker_school_of_medicine_at_hofstra_northwell_hempstead_new_",
+    "school_name": "Donald and Barbara Zucker School of Medicine at Hofstra/Northwell",
+    "school_slug": "donald-and-barbara-zucker-school-of-medicine-at-hofstra-northwell",
+    "state": "New York"
+  },
+  {
+    "city": "Mineola",
+    "degree_type": "MD",
+    "route": "#/schools/nyu-grossman-long-island-school-of-medicine",
+    "school_id": "md_nyu_grossman_long_island_school_of_medicine_mineola_new_york",
+    "school_name": "NYU Grossman Long Island School of Medicine",
+    "school_slug": "nyu-grossman-long-island-school-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/albert-einstein-college-of-medicine",
+    "school_id": "md_albert_einstein_college_of_medicine_new_york_new_york",
+    "school_name": "Albert Einstein College of Medicine",
+    "school_slug": "albert-einstein-college-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/cuny-school-of-medicine",
+    "school_id": "md_cuny_school_of_medicine_new_york_new_york",
+    "school_name": "CUNY School of Medicine",
+    "school_slug": "cuny-school-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/columbia-university-vagelos-college-of-physicians-and-surgeons",
+    "school_id": "md_columbia_university_vagelos_college_of_physicians_and_surgeons_new_york_new_york",
+    "school_name": "Columbia University Vagelos College of Physicians and Surgeons",
+    "school_slug": "columbia-university-vagelos-college-of-physicians-and-surgeons",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/icahn-school-of-medicine-at-mount-sinai",
+    "school_id": "md_icahn_school_of_medicine_at_mount_sinai_new_york_new_york",
+    "school_name": "Icahn School of Medicine at Mount Sinai",
+    "school_slug": "icahn-school-of-medicine-at-mount-sinai",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/nyu-grossman-school-of-medicine",
+    "school_id": "md_nyu_grossman_school_of_medicine_new_york_new_york",
+    "school_name": "NYU Grossman School of Medicine",
+    "school_slug": "nyu-grossman-school-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "New York",
+    "degree_type": "MD",
+    "route": "#/schools/weill-cornell-medicine",
+    "school_id": "md_weill_cornell_medicine_new_york_new_york",
+    "school_name": "Weill Cornell Medicine",
+    "school_slug": "weill-cornell-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "Rochester",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-rochester-school-of-medicine-and-dentistry",
+    "school_id": "md_university_of_rochester_school_of_medicine_and_dentistry_rochester_new_york",
+    "school_name": "University of Rochester School of Medicine and Dentistry",
+    "school_slug": "university-of-rochester-school-of-medicine-and-dentistry",
+    "state": "New York"
+  },
+  {
+    "city": "Stony Brook",
+    "degree_type": "MD",
+    "route": "#/schools/renaissance-school-of-medicine-at-stony-brook-university",
+    "school_id": "md_renaissance_school_of_medicine_at_stony_brook_university_stony_brook_new_york",
+    "school_name": "Renaissance School of Medicine at Stony Brook University",
+    "school_slug": "renaissance-school-of-medicine-at-stony-brook-university",
+    "state": "New York"
+  },
+  {
+    "city": "Syracuse",
+    "degree_type": "MD",
+    "route": "#/schools/state-university-of-new-york-upstate-medical-university-alan-and-marlene-norton-college-of-medicine",
+    "school_id": "md_state_university_of_new_york_upstate_medical_university_alan_and_marlene_norton_",
+    "school_name": "State University of New York Upstate Medical University Alan and Marlene Norton College of Medicine",
+    "school_slug": "state-university-of-new-york-upstate-medical-university-alan-and-marlene-norton-college-of-medicine",
+    "state": "New York"
+  },
+  {
+    "city": "Valhalla",
+    "degree_type": "MD",
+    "route": "#/schools/new-york-medical-college",
+    "school_id": "md_new_york_medical_college_valhalla_new_york",
+    "school_name": "New York Medical College",
+    "school_slug": "new-york-medical-college",
+    "state": "New York"
+  },
+  {
+    "city": "Chapel Hill",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-north-carolina-school-of-medicine",
+    "school_id": "md_university_of_north_carolina_school_of_medicine_chapel_hill_north_carolina",
+    "school_name": "University of North Carolina School of Medicine",
+    "school_slug": "university-of-north-carolina-school-of-medicine",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Durham",
+    "degree_type": "MD",
+    "route": "#/schools/duke-university-school-of-medicine",
+    "school_id": "md_duke_university_school_of_medicine_durham_north_carolina",
+    "school_name": "Duke University School of Medicine",
+    "school_slug": "duke-university-school-of-medicine",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Fayetteville",
+    "degree_type": "MD",
+    "route": "#/schools/methodist-university-cape-fear-valley-health-school-of-medicine",
+    "school_id": "md_methodist_university_cape_fear_valley_health_school_of_medicine_fayetteville_nor",
+    "school_name": "Methodist University Cape Fear Valley Health School of Medicine",
+    "school_slug": "methodist-university-cape-fear-valley-health-school-of-medicine",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Greenville",
+    "degree_type": "MD",
+    "route": "#/schools/brody-school-of-medicine-at-east-carolina-university",
+    "school_id": "md_brody_school_of_medicine_at_east_carolina_university_greenville_north_carolina",
+    "school_name": "Brody School of Medicine at East Carolina University",
+    "school_slug": "brody-school-of-medicine-at-east-carolina-university",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Winston-Salem",
+    "degree_type": "MD",
+    "route": "#/schools/wake-forest-university-school-of-medicine",
+    "school_id": "md_wake_forest_university_school_of_medicine_winston_salem_north_carolina",
+    "school_name": "Wake Forest University School of Medicine",
+    "school_slug": "wake-forest-university-school-of-medicine",
+    "state": "North Carolina"
+  },
+  {
+    "city": "Grand Forks",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-north-dakota-school-of-medicine-and-health-sciences",
+    "school_id": "md_university_of_north_dakota_school_of_medicine_and_health_sciences_grand_forks_no",
+    "school_name": "University of North Dakota School of Medicine and Health Sciences",
+    "school_slug": "university-of-north-dakota-school-of-medicine-and-health-sciences",
+    "state": "North Dakota"
+  },
+  {
+    "city": "Cincinnati",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-cincinnati-college-of-medicine",
+    "school_id": "md_university_of_cincinnati_college_of_medicine_cincinnati_ohio",
+    "school_name": "University of Cincinnati College of Medicine",
+    "school_slug": "university-of-cincinnati-college-of-medicine",
+    "state": "Ohio"
+  },
+  {
+    "city": "Cleveland",
+    "degree_type": "MD",
+    "route": "#/schools/case-western-reserve-university-school-of-medicine",
+    "school_id": "md_case_western_reserve_university_school_of_medicine_cleveland_ohio",
+    "school_name": "Case Western Reserve University School of Medicine",
+    "school_slug": "case-western-reserve-university-school-of-medicine",
+    "state": "Ohio"
+  },
+  {
+    "city": "Columbus",
+    "degree_type": "MD",
+    "route": "#/schools/the-ohio-state-university-college-of-medicine",
+    "school_id": "md_the_ohio_state_university_college_of_medicine_columbus_ohio",
+    "school_name": "The Ohio State University College of Medicine",
+    "school_slug": "the-ohio-state-university-college-of-medicine",
+    "state": "Ohio"
+  },
+  {
+    "city": "Dayton",
+    "degree_type": "MD",
+    "route": "#/schools/boonshoft-school-of-medicine-wright-state-university",
+    "school_id": "md_boonshoft_school_of_medicine_wright_state_university_dayton_ohio",
+    "school_name": "Boonshoft School of Medicine Wright State University",
+    "school_slug": "boonshoft-school-of-medicine-wright-state-university",
+    "state": "Ohio"
+  },
+  {
+    "city": "Rootstown",
+    "degree_type": "MD",
+    "route": "#/schools/northeast-ohio-medical-university-college-of-medicine",
+    "school_id": "md_northeast_ohio_medical_university_college_of_medicine_rootstown_ohio",
+    "school_name": "Northeast Ohio Medical University College of Medicine",
+    "school_slug": "northeast-ohio-medical-university-college-of-medicine",
+    "state": "Ohio"
+  },
+  {
+    "city": "Toledo",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-toledo-college-of-medicine-and-life-sciences",
+    "school_id": "md_university_of_toledo_college_of_medicine_and_life_sciences_toledo_ohio",
+    "school_name": "University of Toledo College of Medicine and Life Sciences",
+    "school_slug": "university-of-toledo-college-of-medicine-and-life-sciences",
+    "state": "Ohio"
+  },
+  {
+    "city": "Oklahoma City",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-oklahoma-college-of-medicine",
+    "school_id": "md_university_of_oklahoma_college_of_medicine_oklahoma_city_oklahoma",
+    "school_name": "University of Oklahoma College of Medicine",
+    "school_slug": "university-of-oklahoma-college-of-medicine",
+    "state": "Oklahoma"
+  },
+  {
+    "city": "Portland",
+    "degree_type": "MD",
+    "route": "#/schools/oregon-health-science-university-school-of-medicine",
+    "school_id": "md_oregon_health_and_science_university_school_of_medicine_portland_oregon",
+    "school_name": "Oregon Health & Science University School of Medicine",
+    "school_slug": "oregon-health-science-university-school-of-medicine",
+    "state": "Oregon"
+  },
+  {
+    "city": "Hershey",
+    "degree_type": "MD",
+    "route": "#/schools/penn-state-college-of-medicine",
+    "school_id": "md_penn_state_college_of_medicine_hershey_pennsylvania",
+    "school_name": "Penn State College of Medicine",
+    "school_slug": "penn-state-college-of-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Philadelphia",
+    "degree_type": "MD",
+    "route": "#/schools/drexel-university-college-of-medicine",
+    "school_id": "md_drexel_university_college_of_medicine_philadelphia_pennsylvania",
+    "school_name": "Drexel University College of Medicine",
+    "school_slug": "drexel-university-college-of-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Philadelphia",
+    "degree_type": "MD",
+    "route": "#/schools/lewis-katz-school-of-medicine-at-temple-university",
+    "school_id": "md_lewis_katz_school_of_medicine_at_temple_university_philadelphia_pennsylvania",
+    "school_name": "Lewis Katz School of Medicine at Temple University",
+    "school_slug": "lewis-katz-school-of-medicine-at-temple-university",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Philadelphia",
+    "degree_type": "MD",
+    "route": "#/schools/raymond-and-ruth-perelman-school-of-medicine-at-the-university-of-pennsylvania",
+    "school_id": "md_raymond_and_ruth_perelman_school_of_medicine_at_the_university_of_pennsylvania_p",
+    "school_name": "Raymond and Ruth Perelman School of Medicine at the University of Pennsylvania",
+    "school_slug": "raymond-and-ruth-perelman-school-of-medicine-at-the-university-of-pennsylvania",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Philadelphia",
+    "degree_type": "MD",
+    "route": "#/schools/sidney-kimmel-medical-college-at-thomas-jefferson-university",
+    "school_id": "md_sidney_kimmel_medical_college_at_thomas_jefferson_university_philadelphia_pennsy",
+    "school_name": "Sidney Kimmel Medical College at Thomas Jefferson University",
+    "school_slug": "sidney-kimmel-medical-college-at-thomas-jefferson-university",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Pittsburgh",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-pittsburgh-school-of-medicine",
+    "school_id": "md_university_of_pittsburgh_school_of_medicine_pittsburgh_pennsylvania",
+    "school_name": "University of Pittsburgh School of Medicine",
+    "school_slug": "university-of-pittsburgh-school-of-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Scranton",
+    "degree_type": "MD",
+    "route": "#/schools/geisinger-commonwealth-school-of-medicine",
+    "school_id": "md_geisinger_commonwealth_school_of_medicine_scranton_pennsylvania",
+    "school_name": "Geisinger Commonwealth School of Medicine",
+    "school_slug": "geisinger-commonwealth-school-of-medicine",
+    "state": "Pennsylvania"
+  },
+  {
+    "city": "Providence",
+    "degree_type": "MD",
+    "route": "#/schools/the-warren-alpert-medical-school-of-brown-university",
+    "school_id": "md_the_warren_alpert_medical_school_of_brown_university_providence_rhode_island",
+    "school_name": "The Warren Alpert Medical School of Brown University",
+    "school_slug": "the-warren-alpert-medical-school-of-brown-university",
+    "state": "Rhode Island"
+  },
+  {
+    "city": "Charleston",
+    "degree_type": "MD",
+    "route": "#/schools/medical-university-of-south-carolina-college-of-medicine",
+    "school_id": "md_medical_university_of_south_carolina_college_of_medicine_charleston_south_caroli",
+    "school_name": "Medical University of South Carolina College of Medicine",
+    "school_slug": "medical-university-of-south-carolina-college-of-medicine",
+    "state": "South Carolina"
+  },
+  {
+    "city": "Columbia",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-south-carolina-kay-and-c-edward-floyd-m-d-school-of-medicine",
+    "school_id": "md_university_of_south_carolina_kay_and_c_edward_floyd_m_d_school_of_medicine_colum",
+    "school_name": "University of South Carolina Kay and C. Edward Floyd, M.D. School of Medicine",
+    "school_slug": "university-of-south-carolina-kay-and-c-edward-floyd-m-d-school-of-medicine",
+    "state": "South Carolina"
+  },
+  {
+    "city": "Greenville",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-south-carolina-school-of-medicine-greenville",
+    "school_id": "md_university_of_south_carolina_school_of_medicine_greenville_greenville_south_caro",
+    "school_name": "University of South Carolina School of Medicine, Greenville",
+    "school_slug": "university-of-south-carolina-school-of-medicine-greenville",
+    "state": "South Carolina"
+  },
+  {
+    "city": "Vermillion",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-south-dakota-sanford-school-of-medicine",
+    "school_id": "md_university_of_south_dakota_sanford_school_of_medicine_vermillion_south_dakota",
+    "school_name": "University of South Dakota Sanford School of Medicine",
+    "school_slug": "university-of-south-dakota-sanford-school-of-medicine",
+    "state": "South Dakota"
+  },
+  {
+    "city": "Johnson City",
+    "degree_type": "MD",
+    "route": "#/schools/east-tennessee-state-university-james-h-quillen-college-of-medicine",
+    "school_id": "md_east_tennessee_state_university_james_h_quillen_college_of_medicine_johnson_city",
+    "school_name": "East Tennessee State University James H. Quillen College of Medicine",
+    "school_slug": "east-tennessee-state-university-james-h-quillen-college-of-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Memphis",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-tennessee-health-science-center-college-of-medicine",
+    "school_id": "md_university_of_tennessee_health_science_center_college_of_medicine_memphis_tennes",
+    "school_name": "University of Tennessee Health Science Center College of Medicine",
+    "school_slug": "university-of-tennessee-health-science-center-college-of-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Nashville",
+    "degree_type": "MD",
+    "route": "#/schools/meharry-medical-college-school-of-medicine",
+    "school_id": "md_meharry_medical_college_school_of_medicine_nashville_tennessee",
+    "school_name": "Meharry Medical College School of Medicine",
+    "school_slug": "meharry-medical-college-school-of-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Nashville",
+    "degree_type": "MD",
+    "route": "#/schools/thomas-f-frist-jr-college-of-medicine-at-belmont-university",
+    "school_id": "md_thomas_f_frist_jr_college_of_medicine_at_belmont_university_nashville_tennessee",
+    "school_name": "Thomas F. Frist, Jr. College of Medicine at Belmont University",
+    "school_slug": "thomas-f-frist-jr-college-of-medicine-at-belmont-university",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Nashville",
+    "degree_type": "MD",
+    "route": "#/schools/vanderbilt-university-school-of-medicine",
+    "school_id": "md_vanderbilt_university_school_of_medicine_nashville_tennessee",
+    "school_name": "Vanderbilt University School of Medicine",
+    "school_slug": "vanderbilt-university-school-of-medicine",
+    "state": "Tennessee"
+  },
+  {
+    "city": "Austin",
+    "degree_type": "MD",
+    "route": "#/schools/dell-medical-school-university-of-texas-at-austin",
+    "school_id": "md_dell_medical_school_university_of_texas_at_austin_austin_texas",
+    "school_name": "Dell Medical School \u2013 University of Texas at Austin",
+    "school_slug": "dell-medical-school-university-of-texas-at-austin",
+    "state": "Texas"
+  },
+  {
+    "city": "College Station",
+    "degree_type": "MD",
+    "route": "#/schools/texas-a-m-university-naresh-k-vashisht-college-of-medicine",
+    "school_id": "md_texas_a_and_m_university_naresh_k_vashisht_college_of_medicine_college_station_t",
+    "school_name": "Texas A&M University Naresh K. Vashisht College of Medicine",
+    "school_slug": "texas-a-m-university-naresh-k-vashisht-college-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Dallas",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-texas-southwestern-medical-school",
+    "school_id": "md_university_of_texas_southwestern_medical_school_dallas_texas",
+    "school_name": "University of Texas Southwestern Medical School",
+    "school_slug": "university-of-texas-southwestern-medical-school",
+    "state": "Texas"
+  },
+  {
+    "city": "Edinburg",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-texas-rio-grande-valley-school-of-medicine",
+    "school_id": "md_university_of_texas_rio_grande_valley_school_of_medicine_edinburg_texas",
+    "school_name": "University of Texas Rio Grande Valley School of Medicine",
+    "school_slug": "university-of-texas-rio-grande-valley-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "El Paso",
+    "degree_type": "MD",
+    "route": "#/schools/paul-l-foster-school-of-medicine-texas-tech-university-health-sciences-center-at-el-paso",
+    "school_id": "md_paul_l_foster_school_of_medicine_texas_tech_university_health_sciences_center_at",
+    "school_name": "Paul L. Foster School of Medicine Texas Tech University Health Sciences Center at El Paso",
+    "school_slug": "paul-l-foster-school-of-medicine-texas-tech-university-health-sciences-center-at-el-paso",
+    "state": "Texas"
+  },
+  {
+    "city": "Fort Worth",
+    "degree_type": "MD",
+    "route": "#/schools/anne-burnett-marion-school-of-medicine-at-texas-christian-university",
+    "school_id": "md_anne_burnett_marion_school_of_medicine_at_texas_christian_university_fort_worth_",
+    "school_name": "Anne Burnett Marion School of Medicine at Texas Christian University",
+    "school_slug": "anne-burnett-marion-school-of-medicine-at-texas-christian-university",
+    "state": "Texas"
+  },
+  {
+    "city": "Galveston",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-texas-medical-branch-john-sealy-school-of-medicine",
+    "school_id": "md_university_of_texas_medical_branch_john_sealy_school_of_medicine_galveston_texas",
+    "school_name": "University of Texas Medical Branch John Sealy School of Medicine",
+    "school_slug": "university-of-texas-medical-branch-john-sealy-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Houston",
+    "degree_type": "MD",
+    "route": "#/schools/baylor-college-of-medicine-school-of-medicine",
+    "school_id": "md_baylor_college_of_medicine_school_of_medicine_houston_texas",
+    "school_name": "Baylor College of Medicine School of Medicine",
+    "school_slug": "baylor-college-of-medicine-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Houston",
+    "degree_type": "MD",
+    "route": "#/schools/mcgovern-medical-school-at-uthealth-houston",
+    "school_id": "md_mcgovern_medical_school_at_uthealth_houston_houston_texas",
+    "school_name": "McGovern Medical School at UTHealth Houston",
+    "school_slug": "mcgovern-medical-school-at-uthealth-houston",
+    "state": "Texas"
+  },
+  {
+    "city": "Houston",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-houston-tilman-j-fertitta-family-college-of-medicine",
+    "school_id": "md_university_of_houston_tilman_j_fertitta_family_college_of_medicine_houston_texas",
+    "school_name": "University of Houston Tilman J. Fertitta Family College of Medicine",
+    "school_slug": "university-of-houston-tilman-j-fertitta-family-college-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Lubbock",
+    "degree_type": "MD",
+    "route": "#/schools/texas-tech-university-health-sciences-center-school-of-medicine",
+    "school_id": "md_texas_tech_university_health_sciences_center_school_of_medicine_lubbock_texas",
+    "school_name": "Texas Tech University Health Sciences Center School of Medicine",
+    "school_slug": "texas-tech-university-health-sciences-center-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "San Antonio",
+    "degree_type": "MD",
+    "route": "#/schools/the-university-of-texas-at-san-antonio-joe-r-and-teresa-lozano-long-school-of-medicine",
+    "school_id": "md_the_university_of_texas_at_san_antonio_joe_r_and_teresa_lozano_long_school_of_me",
+    "school_name": "The University of Texas at San Antonio Joe R. and Teresa Lozano Long School of Medicine",
+    "school_slug": "the-university-of-texas-at-san-antonio-joe-r-and-teresa-lozano-long-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Tyler",
+    "degree_type": "MD",
+    "route": "#/schools/the-university-of-texas-at-tyler-school-of-medicine",
+    "school_id": "md_the_university_of_texas_at_tyler_school_of_medicine_tyler_texas",
+    "school_name": "The University of Texas at Tyler School of Medicine",
+    "school_slug": "the-university-of-texas-at-tyler-school-of-medicine",
+    "state": "Texas"
+  },
+  {
+    "city": "Salt Lake City",
+    "degree_type": "MD",
+    "route": "#/schools/spencer-fox-eccles-school-of-medicine-at-the-university-of-utah",
+    "school_id": "md_spencer_fox_eccles_school_of_medicine_at_the_university_of_utah_salt_lake_city_u",
+    "school_name": "Spencer Fox Eccles School of Medicine at the University of Utah",
+    "school_slug": "spencer-fox-eccles-school-of-medicine-at-the-university-of-utah",
+    "state": "Utah"
+  },
+  {
+    "city": "Burlington",
+    "degree_type": "MD",
+    "route": "#/schools/robert-larner-m-d-college-of-medicine-at-the-university-of-vermont",
+    "school_id": "md_robert_larner_m_d_college_of_medicine_at_the_university_of_vermont_burlington_ve",
+    "school_name": "Robert Larner, M.D. College of Medicine at the University of Vermont",
+    "school_slug": "robert-larner-m-d-college-of-medicine-at-the-university-of-vermont",
+    "state": "Vermont"
+  },
+  {
+    "city": "Charlottesville",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-virginia-school-of-medicine",
+    "school_id": "md_university_of_virginia_school_of_medicine_charlottesville_virginia",
+    "school_name": "University of Virginia School of Medicine",
+    "school_slug": "university-of-virginia-school-of-medicine",
+    "state": "Virginia"
+  },
+  {
+    "city": "Norfolk",
+    "degree_type": "MD",
+    "route": "#/schools/eastern-virginia-medical-school-at-old-dominion-university",
+    "school_id": "md_eastern_virginia_medical_school_at_old_dominion_university_norfolk_virginia",
+    "school_name": "Eastern Virginia Medical School at Old Dominion University",
+    "school_slug": "eastern-virginia-medical-school-at-old-dominion-university",
+    "state": "Virginia"
+  },
+  {
+    "city": "Richmond",
+    "degree_type": "MD",
+    "route": "#/schools/virginia-commonwealth-university-school-of-medicine",
+    "school_id": "md_virginia_commonwealth_university_school_of_medicine_richmond_virginia",
+    "school_name": "Virginia Commonwealth University School of Medicine",
+    "school_slug": "virginia-commonwealth-university-school-of-medicine",
+    "state": "Virginia"
+  },
+  {
+    "city": "Roanoke",
+    "degree_type": "MD",
+    "route": "#/schools/virginia-tech-carilion-school-of-medicine",
+    "school_id": "md_virginia_tech_carilion_school_of_medicine_roanoke_virginia",
+    "school_name": "Virginia Tech Carilion School of Medicine",
+    "school_slug": "virginia-tech-carilion-school-of-medicine",
+    "state": "Virginia"
+  },
+  {
+    "city": "Seattle",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-washington-school-of-medicine",
+    "school_id": "md_university_of_washington_school_of_medicine_seattle_washington",
+    "school_name": "University of Washington School of Medicine",
+    "school_slug": "university-of-washington-school-of-medicine",
+    "state": "Washington"
+  },
+  {
+    "city": "Spokane",
+    "degree_type": "MD",
+    "route": "#/schools/washington-state-university-elson-s-floyd-college-of-medicine",
+    "school_id": "md_washington_state_university_elson_s_floyd_college_of_medicine_spokane_washington",
+    "school_name": "Washington State University Elson S. Floyd College of Medicine",
+    "school_slug": "washington-state-university-elson-s-floyd-college-of-medicine",
+    "state": "Washington"
+  },
+  {
+    "city": "Huntington",
+    "degree_type": "MD",
+    "route": "#/schools/marshall-university-joan-c-edwards-school-of-medicine",
+    "school_id": "md_marshall_university_joan_c_edwards_school_of_medicine_huntington_west_virginia",
+    "school_name": "Marshall University Joan C. Edwards School of Medicine",
+    "school_slug": "marshall-university-joan-c-edwards-school-of-medicine",
+    "state": "West Virginia"
+  },
+  {
+    "city": "Morgantown",
+    "degree_type": "MD",
+    "route": "#/schools/west-virginia-university-school-of-medicine",
+    "school_id": "md_west_virginia_university_school_of_medicine_morgantown_west_virginia",
+    "school_name": "West Virginia University School of Medicine",
+    "school_slug": "west-virginia-university-school-of-medicine",
+    "state": "West Virginia"
+  },
+  {
+    "city": "Madison",
+    "degree_type": "MD",
+    "route": "#/schools/university-of-wisconsin-school-of-medicine-and-public-health",
+    "school_id": "md_university_of_wisconsin_school_of_medicine_and_public_health_madison_wisconsin",
+    "school_name": "University of Wisconsin School of Medicine and Public Health",
+    "school_slug": "university-of-wisconsin-school-of-medicine-and-public-health",
+    "state": "Wisconsin"
+  },
+  {
+    "city": "Milwaukee",
+    "degree_type": "MD",
+    "route": "#/schools/medical-college-of-wisconsin",
+    "school_id": "md_medical_college_of_wisconsin_milwaukee_wisconsin",
+    "school_name": "Medical College of Wisconsin",
+    "school_slug": "medical-college-of-wisconsin",
+    "state": "Wisconsin"
+  }
+]
