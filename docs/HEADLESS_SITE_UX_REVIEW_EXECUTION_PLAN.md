@@ -6,7 +6,7 @@ Coordinate the site UX review and research workflow work across separate headles
 
 This plan is for a Codex headless worker. It should be executed after the scoring transparency proof of concept is committed.
 
-Do not execute all slices in one run unless the user explicitly asks. The recommended next run is Slice A only.
+Do not execute all slices in one run unless the user explicitly asks. The recommended next run is Slice I only.
 
 ## Repository
 
@@ -29,6 +29,7 @@ Read these first:
 - `docs/site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md`
 - `docs/site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md`
 - `docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md`
+- `docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md`
 
 Read these as implementation context:
 
@@ -52,8 +53,8 @@ Read these as implementation context:
 - Do not commit private profile data or private-derived outputs.
 - Prefer additive site/data outputs and reversible local interactions.
 - Execute one slice per headless run unless explicitly instructed otherwise.
-- Required order: Slice A, Slice B, Slice C, Slice D, Slice E.
-- Research queue, advanced dossier editing, storage persistence, and import/writeback are follow-up until their slice is explicitly selected.
+- Required order: Slice A, Slice B, Slice C, Slice D, Slice E, Slice I.
+- Storage persistence and source writeback are follow-up until their slice is explicitly selected.
 - Browser-local state means in-memory JavaScript state in the first pass. Do not use `localStorage` or `sessionStorage` unless a visible privacy label and clear/reset control are also implemented.
 
 ## Slice Order
@@ -124,6 +125,22 @@ docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md
 Purpose:
 
 - research queue and next actions.
+
+### Slice I: Pre-Design Functional UX Consolidation
+
+Plan:
+
+```text
+docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md
+```
+
+Purpose:
+
+- inline review controls;
+- application list workflow;
+- compare side-by-side review;
+- dossier-style profile actions;
+- plan index cleanup before visual design.
 
 ## Shared Preflight
 

@@ -112,9 +112,9 @@
     "status": "completed"
   },
   {
-    "current_decision_summary": "Implement deterministic profile-aware scoring from existing normalized data, applicant profile values, partner inputs, scenario weights, and source quality fields.",
+    "current_decision_summary": "Deterministic profile-aware scoring is implemented with Decision Rank, admissions/attendance/overall scores, rank confidence, methodology/contribution outputs, tests, and private-output guardrails.",
     "doc_path": "docs/HEADLESS_SCORING_EXECUTION_PLAN.md",
-    "next_action": "Run the next headless worker with docs/HEADLESS_WORKER_RUNBOOK.md and this plan.",
+    "next_action": "Keep as historical execution record; use Phase 2C/modeling plans for transparency and product data contracts.",
     "owner": "user",
     "phase": "phase_2b",
     "plan_id": "headless_scoring_phase_2b",
@@ -123,7 +123,7 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Improve scoring explainability with contribution outputs, rank confidence, explanation fields, and a generated rollup-table path without broad migration first.",
@@ -434,9 +434,9 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "MCAT/GPA fit drives the first narrowing pass; AAMC national grid is context, not school-specific probability.",
+    "current_decision_summary": "Deterministic MCAT/GPA fit and AAMC national acceptance-rate context are implemented; school-specific predictive probability remains future scope.",
     "doc_path": "docs/plans/admissions_probability.md",
-    "next_action": "Implement deterministic fit formulas in Phase 2B.",
+    "next_action": "Keep predictive model work isolated in docs/PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md.",
     "owner": "user",
     "phase": "phase_2b",
     "plan_id": "admissions_probability",
@@ -445,7 +445,7 @@
     "priority": "high",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "School-specific predictive probability is intentionally out of current scope until calibrated training data, model governance, and privacy controls exist.",
@@ -518,9 +518,9 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "Ranking must support deterministic profile-aware scores, hard filters, scenario weights, coverage warnings, and private-output safety.",
+    "current_decision_summary": "Deterministic profile-aware scores, hard filters, scenario weights, coverage warnings, rank confidence, contribution rows, and private-output safety are implemented.",
     "doc_path": "docs/plans/scoring_engine.md",
-    "next_action": "Execute Phase 2B headless scoring plan.",
+    "next_action": "Keep as scoring baseline; future scoring changes should go through transparency/modeling plans.",
     "owner": "user",
     "phase": "phase_2b",
     "plan_id": "scoring_engine",
@@ -529,7 +529,7 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Workbook is both report and simple partner-facing input surface.",
@@ -574,9 +574,9 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "Rebuild the static site around applicant-facing rankings, curated lists, school profiles, scoring lenses, and separated admin routes.",
+    "current_decision_summary": "Scoring now exists; product rebuild should follow a route-ready data model, school-card contract, and admin/public split before visual polish.",
     "doc_path": "docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md",
-    "next_action": "Execute after Phase 2B scoring creates real applicant-fit fields.",
+    "next_action": "Draft and review the site data-model/card-surface plan before executing this rebuild.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_rebuild_exec",
@@ -585,12 +585,12 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Executes the product-site rebuild loop when explicitly selected; Phase 0 guardrails and route/admin scaffolding can run early, scoring-lens UX should wait for Phase 2B fields.",
+    "current_decision_summary": "Headless rebuild plan exists, but it should be refreshed after the JSON node/domain-card data contract is defined.",
     "doc_path": "docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md",
-    "next_action": "Use after scoring unless explicitly selected; first slice is Phase 0 publish-safe payload scaffold, slug generation, AAMC caveat copy, and curated-list field readiness.",
+    "next_action": "Do not execute as-is until the data model plan is reviewed.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "headless_product_site_rebuild",
@@ -599,12 +599,12 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Make rankings the default route, add school/list routes, and move dashboard/status/admin workflows under admin.",
+    "current_decision_summary": "Move dashboard/status/source views into admin and make rankings/profile/card routes consume route-ready product data.",
     "doc_path": "docs/site/product_rebuild/01_routes_and_information_architecture.md",
-    "next_action": "Implement after Phase 2B scoring output fields are available.",
+    "next_action": "Revisit after the site data-model/card contract is accepted.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_routes_ia",
@@ -613,12 +613,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Turn rankings into the main value surface with filters, scoring lenses, reason chips, shortlist controls, and compare entry points.",
+    "current_decision_summary": "Turn rankings into the main applicant value surface using precomputed card fields, reason chips, shortlist controls, and compare entry points.",
     "doc_path": "docs/site/product_rebuild/02_rankings_and_list_builder.md",
-    "next_action": "Implement after deterministic score fields and reason chips exist.",
+    "next_action": "Revisit after card fields and ranking/lens nodes are defined.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_rankings_list_builder",
@@ -627,12 +627,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Create polished source-backed school profile routes with applicant fit, cost, requirements, confidence, and risk flags.",
+    "current_decision_summary": "Create polished source-backed school profile routes from school fact, fit, cost, curriculum, outcome, source, and reviewer-state nodes.",
     "doc_path": "docs/site/product_rebuild/03_school_profiles.md",
-    "next_action": "Build after scoring payload exposes applicant-fit fields.",
+    "next_action": "Revisit after school-profile node schema is defined.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_school_profiles",
@@ -641,12 +641,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Create curated lists such as best cities, culture fit, public, private, low cost, and admissions realism that can be applied as scoring lenses.",
+    "current_decision_summary": "Create curated lists as data-backed nodes that can drive cards, filters, and optional scoring lenses.",
     "doc_path": "docs/site/product_rebuild/04_curated_lists_and_scoring_lenses.md",
-    "next_action": "Seed after scoring profiles and component fields are stable.",
+    "next_action": "Revisit after list and scoring-lens node schemas are defined.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_curated_lists",
@@ -655,12 +655,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Separate admin/source/build-health routes and add publish-safe mode that removes private/admin payloads rather than hiding them.",
+    "current_decision_summary": "Separate admin/source/build-health routes from publishable card/profile payloads and define public-safe JSON exports.",
     "doc_path": "docs/site/product_rebuild/05_admin_publish_safe.md",
-    "next_action": "Implement after private/public scoring output paths are settled.",
+    "next_action": "Revisit after public/private node boundaries are defined.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_admin_publish_safe",
@@ -669,12 +669,12 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
-    "current_decision_summary": "Raise the site to a polished reporting-product bar with strong typography, tables, profiles, badges, source confidence, and responsive QA.",
+    "current_decision_summary": "Raise the site to a polished reporting-product bar after the card model and public/admin route split are stable.",
     "doc_path": "docs/site/product_rebuild/06_visual_reporting_quality.md",
-    "next_action": "Polish after scoring and route structure are stable.",
+    "next_action": "Polish after data modeling and route contracts are stable.",
     "owner": "user",
     "phase": "phase_1_6",
     "plan_id": "site_product_visual_quality",
@@ -683,7 +683,7 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted_after_scoring"
+    "status": "drafted_after_modeling"
   },
   {
     "current_decision_summary": "Critical review of whether the product-site rebuild plans can be executed independently by a headless worker.",
@@ -698,5 +698,299 @@
     "reviewer": "codex",
     "source_of_truth": "markdown",
     "status": "reviewed_after_scoring"
+  },
+  {
+    "current_decision_summary": "Generated JSON read-model nodes now exist; keep this as the governing contract for card/profile UI adoption, future import/persistence, and Postgres/Vercel migration.",
+    "doc_path": "docs/SITE_DATA_MODELING_EXEC_PLAN.md",
+    "next_action": "Use the generated nodes for the next product card/profile design or UI adoption slice.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_modeling_exec",
+    "plan_name": "Site Data Modeling Executive Plan",
+    "plan_type": "executive",
+    "priority": "highest",
+    "reviewer": "tbd",
+    "source_of_truth": "markdown",
+    "status": "active"
+  },
+  {
+    "current_decision_summary": "Initial JSON node files are generated under outputs/site/data/nodes for school facts, school cards, profiles, rankings, compare, lists, methodology, and admin status.",
+    "doc_path": "docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md",
+    "next_action": "Keep as historical execution record; next work should consume nodes in the UI.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "headless_site_data_modeling",
+    "plan_name": "Headless Site Data Modeling Execution Plan",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Defines canonical domain table families and keeps generated outputs separate from source-of-truth data.",
+    "doc_path": "docs/site/data_modeling/01_canonical_domain_tables.md",
+    "next_action": "Use as the source mapping checklist for node generation.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_canonical_tables",
+    "plan_name": "Canonical Domain Tables",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted"
+  },
+  {
+    "current_decision_summary": "Generated read-model node files are implemented with schema metadata, stable IDs, counts, required node families, and site-mode flags.",
+    "doc_path": "docs/site/data_modeling/02_json_node_contracts.md",
+    "next_action": "Keep as the node contract; update deliberately when UI consumers require new fields.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_json_nodes",
+    "plan_name": "JSON Node Contracts",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Defines reusable card families and profile section nodes so the product site can move beyond admin tables.",
+    "doc_path": "docs/site/data_modeling/03_card_surfaces_and_profile_sections.md",
+    "next_action": "Use before visual design or product route rebuild work.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_card_surfaces",
+    "plan_name": "Card Surfaces and Profile Sections",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted"
+  },
+  {
+    "current_decision_summary": "Publish-safe node generation excludes admin status and reviewer-state node fields; local_full retains admin/reviewer nodes for local review.",
+    "doc_path": "docs/site/data_modeling/04_admin_public_payload_separation.md",
+    "next_action": "Keep applying this guardrail to every future hosting and UI slice.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_payload_split",
+    "plan_name": "Admin and Public Payload Separation",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Defines how CSV/manual inputs can later map to Postgres while preserving generated card/profile JSON contracts for Vercel hosting.",
+    "doc_path": "docs/site/data_modeling/05_postgres_vercel_migration_path.md",
+    "next_action": "Keep as future migration guidance; do not migrate now.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_postgres_vercel",
+    "plan_name": "Postgres and Vercel Migration Path",
+    "plan_type": "subplan",
+    "priority": "medium",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted"
+  },
+  {
+    "current_decision_summary": "Node shape, count, publish-safe exclusion, and upload-bundle privacy checks are implemented for the first node-generation slice.",
+    "doc_path": "docs/site/data_modeling/06_validation_privacy_and_qa.md",
+    "next_action": "Reuse and extend these checks when the UI begins consuming nodes.",
+    "owner": "user",
+    "phase": "phase_2e",
+    "plan_id": "site_data_model_validation_qa",
+    "plan_name": "Data Modeling Validation Privacy and QA",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Core UX review workflow is implemented across slices A-E and I: screenshot QA, visibility, dossiers, research queue, exports, application list, compare, and profile actions.",
+    "doc_path": "docs/SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md",
+    "next_action": "Keep as historical UX plan; next site work is data modeling and product design.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_research_workflow_exec",
+    "plan_name": "Site UX Review and School Research Workflow Plan",
+    "plan_type": "executive",
+    "priority": "highest",
+    "reviewer": "tbd",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Executed incrementally through UX slices A-E and I; this is no longer the next headless worker target.",
+    "doc_path": "docs/HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md",
+    "next_action": "Use implemented slice docs as history; draft a new data-model/design plan before product rebuild.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "headless_site_ux_review",
+    "plan_name": "Headless Site UX Review Execution Plan",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "completed"
+  },
+  {
+    "current_decision_summary": "Screenshot QA and high-impact layout review were completed in the UX slice history.",
+    "doc_path": "docs/site/ux_review/01_visual_qa_screenshots.md",
+    "next_action": "Reuse this checklist before and after the next design pass.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_visual_qa_screenshots",
+    "plan_name": "Visual QA Screenshots",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Reversible browser-local hide/restore controls, visibility filters, hidden-school review, and CSV export are implemented.",
+    "doc_path": "docs/site/ux_review/02_school_visibility_controls.md",
+    "next_action": "Keep as historical feature contract.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_school_visibility_controls",
+    "plan_name": "School Visibility Controls",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Dossier index, per-school profile routes, source facts, research prompts, local editable fields, and profile review actions are implemented.",
+    "doc_path": "docs/site/ux_review/03_school_dossier_profiles.md",
+    "next_action": "Expand dossier content through the future card/profile data model.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_school_dossier_profiles",
+    "plan_name": "School Dossier Profiles",
+    "plan_type": "subplan",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Research queue behavior and browser-generated CSV exports for rankings, visibility decisions, dossier edits, and application-list review are implemented.",
+    "doc_path": "docs/site/ux_review/04_research_workflow_and_exports.md",
+    "next_action": "Keep export schemas stable until an import/persistence plan is approved.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_research_workflow_exports",
+    "plan_name": "Research Workflow and Exports",
+    "plan_type": "subplan",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Critical review of the site UX/dossier plan; resolves scope, screenshot, browser-state, export-schema, and MD/DO boundary risks.",
+    "doc_path": "docs/site/ux_review/CRITICAL_REVIEW.md",
+    "next_action": "Use these findings as required guardrails for the headless UX review pass.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_critical_review",
+    "plan_name": "Site UX Review Critical Review",
+    "plan_type": "review",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "reviewed"
+  },
+  {
+    "current_decision_summary": "Screenshot QA and high-impact site clarity pass have been completed in the current static site history.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_A_SCREENSHOT_QA.md",
+    "next_action": "Keep as historical execution record.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_a_screenshot_qa",
+    "plan_name": "Site UX Slice A Screenshot QA",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Reversible hide/restore controls, visibility filters, hidden-school review, and visibility CSV export are implemented.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_B_VISIBILITY_CONTROLS.md",
+    "next_action": "Keep as historical execution record.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_b_visibility",
+    "plan_name": "Site UX Slice B Visibility Controls",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Dossier index and per-school dossier/profile route shell with generated facts and prompts are implemented.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md",
+    "next_action": "Keep as historical execution record.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_c_dossiers",
+    "plan_name": "Site UX Slice C Minimal Dossiers",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Browser-memory dossier edits and school_dossier_edits_export.csv are implemented with a versioned schema.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md",
+    "next_action": "Keep as historical execution record.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_d_dossier_edits",
+    "plan_name": "Site UX Slice D Dossier Edits Export",
+    "plan_type": "execution",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Research queue and deterministic next actions based on rank, confidence, missing sections, visibility, and dossier state are implemented.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md",
+    "next_action": "Keep as historical execution record.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_e_research_queue",
+    "plan_name": "Site UX Slice E Research Queue",
+    "plan_type": "execution",
+    "priority": "medium",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
+  },
+  {
+    "current_decision_summary": "Rankings inline controls, Application List shortlist workflow, Compare side-by-side review, dossier-style profile actions, and plan-index cleanup are implemented.",
+    "doc_path": "docs/site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md",
+    "next_action": "Begin the visual design pass with functional workflows in place.",
+    "owner": "user",
+    "phase": "phase_2d",
+    "plan_id": "site_ux_slice_i_pre_design_functional_ux",
+    "plan_name": "Site UX Slice I Pre-Design Functional UX Consolidation",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "implemented"
   }
 ]

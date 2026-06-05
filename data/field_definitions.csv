@@ -10,3 +10,7 @@ Four-Year Happiness,1-10 answer to whether you can realistically see yourself li
 Data Confidence,Text note describing what is verified and what still needs source review.
 Manual Exclusion Flag,TRUE only when a school is intentionally cut; keep exclusion_reason filled for transparency.
 Research Stage,"Suggested values: unresearched, skimmed, researched, serious_candidate, application_pool, applied, cut."
+School Visibility,"Manual reviewer state for whether a school is visible or hidden in the working site view."
+School Dossier,"Manual reviewer research state for a school, including research status, subjective fit scores, decision status, and notes."
+Research Status,"Controlled dossier values: not_started, skimmed, needs_deep_research, researched, ready_to_decide, excluded, applied."
+Application Decision Status,"Controlled dossier values: considering, applying, applied, interview, accepted, waitlisted, rejected, withdrawn, not_applying."

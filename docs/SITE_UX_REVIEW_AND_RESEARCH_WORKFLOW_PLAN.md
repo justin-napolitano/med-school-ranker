@@ -61,7 +61,7 @@ Follow-up work:
 - deeper dossier editing;
 - persistent local storage;
 - import/writeback of exported edits;
-- advanced shortlist/application workflow.
+- advanced persisted shortlist/application workflow.
 
 ## Headless Slice Plan
 
@@ -72,8 +72,9 @@ Run this work as separate commits:
 3. [Slice C: Minimal School Dossiers](site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md)
 4. [Slice D: Dossier Local Edits and Export](site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md)
 5. [Slice E: Research Queue](site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md)
+6. [Slice I: Pre-Design Functional UX Consolidation](site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md)
 
-Do not combine slices unless the user explicitly asks. Slice A is the immediate next execution target.
+Do not combine slices unless the user explicitly asks. Slice I is the current consolidation target before visual design.
 
 ## Phase Sequence
 
@@ -167,6 +168,7 @@ school_id
 - [Slice C: Minimal School Dossiers](site/ux_review/HEADLESS_SLICE_C_MINIMAL_DOSSIERS.md)
 - [Slice D: Dossier Local Edits and Export](site/ux_review/HEADLESS_SLICE_D_DOSSIER_EDITS_EXPORT.md)
 - [Slice E: Research Queue](site/ux_review/HEADLESS_SLICE_E_RESEARCH_QUEUE.md)
+- [Slice I: Pre-Design Functional UX Consolidation](site/ux_review/HEADLESS_SLICE_I_PRE_DESIGN_FUNCTIONAL_UX.md)
 
 ## Acceptance Criteria
 

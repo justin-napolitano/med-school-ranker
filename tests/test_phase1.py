@@ -9,7 +9,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from med_school_ranker import bundle, rankings, site as site_builder, validation, workbook
+from med_school_ranker import bundle, final_list, rankings, reviewer_state, site as site_builder, validation, workbook
 from med_school_ranker.paths import ROOT
 
 
@@ -161,7 +161,9 @@ def write_minimal_project(
             for row in rows
         ],
     )
-    write_csv(root / "data/final_application_list.csv", ["school_id", "school_name", "why_kept", "why_cut"], [])
+    write_csv(root / "data/manual/school_visibility.csv", validation.SCHOOL_VISIBILITY_COLUMNS, [])
+    write_csv(root / "data/manual/school_dossiers.csv", validation.SCHOOL_DOSSIER_COLUMNS, [])
+    write_csv(root / "data/final_application_list.csv", final_list.FINAL_APPLICATION_LIST_COLUMNS, [])
     write_csv(
         root / "data/manual/source_match_overrides.csv",
         [
@@ -247,6 +249,8 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(site_builder, "ADMISSIONS_POLICIES_CSV", root / "data/normalized/admissions_policies.csv")
     monkeypatch.setattr(site_builder, "LETTER_REQUIREMENTS_CSV", root / "data/normalized/letter_requirements.csv")
     monkeypatch.setattr(site_builder, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
+    monkeypatch.setattr(site_builder, "SCHOOL_VISIBILITY_CSV", root / "data/manual/school_visibility.csv")
+    monkeypatch.setattr(site_builder, "SCHOOL_DOSSIERS_CSV", root / "data/manual/school_dossiers.csv")
     monkeypatch.setattr(site_builder, "SOURCE_MATCH_OVERRIDES_CSV", root / "data/manual/source_match_overrides.csv")
     monkeypatch.setattr(site_builder, "SOURCE_REVIEW_QUEUE_CSV", root / "data/manual/source_review_queue.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_SOURCE_QUEUE_CSV", root / "data/manual/admissions_source_queue.csv")
@@ -277,6 +281,8 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
             "admissions_policies": root / "data/normalized/admissions_policies.csv",
             "letter_requirements": root / "data/normalized/letter_requirements.csv",
             "partner_inputs": root / "data/manual/partner_inputs.csv",
+            "school_visibility": root / "data/manual/school_visibility.csv",
+            "school_dossiers": root / "data/manual/school_dossiers.csv",
             "source_match_overrides": root / "data/manual/source_match_overrides.csv",
             "source_review_queue": root / "data/manual/source_review_queue.csv",
             "admissions_source_queue": root / "data/manual/admissions_source_queue.csv",
@@ -301,6 +307,11 @@ def extract_embedded_payload(html_text: str) -> dict:
     )
     assert embedded_match is not None
     return json.loads(unescape(embedded_match.group(1)))
+
+
+def read_dict_rows(path: Path) -> list[dict[str, str]]:
+    with path.open(newline="") as f:
+        return list(csv.DictReader(f))
 
 
 def test_ranking_generation_runs(tmp_path, monkeypatch):
@@ -333,6 +344,8 @@ def test_workbook_has_required_tabs(tmp_path, monkeypatch):
         "Source Match Overrides",
         "Source Review Queue",
         "Partner Inputs",
+        "School Visibility",
+        "School Dossiers",
         "Calculated Rankings",
         "Final Application List",
         "Data Quality",
@@ -431,6 +444,8 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
         "admissions_policies.json",
         "letter_requirements.json",
         "partner_inputs.json",
+        "school_visibility.json",
+        "school_dossiers.json",
         "source_match_overrides.json",
         "source_review_queue.json",
         "admissions_source_queue.json",
@@ -450,6 +465,135 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
     ]
     for filename in required_json:
         json.loads((site_dir / "data" / filename).read_text())
+
+
+def test_site_generation_writes_json_node_read_models(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    site_dir = patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    embedded_payload = extract_embedded_payload(output.read_text())
+    nodes_dir = site_dir / "data/nodes"
+    required_node_files = {
+        "school_nodes.json",
+        "school_card_nodes.json",
+        "school_profile_nodes.json",
+        "ranking_card_nodes.json",
+        "compare_card_nodes.json",
+        "list_nodes.json",
+        "methodology_nodes.json",
+        "admin_status_nodes.json",
+    }
+    bundles = {
+        filename: json.loads((nodes_dir / filename).read_text())
+        for filename in required_node_files
+    }
+
+    for filename, bundle in bundles.items():
+        assert bundle["node_schema_version"] == "site_nodes_v1", filename
+        assert bundle["site_mode"] == "local_full", filename
+        assert bundle["record_count"] == len(bundle["nodes"]), filename
+        assert bundle["source_tables"], filename
+        assert all(node["node_schema_version"] == "site_nodes_v1" for node in bundle["nodes"])
+
+    master_rows = site_builder.read_csv(tmp_path / "data/school_master.csv")
+    school_nodes = bundles["school_nodes.json"]["nodes"]
+    assert len(school_nodes) == len(master_rows)
+    assert [node["school_id"] for node in school_nodes] == sorted(row["school_id"] for row in master_rows)
+    for field in [
+        "school_id",
+        "school_slug",
+        "display_name",
+        "degree_type",
+        "campus_name",
+        "city",
+        "state",
+        "state_abbrev",
+        "region",
+        "ownership_type",
+        "official_url",
+        "profile_route",
+        "active",
+        "manual_exclusion_flag",
+        "source_confidence",
+    ]:
+        assert field in school_nodes[0]
+
+    school_card = bundles["school_card_nodes.json"]["nodes"][0]
+    assert school_card["node_type"] == "school_card"
+    assert school_card["identity"]["display_name"]
+    assert "rank_summary" in school_card
+    assert "mcat_gpa_summary" in school_card
+    assert "cost_summary" in school_card
+    assert "warning_chips" in school_card
+    assert school_card["actions"]["profile_route"].startswith("#/schools/")
+
+    ranking_card = bundles["ranking_card_nodes.json"]["nodes"][0]
+    for field in [
+        "decision_rank",
+        "rank_band",
+        "rank_confidence",
+        "overall_school_value",
+        "admissions_score",
+        "attendance_score",
+        "admissions_fit_tier",
+        "application_bucket",
+        "top_positive_contributors",
+        "top_negative_contributors",
+        "missing_or_low_confidence_drivers",
+        "aamc_context_label",
+    ]:
+        assert field in ranking_card
+
+    compare_card = bundles["compare_card_nodes.json"]["nodes"][0]
+    assert "rank_fit" in compare_card
+    assert "admissions_facts" in compare_card
+    assert "cost_facts" in compare_card
+    assert "requirements_summary" in compare_card
+    assert "reviewer_state" in compare_card
+
+    profile_node = bundles["school_profile_nodes.json"]["nodes"][0]
+    assert profile_node["route"].startswith("#/schools/")
+    assert profile_node["header"]["display_name"]
+    assert profile_node["snapshot_cards"]
+    assert {section["section_id"] for section in profile_node["sections"]} >= {
+        "overview",
+        "applicant_fit",
+        "admissions_stats",
+        "cost_and_debt",
+        "requirements",
+        "source_confidence",
+        "methodology",
+    }
+    assert "admin_refs" in profile_node
+
+    list_node = bundles["list_nodes.json"]["nodes"][0]
+    for field in [
+        "list_id",
+        "slug",
+        "route",
+        "title",
+        "description",
+        "readiness_label",
+        "eligibility_summary",
+        "required_fields",
+        "missing_or_low_confidence_fields",
+        "school_ids",
+        "top_card_ids",
+    ]:
+        assert field in list_node
+
+    methodology_nodes = bundles["methodology_nodes.json"]["nodes"]
+    assert any("school-specific acceptance probability" in node["aamc_caveat"] for node in methodology_nodes)
+
+    admin_node = bundles["admin_status_nodes.json"]["nodes"][0]
+    assert admin_node["node_type"] == "admin_status"
+    assert "validation_counts" in admin_node
+    assert "plan_status_counts" in admin_node
+    assert embedded_payload["site_nodes"]["school_nodes"]["record_count"] == len(master_rows)
 
 
 def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp_path, monkeypatch):
@@ -501,19 +645,46 @@ def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp
     assert embedded_payload["meta"]["site_mode"] == "publish_safe"
     assert embedded_payload["routes"]["admin"] == []
     assert "partner_inputs" not in embedded_payload
+    assert "school_visibility" not in embedded_payload
+    assert "school_dossiers" not in embedded_payload
     assert "source_review_queue" not in embedded_payload
     assert "admissions_source_queue" not in embedded_payload
     assert "data_quality_report" not in embedded_payload
     assert "source_status" not in embedded_payload
+    assert "site_nodes" in embedded_payload
+    assert "admin_status_nodes" not in embedded_payload["site_nodes"]
+    assert embedded_payload["site_nodes"]["school_card_nodes"]["publish_safe"] is True
+    assert embedded_payload["site_nodes"]["compare_card_nodes"]["contains_reviewer_state"] is False
+    assert embedded_payload["site_nodes"]["school_profile_nodes"]["contains_reviewer_state"] is False
     assert all("partner_input" not in school for school in embedded_payload["schools"])
+    assert all("visibility" not in school for school in embedded_payload["schools"])
+    assert all("dossier" not in school for school in embedded_payload["schools"])
     assert all("admissions_source" not in school for school in embedded_payload["schools"])
     assert secret not in html_text
 
     generated_names = {path.relative_to(site_dir).as_posix() for path in site_dir.rglob("*") if path.is_file()}
     assert "data/partner_inputs.json" not in generated_names
+    assert "data/school_visibility.json" not in generated_names
+    assert "data/school_dossiers.json" not in generated_names
     assert "data/source_review_queue.json" not in generated_names
     assert "data/admissions_source_queue.json" not in generated_names
     assert "data/source_status.json" not in generated_names
+    assert "data/nodes/school_nodes.json" in generated_names
+    assert "data/nodes/school_card_nodes.json" in generated_names
+    assert "data/nodes/school_profile_nodes.json" in generated_names
+    assert "data/nodes/ranking_card_nodes.json" in generated_names
+    assert "data/nodes/compare_card_nodes.json" in generated_names
+    assert "data/nodes/list_nodes.json" in generated_names
+    assert "data/nodes/methodology_nodes.json" in generated_names
+    assert "data/nodes/admin_status_nodes.json" not in generated_names
+    compare_nodes = json.loads((site_dir / "data/nodes/compare_card_nodes.json").read_text())
+    profile_nodes = json.loads((site_dir / "data/nodes/school_profile_nodes.json").read_text())
+    assert all("reviewer_state" not in node for node in compare_nodes["nodes"])
+    assert all("admin_refs" not in node for node in profile_nodes["nodes"])
+    assert all(
+        "reviewer_state" not in {section["section_id"] for section in node["sections"]}
+        for node in profile_nodes["nodes"]
+    )
     for path in site_dir.rglob("*"):
         if path.is_file():
             assert secret not in path.read_text(errors="ignore")
@@ -585,6 +756,305 @@ def test_default_rankings_route_and_admin_route_are_separated(tmp_path, monkeypa
     assert 'data-route="#/rankings"' in html_text
     assert 'data-route="#/admin"' in html_text
     assert 'data-view="dashboard"' not in html_text
+
+
+def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+    public_routes = {route["path"] for route in embedded_payload["routes"]["public"]}
+
+    assert "#/dossiers" in public_routes
+    assert "#/research" in public_routes
+    assert "#/application-list" in public_routes
+    assert 'section id="dossiers"' in html_text
+    assert 'section id="research"' in html_text
+    assert 'section id="applicationList"' in html_text
+    assert "function renderDossiers()" in html_text
+    assert "function renderResearch()" in html_text
+    assert "function renderApplicationList()" in html_text
+    assert "function renderCompare()" in html_text
+    assert "final_application_list_export.csv" in html_text
+    assert "add-compare" in html_text
+    assert "Review Actions" in html_text
+    assert "downloadRankingDossiers" in html_text
+    assert "downloadProfileDossierState" in html_text
+    assert "Application decision" in html_text
+    assert "school_visibility_v1" in html_text
+    assert "school_dossier_edits_v1" in html_text
+    assert "school_visibility_export.csv" in html_text
+    assert "school_dossier_edits_export.csv" in html_text
+
+
+def test_site_payload_loads_persisted_reviewer_state(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    write_csv(
+        tmp_path / "data/manual/school_visibility.csv",
+        validation.SCHOOL_VISIBILITY_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "visibility_state": "hidden",
+                "visibility_reason": "Not a current fit",
+                "hidden_at": "2026-06-05T12:00:00Z",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+                "notes": "",
+            }
+        ],
+    )
+    write_csv(
+        tmp_path / "data/manual/school_dossiers.csv",
+        validation.SCHOOL_DOSSIER_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "research_status": "skimmed",
+                "interest_level": "high",
+                "four_year_happiness": "8",
+                "location_fit": "7",
+                "culture_fit": "",
+                "regret_index": "6",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "considering",
+                "notes": "Review note",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+            }
+        ],
+    )
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    payload = site_builder.build_site_payload()
+    school_one = next(school for school in payload["schools"] if school["school"]["school_id"] == "school_one")
+
+    assert payload["school_visibility"][0]["visibility_state"] == "hidden"
+    assert payload["school_dossiers"][0]["research_status"] == "skimmed"
+    assert school_one["visibility"]["visibility_reason"] == "Not a current fit"
+    assert school_one["dossier"]["notes"] == "Review note"
+
+
+def test_reviewer_state_imports_browser_exports(tmp_path):
+    write_minimal_project(tmp_path)
+    write_csv(
+        tmp_path / "data/manual/school_visibility.csv",
+        validation.SCHOOL_VISIBILITY_COLUMNS,
+        [
+            {
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "visibility_state": "hidden",
+                "visibility_reason": "Old reason",
+                "hidden_at": "2026-06-04T12:00:00Z",
+                "updated_at": "2026-06-04T12:00:00Z",
+                "source": "test",
+                "notes": "",
+            }
+        ],
+    )
+    visibility_export = tmp_path / "school_visibility_export.csv"
+    write_csv(
+        visibility_export,
+        [
+            "export_schema_version",
+            "exported_at",
+            "school_id",
+            "school_name",
+            "visibility_state",
+            "visibility_reason",
+            "hidden_at",
+            "updated_at",
+            "source",
+            "notes",
+        ],
+        [
+            {
+                "export_schema_version": "school_visibility_v1",
+                "exported_at": "2026-06-05T12:00:00Z",
+                "school_id": "school_one",
+                "school_name": "School One",
+                "visibility_state": "hidden",
+                "visibility_reason": "Not a current fit",
+                "hidden_at": "2026-06-05T12:00:00Z",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "browser_session",
+                "notes": "",
+            },
+            {
+                "export_schema_version": "school_visibility_v1",
+                "exported_at": "2026-06-05T12:00:00Z",
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "visibility_state": "visible",
+                "visibility_reason": "",
+                "hidden_at": "2026-06-04T12:00:00Z",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "browser_session",
+                "notes": "",
+            },
+        ],
+    )
+    dossier_export = tmp_path / "school_dossier_edits_export.csv"
+    write_csv(
+        dossier_export,
+        [
+            "export_schema_version",
+            "exported_at",
+            "school_id",
+            "school_name",
+            "research_status",
+            "interest_level",
+            "four_year_happiness",
+            "location_fit",
+            "culture_fit",
+            "regret_index",
+            "hard_no_flag",
+            "hard_no_reason",
+            "application_decision_status",
+            "notes",
+        ],
+        [
+            {
+                "export_schema_version": "school_dossier_edits_v1",
+                "exported_at": "2026-06-05T12:00:00Z",
+                "school_id": "school_one",
+                "school_name": "School One",
+                "research_status": "skimmed",
+                "interest_level": "high",
+                "four_year_happiness": "8",
+                "location_fit": "7",
+                "culture_fit": "",
+                "regret_index": "6",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "considering",
+                "notes": "Review note",
+            }
+        ],
+    )
+
+    visibility_count = reviewer_state.import_visibility_export(
+        visibility_export,
+        target_path=tmp_path / "data/manual/school_visibility.csv",
+        master_path=tmp_path / "data/school_master.csv",
+    )
+    dossier_count = reviewer_state.import_dossier_export(
+        dossier_export,
+        target_path=tmp_path / "data/manual/school_dossiers.csv",
+        master_path=tmp_path / "data/school_master.csv",
+    )
+
+    visibility_rows = {row["school_id"]: row for row in read_dict_rows(tmp_path / "data/manual/school_visibility.csv")}
+    dossier_rows = {row["school_id"]: row for row in read_dict_rows(tmp_path / "data/manual/school_dossiers.csv")}
+
+    assert visibility_count == 2
+    assert visibility_rows["school_one"]["visibility_state"] == "hidden"
+    assert visibility_rows["school_two"]["visibility_state"] == "visible"
+    assert dossier_count == 1
+    assert dossier_rows["school_one"]["notes"] == "Review note"
+    assert dossier_rows["school_one"]["source"] == "browser_dossier_export"
+
+
+def test_final_application_list_builder_uses_persisted_review_state(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    write_csv(
+        tmp_path / "data/manual/school_visibility.csv",
+        validation.SCHOOL_VISIBILITY_COLUMNS,
+        [
+            {
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "visibility_state": "hidden",
+                "visibility_reason": "Not a current fit",
+                "hidden_at": "2026-06-05T12:00:00Z",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+                "notes": "",
+            }
+        ],
+    )
+    write_csv(
+        tmp_path / "data/manual/school_dossiers.csv",
+        validation.SCHOOL_DOSSIER_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "research_status": "ready_to_decide",
+                "interest_level": "high",
+                "four_year_happiness": "8",
+                "location_fit": "8",
+                "culture_fit": "7",
+                "regret_index": "6",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "applying",
+                "notes": "Strong fit after review.",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+            },
+            {
+                "school_id": "school_two",
+                "school_name": "School Two",
+                "research_status": "ready_to_decide",
+                "interest_level": "medium",
+                "four_year_happiness": "5",
+                "location_fit": "5",
+                "culture_fit": "5",
+                "regret_index": "4",
+                "hard_no_flag": "",
+                "hard_no_reason": "",
+                "application_decision_status": "considering",
+                "notes": "Hidden school should not survive.",
+                "updated_at": "2026-06-05T12:00:00Z",
+                "source": "test",
+            },
+        ],
+    )
+    write_csv(
+        tmp_path / "data/final_application_list.csv",
+        final_list.FINAL_APPLICATION_LIST_COLUMNS,
+        [
+            {
+                "school_id": "school_one",
+                "school_name": "School One",
+                "why_kept": "Manual rationale.",
+                "assigned_research_owner": "Partner",
+                "primary_deadline": "2026-10-01",
+            }
+        ],
+    )
+
+    output = final_list.build_final_application_list(
+        master_path=tmp_path / "data/school_master.csv",
+        rankings_path=tmp_path / "outputs/calculated_rankings.csv",
+        visibility_path=tmp_path / "data/manual/school_visibility.csv",
+        dossiers_path=tmp_path / "data/manual/school_dossiers.csv",
+        output_path=tmp_path / "data/final_application_list.csv",
+    )
+
+    rows = read_dict_rows(output)
+    assert [row["school_id"] for row in rows] == ["school_one"]
+    assert rows[0]["status"] == "applying"
+    assert rows[0]["priority"] == "highest"
+    assert rows[0]["application_service"] == "AMCAS"
+    assert rows[0]["why_kept"] == "Manual rationale."
+    assert rows[0]["assigned_research_owner"] == "Partner"
+    assert rows[0]["primary_deadline"] == "2026-10-01"
 
 
 def test_school_profile_routes_resolve_for_every_active_school(tmp_path, monkeypatch):

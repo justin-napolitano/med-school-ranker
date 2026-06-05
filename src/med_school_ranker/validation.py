@@ -26,6 +26,8 @@ from med_school_ranker.paths import (
     REFERENCE_DATA,
     ROOT,
     SCENARIO_WEIGHTS_CSV,
+    SCHOOL_DOSSIERS_CSV,
+    SCHOOL_VISIBILITY_CSV,
     SOURCE_MATCH_OVERRIDES_CSV,
     SOURCE_REVIEW_QUEUE_CSV,
 )
@@ -129,6 +131,34 @@ PARTNER_INPUT_COLUMNS = [
     "partner_notes",
 ]
 
+SCHOOL_VISIBILITY_COLUMNS = [
+    "school_id",
+    "school_name",
+    "visibility_state",
+    "visibility_reason",
+    "hidden_at",
+    "updated_at",
+    "source",
+    "notes",
+]
+
+SCHOOL_DOSSIER_COLUMNS = [
+    "school_id",
+    "school_name",
+    "research_status",
+    "interest_level",
+    "four_year_happiness",
+    "location_fit",
+    "culture_fit",
+    "regret_index",
+    "hard_no_flag",
+    "hard_no_reason",
+    "application_decision_status",
+    "notes",
+    "updated_at",
+    "source",
+]
+
 SOURCE_MATCH_OVERRIDES_COLUMNS = [
     "override_id",
     "source_table",
@@ -164,6 +194,8 @@ REQUIRED_COLUMNS = {
     "data/normalized/letter_requirements.csv": LETTER_REQUIREMENTS_COLUMNS,
     "data/manual/admissions_source_queue.csv": ADMISSIONS_SOURCE_QUEUE_COLUMNS,
     "data/manual/partner_inputs.csv": PARTNER_INPUT_COLUMNS,
+    "data/manual/school_visibility.csv": SCHOOL_VISIBILITY_COLUMNS,
+    "data/manual/school_dossiers.csv": SCHOOL_DOSSIER_COLUMNS,
     "data/manual/source_match_overrides.csv": SOURCE_MATCH_OVERRIDES_COLUMNS,
     "data/manual/source_review_queue.csv": SOURCE_REVIEW_QUEUE_COLUMNS,
     "data/final_application_list.csv": ["school_id", "school_name", "why_kept", "why_cut"],
@@ -211,6 +243,30 @@ COST_FIELDS = [
 ]
 
 ALLOWED_OVERRIDE_ACTIONS = {"accept_match", "reject_match", "force_no_match", "ignore_source_row"}
+ALLOWED_VISIBILITY_STATES = {"", "visible", "hidden"}
+ALLOWED_RESEARCH_STATUSES = {
+    "",
+    "not_started",
+    "skimmed",
+    "needs_deep_research",
+    "researched",
+    "ready_to_decide",
+    "excluded",
+    "applied",
+}
+ALLOWED_INTEREST_LEVELS = {"", "high", "medium", "low", "none"}
+ALLOWED_DECISION_STATUSES = {
+    "",
+    "considering",
+    "applying",
+    "applied",
+    "interview",
+    "accepted",
+    "waitlisted",
+    "rejected",
+    "withdrawn",
+    "not_applying",
+}
 
 GENERATED_SCORING_COLUMNS = {
     "admissions_score",
@@ -554,6 +610,27 @@ def validate_nonnegative_numbers(
                 )
 
 
+def validate_allowed_values(
+    label: str,
+    rows: Iterable[dict[str, str]],
+    field: str,
+    allowed_values: set[str],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(rows, start=2):
+        value = row.get(field, "").strip()
+        if value not in allowed_values:
+            add_issue(
+                issues,
+                "error",
+                label,
+                row_label(row, f"row {row_number}"),
+                field,
+                f"Unexpected value '{value}'.",
+                f"Use one of: {', '.join(sorted(value for value in allowed_values if value))}, or leave blank.",
+            )
+
+
 def validate_source_match_overrides(
     rows: Iterable[dict[str, str]],
     known_school_ids: set[str],
@@ -699,6 +776,8 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     letter_headers, letter_rows = loaded.get("data/normalized/letter_requirements.csv", ([], []))
     source_queue_headers, source_queue_rows = loaded.get("data/manual/admissions_source_queue.csv", ([], []))
     partner_headers, partner_rows = loaded.get("data/manual/partner_inputs.csv", ([], []))
+    visibility_headers, visibility_rows = loaded.get("data/manual/school_visibility.csv", ([], []))
+    dossier_headers, dossier_rows = loaded.get("data/manual/school_dossiers.csv", ([], []))
     _, source_override_rows = loaded.get("data/manual/source_match_overrides.csv", ([], []))
     _, source_review_rows = loaded.get("data/manual/source_review_queue.csv", ([], []))
     _, final_rows = loaded.get("data/final_application_list.csv", ([], []))
@@ -711,6 +790,7 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
         ("data/normalized/admissions_stats.csv", stats_headers, stats_rows),
         ("data/normalized/cost_and_debt.csv", cost_headers, cost_rows),
         ("data/manual/partner_inputs.csv", partner_headers, partner_rows),
+        ("data/manual/school_dossiers.csv", dossier_headers, dossier_rows),
     ]:
         validate_score_ranges(label, headers, rows, issues)
 
@@ -777,12 +857,51 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
         issues,
     )
     validate_nonnegative_numbers("data/normalized/cost_and_debt.csv", cost_rows, COST_FIELDS, issues)
+    validate_numeric_range(
+        "data/manual/school_dossiers.csv",
+        dossier_rows,
+        ["four_year_happiness", "location_fit", "culture_fit", "regret_index"],
+        1,
+        10,
+        "Dossier score",
+        issues,
+    )
+    validate_allowed_values(
+        "data/manual/school_visibility.csv",
+        visibility_rows,
+        "visibility_state",
+        ALLOWED_VISIBILITY_STATES,
+        issues,
+    )
+    validate_allowed_values(
+        "data/manual/school_dossiers.csv",
+        dossier_rows,
+        "research_status",
+        ALLOWED_RESEARCH_STATUSES,
+        issues,
+    )
+    validate_allowed_values(
+        "data/manual/school_dossiers.csv",
+        dossier_rows,
+        "interest_level",
+        ALLOWED_INTEREST_LEVELS,
+        issues,
+    )
+    validate_allowed_values(
+        "data/manual/school_dossiers.csv",
+        dossier_rows,
+        "application_decision_status",
+        ALLOWED_DECISION_STATUSES,
+        issues,
+    )
     for label, rows in [
         ("data/normalized/admissions_stats.csv", stats_rows),
         ("data/normalized/cost_and_debt.csv", cost_rows),
         ("data/normalized/admissions_policies.csv", policy_rows),
         ("data/normalized/letter_requirements.csv", letter_rows),
         ("data/manual/partner_inputs.csv", partner_rows),
+        ("data/manual/school_visibility.csv", visibility_rows),
+        ("data/manual/school_dossiers.csv", dossier_rows),
         ("data/manual/source_review_queue.csv", source_review_rows),
     ]:
         validate_school_references(label, rows, known_school_ids, issues)

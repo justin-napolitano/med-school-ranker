@@ -4,12 +4,16 @@
 
 This runbook tells a headless worker how to continue the project without relying on conversational context.
 
-The current next executable phase is:
+No next headless execution phase is currently selected.
+
+The most recently executed phase is:
 
 ```text
-Phase 2B: Deterministic Scoring
-docs/HEADLESS_SCORING_EXECUTION_PLAN.md
+Site Data Modeling Node Slice
+docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md
 ```
+
+Do not rerun that slice unless the user explicitly asks. The likely next work is a product card/profile UI adoption or design slice that consumes the generated node files under `outputs/site/data/nodes/`.
 
 ## Repository
 
@@ -40,15 +44,17 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 ## Document Read Order
 
-For the current next phase, read in this order:
+For a future card/profile UI adoption phase, read in this order first:
 
-1. `docs/PLAN_CRITICAL_REVIEW.md`
-2. `docs/HEADLESS_SCORING_EXECUTION_PLAN.md`
-3. `docs/EXEC_PLAN.md`
-4. `docs/plans/scoring_engine.md`
-5. `docs/plans/admissions_probability.md`
-6. `docs/plans/applicant_profiles.md`
-7. `docs/PREDICTIVE_ADMISSIONS_MODEL_FUTURE_SCOPE.md`
+1. `docs/SITE_DATA_MODELING_EXEC_PLAN.md`
+2. `docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md`
+3. `docs/site/data_modeling/01_canonical_domain_tables.md`
+4. `docs/site/data_modeling/02_json_node_contracts.md`
+5. `docs/site/data_modeling/03_card_surfaces_and_profile_sections.md`
+6. `docs/site/data_modeling/04_admin_public_payload_separation.md`
+7. `docs/site/data_modeling/06_validation_privacy_and_qa.md`
+8. `docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md`
+9. `docs/EXEC_PLAN.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -82,17 +88,9 @@ Local-private build, if Phase 2B implements it:
 
 ## Current Headless Worker Prompt
 
-Use this prompt for the next headless execution session:
+There is no current prompt selected. Before the next `codex exec` run, choose or draft a specific card/profile UI adoption plan and then write a bounded prompt here.
 
-```text
-You are working in /Users/justin/repos/med-school-ranker.
-
-Execute docs/HEADLESS_SCORING_EXECUTION_PLAN.md end to end.
-
-Follow docs/HEADLESS_WORKER_RUNBOOK.md first. Start from a clean status check. Do not scrape or download data. Do not implement predictive admissions probability. Keep private profile input and private-derived outputs out of git and out of the upload bundle.
-
-Implement deterministic Phase 2B scoring from existing normalized data, applicant profile values, partner inputs, scenario weights, and source quality fields. Regenerate rankings, workbook, site, and upload bundle. Add or update tests. Run uv run med-school-build-all and uv run pytest. Commit only public-safe code/docs/data/generated outputs.
-```
+The executed data-modeling prompt is preserved in `docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md` for history.
 
 ## Required Final Verification
 

@@ -171,6 +171,16 @@ Phase 2B execution details live in [Headless Scoring Execution Plan](HEADLESS_SC
 
 Execution details live in [Scoring Transparency and Rollup Executive Plan](SCORING_TRANSPARENCY_EXEC_PLAN.md) and [Headless Scoring Transparency Execution Plan](HEADLESS_SCORING_TRANSPARENCY_EXECUTION_PLAN.md).
 
+### Milestone 7.75: Site Data Modeling and Card Contracts
+
+- Define canonical domain tables separately from generated review outputs.
+- Generate JSON read-model nodes for school facts, school cards, profile sections, ranking cards, compare cards, lists, methodology, and admin status.
+- Keep the current static site and workbook backward compatible while introducing node contracts.
+- Separate admin/local nodes from publish-safe product nodes at payload-generation time.
+- Preserve a future Postgres/Vercel migration path without making JSON the source of truth.
+
+Execution details live in [Site Data Modeling Executive Plan](SITE_DATA_MODELING_EXEC_PLAN.md) and [Headless Site Data Modeling Execution Plan](HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md).
+
 ### Milestone 8: Review-Ready Workbook
 
 - Add partner-facing input tabs for applicant profile, weights, hard filters, and manual scores.
@@ -181,7 +191,7 @@ Execution details live in [Scoring Transparency and Rollup Executive Plan](SCORI
 ### Milestone 9: Product-Grade Review Site
 
 - Rebuild the static site around applicant-facing rankings, curated lists, school profiles, scoring lenses, and publish-safe mode.
-- Keep this downstream of Phase 2B scoring so the site is not polished around placeholder rank fields.
+- Keep this downstream of Phase 2B scoring and the site data-modeling/card-contract work so the site is not polished around placeholder or admin-shaped payloads.
 
 ### Milestone 10: Site UX Review and School Research Workflow
 
