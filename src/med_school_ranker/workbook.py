@@ -11,16 +11,28 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
 from med_school_ranker.paths import DATA, OUT, RANKINGS_CSV, ROOT, WORKBOOK_XLSX
+from med_school_ranker.paths import (
+    ADMISSIONS_SOURCE_QUEUE_CSV,
+    ADMISSIONS_STATS_CSV,
+    APPLICANT_PROFILES_CSV,
+    DATA_QUALITY_REPORT_CSV,
+    PARTNER_INPUTS_CSV,
+)
 
 
 SHEETS = [
     ("Instructions", None),
     ("Project Subplans", DATA / "project_subplans.csv"),
     ("School Master", DATA / "school_master.csv"),
+    ("Applicant Profiles", APPLICANT_PROFILES_CSV),
     ("User Preferences", DATA / "user_preferences.csv"),
     ("Scenario Weights", DATA / "scenario_weights.csv"),
+    ("Admissions Stats", ADMISSIONS_STATS_CSV),
+    ("Admissions Source Queue", ADMISSIONS_SOURCE_QUEUE_CSV),
+    ("Partner Inputs", PARTNER_INPUTS_CSV),
     ("Calculated Rankings", RANKINGS_CSV),
     ("Final Application List", DATA / "final_application_list.csv"),
+    ("Data Quality", DATA_QUALITY_REPORT_CSV),
     ("Sources", DATA / "sources.csv"),
     ("Field Definitions", DATA / "field_definitions.csv"),
 ]
@@ -117,7 +129,7 @@ def add_instructions_sheet(wb: Workbook) -> None:
         ["Medical School Ranker", "Workbook generated from the CSV seed project."],
         ["Use", "Edit School Master scores and preferences, then regenerate rankings with uv."],
         ["Regenerate", "uv run med-school-build-all"],
-        ["Primary tabs", "Project Subplans, School Master, User Preferences, Scenario Weights, Calculated Rankings, Final Application List."],
+        ["Primary tabs", "Project Subplans, School Master, Applicant Profiles, Admissions Stats, Admissions Source Queue, Partner Inputs, Calculated Rankings, Final Application List, Data Quality."],
         ["Important", "Calculated Rankings is generated output. Do not manually edit it as the source of truth."],
         ["Transparency", "Keep manual_exclusion_flag, exclusion_reason, source URLs, data_confidence, and last_verified_date current."],
         ["Score scale", "Use 1-10. Higher should always mean better fit or lower concern for the applicant."],

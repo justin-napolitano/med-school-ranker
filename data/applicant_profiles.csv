@@ -1,0 +1,2 @@
+applicant_profile_id,profile_name,is_default_profile,mcat_total,overall_gpa,science_gpa,state_of_residence,preferred_setting,urban_preference_score,rural_tolerance_score,specialty_interest,target_application_count,cost_weight_level,hidden_curriculum_weight_level,specialty_weight_level,notes
+template_profile,Template Profile,TRUE,,,,,urban,8,5,emergency medicine,25,low,low,low,Template only; keep real applicant data in data/manual/private/.

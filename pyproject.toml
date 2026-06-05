@@ -8,10 +8,16 @@ dependencies = [
     "openpyxl>=3.1.5",
 ]
 
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+]
+
 [project.scripts]
 med-school-build-rankings = "med_school_ranker.rankings:main"
 med-school-build-workbook = "med_school_ranker.workbook:main"
 med-school-build-all = "med_school_ranker.bundle:main"
+med-school-validate = "med_school_ranker.validation:main"
 
 [build-system]
 requires = ["hatchling"]
