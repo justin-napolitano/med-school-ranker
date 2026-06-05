@@ -40,6 +40,7 @@ Static site page/menu/table plans:
 ## Files
 
 - `outputs/med_school_ranker.xlsx`: upload this workbook to Google Sheets. It contains the tabs below.
+- `outputs/site/index.html`: open this local static review site in a browser for dashboard, rankings, detail, source, quality, and plan review.
 - `data/project_subplans.csv`: import as **Project Subplans**. Machine-readable index of the exec plan and subplans.
 - `data/school_master.csv`: import as **School Master**. One row per LCME MD program and AOA/COCA DO school/site row.
 - `data/applicant_profiles.csv`: import as **Applicant Profiles**. Public/template applicant profile fields only.
@@ -53,7 +54,7 @@ Static site page/menu/table plans:
 - `outputs/data_quality_report.csv`: import as **Data Quality**. Validation warnings and errors from the latest build.
 - `data/field_definitions.csv`: import as **Field Definitions**. Short explanations for the model fields.
 - `data/sources.csv`: import as **Sources**. Source URLs and source dates used for the seed universe.
-- `med-school-ranker-upload.zip`: archive containing the workbook, CSVs, README, and `pyproject.toml`.
+- `med-school-ranker-upload.zip`: archive containing the workbook, CSVs, static site, README, and project files.
 
 ## Upload
 
@@ -122,6 +123,7 @@ From this folder:
 ```bash
 uv run med-school-build-rankings
 uv run med-school-build-workbook
+uv run med-school-build-site
 uv run med-school-build-all
 uv run med-school-validate
 uv run pytest
@@ -132,6 +134,7 @@ Compatibility wrappers are also available:
 ```bash
 uv run python scripts/build_rankings.py
 uv run python scripts/build_workbook.py
+uv run python scripts/build_site.py
 uv run python scripts/build_all.py
 ```
 

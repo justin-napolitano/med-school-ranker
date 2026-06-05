@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import csv
+import json
+import re
+import zipfile
+from html import unescape
 from pathlib import Path
 
 from openpyxl import load_workbook
 
-from med_school_ranker import rankings, validation, workbook
+from med_school_ranker import bundle, rankings, site as site_builder, validation, workbook
 from med_school_ranker.paths import ROOT
 
 
@@ -150,18 +154,76 @@ def write_minimal_project(
         ],
     )
     write_csv(root / "data/final_application_list.csv", ["school_id", "school_name", "why_kept", "why_cut"], [])
+    write_csv(
+        root / "data/project_subplans.csv",
+        [
+            "plan_name",
+            "status",
+            "priority",
+            "phase",
+            "current_decision_summary",
+            "next_action",
+            "doc_path",
+        ],
+        [
+            {
+                "plan_name": "Test Plan",
+                "status": "active",
+                "priority": "1",
+                "phase": "test",
+                "current_decision_summary": "Fixture row.",
+                "next_action": "Run tests.",
+                "doc_path": "docs/test.md",
+            }
+        ],
+    )
+
+
+def patch_ranking_paths(monkeypatch, root: Path) -> Path:
+    out = root / "outputs"
+    monkeypatch.setattr(rankings, "ROOT", root)
+    monkeypatch.setattr(rankings, "OUT", out)
+    monkeypatch.setattr(rankings, "MASTER_CSV", root / "data/school_master.csv")
+    monkeypatch.setattr(rankings, "PREFERENCES_CSV", root / "data/user_preferences.csv")
+    monkeypatch.setattr(rankings, "SCENARIO_WEIGHTS_CSV", root / "data/scenario_weights.csv")
+    monkeypatch.setattr(rankings, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    return out
+
+
+def patch_site_paths(monkeypatch, root: Path) -> Path:
+    out = root / "outputs"
+    site_dir = out / "site"
+    monkeypatch.setattr(site_builder, "ROOT", root)
+    monkeypatch.setattr(site_builder, "OUT", out)
+    monkeypatch.setattr(site_builder, "MASTER_CSV", root / "data/school_master.csv")
+    monkeypatch.setattr(site_builder, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    monkeypatch.setattr(site_builder, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
+    monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
+    monkeypatch.setattr(site_builder, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
+    monkeypatch.setattr(site_builder, "ADMISSIONS_SOURCE_QUEUE_CSV", root / "data/manual/admissions_source_queue.csv")
+    monkeypatch.setattr(site_builder, "DATA_QUALITY_REPORT_CSV", out / "data_quality_report.csv")
+    monkeypatch.setattr(site_builder, "SITE_DIR", site_dir)
+    monkeypatch.setattr(site_builder, "SITE_INDEX_HTML", site_dir / "index.html")
+    monkeypatch.setattr(
+        site_builder,
+        "JSON_OUTPUTS",
+        {
+            "school_master": root / "data/school_master.csv",
+            "calculated_rankings": out / "calculated_rankings.csv",
+            "applicant_profiles": root / "data/applicant_profiles.csv",
+            "admissions_stats": root / "data/normalized/admissions_stats.csv",
+            "partner_inputs": root / "data/manual/partner_inputs.csv",
+            "admissions_source_queue": root / "data/manual/admissions_source_queue.csv",
+            "data_quality_report": out / "data_quality_report.csv",
+            "project_subplans": root / "data/project_subplans.csv",
+        },
+    )
+    return site_dir
 
 
 def test_ranking_generation_runs(tmp_path, monkeypatch):
     write_minimal_project(tmp_path)
-    out = tmp_path / "outputs"
-
-    monkeypatch.setattr(rankings, "ROOT", tmp_path)
-    monkeypatch.setattr(rankings, "OUT", out)
-    monkeypatch.setattr(rankings, "MASTER_CSV", tmp_path / "data/school_master.csv")
-    monkeypatch.setattr(rankings, "PREFERENCES_CSV", tmp_path / "data/user_preferences.csv")
-    monkeypatch.setattr(rankings, "SCENARIO_WEIGHTS_CSV", tmp_path / "data/scenario_weights.csv")
-    monkeypatch.setattr(rankings, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    patch_ranking_paths(monkeypatch, tmp_path)
 
     output = rankings.build_rankings()
 
@@ -239,3 +301,93 @@ def test_validation_catches_exclusion_without_reason(tmp_path):
     issues = validation.validate_project(tmp_path)
 
     assert any(issue.severity == "error" and issue.field == "exclusion_reason" for issue in issues)
+
+
+def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    site_dir = patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+
+    assert output == site_dir / "index.html"
+    html_text = output.read_text()
+    assert 'id="site-data"' in html_text
+
+    embedded_match = re.search(
+        r'<script type="application/json" id="site-data">(.*?)</script>',
+        html_text,
+        re.DOTALL,
+    )
+    assert embedded_match is not None
+    embedded_payload = json.loads(unescape(embedded_match.group(1)))
+
+    master_rows = site_builder.read_csv(tmp_path / "data/school_master.csv")
+    assert embedded_payload["meta"]["active_school_count"] == len(master_rows)
+    assert all(school["school"].get("state") != "Puerto Rico" for school in embedded_payload["schools"])
+
+    required_json = [
+        "school_master.json",
+        "calculated_rankings.json",
+        "applicant_profiles.json",
+        "admissions_stats.json",
+        "partner_inputs.json",
+        "admissions_source_queue.json",
+        "data_quality_report.json",
+        "project_subplans.json",
+        "site_payload.json",
+    ]
+    for filename in required_json:
+        json.loads((site_dir / "data" / filename).read_text())
+
+
+def test_site_output_does_not_copy_private_data(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    private_file = tmp_path / "data/manual/private/secret.csv"
+    private_file.parent.mkdir(parents=True)
+    private_file.write_text("secret\nsuper_secret_value\n")
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    site_dir = patch_site_paths(monkeypatch, tmp_path)
+
+    site_builder.build_site()
+
+    generated_files = [path for path in site_dir.rglob("*") if path.is_file()]
+    assert all("private" not in path.relative_to(site_dir).parts for path in generated_files)
+    assert all("super_secret_value" not in path.read_text(errors="ignore") for path in generated_files)
+
+
+def test_upload_bundle_includes_site_and_excludes_private_data(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    out = tmp_path / "outputs"
+    site_dir = out / "site"
+    write_csv(out / "calculated_rankings.csv", ["school_id"], [{"school_id": "school_one"}])
+    write_csv(out / "data_quality_report.csv", validation.REPORT_COLUMNS, [])
+    site_dir.mkdir(parents=True)
+    (site_dir / "index.html").write_text("<!doctype html>")
+    (site_dir / "data").mkdir()
+    (site_dir / "data/site_payload.json").write_text("{}")
+    workbook_path = out / "med_school_ranker.xlsx"
+    workbook_path.write_text("workbook placeholder")
+    private_file = tmp_path / "data/private/secret.csv"
+    private_file.parent.mkdir(parents=True)
+    private_file.write_text("secret\nsuper_secret_value\n")
+
+    monkeypatch.setattr(bundle, "ROOT", tmp_path)
+    monkeypatch.setattr(bundle, "DATA", tmp_path / "data")
+    monkeypatch.setattr(bundle, "OUT", out)
+    monkeypatch.setattr(bundle, "SITE_DIR", site_dir)
+    monkeypatch.setattr(bundle, "WORKBOOK_XLSX", workbook_path)
+    monkeypatch.setattr(bundle, "UPLOAD_ZIP", tmp_path / "med-school-ranker-upload.zip")
+
+    zip_path = bundle.build_upload_zip()
+
+    with zipfile.ZipFile(zip_path) as archive:
+        names = set(archive.namelist())
+    assert "outputs/site/index.html" in names
+    assert "outputs/site/data/site_payload.json" in names
+    assert not any(name.startswith("data/private/") for name in names)
+    assert not any(name.startswith("data/manual/private/") for name in names)
