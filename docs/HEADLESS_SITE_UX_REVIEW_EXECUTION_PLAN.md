@@ -44,6 +44,9 @@ Read these as implementation context:
 - Do not implement predictive admissions probability.
 - Do not commit private profile data or private-derived outputs.
 - Prefer additive site/data outputs and reversible local interactions.
+- Required MVP first: screenshot QA, focused visual fixes, hide/restore controls, minimal dossier index/detail, and CSV export.
+- Research queue, advanced dossier editing, storage persistence, and import/writeback are follow-up unless the MVP is complete and verified.
+- Browser-local state means in-memory JavaScript state in the first pass. Do not use `localStorage` or `sessionStorage` unless a visible privacy label and clear/reset control are also implemented.
 
 ## Phase 0: Preflight
 
@@ -83,7 +86,7 @@ Tasks:
 - Apply focused UI fixes.
 - Rebuild and retake screenshots for changed views.
 
-If screenshot tooling is unavailable, stop and report the missing tool as a blocker for Phase 1 rather than pretending visual QA was completed.
+If screenshot tooling is unavailable, stop before feature implementation and report the missing tool as a blocker. A text-only DOM/HTML review is not a substitute for screenshot QA in this pass.
 
 ## Phase 2: School Visibility Controls
 
@@ -93,7 +96,7 @@ Tasks:
 - Add a restore action.
 - Add filters for visible, hidden, all, and hard-no.
 - Add a hidden-school review surface.
-- Store visibility state in browser-local memory/state.
+- Store visibility state in in-memory browser state.
 - Add CSV export for hidden/visibility decisions.
 - Keep hidden schools out of the working ranking view only when the visibility filter says so.
 - Do not delete hidden rows from payloads or generated data.
@@ -105,18 +108,20 @@ Verification:
 - Hidden school can be restored.
 - Hidden schools can be exported with reason/status.
 - Full universe remains available through `all` or hidden review mode.
+- Export includes `export_schema_version`, `exported_at`, `school_id`, `visibility_state`, and `visibility_reason`.
 
 ## Phase 3: School Dossier Profiles
 
 Tasks:
 
 - Add a school profiles/dossiers tab or route.
-- Provide an index of all schools.
+- Provide an index of all active schools, including MD and DO.
 - Open a dossier for each school.
 - Include precomputed fields from rankings, school master, admissions stats, cost, policies, and score contributions.
 - Add local editable research fields defined in `03_school_dossier_profiles.md`.
 - Add missing-data research prompts.
 - Keep precomputed facts visually distinct from user-entered research fields.
+- Keep this phase to a minimal dossier shell if time is constrained: summary, fit, key facts, missing prompts, notes/status fields, and export.
 
 Verification:
 
@@ -125,8 +130,11 @@ Verification:
 - Precomputed facts are visible and source/confidence labeled.
 - Local editable fields can be changed in browser state.
 - Dossier edits can be exported as CSV.
+- Export includes `export_schema_version`, `exported_at`, and stable `school_id`.
 
 ## Phase 4: Research Workflow and Exports
+
+This phase is follow-up unless Phases 1-3 are complete and verified.
 
 Tasks:
 
@@ -137,6 +145,7 @@ Tasks:
   - dossier edits;
   - current ranked view.
 - Ensure exports are deterministic, clearly named, and do not include private source files.
+- Do not implement import/writeback.
 
 Verification:
 

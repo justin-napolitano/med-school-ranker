@@ -41,6 +41,27 @@ The next issue is usability. The site needs a disciplined visual QA loop and an 
 - Missing dossier fields should become research prompts, not empty unexplained cells.
 - Browser-local changes should be exportable as CSV.
 - Screenshot evidence should drive UI changes; do not polish blindly.
+- Screenshot QA is required before feature implementation in this pass.
+- Browser-local state means in-memory state for the first pass; persistent browser storage requires an explicit privacy/clear-state design later.
+- MD-only applies only to the existing AAMC-band reranking selector. Dossiers and hide/restore controls should cover the full active school universe.
+
+## Required MVP
+
+The first implementation pass should complete these before expanding scope:
+
+1. Capture required screenshots and record findings.
+2. Fix high-impact visual/clarity issues identified by screenshots.
+3. Add reversible hide/restore controls and hidden-school review.
+4. Add minimal dossier index/detail for all active schools.
+5. Add CSV exports for visibility state and dossier edits.
+
+Follow-up work:
+
+- richer research queue;
+- deeper dossier editing;
+- persistent local storage;
+- import/writeback of exported edits;
+- advanced shortlist/application workflow.
 
 ## Phase Sequence
 
@@ -62,7 +83,7 @@ The next issue is usability. The site needs a disciplined visual QA loop and an 
   - hidden only;
   - hard-no;
   - shortlist/research candidates if available.
-- Store changes in browser-local state first.
+- Store changes in in-memory browser state first.
 - Export visibility changes as CSV.
 
 ### Phase 3: School Dossier Profiles
@@ -112,6 +133,14 @@ Potential browser-exported files:
 school_visibility_export.csv
 school_dossier_edits_export.csv
 selected_profile_rankings_export.csv
+```
+
+Every browser-exported CSV should include:
+
+```text
+export_schema_version
+exported_at
+school_id
 ```
 
 ## Child Plans

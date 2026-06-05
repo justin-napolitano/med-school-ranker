@@ -8,6 +8,8 @@ The goal is to make the site clearer and more usable, not to redesign blindly.
 
 ## Required Screenshots
 
+Screenshots are required for this pass. If the worker cannot capture screenshots, it should stop and report the tooling gap before implementing site features.
+
 Capture desktop and mobile screenshots for:
 
 - default route / rankings page;
@@ -57,6 +59,13 @@ Suggested columns:
 ```text
 finding_id,route,viewport,severity,status,summary,evidence_path,fix_summary,notes
 ```
+
+Severity values:
+
+- `critical`: blocks the workflow or prevents interaction.
+- `high`: confusing or broken enough to mislead review.
+- `medium`: noticeable usability issue.
+- `low`: polish issue.
 
 ## Review Criteria
 

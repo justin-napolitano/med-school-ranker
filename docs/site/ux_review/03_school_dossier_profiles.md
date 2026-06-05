@@ -2,7 +2,7 @@
 
 ## Objective
 
-Create a structured dossier for every school so applicants can review precomputed facts and fill research fields in one place.
+Create a structured dossier for every active school so applicants can review precomputed facts and fill research fields in one place.
 
 This should reduce duplicated research work and prevent applicants from compiling school notes from scratch across scattered documents.
 
@@ -10,7 +10,7 @@ This should reduce duplicated research work and prevent applicants from compilin
 
 Add a school profiles/dossiers tab or route.
 
-The index should show all schools with:
+The index should show all active schools, including MD and DO, with:
 
 - school name;
 - degree type;
@@ -24,6 +24,18 @@ The index should show all schools with:
 - open dossier action.
 
 ## Dossier Sections
+
+Minimum viable first pass:
+
+- Summary.
+- Applicant Fit.
+- Admissions Facts.
+- Cost.
+- Missing Research Prompts.
+- User Decision Fields.
+- Export local edits.
+
+Deeper curriculum/match/city editing can follow after this shell works.
 
 Each dossier should include:
 
@@ -126,6 +138,31 @@ school_dossier_edits_export.csv
 ```
 
 Export local user-entered fields and visibility state. Do not export private source files.
+
+Required export fields:
+
+```text
+export_schema_version
+exported_at
+school_id
+school_name
+research_status
+interest_level
+four_year_happiness
+location_fit
+culture_fit
+regret_index
+hard_no_flag
+hard_no_reason
+application_decision_status
+notes
+```
+
+Required export schema version:
+
+```text
+export_schema_version = school_dossier_edits_v1
+```
 
 ## Done Criteria
 

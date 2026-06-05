@@ -9,12 +9,13 @@ This solves the practical workflow problem: once a school is clearly not relevan
 ## Product Rules
 
 - Hiding is reversible.
-- Hiding is local/browser state in the first pass.
+- Hiding is in-memory browser state in the first pass.
 - Hiding is not the same as hard-no or source exclusion.
 - Hidden schools remain in the full universe.
 - Hidden decisions can be exported as CSV.
 - A hidden count should be visible.
 - Users should be able to review and restore hidden schools.
+- Persistent storage is future scope unless a privacy label and clear/reset control are implemented.
 
 ## Controls
 
@@ -40,6 +41,8 @@ Browser-local/export fields:
 ```text
 school_id
 school_name
+export_schema_version
+exported_at
 visibility_state
 visibility_reason
 hidden_at
@@ -68,6 +71,12 @@ school_visibility_export.csv
 ```
 
 The export should include every school with non-default visibility state.
+
+Required export schema version:
+
+```text
+export_schema_version = site_visibility_v1
+```
 
 ## Done Criteria
 

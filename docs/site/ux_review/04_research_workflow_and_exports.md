@@ -14,6 +14,8 @@ Recommended views:
 - Research queue.
 - Methodology/reference.
 
+For the first implementation pass, the research queue is optional follow-up. Do not delay screenshot QA, visibility controls, or minimal dossiers to build a full queue.
+
 ## Research Queue
 
 The research queue should prioritize schools based on:
@@ -49,11 +51,14 @@ Support browser-generated CSV exports:
 
 Exports should include:
 
+- `export_schema_version`;
 - generated timestamp;
 - selector/profile assumptions when relevant;
 - school IDs;
 - stable headers;
 - local browser state values.
+
+Use ISO-8601 timestamps for `exported_at`.
 
 ## Import Is Future Scope
 
