@@ -5,3 +5,4 @@ __pycache__/
 data/manual/private/
 data/private/
 data/raw/aamc/
+outputs/private/

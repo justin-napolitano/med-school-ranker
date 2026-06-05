@@ -51,6 +51,8 @@ Private/local fields may include more specific personal preferences and should s
 - Applicant-entered data is manual and private by default.
 - Commit templates and fake example profiles only.
 - Real applicant profiles live in ignored local files unless the user explicitly chooses otherwise.
+- Private-derived outputs must live under ignored `outputs/private/`.
+- Public committed builds must not include private applicant stats or private-derived score outputs.
 
 ## Implementation Steps
 
@@ -60,6 +62,7 @@ Private/local fields may include more specific personal preferences and should s
 4. Add profile-specific weight sets.
 5. Add workbook input tabs for profile fields and partner-entered manual scores.
 6. Generate rankings per profile or per selected active profile.
+7. Add a local-private scoring mode only if its outputs are ignored and excluded from the upload bundle.
 
 ## Validation Rules
 

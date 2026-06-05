@@ -7,10 +7,15 @@ CSV and XLSX decision model for ranking U.S. MD and DO medical school options wh
 Start here before expanding the seed data model:
 
 - [Executive Plan](docs/EXEC_PLAN.md)
+- [Plan Critical Review](docs/PLAN_CRITICAL_REVIEW.md)
+- [Headless Worker Runbook](docs/HEADLESS_WORKER_RUNBOOK.md)
 - [Headless Execution Plan: Phase 1](docs/HEADLESS_EXECUTION_PLAN.md)
 - [Source Data Integration Executive Plan](docs/SOURCE_DATA_INTEGRATION_PLAN.md)
 - [Headless Source Data Integration Plan: Phase 2A](docs/HEADLESS_SOURCE_DATA_INTEGRATION_PLAN.md)
+- [Headless Scoring Execution Plan: Phase 2B](docs/HEADLESS_SCORING_EXECUTION_PLAN.md)
 - [Static Review Site Executive Plan](docs/SITE_EXEC_PLAN.md)
+- [Product Site Rebuild Executive Plan](docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
+- [Headless Product Site Rebuild Execution Plan](docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
 - [Headless Site Execution Plan: Phase 1.5A](docs/HEADLESS_SITE_EXECUTION_PLAN.md)
 - [Data Architecture](docs/plans/data_architecture.md)
 - [School Universe](docs/plans/school_universe.md)
@@ -38,6 +43,16 @@ Static site page/menu/table plans:
 - [Plans Page](docs/site/plans_page.md)
 - [Tables and Filters](docs/site/tables_and_filters.md)
 - [Build and Deploy](docs/site/build_and_deploy.md)
+
+Product site rebuild plans:
+
+- [Routes and Information Architecture](docs/site/product_rebuild/01_routes_and_information_architecture.md)
+- [Rankings and List Builder](docs/site/product_rebuild/02_rankings_and_list_builder.md)
+- [School Profiles](docs/site/product_rebuild/03_school_profiles.md)
+- [Curated Lists and Scoring Lenses](docs/site/product_rebuild/04_curated_lists_and_scoring_lenses.md)
+- [Admin Separation and Publish-Safe Mode](docs/site/product_rebuild/05_admin_publish_safe.md)
+- [Visual Design and Reporting Quality](docs/site/product_rebuild/06_visual_reporting_quality.md)
+- [Product Site Critical Review](docs/site/product_rebuild/CRITICAL_REVIEW.md)
 
 ## Files
 

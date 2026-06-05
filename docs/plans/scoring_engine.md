@@ -28,6 +28,8 @@ It does not cover a trained school-specific admissions probability model. That i
 - Future score explanation columns.
 - Data quality warnings.
 
+The next executable implementation pass is [Headless Scoring Execution Plan](../HEADLESS_SCORING_EXECUTION_PLAN.md).
+
 ## Score Groups
 
 Core score groups:
@@ -55,6 +57,20 @@ Default weighting posture:
 - Component scores remain visible.
 - Missing data is excluded from weighted average and reflected in coverage.
 - Manual overrides require notes.
+- Default committed builds must use public/template applicant profiles only.
+- Private profile-derived outputs must be written only under ignored `outputs/private/`.
+
+## Deterministic Formula Defaults
+
+Phase 2B should start with these first-pass formulas:
+
+- MCAT fit: `clamp(1, 10, 7 + (applicant_mcat_total - school_mcat) / 2)`.
+- GPA fit: `clamp(1, 10, 7 + (applicant_overall_gpa - school_gpa) / 0.08)`.
+- OOS/residency fit: same-state schools score 10; OOS-accepting schools score 6; explicit OOS-unfriendly schools score 1; unknown policy scores 4 with a warning.
+- Cost score: lower applicant-relevant COA or tuition receives a higher percentile-derived 1-10 score.
+- Partner fit: project partner-entered location, culture, four-year happiness, and regret scores directly; do not infer them.
+
+These are fit scores, not acceptance probabilities.
 
 ## Implementation Steps
 
@@ -65,6 +81,7 @@ Default weighting posture:
 5. Add scoring explanation fields.
 6. Add data completeness penalties configurable by scenario.
 7. Add tests for missing data behavior and tie ranking.
+8. Keep predictive admissions probability out of scope until the future model plan is activated.
 
 ## Validation Rules
 
@@ -76,10 +93,9 @@ Default weighting posture:
 
 ## Open Questions
 
-- Should data completeness be a hard warning, a score penalty, or both?
-- Should overall score include regret index by default?
-- Should there be a minimum coverage threshold for ranking?
-- Should the spreadsheet include dynamic formulas for partner edits, or should it trigger a local rebuild workflow?
+- Should data completeness become a numeric penalty later, or remain warning/filter-only after Phase 2B?
+- Should private/local outputs get a separate static site build mode after deterministic scoring works?
+- Should workbook profile switching happen inside Google Sheets, or should local builds generate per-profile outputs?
 
 ## Definition of Done
 

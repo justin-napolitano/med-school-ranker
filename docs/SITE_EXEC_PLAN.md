@@ -1,5 +1,7 @@
 # Static Review Site Executive Plan
 
+Note: this plan documents the Phase 1.5 static-site baseline. The current product UX rebuild decisions live in [Product Site Rebuild Executive Plan](SITE_PRODUCT_REBUILD_EXEC_PLAN.md), which shifts the default experience from Dashboard to Rankings and moves admin/source/build-health workflows under admin routes.
+
 ## Objective
 
 Build a static, GitHub Pages-ready review website for fast browsing, filtering, and comparing medical schools from the same CSV source of truth that powers the workbook.

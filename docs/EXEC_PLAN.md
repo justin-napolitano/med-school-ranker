@@ -86,6 +86,8 @@ The project is divided into subplans:
 
 - [Data Architecture](plans/data_architecture.md)
 - [Source Data Integration](SOURCE_DATA_INTEGRATION_PLAN.md)
+- [Plan Critical Review](PLAN_CRITICAL_REVIEW.md)
+- [Headless Worker Runbook](HEADLESS_WORKER_RUNBOOK.md)
 - [School Universe](plans/school_universe.md)
 - [Applicant Profiles](plans/applicant_profiles.md)
 - [Admissions Stats](plans/admissions_stats.md)
@@ -96,9 +98,12 @@ The project is divided into subplans:
 - [Residency and Match](plans/residency_and_match.md)
 - [Hidden Curriculum](plans/hidden_curriculum.md)
 - [Scoring Engine](plans/scoring_engine.md)
+- [Headless Scoring Execution Plan](HEADLESS_SCORING_EXECUTION_PLAN.md)
 - [Workbook and Export](plans/workbook_and_export.md)
 - [Validation and QA](plans/validation_and_qa.md)
 - [Governance](plans/governance.md)
+- [Product Site Rebuild Executive Plan](SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
+- [Headless Product Site Rebuild Execution Plan](HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
 
 ## Milestones
 
@@ -150,12 +155,19 @@ The project is divided into subplans:
 - Add per-school explanation fields showing top positive and negative drivers.
 - Add data completeness penalties and warnings.
 
+Phase 2B execution details live in [Headless Scoring Execution Plan](HEADLESS_SCORING_EXECUTION_PLAN.md). This phase is deterministic scoring only. It does not include school-specific predictive admissions probability.
+
 ### Milestone 8: Review-Ready Workbook
 
 - Add partner-facing input tabs for applicant profile, weights, hard filters, and manual scores.
 - Add data quality, assumptions, changelog, and source summary tabs.
 - Improve formatting and filters.
 - Make the workbook useful for collaboration without hiding the underlying data model.
+
+### Milestone 9: Product-Grade Review Site
+
+- Rebuild the static site around applicant-facing rankings, curated lists, school profiles, scoring lenses, and publish-safe mode.
+- Keep this downstream of Phase 2B scoring so the site is not polished around placeholder rank fields.
 
 ## Risk Register
 

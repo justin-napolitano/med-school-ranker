@@ -24,6 +24,9 @@ School-specific predictive probability is explicitly out of current scope. The f
 - Component fit scores in `School Master`
 - Dynamic tiers such as Dream, Reach, Target, and Likely.
 - Explanation fields for admissions risk.
+- Applicant AAMC national MCAT/GPA band context.
+
+The next deterministic implementation pass is [Headless Scoring Execution Plan](../HEADLESS_SCORING_EXECUTION_PLAN.md).
 
 ## Schema
 
@@ -45,6 +48,34 @@ Recommended fields:
 - OOS friendliness should be source-based where possible.
 - Mission, research, and clinical fit can be manual but must remain explicit human judgment.
 - Overrides require notes.
+- AAMC national acceptance grid cells are profile context, not school-specific probability.
+
+## First-Pass Deterministic Formulas
+
+MCAT fit:
+
+```text
+delta = applicant_mcat_total - school_mcat
+admissions_mcat_fit_score = clamp(1, 10, 7 + delta / 2)
+```
+
+GPA fit:
+
+```text
+delta = applicant_overall_gpa - school_gpa
+admissions_gpa_fit_score = clamp(1, 10, 7 + delta / 0.08)
+```
+
+OOS/residency fit:
+
+```text
+same state = 10
+accepts OOS = 6
+explicitly does not accept OOS = 1
+unknown = 4 with warning
+```
+
+These formulas intentionally produce fit scores, not probabilities.
 
 ## Implementation Steps
 
@@ -63,9 +94,9 @@ Recommended fields:
 
 ## Open Questions
 
-- Should admissions tiers be based on 1-10 fit scores or broad risk bands?
-- How should mission-heavy public schools be handled?
-- Should the system recommend minimum numbers of likely, target, reach, and dream applications?
+- Should the 25-school application basket target a fixed Dream/Reach/Target/Likely mix or adapt to actual score distribution?
+- How should mission-heavy public schools be handled once reliable mission/OOS details are normalized?
+- Should OOS friendliness eventually use OOS interview/matriculant percentages if publicly available?
 
 ## Current Defaults
 

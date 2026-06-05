@@ -14,7 +14,7 @@
     "school_master_rows": 233,
     "source_review_queue_rows": 1034
   },
-  "generated_at": "2026-06-05T06:21:20+00:00",
+  "generated_at": "2026-06-05T06:36:31+00:00",
   "manual_override_count": 0,
   "mcat_gpa": {
     "agreement_counts": {
@@ -48,9 +48,9 @@
   "source_diff_file_count": 6,
   "source_plans": [
     {
-      "current_decision_summary": "Normalize the new source drop into admissions stats, cost/debt, policies, review queue, workbook, and site without hiding uncertainty.",
+      "current_decision_summary": "Source integration is implemented with normalized admissions stats, cost/debt, policies, review queue, workbook, and site outputs.",
       "doc_path": "docs/SOURCE_DATA_INTEGRATION_PLAN.md",
-      "next_action": "Review source integration policy and execute Phase 2A headless plan.",
+      "next_action": "Keep as source integration policy.",
       "owner": "user",
       "phase": "phase_2",
       "plan_id": "source_data_integration_exec",
@@ -59,12 +59,12 @@
       "priority": "highest",
       "reviewer": "tbd",
       "source_of_truth": "markdown",
-      "status": "seeded"
+      "status": "implemented"
     },
     {
-      "current_decision_summary": "Use existing source tables only; no new downloads; populate safe normalized rows; queue conflicts and ambiguous rows.",
+      "current_decision_summary": "Existing source tables are integrated; safe rows populate normalized outputs and conflicts remain queued/reviewable.",
       "doc_path": "docs/HEADLESS_SOURCE_DATA_INTEGRATION_PLAN.md",
-      "next_action": "Run a headless Codex worker to implement source integration.",
+      "next_action": "Keep as historical execution record.",
       "owner": "user",
       "phase": "phase_2",
       "plan_id": "headless_source_phase_2a",
@@ -73,7 +73,7 @@
       "priority": "highest",
       "reviewer": "codex",
       "source_of_truth": "markdown",
-      "status": "ready"
+      "status": "completed"
     },
     {
       "current_decision_summary": "GPA/MCAT source tables exist but are provisional; conflicts must be surfaced before values drive ranking.",

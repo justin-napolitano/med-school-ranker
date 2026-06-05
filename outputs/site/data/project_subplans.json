@@ -2,7 +2,7 @@
   {
     "current_decision_summary": "Project supports multiple applicant profiles; excludes Puerto Rico; targets about 25 applications; public sources only where permitted.",
     "doc_path": "docs/EXEC_PLAN.md",
-    "next_action": "Review and approve project-level decisions.",
+    "next_action": "Use this as the governing scope document.",
     "owner": "user",
     "phase": "planning",
     "plan_id": "exec_plan",
@@ -11,12 +11,40 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "seeded"
+    "status": "active"
   },
   {
-    "current_decision_summary": "Phase 1 infrastructure only: templates, validation, data quality report, workbook tabs, tests; no GPA/MCAT scraping.",
+    "current_decision_summary": "Critical review says the project is ready for deterministic scoring, but not predictive probability or product-site polish first.",
+    "doc_path": "docs/PLAN_CRITICAL_REVIEW.md",
+    "next_action": "Use review findings to sequence Phase 2B before product-site rebuild.",
+    "owner": "user",
+    "phase": "planning",
+    "plan_id": "plan_critical_review",
+    "plan_name": "Plan Critical Review",
+    "plan_type": "review",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "completed"
+  },
+  {
+    "current_decision_summary": "Defines clean-start checks, privacy rules, headless prompt, and required verification for autonomous execution.",
+    "doc_path": "docs/HEADLESS_WORKER_RUNBOOK.md",
+    "next_action": "Give this to any headless worker before the phase-specific execution plan.",
+    "owner": "user",
+    "phase": "all",
+    "plan_id": "headless_worker_runbook",
+    "plan_name": "Headless Worker Runbook",
+    "plan_type": "execution_control",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "ready"
+  },
+  {
+    "current_decision_summary": "Phase 1 infrastructure, templates, validation, data quality report, workbook tabs, tests, and private-path guardrails are implemented.",
     "doc_path": "docs/HEADLESS_EXECUTION_PLAN.md",
-    "next_action": "Run a headless Codex worker from a clean commit to execute Phase 1.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_1",
     "plan_id": "headless_phase_1",
@@ -25,12 +53,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "completed"
   },
   {
-    "current_decision_summary": "Static generated local review website first; Dashboard opens first; Rankings is the priority table; GitHub Pages and comparison are later.",
+    "current_decision_summary": "Static generated local review website exists; product-site rebuild is separately drafted for later.",
     "doc_path": "docs/SITE_EXEC_PLAN.md",
-    "next_action": "Review and approve static site scope before implementation.",
+    "next_action": "Keep as baseline site scope record.",
     "owner": "user",
     "phase": "phase_1_5",
     "plan_id": "site_exec_plan",
@@ -39,12 +67,12 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "seeded"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Implement local static site with embedded data, generated JSON, Dashboard default, Rankings priority, no scraping, no deployment.",
+    "current_decision_summary": "Local static site with embedded data, generated JSON, Dashboard default, and Rankings table is implemented.",
     "doc_path": "docs/HEADLESS_SITE_EXECUTION_PLAN.md",
-    "next_action": "Run a headless Codex worker from a clean commit to execute Phase 1.5A.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_1_5",
     "plan_id": "headless_site_phase_1_5a",
@@ -53,12 +81,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "completed"
   },
   {
-    "current_decision_summary": "Normalize the new source drop into admissions stats, cost/debt, policies, review queue, workbook, and site without hiding uncertainty.",
+    "current_decision_summary": "Source integration is implemented with normalized admissions stats, cost/debt, policies, review queue, workbook, and site outputs.",
     "doc_path": "docs/SOURCE_DATA_INTEGRATION_PLAN.md",
-    "next_action": "Review source integration policy and execute Phase 2A headless plan.",
+    "next_action": "Keep as source integration policy.",
     "owner": "user",
     "phase": "phase_2",
     "plan_id": "source_data_integration_exec",
@@ -67,16 +95,30 @@
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "seeded"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Use existing source tables only; no new downloads; populate safe normalized rows; queue conflicts and ambiguous rows.",
+    "current_decision_summary": "Existing source tables are integrated; safe rows populate normalized outputs and conflicts remain queued/reviewable.",
     "doc_path": "docs/HEADLESS_SOURCE_DATA_INTEGRATION_PLAN.md",
-    "next_action": "Run a headless Codex worker to implement source integration.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2",
     "plan_id": "headless_source_phase_2a",
     "plan_name": "Headless Source Data Integration Phase 2A",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "completed"
+  },
+  {
+    "current_decision_summary": "Implement deterministic profile-aware scoring from existing normalized data, applicant profile values, partner inputs, scenario weights, and source quality fields.",
+    "doc_path": "docs/HEADLESS_SCORING_EXECUTION_PLAN.md",
+    "next_action": "Run the next headless worker with docs/HEADLESS_WORKER_RUNBOOK.md and this plan.",
+    "owner": "user",
+    "phase": "phase_2b",
+    "plan_id": "headless_scoring_phase_2b",
+    "plan_name": "Headless Scoring Execution Plan Phase 2B",
     "plan_type": "execution",
     "priority": "highest",
     "reviewer": "codex",
@@ -280,18 +322,18 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "MCAT/GPA fit drives the first narrowing pass; mission and clinical fit remain explicit manual judgments.",
+    "current_decision_summary": "MCAT/GPA fit drives the first narrowing pass; AAMC national grid is context, not school-specific probability.",
     "doc_path": "docs/plans/admissions_probability.md",
-    "next_action": "Define MCAT/GPA fit formulas and dynamic tier rules.",
+    "next_action": "Implement deterministic fit formulas in Phase 2B.",
     "owner": "user",
-    "phase": "phase_2",
+    "phase": "phase_2b",
     "plan_id": "admissions_probability",
     "plan_name": "Admissions Probability",
     "plan_type": "subplan",
     "priority": "high",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "seeded"
+    "status": "ready"
   },
   {
     "current_decision_summary": "School-specific predictive probability is intentionally out of current scope until calibrated training data, model governance, and privacy controls exist.",
@@ -364,18 +406,18 @@
     "status": "seeded"
   },
   {
-    "current_decision_summary": "Ranking must support multiple profiles, hard filters, scenario weights, and coverage warnings.",
+    "current_decision_summary": "Ranking must support deterministic profile-aware scores, hard filters, scenario weights, coverage warnings, and private-output safety.",
     "doc_path": "docs/plans/scoring_engine.md",
-    "next_action": "Refactor ranking engine for profile-specific outputs.",
+    "next_action": "Execute Phase 2B headless scoring plan.",
     "owner": "user",
-    "phase": "phase_2",
+    "phase": "phase_2b",
     "plan_id": "scoring_engine",
     "plan_name": "Scoring Engine",
     "plan_type": "subplan",
     "priority": "highest",
     "reviewer": "tbd",
     "source_of_truth": "markdown",
-    "status": "seeded"
+    "status": "ready"
   },
   {
     "current_decision_summary": "Workbook is both report and simple partner-facing input surface.",
@@ -418,5 +460,131 @@
     "reviewer": "tbd",
     "source_of_truth": "markdown",
     "status": "seeded"
+  },
+  {
+    "current_decision_summary": "Rebuild the static site around applicant-facing rankings, curated lists, school profiles, scoring lenses, and separated admin routes.",
+    "doc_path": "docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md",
+    "next_action": "Execute after Phase 2B scoring creates real applicant-fit fields.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_rebuild_exec",
+    "plan_name": "Product Site Rebuild Executive Plan",
+    "plan_type": "executive",
+    "priority": "highest",
+    "reviewer": "tbd",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Executes the product-site rebuild loop when explicitly selected; route/admin scaffolding can run early, scoring-lens UX should wait for Phase 2B fields.",
+    "doc_path": "docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md",
+    "next_action": "Use after scoring unless the user explicitly asks for route shell/admin separation first.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "headless_product_site_rebuild",
+    "plan_name": "Headless Product Site Rebuild Execution Plan",
+    "plan_type": "execution",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Make rankings the default route, add school/list routes, and move dashboard/status/admin workflows under admin.",
+    "doc_path": "docs/site/product_rebuild/01_routes_and_information_architecture.md",
+    "next_action": "Implement after Phase 2B scoring output fields are available.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_routes_ia",
+    "plan_name": "Product Site Routes and Information Architecture",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Turn rankings into the main value surface with filters, scoring lenses, reason chips, shortlist controls, and compare entry points.",
+    "doc_path": "docs/site/product_rebuild/02_rankings_and_list_builder.md",
+    "next_action": "Implement after deterministic score fields and reason chips exist.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_rankings_list_builder",
+    "plan_name": "Product Site Rankings and List Builder",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Create polished source-backed school profile routes with applicant fit, cost, requirements, confidence, and risk flags.",
+    "doc_path": "docs/site/product_rebuild/03_school_profiles.md",
+    "next_action": "Build after scoring payload exposes applicant-fit fields.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_school_profiles",
+    "plan_name": "Product Site School Profiles",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Create curated lists such as best cities, culture fit, public, private, low cost, and admissions realism that can be applied as scoring lenses.",
+    "doc_path": "docs/site/product_rebuild/04_curated_lists_and_scoring_lenses.md",
+    "next_action": "Seed after scoring profiles and component fields are stable.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_curated_lists",
+    "plan_name": "Product Site Curated Lists and Scoring Lenses",
+    "plan_type": "execution",
+    "priority": "highest",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Separate admin/source/build-health routes and add publish-safe mode that removes private/admin payloads rather than hiding them.",
+    "doc_path": "docs/site/product_rebuild/05_admin_publish_safe.md",
+    "next_action": "Implement after private/public scoring output paths are settled.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_admin_publish_safe",
+    "plan_name": "Product Site Admin Separation and Publish-Safe Mode",
+    "plan_type": "execution",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Raise the site to a polished reporting-product bar with strong typography, tables, profiles, badges, source confidence, and responsive QA.",
+    "doc_path": "docs/site/product_rebuild/06_visual_reporting_quality.md",
+    "next_action": "Polish after scoring and route structure are stable.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_visual_quality",
+    "plan_name": "Product Site Visual and Reporting Quality",
+    "plan_type": "execution",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "drafted_after_scoring"
+  },
+  {
+    "current_decision_summary": "Critical review of whether the product-site rebuild plans can be executed independently by a headless worker.",
+    "doc_path": "docs/site/product_rebuild/CRITICAL_REVIEW.md",
+    "next_action": "Keep as downstream review context after Phase 2B scoring.",
+    "owner": "user",
+    "phase": "phase_1_6",
+    "plan_id": "site_product_critical_review",
+    "plan_name": "Product Site Critical Review",
+    "plan_type": "review",
+    "priority": "high",
+    "reviewer": "codex",
+    "source_of_truth": "markdown",
+    "status": "reviewed_after_scoring"
   }
 ]
