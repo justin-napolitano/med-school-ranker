@@ -1,0 +1,754 @@
+[
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "Less than 486",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "485"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "486-489",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "487.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "490-493",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "491.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "494-497",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "495.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "498-501",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "499.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "502-505",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "503.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "506-509",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "507.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "510-513",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "511.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "514-517",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "515.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "Greater than 517",
+    "methodology_area": "aamc_mcat_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "520"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "Greater than 3.79",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "3.89"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "3.60-3.79",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "3.7"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "3.40-3.59",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "3.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "3.20-3.39",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "3.29"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "3.00-3.19",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "3.09"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "2.80-2.99",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2.9"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "2.60-2.79",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2.7"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "2.40-2.59",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2.5"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "2.20-2.39",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2.29"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "2.00-2.19",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2.09"
+  },
+  {
+    "display_label": "Selector midpoint",
+    "formula_reference": "band midpoint",
+    "input_band_or_condition": "Less than 2.00",
+    "methodology_area": "aamc_gpa_selector",
+    "notes": "Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.",
+    "score": "2"
+  },
+  {
+    "display_label": "far below",
+    "formula_reference": "clamp(1, 10, 7 + delta / 2)",
+    "input_band_or_condition": "applicant MCAT delta -8",
+    "methodology_area": "mcat_fit",
+    "notes": "Applicant equal to the selected school MCAT average scores about 7.",
+    "score": "3.0"
+  },
+  {
+    "display_label": "below average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 2)",
+    "input_band_or_condition": "applicant MCAT delta -4",
+    "methodology_area": "mcat_fit",
+    "notes": "Applicant equal to the selected school MCAT average scores about 7.",
+    "score": "5.0"
+  },
+  {
+    "display_label": "at school average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 2)",
+    "input_band_or_condition": "applicant MCAT delta +0",
+    "methodology_area": "mcat_fit",
+    "notes": "Applicant equal to the selected school MCAT average scores about 7.",
+    "score": "7.0"
+  },
+  {
+    "display_label": "above average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 2)",
+    "input_band_or_condition": "applicant MCAT delta +4",
+    "methodology_area": "mcat_fit",
+    "notes": "Applicant equal to the selected school MCAT average scores about 7.",
+    "score": "9.0"
+  },
+  {
+    "display_label": "strong fit",
+    "formula_reference": "clamp(1, 10, 7 + delta / 2)",
+    "input_band_or_condition": "applicant MCAT delta +6",
+    "methodology_area": "mcat_fit",
+    "notes": "Applicant equal to the selected school MCAT average scores about 7.",
+    "score": "10.0"
+  },
+  {
+    "display_label": "far below",
+    "formula_reference": "clamp(1, 10, 7 + delta / 0.08)",
+    "input_band_or_condition": "applicant GPA delta -0.32",
+    "methodology_area": "gpa_fit",
+    "notes": "Applicant equal to the selected school GPA average scores about 7.",
+    "score": "3.0"
+  },
+  {
+    "display_label": "below average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 0.08)",
+    "input_band_or_condition": "applicant GPA delta -0.16",
+    "methodology_area": "gpa_fit",
+    "notes": "Applicant equal to the selected school GPA average scores about 7.",
+    "score": "5.0"
+  },
+  {
+    "display_label": "at school average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 0.08)",
+    "input_band_or_condition": "applicant GPA delta +0.00",
+    "methodology_area": "gpa_fit",
+    "notes": "Applicant equal to the selected school GPA average scores about 7.",
+    "score": "7.0"
+  },
+  {
+    "display_label": "above average",
+    "formula_reference": "clamp(1, 10, 7 + delta / 0.08)",
+    "input_band_or_condition": "applicant GPA delta +0.16",
+    "methodology_area": "gpa_fit",
+    "notes": "Applicant equal to the selected school GPA average scores about 7.",
+    "score": "9.0"
+  },
+  {
+    "display_label": "strong fit",
+    "formula_reference": "clamp(1, 10, 7 + delta / 0.08)",
+    "input_band_or_condition": "applicant GPA delta +0.24",
+    "methodology_area": "gpa_fit",
+    "notes": "Applicant equal to the selected school GPA average scores about 7.",
+    "score": "10.0"
+  },
+  {
+    "display_label": "in-state advantage",
+    "formula_reference": "residency and OOS policy rule",
+    "input_band_or_condition": "same_state",
+    "methodology_area": "oos_fit",
+    "notes": "Applicant state matches school state.",
+    "score": "10"
+  },
+  {
+    "display_label": "OOS possible",
+    "formula_reference": "residency and OOS policy rule",
+    "input_band_or_condition": "oos_policy_accepts",
+    "methodology_area": "oos_fit",
+    "notes": "Available school fields indicate OOS applicants are accepted or policy text exists.",
+    "score": "6"
+  },
+  {
+    "display_label": "OOS not viable",
+    "formula_reference": "residency and OOS policy rule",
+    "input_band_or_condition": "oos_policy_rejects",
+    "methodology_area": "oos_fit",
+    "notes": "Available school fields indicate OOS applicants are not accepted.",
+    "score": "1"
+  },
+  {
+    "display_label": "unknown OOS policy",
+    "formula_reference": "residency and OOS policy rule",
+    "input_band_or_condition": "oos_policy_unknown",
+    "methodology_area": "oos_fit",
+    "notes": "Missing policy lowers confidence and uses a conservative placeholder score.",
+    "score": "4"
+  },
+  {
+    "display_label": "lowest cost",
+    "formula_reference": "10 - 9 * percentile_rank",
+    "input_band_or_condition": "lowest adjusted cost basis among available schools",
+    "methodology_area": "cost_fit",
+    "notes": "Cost scoring is percentile-based within available cost-basis values.",
+    "score": "10"
+  },
+  {
+    "display_label": "highest cost",
+    "formula_reference": "10 - 9 * percentile_rank",
+    "input_band_or_condition": "highest adjusted cost basis among available schools",
+    "methodology_area": "cost_fit",
+    "notes": "Missing costs are excluded from score math and lower coverage.",
+    "score": "1"
+  },
+  {
+    "display_label": "high",
+    "formula_reference": "coverage threshold",
+    "input_band_or_condition": "coverage >= 80%",
+    "methodology_area": "rank_confidence",
+    "notes": "Missing data affects confidence, not the numeric score.",
+    "score": ""
+  },
+  {
+    "display_label": "medium",
+    "formula_reference": "coverage threshold",
+    "input_band_or_condition": "coverage 60-79%",
+    "methodology_area": "rank_confidence",
+    "notes": "Missing data affects confidence, not the numeric score.",
+    "score": ""
+  },
+  {
+    "display_label": "partial",
+    "formula_reference": "coverage threshold",
+    "input_band_or_condition": "coverage 40-59%",
+    "methodology_area": "rank_confidence",
+    "notes": "Missing data affects confidence, not the numeric score.",
+    "score": ""
+  },
+  {
+    "display_label": "provisional",
+    "formula_reference": "coverage threshold",
+    "input_band_or_condition": "coverage < 40%",
+    "methodology_area": "rank_confidence",
+    "notes": "Missing data affects confidence, not the numeric score.",
+    "score": ""
+  },
+  {
+    "display_label": "excluded",
+    "formula_reference": "coverage threshold",
+    "input_band_or_condition": "hard-no or manual exclusion",
+    "methodology_area": "rank_confidence",
+    "notes": "Missing data affects confidence, not the numeric score.",
+    "score": ""
+  },
+  {
+    "display_label": "exceptional",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "exceptional fit; actively excited",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "10"
+  },
+  {
+    "display_label": "strong",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "strong fit; clear positive",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "8-9"
+  },
+  {
+    "display_label": "acceptable",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "acceptable or mildly positive",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "6-7"
+  },
+  {
+    "display_label": "neutral",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "neutral or uncertain",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "5"
+  },
+  {
+    "display_label": "concern",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "concern",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "3-4"
+  },
+  {
+    "display_label": "serious concern",
+    "formula_reference": "manual dropdown rubric",
+    "input_band_or_condition": "serious concern",
+    "methodology_area": "subjective_rubric",
+    "notes": "Controlled 1-10 rubric for personal fit fields.",
+    "score": "1-2"
+  },
+  {
+    "display_label": "Mcat Fit",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_mcat_fit_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "Gpa Fit",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_gpa_fit_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Oos Friendliness",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_oos_friendliness_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "Mission Fit",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_mission_fit_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Research Fit",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_research_fit_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Clinical Fit",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Admissions Score: admissions_clinical_fit_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Prestige",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_prestige_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Cost",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_cost_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "Location",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_location_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Four Year Happiness",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: four_year_happiness_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Match Outcomes",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_match_outcomes_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Research",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_research_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Culture",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_culture_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Curriculum",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Attendance Score: attendance_curriculum_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "5"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Overall School Value: admissions_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "45"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Overall School Value: attendance_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "45"
+  },
+  {
+    "display_label": "Regret Index",
+    "formula_reference": "data/user_preferences.csv",
+    "input_band_or_condition": "Overall School Value: regret_index_score",
+    "methodology_area": "preference_weight",
+    "notes": "Fixed public/template scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Balanced: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "35"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Balanced: attendance_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "45"
+  },
+  {
+    "display_label": "Regret Index",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Balanced: regret_index_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Data Completeness",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Balanced: data_completeness_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Prestige",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Prestige Maximizer: attendance_prestige_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "35"
+  },
+  {
+    "display_label": "Match Outcomes",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Prestige Maximizer: attendance_match_outcomes_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "National Mobility",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Prestige Maximizer: national_mobility_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "Specialty Optionality",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Prestige Maximizer: specialty_optionality_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Prestige Maximizer: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Four Year Happiness",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: four_year_happiness_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "30"
+  },
+  {
+    "display_label": "Location",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: attendance_location_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Culture",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: attendance_culture_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Cost Of Living",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: cost_of_living_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Family Access",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: family_access_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Lifestyle Maximizer: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Debt Burden",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Financial Maximizer: debt_burden_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "35"
+  },
+  {
+    "display_label": "Cost",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Financial Maximizer: attendance_cost_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "Cost Of Living",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Financial Maximizer: cost_of_living_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Financial Maximizer: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "Residency Goal Alignment",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Specialty Optionality: residency_goal_alignment_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "Specialty Optionality",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Specialty Optionality: specialty_optionality_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "National Mobility",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Specialty Optionality: national_mobility_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Match Outcomes",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Specialty Optionality: attendance_match_outcomes_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "20"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Specialty Optionality: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "10"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Admissions Realist: admissions_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "60"
+  },
+  {
+    "display_label": "Score",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Admissions Realist: attendance_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "25"
+  },
+  {
+    "display_label": "Regret Index",
+    "formula_reference": "data/scenario_weights.csv",
+    "input_band_or_condition": "Admissions Realist: regret_index_score",
+    "methodology_area": "scenario_weight",
+    "notes": "Fixed scenario scoring weight.",
+    "score": "15"
+  },
+  {
+    "display_label": "local/private-derived",
+    "formula_reference": "privacy rule",
+    "input_band_or_condition": "selected-profile ranking",
+    "methodology_area": "privacy",
+    "notes": "Any ranking generated from a real or selected applicant profile is treated as local/private-derived because ordering reveals fit.",
+    "score": ""
+  },
+  {
+    "display_label": "national aggregate MD context",
+    "formula_reference": "AAMC reference grid",
+    "input_band_or_condition": "MCAT/GPA grid",
+    "methodology_area": "aamc_caveat",
+    "notes": "AAMC grid values are national aggregate MD applicant context, not school-specific acceptance probability.",
+    "score": ""
+  }
+]

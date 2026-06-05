@@ -28,8 +28,12 @@ from med_school_ranker.paths import (
     MASTER_CSV,
     OUT,
     PARTNER_INPUTS_CSV,
+    PREFERENCES_CSV,
     RANKINGS_CSV,
     ROOT,
+    SCENARIO_WEIGHTS_CSV,
+    SCORE_CONTRIBUTIONS_CSV,
+    SCORING_METHODOLOGY_CSV,
     SITE_DIR,
     SITE_INDEX_HTML,
     SOURCE_INTEGRATION_REPORT_CSV,
@@ -42,6 +46,8 @@ from med_school_ranker.paths import (
 JSON_OUTPUTS = {
     "school_master": MASTER_CSV,
     "calculated_rankings": RANKINGS_CSV,
+    "scoring_methodology": SCORING_METHODOLOGY_CSV,
+    "score_contributions": SCORE_CONTRIBUTIONS_CSV,
     "applicant_profiles": APPLICANT_PROFILES_CSV,
     "aamc_mcat_gpa_grid": AAMC_MCAT_GPA_GRID_CSV,
     "admissions_stats": ADMISSIONS_STATS_CSV,
@@ -90,6 +96,8 @@ ADMIN_ROUTES = [
 PRODUCT_PUBLIC_JSON_KEYS = {
     "school_master",
     "calculated_rankings",
+    "scoring_methodology",
+    "score_contributions",
     "aamc_mcat_gpa_grid",
     "admissions_stats",
     "cost_and_debt",
@@ -316,6 +324,17 @@ def write_json(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
 
 
+def grouped_weights(rows: list[dict[str, str]], group_field: str) -> dict[str, list[dict[str, str]]]:
+    grouped: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in rows:
+        group = row.get(group_field, "").strip()
+        column = row.get("column_name", "").strip()
+        weight = row.get("weight", "").strip()
+        if group and column and weight:
+            grouped[group].append({"column_name": column, "weight": weight})
+    return dict(grouped)
+
+
 def is_truthy(value: str | None) -> bool:
     return str(value or "").strip().lower() in TRUTHY
 
@@ -424,6 +443,8 @@ def payload_groups(site_mode: str) -> dict[str, list[str]]:
             "school_profiles",
             "school_master",
             "calculated_rankings",
+            "scoring_methodology",
+            "score_contributions",
             "curated_lists",
             "aamc_mcat_gpa_grid",
             "admissions_stats",
@@ -692,6 +713,10 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     publish_safe = site_mode == SITE_MODE_PUBLISH_SAFE
     school_master_raw = read_csv(MASTER_CSV)
     rankings = read_csv(RANKINGS_CSV)
+    scoring_methodology = read_csv(SCORING_METHODOLOGY_CSV)
+    score_contributions = read_csv(SCORE_CONTRIBUTIONS_CSV)
+    preference_weights = read_csv(PREFERENCES_CSV)
+    scenario_weights = read_csv(SCENARIO_WEIGHTS_CSV)
     applicant_profiles = read_csv(APPLICANT_PROFILES_CSV)
     admissions_stats = read_csv(ADMISSIONS_STATS_CSV)
     aamc_mcat_gpa_grid = read_csv(AAMC_MCAT_GPA_GRID_CSV)
@@ -790,6 +815,8 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
             "cost_data_present": "yes" if cost_row else "no",
             "missing_score_status": "missing" if ranking_row.get("missing_score_inputs", "").strip() else "complete",
             "score_warning_status": "warning" if ranking_row.get("score_warnings", "").strip() else "clear",
+            "rank_confidence": ranking_row.get("rank_confidence", "").strip() or "missing",
+            "rank_band": ranking_row.get("rank_band", "").strip() or "missing",
             "admissions_policy_count": len(policy_rows),
             "letter_requirement_count": len(letter_rows),
         }
@@ -902,6 +929,13 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
         "school_profiles": school_profiles,
         "school_master": [public_row(row) for row in school_master] if publish_safe else school_master,
         "calculated_rankings": [public_row(row) for row in rankings] if publish_safe else rankings,
+        "scoring_methodology": [public_row(row) for row in scoring_methodology] if publish_safe else scoring_methodology,
+        "score_contributions": [public_row(row) for row in score_contributions] if publish_safe else score_contributions,
+        "scoring_config": {
+            "weight_basis": "present_components_only",
+            "preference_weights_by_group": grouped_weights(preference_weights, "score_group"),
+            "scenario_weights_by_scenario": grouped_weights(scenario_weights, "scenario"),
+        },
         "curated_lists": curated_lists,
         "aamc_mcat_gpa_grid": [public_row(row) for row in aamc_mcat_gpa_grid] if publish_safe else aamc_mcat_gpa_grid,
         "admissions_stats": [public_row(row) for row in admissions_stats] if publish_safe else admissions_stats,
@@ -1062,6 +1096,8 @@ main { padding: 18px; }
 }
 .metric strong { display: block; font-size: 24px; color: var(--header); }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; align-items: end; }
+.selector-panel { margin: 0 0 14px; }
+.selector-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
 table { width: 100%; border-collapse: collapse; min-width: 900px; }
 th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; font-size: 13px; }
@@ -1099,10 +1135,21 @@ let filters = {
   sources: {sourceMissing: ''},
   quality: {severity: ''},
 };
+let selectorState = {
+  mcatBand: '',
+  gpaBand: '',
+  applicantState: '',
+};
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
+const truthy = (value) => ['1', 'true', 't', 'yes', 'y'].includes(String(value || '').trim().toLowerCase());
+const parseScore = (value) => {
+  const number = Number(String(value ?? '').replace(/[$,%]/g, '').replace(/,/g, '').trim());
+  return Number.isFinite(number) ? number : null;
+};
+const clamp = (value, lower=1, upper=10) => Math.max(lower, Math.min(upper, value));
 const routeHash = (path) => path.startsWith('#') ? path : `#${path}`;
 const routePath = (hash) => {
   const cleaned = String(hash || '').replace(/^#/, '') || '/rankings';
@@ -1170,6 +1217,164 @@ function table(headers, tableRows, key) {
 
 function optionTags(values, selected) {
   return values.map(value => `<option value="${value}" ${value === selected ? 'selected' : ''}>${value}</option>`).join('');
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+function bandMidpoint(label, kind) {
+  const text = String(label || '').trim();
+  if (!text) return null;
+  if (text.startsWith('Greater than')) {
+    const value = parseScore(text.replace('Greater than', ''));
+    if (value === null) return null;
+    return kind === 'gpa' ? Math.min(4, value + 0.10) : value + 2;
+  }
+  if (text.startsWith('Less than')) {
+    const value = parseScore(text.replace('Less than', ''));
+    if (value === null) return null;
+    return kind === 'gpa' ? Math.max(0, value - 0.05) : value - 1;
+  }
+  const parts = text.split('-').map(part => parseScore(part));
+  if (parts.length === 2 && parts[0] !== null && parts[1] !== null) {
+    return (parts[0] + parts[1]) / 2;
+  }
+  return null;
+}
+
+function configuredWeights(group) {
+  return payload.scoring_config?.preference_weights_by_group?.[group] || [];
+}
+
+function scoreValue(item, column, overrides={}) {
+  if (Object.prototype.hasOwnProperty.call(overrides, column)) return overrides[column];
+  const rankingValue = parseScore(item.ranking?.[column]);
+  if (rankingValue !== null) return rankingValue;
+  const schoolValue = parseScore(item.school?.[column]);
+  if (schoolValue !== null) return schoolValue;
+  return null;
+}
+
+function weightedAverage(item, group, overrides={}) {
+  const weights = configuredWeights(group);
+  let numerator = 0;
+  let denominator = 0;
+  let possible = 0;
+  weights.forEach(({column_name, weight}) => {
+    const numericWeight = parseScore(weight) || 0;
+    possible += numericWeight;
+    const value = scoreValue(item, column_name, overrides);
+    if (value === null) return;
+    numerator += value * numericWeight;
+    denominator += numericWeight;
+  });
+  if (!denominator) return {score: null, coverage: 0};
+  return {score: numerator / denominator, coverage: possible ? denominator / possible : 0};
+}
+
+function schoolState(item) {
+  return item.school.state_abbrev || item.ranking.state_abbrev || '';
+}
+
+function selectorCostBasis(item) {
+  const cost = item.cost_and_debt || {};
+  const sameState = selectorState.applicantState && selectorState.applicantState === schoolState(item);
+  const fields = sameState
+    ? ['estimated_coa_in_state', 'in_state_tuition_fees_insurance', 'estimated_coa_out_state', 'out_state_tuition_fees_insurance']
+    : ['estimated_coa_out_state', 'out_state_tuition_fees_insurance'];
+  for (const field of fields) {
+    const value = parseScore(cost[field]);
+    if (value !== null) return value;
+  }
+  return null;
+}
+
+function selectorOosScore(item) {
+  if (!selectorState.applicantState) return null;
+  if (selectorState.applicantState === schoolState(item)) return 10;
+  if (truthy(item.school.accepts_oos)) return 6;
+  const policyText = (item.admissions_policies || [])
+    .filter(row => row.policy_field === 'out_of_state_applicants')
+    .map(row => row.policy_value || '')
+    .join(' ')
+    .toLowerCase();
+  if (policyText.includes('does not accept') || policyText.includes('not accepted') || policyText.includes('not considered') || policyText.includes('only in-state')) return 1;
+  if (policyText.trim()) return 6;
+  return 4;
+}
+
+function activeMdSchools() {
+  return filteredSchools().filter(item => (
+    item.school.degree_type === 'MD'
+    && !truthy(item.school.manual_exclusion_flag)
+    && !truthy(item.ranking.excluded_from_rank)
+  ));
+}
+
+function selectorRankedRows() {
+  const mdRows = activeMdSchools();
+  const mcatValue = bandMidpoint(selectorState.mcatBand, 'mcat');
+  const gpaValue = bandMidpoint(selectorState.gpaBand, 'gpa');
+  const costBasisBySchool = new Map(mdRows.map(item => [item.school.school_id, selectorCostBasis(item)]));
+  const costValues = [...costBasisBySchool.values()].filter(value => value !== null).sort((a, b) => a - b);
+  const minCost = costValues.length ? costValues[0] : null;
+  const maxCost = costValues.length ? costValues[costValues.length - 1] : null;
+  const computed = mdRows.map(item => {
+    const schoolMcat = parseScore(item.ranking.school_mcat_for_fit || item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average);
+    const schoolGpa = parseScore(item.ranking.school_gpa_for_fit || item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average);
+    const overrides = {};
+    if (mcatValue !== null && schoolMcat !== null) overrides.admissions_mcat_fit_score = clamp(7 + (mcatValue - schoolMcat) / 2);
+    if (gpaValue !== null && schoolGpa !== null) overrides.admissions_gpa_fit_score = clamp(7 + (gpaValue - schoolGpa) / 0.08);
+    const oosScore = selectorOosScore(item);
+    if (oosScore !== null) overrides.admissions_oos_friendliness_score = oosScore;
+    const costBasis = costBasisBySchool.get(item.school.school_id);
+    if (costBasis !== null && minCost !== null && maxCost !== null) {
+      const costScore = minCost === maxCost ? 10 : 10 - 9 * ((costBasis - minCost) / (maxCost - minCost));
+      overrides.attendance_cost_score = costScore;
+      overrides.debt_burden_score = costScore;
+    }
+    const admissions = weightedAverage(item, 'Admissions Score', overrides);
+    overrides.admissions_score = admissions.score;
+    const attendance = weightedAverage(item, 'Attendance Score', overrides);
+    overrides.attendance_score = attendance.score;
+    const overall = weightedAverage(item, 'Overall School Value', overrides);
+    return {item, overrides, admissions, attendance, overall, costBasis};
+  }).filter(row => row.overall.score !== null);
+
+  computed.sort((a, b) => b.overall.score - a.overall.score);
+  let rank = 0;
+  let previousScore = null;
+  computed.forEach((row, index) => {
+    const rounded = Number(row.overall.score.toFixed(4));
+    if (previousScore === null || rounded !== previousScore) {
+      rank = index + 1;
+      previousScore = rounded;
+    }
+    row.decisionRank = rank;
+  });
+  return computed;
+}
+
+function csvEscape(value) {
+  const text = String(value ?? '');
+  return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+function downloadCsv(filename, headers, records) {
+  const lines = [
+    headers.join(','),
+    ...records.map(record => headers.map(header => csvEscape(record[header])).join(',')),
+  ];
+  const blob = new Blob([lines.join('\n') + '\n'], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function sortRows(tableRows, tableKey, defaultKey, defaultDir='asc') {
@@ -1255,8 +1460,81 @@ function rankingsRows() {
   });
 }
 
+function mdSelectorControls() {
+  const mcatBands = unique(rows('aamc_mcat_gpa_grid').map(row => row.mcat_band));
+  const gpaBands = unique(rows('aamc_mcat_gpa_grid').map(row => row.gpa_band));
+  const states = unique(rows('schools').map(item => item.school.state_abbrev || item.ranking.state_abbrev)).sort();
+  return `<div class="panel selector-panel">
+      <h3>MD Band Selector ${badge('local/private-derived', 'warn')}</h3>
+      <div class="caveat">MD-only proof of concept. DO schools are excluded from this interactive reranking view. Selected-profile rankings stay in browser memory and are not written back.</div>
+      <div class="filters">
+        <label>MCAT Band <select id="selectorMcatBand"><option value="" ${selectorState.mcatBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(mcatBands, selectorState.mcatBand)}</select></label>
+        <label>GPA Band <select id="selectorGpaBand"><option value="" ${selectorState.gpaBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(gpaBands, selectorState.gpaBand)}</select></label>
+        <label>Applicant State <select id="selectorApplicantState"><option value="" ${selectorState.applicantState === '' ? 'selected' : ''}>Unselected</option>${optionTags(states, selectorState.applicantState)}</select></label>
+      </div>
+      <div class="selector-actions">
+        <button type="button" id="downloadSelectorAssumptions">Download Assumptions CSV</button>
+        <button type="button" id="downloadSelectorRows">Download Current MD Ranking CSV</button>
+        <span class="muted">${selectorRankedRows().length} active MD schools in selector view</span>
+      </div>
+      <div id="mdSelectorTable"></div>
+    </div>`;
+}
+
+function renderMdSelectorTable() {
+  const selectedRows = selectorRankedRows().slice(0, 50);
+  const columns = [
+    {key:'selector.decisionRank', label:'Decision Rank', render:r=>r.decisionRank},
+    {key:'item.school.school_name', label:'School', render:r=>linkSchool(r.item)},
+    {key:'item.school.city', label:'Location', render:r=>`${missing(r.item.school.city)}, ${missing(r.item.school.state)}`},
+    {key:'selector.overall', label:'Selected Overall', render:r=>r.overall.score.toFixed(2)},
+    {key:'selector.admissions', label:'Admissions', render:r=>r.admissions.score === null ? 'Missing' : r.admissions.score.toFixed(2)},
+    {key:'selector.attendance', label:'Attendance', render:r=>r.attendance.score === null ? 'Missing' : r.attendance.score.toFixed(2)},
+    {key:'selector.mcat', label:'MCAT Fit', render:r=>r.overrides.admissions_mcat_fit_score === undefined ? 'Missing' : r.overrides.admissions_mcat_fit_score.toFixed(1)},
+    {key:'selector.gpa', label:'GPA Fit', render:r=>r.overrides.admissions_gpa_fit_score === undefined ? 'Missing' : r.overrides.admissions_gpa_fit_score.toFixed(1)},
+    {key:'selector.oos', label:'OOS Fit', render:r=>r.overrides.admissions_oos_friendliness_score === undefined ? 'Missing' : r.overrides.admissions_oos_friendliness_score.toFixed(1)},
+    {key:'selector.cost', label:'Cost Fit', render:r=>r.overrides.attendance_cost_score === undefined ? 'Missing' : r.overrides.attendance_cost_score.toFixed(1)},
+    {key:'ranking.rank_confidence', label:'Rank Confidence', render:r=>badge(r.item.ranking.rank_confidence)},
+  ];
+  $('mdSelectorTable').innerHTML = table(columns, selectedRows, 'mdSelector');
+}
+
+function selectedAssumptionRecords() {
+  return [{
+    scope: 'active_md_only',
+    mcat_band: selectorState.mcatBand,
+    gpa_band: selectorState.gpaBand,
+    applicant_state: selectorState.applicantState,
+    weight_basis: payload.scoring_config?.weight_basis || 'present_components_only',
+    privacy_label: 'local/private-derived',
+    aamc_context: payload.copy.aamc_grid_caveat,
+  }];
+}
+
+function selectedRankingRecords() {
+  return selectorRankedRows().map(row => ({
+    decision_rank: row.decisionRank,
+    school_id: row.item.school.school_id,
+    school_name: row.item.school.school_name,
+    degree_type: row.item.school.degree_type,
+    city: row.item.school.city,
+    state: row.item.school.state,
+    selected_overall_school_value: row.overall.score.toFixed(4),
+    selected_admissions_score: row.admissions.score === null ? '' : row.admissions.score.toFixed(4),
+    selected_attendance_score: row.attendance.score === null ? '' : row.attendance.score.toFixed(4),
+    selected_mcat_fit_score: row.overrides.admissions_mcat_fit_score === undefined ? '' : row.overrides.admissions_mcat_fit_score.toFixed(1),
+    selected_gpa_fit_score: row.overrides.admissions_gpa_fit_score === undefined ? '' : row.overrides.admissions_gpa_fit_score.toFixed(1),
+    selected_oos_fit_score: row.overrides.admissions_oos_friendliness_score === undefined ? '' : row.overrides.admissions_oos_friendliness_score.toFixed(1),
+    selected_cost_fit_score: row.overrides.attendance_cost_score === undefined ? '' : row.overrides.attendance_cost_score.toFixed(1),
+    mcat_band: selectorState.mcatBand,
+    gpa_band: selectorState.gpaBand,
+    applicant_state: selectorState.applicantState,
+    privacy_label: 'local/private-derived',
+  }));
+}
+
 function renderRankings() {
-  $('rankings').innerHTML = `<h2>Rankings</h2><div class="caveat">${payload.copy.aamc_grid_caveat}</div>${rankingFilters()}<div id="rankTable"></div>`;
+  $('rankings').innerHTML = `<h2>Rankings</h2><div class="caveat">${payload.copy.aamc_grid_caveat}</div>${mdSelectorControls()}${rankingFilters()}<div id="rankTable"></div>`;
   const bindings = {
     rankDegree: 'degree',
     rankState: 'state',
@@ -1279,16 +1557,36 @@ function renderRankings() {
     filters.rankings[key] = event.target.value;
     renderRankingTable();
   }));
+  const selectorBindings = {
+    selectorMcatBand: 'mcatBand',
+    selectorGpaBand: 'gpaBand',
+    selectorApplicantState: 'applicantState',
+  };
+  Object.entries(selectorBindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    selectorState[key] = event.target.value;
+    renderRankings();
+  }));
+  $('downloadSelectorAssumptions')?.addEventListener('click', () => {
+    downloadCsv('selected-profile-assumptions.csv', Object.keys(selectedAssumptionRecords()[0]), selectedAssumptionRecords());
+  });
+  $('downloadSelectorRows')?.addEventListener('click', () => {
+    const records = selectedRankingRecords();
+    if (!records.length) return;
+    downloadCsv('selected-md-decision-rankings.csv', Object.keys(records[0]), records);
+  });
+  renderMdSelectorTable();
   renderRankingTable();
 }
 
 function renderRankingTable() {
   const visibleRows = sortRows(rankingsRows(), 'rankings', 'ranking.overall_rank');
   const columns = [
-    {key:'ranking.overall_rank', label:'Rank', render:s=>missing(s.ranking.overall_rank)},
+    {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(s.ranking.decision_rank || s.ranking.overall_rank)},
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
     {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
+    {key:'ranking.rank_band', label:'Rank Band', render:s=>missing(s.ranking.rank_band)},
+    {key:'ranking.rank_confidence', label:'Confidence', render:s=>badge(s.ranking.rank_confidence)},
     {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
     {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket || s.ranking.suggested_funnel_bucket)},
     {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
@@ -1383,6 +1681,11 @@ function renderProfile() {
   const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
   if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
   const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
+  const contributionRows = rows('score_contributions').filter(row => (
+    row.school_id === item.school.school_id
+    && row.applicant_profile_id === item.ranking.applicant_profile_id
+    && row.score_model === 'Decision Rank'
+  ));
   const adminPanels = ADMIN_ENABLED ? `
       ${detailPanel('Partner Review', [
         ['Could live here', item.partner_input?.could_live_here_4_years_score],
@@ -1424,7 +1727,9 @@ function renderProfile() {
       ])}
       ${detailPanel('Ranking', [
         ['Profile', item.ranking.profile_name],
-        ['Overall rank', item.ranking.overall_rank],
+        ['Decision rank', item.ranking.decision_rank || item.ranking.overall_rank],
+        ['Rank band', item.ranking.rank_band],
+        ['Rank confidence', item.ranking.rank_confidence],
         ['Admissions tier', item.ranking.admissions_fit_tier || item.ranking.dynamic_tier],
         ['Bucket', item.ranking.application_bucket || item.ranking.suggested_funnel_bucket],
         ['Admissions', item.ranking.admissions_score],
@@ -1436,8 +1741,10 @@ function renderProfile() {
         ['Data completeness', item.ranking.data_completeness_score],
         ['Missing score inputs', item.ranking.missing_score_inputs],
         ['Score warnings', item.ranking.score_warnings],
-        ['Positive drivers', item.ranking.top_positive_drivers],
-        ['Negative drivers', item.ranking.top_negative_drivers],
+        ['Positive contributors', item.ranking.top_positive_contributors || item.ranking.top_positive_drivers],
+        ['Negative contributors', item.ranking.top_negative_contributors || item.ranking.top_negative_drivers],
+        ['Low-confidence drivers', item.ranking.missing_or_low_confidence_drivers],
+        ['Rank summary', item.ranking.rank_summary],
       ])}
       ${detailPanel('Admissions Facts', [
         ['Stats present', item.derived.admissions_stats_present],
@@ -1472,6 +1779,21 @@ function renderProfile() {
       ])}
       ${adminPanels}
     </div>
+    <div class="panel" style="margin-top:12px">
+      <h3>Why This Rank?</h3>
+      ${table([
+        {key:'score_group', label:'Score Group', render:r=>missing(r.score_group)},
+        {key:'component_label', label:'Component', render:r=>missing(r.component_label)},
+        {key:'normalized_score', label:'Score', render:r=>missing(r.normalized_score)},
+        {key:'component_weight', label:'Weight', render:r=>missing(r.component_weight)},
+        {key:'weighted_contribution', label:'Contribution', render:r=>missing(r.weighted_contribution)},
+        {key:'component_coverage_status', label:'Status', render:r=>badge(r.component_coverage_status)},
+        {key:'delta_band', label:'Fit Band', render:r=>missing(r.delta_band)},
+        {key:'raw_context', label:'Context', render:r=>missing(r.raw_context)},
+        {key:'data_confidence', label:'Confidence', render:r=>missing(r.data_confidence)},
+        {key:'missing_reason', label:'Missing Reason', render:r=>missing(r.missing_reason)},
+      ], contributionRows, 'profileContributions')}
+    </div>
     ${issuesPanel}`;
 }
 
@@ -1481,8 +1803,20 @@ function detailPanel(title, panelRows) {
 
 function renderMethodology() {
   const readinessRows = Object.entries(payload.copy.curated_list_readiness || {}).map(([label, text]) => ({label, text}));
+  const methodologyRows = rows('scoring_methodology');
   $('methodology').innerHTML = `<h2>Methodology</h2>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    <div class="panel" style="margin-bottom:12px">
+      <h3>Scoring Methodology</h3>
+      ${table([
+        {key:'methodology_area', label:'Area', render:r=>missing(r.methodology_area)},
+        {key:'input_band_or_condition', label:'Input Band Or Condition', render:r=>missing(r.input_band_or_condition)},
+        {key:'score', label:'Score', render:r=>missing(r.score)},
+        {key:'display_label', label:'Display Label', render:r=>missing(r.display_label)},
+        {key:'notes', label:'Notes', render:r=>missing(r.notes)},
+        {key:'formula_reference', label:'Formula', render:r=>missing(r.formula_reference)},
+      ], methodologyRows, 'methodologyTable')}
+    </div>
     <div class="panel">
       <h3>Curated List Readiness</h3>
       ${table([

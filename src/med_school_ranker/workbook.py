@@ -10,7 +10,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.table import Table, TableStyleInfo
 
-from med_school_ranker.paths import DATA, OUT, RANKINGS_CSV, ROOT, WORKBOOK_XLSX
+from med_school_ranker.paths import DATA, OUT, RANKINGS_CSV, ROOT, SCORE_CONTRIBUTIONS_CSV, SCORING_METHODOLOGY_CSV, WORKBOOK_XLSX
 from med_school_ranker.paths import (
     AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_POLICIES_CSV,
@@ -49,6 +49,8 @@ SHEETS = [
     ("Source Review Queue", SOURCE_REVIEW_QUEUE_CSV),
     ("Partner Inputs", PARTNER_INPUTS_CSV),
     ("Calculated Rankings", RANKINGS_CSV),
+    ("Scoring Methodology", SCORING_METHODOLOGY_CSV),
+    ("Score Contributions", SCORE_CONTRIBUTIONS_CSV),
     ("Final Application List", DATA / "final_application_list.csv"),
     ("Data Quality", DATA_QUALITY_REPORT_CSV),
     ("Source Integration Report", SOURCE_INTEGRATION_REPORT_CSV),

@@ -123,8 +123,11 @@ def patch_ranking_paths(monkeypatch, root: Path) -> None:
     monkeypatch.setattr(rankings, "ADMISSIONS_POLICIES_CSV", root / "data/normalized/admissions_policies.csv")
     monkeypatch.setattr(rankings, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
     monkeypatch.setattr(rankings, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    monkeypatch.setattr(rankings, "SCORING_METHODOLOGY_CSV", out / "scoring_methodology.csv")
+    monkeypatch.setattr(rankings, "SCORE_CONTRIBUTIONS_CSV", out / "score_contributions.csv")
     monkeypatch.setattr(rankings, "PRIVATE_OUT", out / "private")
     monkeypatch.setattr(rankings, "PRIVATE_RANKINGS_CSV", out / "private/calculated_rankings.private.csv")
+    monkeypatch.setattr(rankings, "PRIVATE_SCORE_CONTRIBUTIONS_CSV", out / "private/score_contributions.private.csv")
 
 
 def test_fit_formulas_and_florida_normalization():
@@ -263,6 +266,75 @@ def test_phase2b_projection_scores_and_excludes_hard_no(tmp_path, monkeypatch):
     assert rows["school_one"]["attendance_cost_score"] == "10.0"
     assert rows["school_two"]["excluded_from_rank"] == "TRUE"
     assert rows["school_two"]["overall_rank"] == ""
+    assert rows["school_one"]["decision_rank"] == rows["school_one"]["overall_rank"]
+    assert rows["school_one"]["rank_confidence"]
+    assert rows["school_one"]["rank_summary"]
+
+
+def test_score_contributions_reconcile_to_group_score(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    write_csv(
+        tmp_path / "data/applicant_profiles.csv",
+        validation.APPLICANT_PROFILE_COLUMNS,
+        [
+            {
+                "applicant_profile_id": "test_profile",
+                "profile_name": "Test Profile",
+                "is_default_profile": "TRUE",
+                "mcat_total": "",
+                "overall_gpa": "",
+                "science_gpa": "",
+                "state_of_residence": "",
+                "preferred_setting": "urban",
+                "urban_preference_score": "8",
+                "rural_tolerance_score": "5",
+                "specialty_interest": "emergency medicine",
+                "target_application_count": "25",
+                "cost_weight_level": "low",
+                "hidden_curriculum_weight_level": "low",
+                "specialty_weight_level": "low",
+                "notes": "Synthetic test profile.",
+            }
+        ],
+    )
+
+    output = rankings.build_rankings()
+    ranking_row = next(row for row in read_rows(output) if row["school_id"] == "school_one")
+    contribution_rows = [
+        row
+        for row in read_rows(tmp_path / "outputs/score_contributions.csv")
+        if row["school_id"] == "school_one"
+        and row["score_model"] == "Decision Rank"
+        and row["score_group"] == "Overall School Value"
+        and row["component_coverage_status"] != "missing"
+    ]
+    contribution_sum = sum(float(row["weighted_contribution"]) for row in contribution_rows)
+
+    assert round(contribution_sum, 2) == round(float(ranking_row["overall_school_value"]), 2)
+    assert {row["weight_basis"] for row in contribution_rows} == {"present_components_only"}
+    missing_rows = [
+        row
+        for row in read_rows(tmp_path / "outputs/score_contributions.csv")
+        if row["school_id"] == "school_one"
+        and row["component_column"] == "admissions_gpa_fit_score"
+    ]
+    assert missing_rows
+    assert missing_rows[0]["component_coverage_status"] == "missing"
+    assert missing_rows[0]["weighted_contribution"] == ""
+
+
+def test_scoring_methodology_is_public_banded_reference(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+
+    rankings.build_rankings()
+    rows = read_rows(tmp_path / "outputs/scoring_methodology.csv")
+
+    assert rows
+    assert "aamc_mcat_selector" in {row["methodology_area"] for row in rows}
+    assert any(row["input_band_or_condition"] == "506-509" for row in rows)
+    assert not any("private_profile" in str(row) for row in rows)
 
 
 def test_private_rankings_write_only_to_private_output(tmp_path, monkeypatch):
@@ -300,3 +372,7 @@ def test_private_rankings_write_only_to_private_output(tmp_path, monkeypatch):
     assert output == tmp_path / "outputs/private/calculated_rankings.private.csv"
     assert rows
     assert {row["profile_source"] for row in rows} == {"private_local"}
+    private_contributions = tmp_path / "outputs/private/score_contributions.private.csv"
+    assert private_contributions.exists()
+    assert {row["profile_source"] for row in read_rows(private_contributions)} == {"private_local"}
+    assert not (tmp_path / "outputs/score_contributions.private.csv").exists()

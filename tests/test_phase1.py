@@ -221,8 +221,11 @@ def patch_ranking_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(rankings, "ADMISSIONS_POLICIES_CSV", root / "data/normalized/admissions_policies.csv")
     monkeypatch.setattr(rankings, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
     monkeypatch.setattr(rankings, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    monkeypatch.setattr(rankings, "SCORING_METHODOLOGY_CSV", out / "scoring_methodology.csv")
+    monkeypatch.setattr(rankings, "SCORE_CONTRIBUTIONS_CSV", out / "score_contributions.csv")
     monkeypatch.setattr(rankings, "PRIVATE_OUT", out / "private")
     monkeypatch.setattr(rankings, "PRIVATE_RANKINGS_CSV", out / "private/calculated_rankings.private.csv")
+    monkeypatch.setattr(rankings, "PRIVATE_SCORE_CONTRIBUTIONS_CSV", out / "private/score_contributions.private.csv")
     return out
 
 
@@ -233,7 +236,11 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(site_builder, "OUT", out)
     monkeypatch.setattr(site_builder, "MASTER_CSV", root / "data/school_master.csv")
     monkeypatch.setattr(site_builder, "RANKINGS_CSV", out / "calculated_rankings.csv")
+    monkeypatch.setattr(site_builder, "SCORING_METHODOLOGY_CSV", out / "scoring_methodology.csv")
+    monkeypatch.setattr(site_builder, "SCORE_CONTRIBUTIONS_CSV", out / "score_contributions.csv")
     monkeypatch.setattr(site_builder, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
+    monkeypatch.setattr(site_builder, "PREFERENCES_CSV", root / "data/user_preferences.csv")
+    monkeypatch.setattr(site_builder, "SCENARIO_WEIGHTS_CSV", root / "data/scenario_weights.csv")
     monkeypatch.setattr(site_builder, "AAMC_MCAT_GPA_GRID_CSV", root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
     monkeypatch.setattr(site_builder, "COST_AND_DEBT_CSV", root / "data/normalized/cost_and_debt.csv")
@@ -261,6 +268,8 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
         {
             "school_master": root / "data/school_master.csv",
             "calculated_rankings": out / "calculated_rankings.csv",
+            "scoring_methodology": out / "scoring_methodology.csv",
+            "score_contributions": out / "score_contributions.csv",
             "applicant_profiles": root / "data/applicant_profiles.csv",
             "aamc_mcat_gpa_grid": root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv",
             "admissions_stats": root / "data/normalized/admissions_stats.csv",
@@ -633,6 +642,8 @@ def test_upload_bundle_includes_site_and_excludes_private_data(tmp_path, monkeyp
     private_output = out / "private/calculated_rankings.private.csv"
     private_output.parent.mkdir(parents=True)
     private_output.write_text("secret\nsuper_secret_private_score\n")
+    private_contribution_output = out / "private/score_contributions.private.csv"
+    private_contribution_output.write_text("secret\nsuper_secret_private_contribution\n")
 
     monkeypatch.setattr(bundle, "ROOT", tmp_path)
     monkeypatch.setattr(bundle, "DATA", tmp_path / "data")

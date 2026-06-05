@@ -1,0 +1,95 @@
+methodology_area,input_band_or_condition,score,display_label,notes,formula_reference
+aamc_mcat_selector,Less than 486,485,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,486-489,487.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,490-493,491.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,494-497,495.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,498-501,499.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,502-505,503.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,506-509,507.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,510-513,511.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,514-517,515.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_mcat_selector,Greater than 517,520,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,Greater than 3.79,3.89,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,3.60-3.79,3.7,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,3.40-3.59,3.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,3.20-3.39,3.29,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,3.00-3.19,3.09,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,2.80-2.99,2.9,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,2.60-2.79,2.7,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,2.40-2.59,2.5,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,2.20-2.39,2.29,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,2.00-2.19,2.09,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+aamc_gpa_selector,Less than 2.00,2,Selector midpoint,Public-safe AAMC band midpoint used only for browser-side MD proof-of-concept reranking.,band midpoint
+mcat_fit,applicant MCAT delta -8,3.0,far below,Applicant equal to the selected school MCAT average scores about 7.,"clamp(1, 10, 7 + delta / 2)"
+mcat_fit,applicant MCAT delta -4,5.0,below average,Applicant equal to the selected school MCAT average scores about 7.,"clamp(1, 10, 7 + delta / 2)"
+mcat_fit,applicant MCAT delta +0,7.0,at school average,Applicant equal to the selected school MCAT average scores about 7.,"clamp(1, 10, 7 + delta / 2)"
+mcat_fit,applicant MCAT delta +4,9.0,above average,Applicant equal to the selected school MCAT average scores about 7.,"clamp(1, 10, 7 + delta / 2)"
+mcat_fit,applicant MCAT delta +6,10.0,strong fit,Applicant equal to the selected school MCAT average scores about 7.,"clamp(1, 10, 7 + delta / 2)"
+gpa_fit,applicant GPA delta -0.32,3.0,far below,Applicant equal to the selected school GPA average scores about 7.,"clamp(1, 10, 7 + delta / 0.08)"
+gpa_fit,applicant GPA delta -0.16,5.0,below average,Applicant equal to the selected school GPA average scores about 7.,"clamp(1, 10, 7 + delta / 0.08)"
+gpa_fit,applicant GPA delta +0.00,7.0,at school average,Applicant equal to the selected school GPA average scores about 7.,"clamp(1, 10, 7 + delta / 0.08)"
+gpa_fit,applicant GPA delta +0.16,9.0,above average,Applicant equal to the selected school GPA average scores about 7.,"clamp(1, 10, 7 + delta / 0.08)"
+gpa_fit,applicant GPA delta +0.24,10.0,strong fit,Applicant equal to the selected school GPA average scores about 7.,"clamp(1, 10, 7 + delta / 0.08)"
+oos_fit,same_state,10,in-state advantage,Applicant state matches school state.,residency and OOS policy rule
+oos_fit,oos_policy_accepts,6,OOS possible,Available school fields indicate OOS applicants are accepted or policy text exists.,residency and OOS policy rule
+oos_fit,oos_policy_rejects,1,OOS not viable,Available school fields indicate OOS applicants are not accepted.,residency and OOS policy rule
+oos_fit,oos_policy_unknown,4,unknown OOS policy,Missing policy lowers confidence and uses a conservative placeholder score.,residency and OOS policy rule
+cost_fit,lowest adjusted cost basis among available schools,10,lowest cost,Cost scoring is percentile-based within available cost-basis values.,10 - 9 * percentile_rank
+cost_fit,highest adjusted cost basis among available schools,1,highest cost,Missing costs are excluded from score math and lower coverage.,10 - 9 * percentile_rank
+rank_confidence,coverage >= 80%,,high,"Missing data affects confidence, not the numeric score.",coverage threshold
+rank_confidence,coverage 60-79%,,medium,"Missing data affects confidence, not the numeric score.",coverage threshold
+rank_confidence,coverage 40-59%,,partial,"Missing data affects confidence, not the numeric score.",coverage threshold
+rank_confidence,coverage < 40%,,provisional,"Missing data affects confidence, not the numeric score.",coverage threshold
+rank_confidence,hard-no or manual exclusion,,excluded,"Missing data affects confidence, not the numeric score.",coverage threshold
+subjective_rubric,exceptional fit; actively excited,10,exceptional,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+subjective_rubric,strong fit; clear positive,8-9,strong,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+subjective_rubric,acceptable or mildly positive,6-7,acceptable,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+subjective_rubric,neutral or uncertain,5,neutral,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+subjective_rubric,concern,3-4,concern,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+subjective_rubric,serious concern,1-2,serious concern,Controlled 1-10 rubric for personal fit fields.,manual dropdown rubric
+preference_weight,Admissions Score: admissions_mcat_fit_score,25,Mcat Fit,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Admissions Score: admissions_gpa_fit_score,20,Gpa Fit,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Admissions Score: admissions_oos_friendliness_score,15,Oos Friendliness,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Admissions Score: admissions_mission_fit_score,20,Mission Fit,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Admissions Score: admissions_research_fit_score,10,Research Fit,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Admissions Score: admissions_clinical_fit_score,10,Clinical Fit,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_prestige_score,20,Prestige,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_cost_score,15,Cost,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_location_score,10,Location,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: four_year_happiness_score,10,Four Year Happiness,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_match_outcomes_score,20,Match Outcomes,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_research_score,10,Research,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_culture_score,10,Culture,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Attendance Score: attendance_curriculum_score,5,Curriculum,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Overall School Value: admissions_score,45,Score,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Overall School Value: attendance_score,45,Score,Fixed public/template scoring weight.,data/user_preferences.csv
+preference_weight,Overall School Value: regret_index_score,10,Regret Index,Fixed public/template scoring weight.,data/user_preferences.csv
+scenario_weight,Balanced: admissions_score,35,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Balanced: attendance_score,45,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Balanced: regret_index_score,10,Regret Index,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Balanced: data_completeness_score,10,Data Completeness,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Prestige Maximizer: attendance_prestige_score,35,Prestige,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Prestige Maximizer: attendance_match_outcomes_score,25,Match Outcomes,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Prestige Maximizer: national_mobility_score,15,National Mobility,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Prestige Maximizer: specialty_optionality_score,15,Specialty Optionality,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Prestige Maximizer: admissions_score,10,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: four_year_happiness_score,30,Four Year Happiness,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: attendance_location_score,20,Location,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: attendance_culture_score,20,Culture,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: cost_of_living_score,10,Cost Of Living,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: family_access_score,10,Family Access,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Lifestyle Maximizer: admissions_score,10,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Financial Maximizer: debt_burden_score,35,Debt Burden,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Financial Maximizer: attendance_cost_score,25,Cost,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Financial Maximizer: cost_of_living_score,15,Cost Of Living,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Financial Maximizer: admissions_score,25,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Specialty Optionality: residency_goal_alignment_score,25,Residency Goal Alignment,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Specialty Optionality: specialty_optionality_score,25,Specialty Optionality,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Specialty Optionality: national_mobility_score,20,National Mobility,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Specialty Optionality: attendance_match_outcomes_score,20,Match Outcomes,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Specialty Optionality: admissions_score,10,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Admissions Realist: admissions_score,60,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Admissions Realist: attendance_score,25,Score,Fixed scenario scoring weight.,data/scenario_weights.csv
+scenario_weight,Admissions Realist: regret_index_score,15,Regret Index,Fixed scenario scoring weight.,data/scenario_weights.csv
+privacy,selected-profile ranking,,local/private-derived,Any ranking generated from a real or selected applicant profile is treated as local/private-derived because ordering reveals fit.,privacy rule
+aamc_caveat,MCAT/GPA grid,,national aggregate MD context,"AAMC grid values are national aggregate MD applicant context, not school-specific acceptance probability.",AAMC reference grid
