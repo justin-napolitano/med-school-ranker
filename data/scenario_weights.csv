@@ -1,0 +1,28 @@
+scenario,column_name,weight,notes
+Balanced,admissions_score,35,Default balanced model.
+Balanced,attendance_score,45,Default balanced model.
+Balanced,regret_index_score,10,Default balanced model.
+Balanced,data_completeness_score,10,Penalizes under-researched schools.
+Prestige Maximizer,attendance_prestige_score,35,Optimizes for reputation and elite optionality.
+Prestige Maximizer,attendance_match_outcomes_score,25,Optimizes for match outcomes.
+Prestige Maximizer,national_mobility_score,15,Favors national residency mobility.
+Prestige Maximizer,specialty_optionality_score,15,Favors doors-open specialty breadth.
+Prestige Maximizer,admissions_score,10,Keeps admissions reality in view.
+Lifestyle Maximizer,four_year_happiness_score,30,Makes the living-here-for-four-years question central.
+Lifestyle Maximizer,attendance_location_score,20,City/region fit.
+Lifestyle Maximizer,attendance_culture_score,20,Student culture and support.
+Lifestyle Maximizer,cost_of_living_score,10,Everyday affordability.
+Lifestyle Maximizer,family_access_score,10,Access to support network.
+Lifestyle Maximizer,admissions_score,10,Keeps admissions reality in view.
+Financial Maximizer,debt_burden_score,35,Estimated debt after scholarship sensitivity.
+Financial Maximizer,attendance_cost_score,25,Affordability score.
+Financial Maximizer,cost_of_living_score,15,Living cost.
+Financial Maximizer,admissions_score,25,Schools that are unaffordable but likely may still need discussion.
+Specialty Optionality,residency_goal_alignment_score,25,Current specialty goal fit.
+Specialty Optionality,specialty_optionality_score,25,Breadth across competitive and academic specialties.
+Specialty Optionality,national_mobility_score,20,National match power.
+Specialty Optionality,attendance_match_outcomes_score,20,Match outcomes.
+Specialty Optionality,admissions_score,10,Keeps admissions reality in view.
+Admissions Realist,admissions_score,60,Prioritizes a list that can actually convert.
+Admissions Realist,attendance_score,25,Still avoids schools you would dislike.
+Admissions Realist,regret_index_score,15,Protects against regrettable omissions.

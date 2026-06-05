@@ -1,0 +1,18 @@
+score_group,column_name,weight,notes
+Admissions Score,admissions_mcat_fit_score,25,"MCAT fit relative to published school range. 1 = far below, 10 = strong fit."
+Admissions Score,admissions_gpa_fit_score,20,"GPA fit relative to published school range. 1 = far below, 10 = strong fit."
+Admissions Score,admissions_oos_friendliness_score,15,Out-of-state friendliness and applicant residency fit.
+Admissions Score,admissions_mission_fit_score,20,"Alignment with school mission, service emphasis, region, and lived story."
+Admissions Score,admissions_research_fit_score,10,Fit between applicant research profile and school expectations/opportunities.
+Admissions Score,admissions_clinical_fit_score,10,Fit between clinical/service background and school emphasis.
+Attendance Score,attendance_prestige_score,20,Reputation/prestige as personally valued; avoid using this as the only proxy for outcomes.
+Attendance Score,attendance_cost_score,15,Affordability before deeper debt modeling.
+Attendance Score,attendance_location_score,10,City/region desirability independent of the explicit four-year happiness score.
+Attendance Score,four_year_happiness_score,10,Practical four-year life fit. Keep this distinct from prestige.
+Attendance Score,attendance_match_outcomes_score,20,"Match strength, specialty breadth, and perceived outcome quality."
+Attendance Score,attendance_research_score,10,"Research infrastructure, NIH funding, mentorship access, scholarly pathways."
+Attendance Score,attendance_culture_score,10,"Peer culture, supportiveness, wellness reputation, and values fit."
+Attendance Score,attendance_curriculum_score,5,"Curriculum design, P/F, attendance burden, recorded lectures, clerkship structure."
+Overall School Value,admissions_score,45,"Keep can-get-in and want-to-attend separate, then combine transparently."
+Overall School Value,attendance_score,45,How much you would want to attend if accepted.
+Overall School Value,regret_index_score,10,How much you would regret turning down an acceptance here.

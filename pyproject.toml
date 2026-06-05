@@ -1,0 +1,18 @@
+[project]
+name = "med-school-ranker"
+version = "0.1.0"
+description = "CSV and XLSX medical school ranking decision model."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openpyxl>=3.1.5",
+]
+
+[project.scripts]
+med-school-build-rankings = "med_school_ranker.rankings:main"
+med-school-build-workbook = "med_school_ranker.workbook:main"
+med-school-build-all = "med_school_ranker.bundle:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

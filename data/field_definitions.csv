@@ -1,0 +1,12 @@
+field_or_concept,definition
+Admissions Score,"Calculated weighted score from admissions_mcat_fit_score, admissions_gpa_fit_score, OOS friendliness, mission fit, research fit, and clinical fit."
+Attendance Score,Calculated weighted score for how much you would want to attend if accepted.
+Overall School Value,"Calculated weighted blend of Admissions Score, Attendance Score, and Regret Index."
+Regret Index,1-10 score for how much you would regret turning down an acceptance or excluding the school.
+National Mobility,1-10 estimate of how strongly the school places graduates nationally rather than mostly regionally.
+Debt Burden Score,1-10 score where 10 means low debt burden after expected scholarships and living costs.
+Hidden Curriculum Score,"1-10 summary of P/F, internal ranking, AOA, attendance burden, recorded lectures, required hours, and wellness reputation."
+Four-Year Happiness,1-10 answer to whether you can realistically see yourself living there for four years.
+Data Confidence,Text note describing what is verified and what still needs source review.
+Manual Exclusion Flag,TRUE only when a school is intentionally cut; keep exclusion_reason filled for transparency.
+Research Stage,"Suggested values: unresearched, skimmed, researched, serious_candidate, application_pool, applied, cut."
