@@ -1,10 +1,10 @@
 {
   "canonical_counts": {
     "admissions_policy_rows": 5038,
-    "admissions_stats_rows": 44,
+    "admissions_stats_rows": 102,
     "cost_and_debt_rows": 151,
     "letter_requirement_rows": 28,
-    "open_source_review_rows": 1005,
+    "open_source_review_rows": 1034,
     "school_master_estimated_coa_in_state_populated": 0,
     "school_master_estimated_coa_out_state_populated": 0,
     "school_master_in_state_tuition_populated": 0,
@@ -12,9 +12,9 @@
     "school_master_median_mcat_populated": 0,
     "school_master_out_state_tuition_populated": 0,
     "school_master_rows": 233,
-    "source_review_queue_rows": 1005
+    "source_review_queue_rows": 1034
   },
-  "generated_at": "2026-06-05T05:53:56+00:00",
+  "generated_at": "2026-06-05T06:10:15+00:00",
   "manual_override_count": 0,
   "mcat_gpa": {
     "agreement_counts": {
@@ -26,6 +26,11 @@
     "comparable_rows": 676,
     "comparison_clusters": 316,
     "conflict_rows": 87,
+    "quality_counts": {
+      "high": 42,
+      "low": 43,
+      "medium": 17
+    },
     "rows_with_gpa": 667,
     "rows_with_mcat": 662,
     "source_counts": {

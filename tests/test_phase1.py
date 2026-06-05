@@ -114,6 +114,7 @@ def write_minimal_project(
             }
         ],
     )
+    write_csv(root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv", validation.AAMC_MCAT_GPA_GRID_COLUMNS, [])
     write_csv(root / "data/normalized/admissions_stats.csv", validation.ADMISSIONS_STATS_COLUMNS, [])
     write_csv(root / "data/normalized/cost_and_debt.csv", validation.COST_AND_DEBT_COLUMNS, [])
     write_csv(root / "data/normalized/admissions_policies.csv", validation.ADMISSIONS_POLICIES_COLUMNS, [])
@@ -221,6 +222,7 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
     monkeypatch.setattr(site_builder, "MASTER_CSV", root / "data/school_master.csv")
     monkeypatch.setattr(site_builder, "RANKINGS_CSV", out / "calculated_rankings.csv")
     monkeypatch.setattr(site_builder, "APPLICANT_PROFILES_CSV", root / "data/applicant_profiles.csv")
+    monkeypatch.setattr(site_builder, "AAMC_MCAT_GPA_GRID_CSV", root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv")
     monkeypatch.setattr(site_builder, "ADMISSIONS_STATS_CSV", root / "data/normalized/admissions_stats.csv")
     monkeypatch.setattr(site_builder, "PARTNER_INPUTS_CSV", root / "data/manual/partner_inputs.csv")
     monkeypatch.setattr(site_builder, "SOURCE_MATCH_OVERRIDES_CSV", root / "data/manual/source_match_overrides.csv")
@@ -238,6 +240,7 @@ def patch_site_paths(monkeypatch, root: Path) -> Path:
             "school_master": root / "data/school_master.csv",
             "calculated_rankings": out / "calculated_rankings.csv",
             "applicant_profiles": root / "data/applicant_profiles.csv",
+            "aamc_mcat_gpa_grid": root / "data/reference/aamc_mcat_gpa_acceptance_grid.csv",
             "admissions_stats": root / "data/normalized/admissions_stats.csv",
             "cost_and_debt": root / "data/normalized/cost_and_debt.csv",
             "admissions_policies": root / "data/normalized/admissions_policies.csv",
@@ -280,6 +283,7 @@ def test_workbook_has_required_tabs(tmp_path, monkeypatch):
         "Applicant Profiles",
         "User Preferences",
         "Scenario Weights",
+        "AAMC GPA MCAT Grid",
         "Admissions Stats",
         "Cost and Debt",
         "Admissions Policies",
@@ -381,6 +385,7 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
         "school_master.json",
         "calculated_rankings.json",
         "applicant_profiles.json",
+        "aamc_mcat_gpa_grid.json",
         "admissions_stats.json",
         "cost_and_debt.json",
         "admissions_policies.json",

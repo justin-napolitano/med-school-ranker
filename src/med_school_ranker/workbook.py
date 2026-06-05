@@ -12,6 +12,7 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 
 from med_school_ranker.paths import DATA, OUT, RANKINGS_CSV, ROOT, WORKBOOK_XLSX
 from med_school_ranker.paths import (
+    AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
     ADMISSIONS_STATS_CANDIDATES_CSV,
@@ -38,6 +39,7 @@ SHEETS = [
     ("Applicant Profiles", APPLICANT_PROFILES_CSV),
     ("User Preferences", DATA / "user_preferences.csv"),
     ("Scenario Weights", DATA / "scenario_weights.csv"),
+    ("AAMC GPA MCAT Grid", AAMC_MCAT_GPA_GRID_CSV),
     ("Admissions Stats", ADMISSIONS_STATS_CSV),
     ("Cost and Debt", COST_AND_DEBT_CSV),
     ("Admissions Policies", ADMISSIONS_POLICIES_CSV),

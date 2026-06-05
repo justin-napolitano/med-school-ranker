@@ -12,6 +12,7 @@ from statistics import median
 from typing import Iterable
 
 from med_school_ranker.paths import (
+    AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_STATS_CANDIDATES_CSV,
     ADMISSIONS_STATS_CONFLICTS_CSV,
@@ -49,6 +50,49 @@ PUBLISHED_SOURCE_INFO = {
     ),
     "matchguy": ("The Match Guy", "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"),
 }
+AAMC_GRID_SOURCE_URL = "https://www.aamc.org/media/6091/download"
+AAMC_GRID_SOURCE_NAME = "AAMC Table A-23 MCAT and GPA Grid"
+
+AAMC_MCAT_BANDS = [
+    ("Less than 486", None, 485.0),
+    ("486-489", 486.0, 489.0),
+    ("490-493", 490.0, 493.0),
+    ("494-497", 494.0, 497.0),
+    ("498-501", 498.0, 501.0),
+    ("502-505", 502.0, 505.0),
+    ("506-509", 506.0, 509.0),
+    ("510-513", 510.0, 513.0),
+    ("514-517", 514.0, 517.0),
+    ("Greater than 517", 518.0, None),
+]
+
+AAMC_GPA_BANDS = [
+    ("Greater than 3.79", 3.790001, None),
+    ("3.60-3.79", 3.60, 3.79),
+    ("3.40-3.59", 3.40, 3.59),
+    ("3.20-3.39", 3.20, 3.39),
+    ("3.00-3.19", 3.00, 3.19),
+    ("2.80-2.99", 2.80, 2.99),
+    ("2.60-2.79", 2.60, 2.79),
+    ("2.40-2.59", 2.40, 2.59),
+    ("2.20-2.39", 2.20, 2.39),
+    ("2.00-2.19", 2.00, 2.19),
+    ("Less than 2.00", None, 1.999),
+]
+
+AAMC_GRID_ROWS = [
+    ("Greater than 3.79", [12, 13, 62, 370, 1105, 2781, 5208, 8440, 9018, 10645], [278, 420, 935, 2004, 3826, 6914, 9948, 12646, 11973, 12843], [4.3, 3.1, 6.6, 18.5, 28.9, 40.2, 52.4, 66.7, 75.3, 82.9]),
+    ("3.60-3.79", [10, 12, 72, 364, 947, 1962, 3167, 4538, 3711, 2439], [654, 787, 1516, 2741, 4397, 6124, 7836, 8005, 5678, 3369], [1.5, 1.5, 4.7, 13.3, 21.5, 32.0, 40.4, 56.7, 65.4, 72.4]),
+    ("3.40-3.59", [6, 8, 51, 283, 652, 1242, 1686, 1945, 1476, 733], [893, 929, 1547, 2545, 3468, 4451, 5001, 4290, 2624, 1194], [0.7, 0.9, 3.3, 11.1, 18.8, 27.9, 33.7, 45.3, 56.3, 61.4]),
+    ("3.20-3.39", [8, 9, 35, 170, 404, 714, 793, 838, 522, 253], [1086, 932, 1358, 1845, 2395, 2724, 2505, 2043, 1091, 448], [0.7, 1.0, 2.6, 9.2, 16.9, 26.2, 31.7, 41.0, 47.8, 56.5]),
+    ("3.00-3.19", [3, 10, 23, 90, 230, 312, 364, 314, 191, 80], [999, 758, 930, 1214, 1407, 1422, 1279, 919, 451, 188], [0.3, 1.3, 2.5, 7.4, 16.3, 21.9, 28.5, 34.2, 42.4, 42.6]),
+    ("2.80-2.99", [3, 9, 12, 31, 83, 149, 137, 96, 59, 20], [806, 518, 537, 631, 662, 662, 512, 294, 158, 62], [0.4, 1.7, 2.2, 4.9, 12.5, 22.5, 26.8, 32.7, 37.3, 32.3]),
+    ("2.60-2.79", [1, 3, 6, 16, 32, 52, 40, 28, 24, 10], [581, 284, 305, 319, 302, 242, 201, 119, 68, 26], [0.2, 1.1, 2.0, 5.0, 10.6, 21.5, 19.9, 23.5, 35.3, 38.5]),
+    ("2.40-2.59", [1, 0, 2, 3, 9, 15, 18, 9, 3, 5], [437, 168, 154, 150, 119, 98, 72, 41, 12, 18], [0.2, 0.0, 1.3, 2.0, 7.6, 15.3, 25.0, 22.0, 25.0, 27.8]),
+    ("2.20-2.39", [0, 1, 1, 4, 6, 4, 6, 2, None, None], [250, 100, 68, 49, 44, 40, 25, 10, None, None], [0.0, 1.0, 1.5, 8.2, 13.6, 10.0, 24.0, 20.0, None, None]),
+    ("2.00-2.19", [0, 0, 0, 0, 1, 3, None, None, None, None], [110, 33, 27, 16, 14, 17, None, None, None, None], [0.0, 0.0, 0.0, 0.0, 7.1, 17.6, None, None, None, None]),
+    ("Less than 2.00", [0, 0, 0, None, None, None, None, None, None, None], [66, 12, 11, None, None, None, None, None, None, None], [0.0, 0.0, 0.0, None, None, None, None, None, None, None]),
+]
 
 SOURCE_REVIEW_QUEUE_COLUMNS = [
     "review_id",
@@ -182,6 +226,17 @@ ADMISSIONS_STATS_COLUMNS = [
     "overall_gpa_median_matriculated",
     "overall_gpa_mean_enrolled",
     "science_gpa_mean_enrolled",
+    "published_source_count",
+    "published_mcat_average",
+    "published_gpa_average",
+    "published_mcat_spread",
+    "published_gpa_spread",
+    "published_mcat_band",
+    "published_gpa_band",
+    "aamc_acceptance_rate",
+    "aamc_acceptance_rate_band",
+    "data_quality_rank",
+    "data_quality_band",
     "source_name",
     "source_url",
     "source_snapshot_path",
@@ -205,10 +260,29 @@ ADMISSIONS_STATS_CANDIDATES_COLUMNS = [
     "metric_context",
     "gpa",
     "mcat",
+    "published_source_count",
+    "published_mcat_average",
+    "published_gpa_average",
+    "published_mcat_spread",
+    "published_gpa_spread",
+    "data_quality_band",
     "agreement_label",
     "data_confidence",
     "match_score",
     "match_label",
+    "notes",
+]
+
+AAMC_MCAT_GPA_GRID_COLUMNS = [
+    "gpa_band",
+    "mcat_band",
+    "acceptees",
+    "applicants",
+    "acceptance_rate",
+    "acceptance_rate_band",
+    "source_name",
+    "source_url",
+    "source_publication_date",
     "notes",
 ]
 
@@ -404,6 +478,14 @@ def fmt_currency(value: object) -> str:
     if number is None:
         return ""
     return str(int(number))
+
+
+def fmt_optional_int(value: int | None) -> str:
+    return "" if value is None else str(value)
+
+
+def fmt_optional_float(value: float | None, digits: int = 1) -> str:
+    return "" if value is None else fmt_decimal(value, digits)
 
 
 def state_abbrev(value: object) -> str:
@@ -685,10 +767,102 @@ def split_values(value: str) -> list[float]:
     return values
 
 
+def band_for_value(value: float | None, bands: list[tuple[str, float | None, float | None]]) -> str:
+    if value is None:
+        return ""
+    for label, lower, upper in bands:
+        if lower is not None and value < lower:
+            continue
+        if upper is not None and value > upper:
+            continue
+        return label
+    return ""
+
+
+def mcat_band(value: float | None) -> str:
+    if value is None:
+        return ""
+    rounded = int(value + 0.5)
+    return band_for_value(float(rounded), AAMC_MCAT_BANDS)
+
+
+def gpa_band(value: float | None) -> str:
+    if value is None:
+        return ""
+    return band_for_value(round(value, 2), AAMC_GPA_BANDS)
+
+
+def acceptance_rate_band(value: float | None) -> str:
+    if value is None:
+        return ""
+    if value < 10:
+        return "<10%"
+    if value < 25:
+        return "10-24.9%"
+    if value < 40:
+        return "25-39.9%"
+    if value < 55:
+        return "40-54.9%"
+    if value < 70:
+        return "55-69.9%"
+    return "70%+"
+
+
+def aamc_acceptance_rate_for(gpa_value: float | None, mcat_value: float | None) -> float | None:
+    gpa_label = gpa_band(gpa_value)
+    mcat_label = mcat_band(mcat_value)
+    if not gpa_label or not mcat_label:
+        return None
+    for row_gpa_label, _, _, rates in AAMC_GRID_ROWS:
+        if row_gpa_label != gpa_label:
+            continue
+        mcat_index = [label for label, _, _ in AAMC_MCAT_BANDS].index(mcat_label)
+        return rates[mcat_index]
+    return None
+
+
+def write_aamc_mcat_gpa_grid() -> Path:
+    rows: list[dict[str, str]] = []
+    for row_gpa_label, acceptees, applicants, rates in AAMC_GRID_ROWS:
+        for index, (mcat_label, _, _) in enumerate(AAMC_MCAT_BANDS):
+            rate = rates[index]
+            rows.append(
+                {
+                    "gpa_band": row_gpa_label,
+                    "mcat_band": mcat_label,
+                    "acceptees": fmt_optional_int(acceptees[index]),
+                    "applicants": fmt_optional_int(applicants[index]),
+                    "acceptance_rate": fmt_optional_float(rate, 1),
+                    "acceptance_rate_band": acceptance_rate_band(rate),
+                    "source_name": AAMC_GRID_SOURCE_NAME,
+                    "source_url": AAMC_GRID_SOURCE_URL,
+                    "source_publication_date": "2023-10-25",
+                    "notes": (
+                        "AAMC Table A-23, MCAT and GPA Grid for applicants and acceptees to "
+                        "U.S. MD-granting medical schools, 2021-2022 through 2023-2024 aggregated."
+                    ),
+                }
+            )
+    write_csv(AAMC_MCAT_GPA_GRID_CSV, AAMC_MCAT_GPA_GRID_COLUMNS, rows)
+    return AAMC_MCAT_GPA_GRID_CSV
+
+
 def merge_source_registry() -> Path:
     source_path = DATA / "sources.csv"
     rows = read_csv(source_path)
     seen = {(clean(row.get("source_name")), clean(row.get("url"))) for row in rows}
+    aamc_grid_row = {
+        "source_name": AAMC_GRID_SOURCE_NAME,
+        "url": AAMC_GRID_SOURCE_URL,
+        "used_for": "National MCAT/GPA acceptance-rate grid bands for U.S. MD-granting medical schools.",
+        "source_page_updated_or_info_as_of": "2023-10-25",
+        "source_last_checked": SOURCE_LAST_CHECKED_DEFAULT,
+        "notes": "AAMC Table A-23; 2021-2022 through 2023-2024 applicants and acceptees aggregated.",
+    }
+    key = (aamc_grid_row["source_name"], aamc_grid_row["url"])
+    if key not in seen:
+        rows.append(aamc_grid_row)
+        seen.add(key)
     for additions_path in [
         SOURCE_TABLE_DIR / "source_universe_aamc_msar_reports.csv",
         SOURCE_TABLE_DIR / "source_universe_additions.csv",
@@ -1088,20 +1262,53 @@ def cluster_lookup(comparison_rows: list[dict[str, str]]) -> dict[str, dict[str,
     return lookup
 
 
-def published_values(row: dict[str, str], metric: str) -> tuple[list[float], list[str], list[str]]:
-    values: list[float] = []
-    names: list[str] = []
-    urls: list[str] = []
+def per_source_metric_averages(row: dict[str, str], metric: str) -> dict[str, float]:
+    values: dict[str, float] = {}
     for source_key in PUBLISHED_STATS_SOURCE_KEYS:
         source_values = split_values(clean(row.get(f"{source_key}_{metric}")))
         if source_values:
-            values.extend(source_values)
-            source_name, source_url = PUBLISHED_SOURCE_INFO[source_key]
-            names.append(source_name)
-            url = clean(row.get(f"{source_key}_value_url")) or source_url
-            if url:
-                urls.append(url)
-    return values, names, urls
+            values[source_key] = sum(source_values) / len(source_values)
+    return values
+
+
+def published_source_summary(row: dict[str, str]) -> dict[str, object]:
+    gpa_by_source = per_source_metric_averages(row, "gpa")
+    mcat_by_source = per_source_metric_averages(row, "mcat")
+    source_keys = sorted(set(gpa_by_source) | set(mcat_by_source))
+    source_names = []
+    urls = []
+    for source_key in source_keys:
+        source_name, source_url = PUBLISHED_SOURCE_INFO[source_key]
+        source_names.append(source_name)
+        url = clean(row.get(f"{source_key}_value_url")) or source_url
+        urls.append(url)
+
+    gpa_values = list(gpa_by_source.values())
+    mcat_values = list(mcat_by_source.values())
+    gpa_average = sum(gpa_values) / len(gpa_values) if gpa_values else None
+    mcat_average = sum(mcat_values) / len(mcat_values) if mcat_values else None
+    gpa_spread = max(gpa_values) - min(gpa_values) if len(gpa_values) > 1 else 0.0 if gpa_values else None
+    mcat_spread = max(mcat_values) - min(mcat_values) if len(mcat_values) > 1 else 0.0 if mcat_values else None
+    return {
+        "source_keys": source_keys,
+        "source_names": sorted(set(source_names)),
+        "urls": sorted(set(urls)),
+        "source_count": len(source_keys),
+        "gpa_average": gpa_average,
+        "mcat_average": mcat_average,
+        "gpa_spread": gpa_spread,
+        "mcat_spread": mcat_spread,
+    }
+
+
+def data_quality_for_stats(source_count: int, gpa_spread: float | None, mcat_spread: float | None) -> tuple[str, str]:
+    if source_count >= 2 and (mcat_spread is None or mcat_spread <= 2) and (gpa_spread is None or gpa_spread <= 0.10):
+        return "1", "high"
+    if source_count >= 2 and (mcat_spread is None or mcat_spread <= 5) and (gpa_spread is None or gpa_spread <= 0.20):
+        return "2", "medium"
+    if source_count >= 1:
+        return "3", "low"
+    return "4", "review"
 
 
 def build_admissions_stats_outputs(
@@ -1125,11 +1332,9 @@ def build_admissions_stats_outputs(
         source_school_name = clean(row.get("canonical_school_name"))
         match = match_school("mcat_gpa_source_comparison.csv", cluster_id, source_school_name, "", "", schools_by_id, overrides)
         cluster_matches[cluster_id] = match
-        agreement = clean(row.get("agreement_label"))
-        has_published = any(clean(row.get(f"{source_key}_school_name")) for source_key in PUBLISHED_STATS_SOURCE_KEYS)
-        if agreement not in {"close_agreement", "single_source"}:
-            continue
-        if not has_published:
+        summary = published_source_summary(row)
+        source_count = int(summary["source_count"])
+        if source_count < 1:
             review_rows.append(
                 review_queue_row(
                     "mcat_gpa_source_comparison.csv",
@@ -1161,14 +1366,16 @@ def build_admissions_stats_outputs(
             )
             continue
 
-        gpa_values, source_names, urls = published_values(row, "gpa")
-        mcat_values, mcat_source_names, mcat_urls = published_values(row, "mcat")
-        source_names = sorted(set(source_names + mcat_source_names))
-        urls = sorted(set(urls + mcat_urls))
-        if not gpa_values and not mcat_values:
+        gpa_average = summary["gpa_average"]
+        mcat_average = summary["mcat_average"]
+        gpa_spread = summary["gpa_spread"]
+        mcat_spread = summary["mcat_spread"]
+        if gpa_average is None and mcat_average is None:
             continue
         assert match.school is not None
-        confidence = "third_party_close_agreement" if agreement == "close_agreement" else "third_party_single_source"
+        quality_rank, quality_band = data_quality_for_stats(source_count, gpa_spread, mcat_spread)
+        aamc_rate = aamc_acceptance_rate_for(gpa_average, mcat_average)
+        confidence = f"third_party_published_average_{quality_band}_quality"
         normalized_stats.append(
             {
                 "school_id": match.school.school_id,
@@ -1176,27 +1383,38 @@ def build_admissions_stats_outputs(
                 "degree_type": match.school.degree_type,
                 "stats_cohort_year": "",
                 "metric_population": "published school average",
-                "metric_type": "provisional_third_party_median",
+                "metric_type": "third_party_published_source_average",
                 "mcat_median_accepted": "",
                 "mcat_median_matriculated": "",
-                "mcat_mean_enrolled": fmt_decimal(median(mcat_values), 1) if mcat_values else "",
+                "mcat_mean_enrolled": fmt_decimal(mcat_average, 1),
                 "mcat_10th_percentile": "",
                 "mcat_25th_percentile": "",
                 "mcat_75th_percentile": "",
                 "mcat_90th_percentile": "",
                 "overall_gpa_median_accepted": "",
                 "overall_gpa_median_matriculated": "",
-                "overall_gpa_mean_enrolled": fmt_decimal(median(gpa_values), 2) if gpa_values else "",
+                "overall_gpa_mean_enrolled": fmt_decimal(gpa_average, 2),
                 "science_gpa_mean_enrolled": "",
-                "source_name": "; ".join(source_names),
-                "source_url": "; ".join(urls),
+                "published_source_count": str(source_count),
+                "published_mcat_average": fmt_decimal(mcat_average, 1),
+                "published_gpa_average": fmt_decimal(gpa_average, 2),
+                "published_mcat_spread": fmt_decimal(mcat_spread, 1),
+                "published_gpa_spread": fmt_decimal(gpa_spread, 2),
+                "published_mcat_band": mcat_band(mcat_average),
+                "published_gpa_band": gpa_band(gpa_average),
+                "aamc_acceptance_rate": fmt_optional_float(aamc_rate, 1),
+                "aamc_acceptance_rate_band": acceptance_rate_band(aamc_rate),
+                "data_quality_rank": quality_rank,
+                "data_quality_band": quality_band,
+                "source_name": "; ".join(summary["source_names"]),
+                "source_url": "; ".join(summary["urls"]),
                 "source_snapshot_path": "",
                 "source_publication_date": "",
                 "source_last_checked": SOURCE_LAST_CHECKED_DEFAULT,
                 "data_confidence": confidence,
                 "notes": (
-                    "Provisional median of comparable published third-party GPA/MCAT rows; "
-                    "not official MSAR entering-class data."
+                    "Average of available source-level published third-party GPA/MCAT values; "
+                    "CycleTrack excluded from the average; not official MSAR entering-class data."
                 ),
             }
         )
@@ -1217,6 +1435,18 @@ def build_admissions_stats_outputs(
         data_confidence = "cycletrack_context_only" if source_key == "cycletrack_acceptance_median" else "third_party_candidate"
         if clean(cluster.get("agreement_label")):
             data_confidence = f"{data_confidence}_{clean(cluster.get('agreement_label'))}"
+        summary = published_source_summary(cluster) if cluster else {
+            "source_count": "",
+            "mcat_average": None,
+            "gpa_average": None,
+            "mcat_spread": None,
+            "gpa_spread": None,
+        }
+        quality_rank, quality_band = data_quality_for_stats(
+            int(summary["source_count"] or 0),
+            summary["gpa_spread"],
+            summary["mcat_spread"],
+        )
         candidates.append(
             {
                 "candidate_id": f"{source_key}:{physical_row_number}",
@@ -1232,6 +1462,12 @@ def build_admissions_stats_outputs(
                 "metric_context": clean(row.get("metric_context")),
                 "gpa": clean(row.get("gpa")),
                 "mcat": clean(row.get("mcat")),
+                "published_source_count": str(summary["source_count"] or ""),
+                "published_mcat_average": fmt_decimal(summary["mcat_average"], 1),
+                "published_gpa_average": fmt_decimal(summary["gpa_average"], 2),
+                "published_mcat_spread": fmt_decimal(summary["mcat_spread"], 1),
+                "published_gpa_spread": fmt_decimal(summary["gpa_spread"], 2),
+                "data_quality_band": quality_band,
                 "agreement_label": clean(cluster.get("agreement_label")),
                 "data_confidence": data_confidence,
                 "match_score": fmt_decimal(match.score),
@@ -1320,6 +1556,7 @@ def build_report(
     review_queue_rows: list[dict[str, str]],
 ) -> Path:
     cost_safety = Counter(row.get("safety_label", "") or "unknown" for row in cost_candidates)
+    stats_quality = Counter(row.get("data_quality_band", "") or "unknown" for row in read_csv(ADMISSIONS_STATS_CSV))
     review_reasons = Counter(row.get("review_reason", "") or "unknown" for row in review_queue_rows)
     rows = [
         report_row(
@@ -1363,6 +1600,17 @@ def build_report(
             "Work data/manual/source_review_queue.csv and keep notes transparent.",
         ),
     ]
+    for quality_band, count in sorted(stats_quality.items()):
+        rows.append(
+            report_row(
+                "info",
+                "admissions_stats_quality",
+                quality_band,
+                count,
+                "Canonical GPA/MCAT rows by published-source data quality band.",
+                "Use data_quality_band filters before relying on the average.",
+            )
+        )
     for reason, count in sorted(review_reasons.items()):
         rows.append(
             report_row(
@@ -1402,6 +1650,7 @@ def build_source_integration() -> list[Path]:
     overrides = load_overrides()
 
     written: list[Path] = []
+    written.append(write_aamc_mcat_gpa_grid())
     written.append(merge_source_registry())
 
     cost_paths, cost_review_rows, cost_queue_rows, cost_candidates = build_cost_outputs(schools_by_id)

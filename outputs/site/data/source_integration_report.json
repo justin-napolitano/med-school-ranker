@@ -17,7 +17,7 @@
   },
   {
     "category": "admissions_stats",
-    "count": "44",
+    "count": "102",
     "item": "canonical_rows",
     "message": "Third-party GPA/MCAT rows promoted only when agreement policy allows it.",
     "next_action": "Treat as provisional until official school/MSAR data is reviewed.",
@@ -33,10 +33,34 @@
   },
   {
     "category": "source_review",
-    "count": "1005",
+    "count": "1034",
     "item": "open_review_rows",
     "message": "Rows needing source matching, conflict, or coverage review.",
     "next_action": "Work data/manual/source_review_queue.csv and keep notes transparent.",
+    "severity": "info"
+  },
+  {
+    "category": "admissions_stats_quality",
+    "count": "42",
+    "item": "high",
+    "message": "Canonical GPA/MCAT rows by published-source data quality band.",
+    "next_action": "Use data_quality_band filters before relying on the average.",
+    "severity": "info"
+  },
+  {
+    "category": "admissions_stats_quality",
+    "count": "43",
+    "item": "low",
+    "message": "Canonical GPA/MCAT rows by published-source data quality band.",
+    "next_action": "Use data_quality_band filters before relying on the average.",
+    "severity": "info"
+  },
+  {
+    "category": "admissions_stats_quality",
+    "count": "17",
+    "item": "medium",
+    "message": "Canonical GPA/MCAT rows by published-source data quality band.",
+    "next_action": "Use data_quality_band filters before relying on the average.",
     "severity": "info"
   },
   {
@@ -57,7 +81,7 @@
   },
   {
     "category": "source_review_reason",
-    "count": "97",
+    "count": "106",
     "item": "ambiguous_match_gap",
     "message": "Open review row count by reason.",
     "next_action": "Prioritize high-value rows before relying on ranking outputs.",
@@ -65,7 +89,7 @@
   },
   {
     "category": "source_review_reason",
-    "count": "228",
+    "count": "242",
     "item": "below_safe_threshold",
     "message": "Open review row count by reason.",
     "next_action": "Prioritize high-value rows before relying on ranking outputs.",
@@ -81,7 +105,7 @@
   },
   {
     "category": "source_review_reason",
-    "count": "252",
+    "count": "258",
     "item": "low_match_score",
     "message": "Open review row count by reason.",
     "next_action": "Prioritize high-value rows before relying on ranking outputs.",

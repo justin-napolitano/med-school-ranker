@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Iterable
 
 from med_school_ranker.paths import (
+    AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
     ADMISSIONS_STATS_CANDIDATES_CSV,
@@ -39,6 +40,7 @@ JSON_OUTPUTS = {
     "school_master": MASTER_CSV,
     "calculated_rankings": RANKINGS_CSV,
     "applicant_profiles": APPLICANT_PROFILES_CSV,
+    "aamc_mcat_gpa_grid": AAMC_MCAT_GPA_GRID_CSV,
     "admissions_stats": ADMISSIONS_STATS_CSV,
     "cost_and_debt": COST_AND_DEBT_CSV,
     "admissions_policies": ADMISSIONS_POLICIES_CSV,
@@ -272,8 +274,10 @@ def mcat_gpa_status() -> dict[str, object]:
     comparable_rows = read_csv(SOURCE_TABLE_DIR / "all_comparable_mcat_gpa_sources.csv")
     comparison_rows = read_csv(SOURCE_DIFFS_DIR / "mcat_gpa_source_comparison.csv")
     conflict_rows = read_csv(SOURCE_DIFFS_DIR / "mcat_gpa_conflicts.csv")
+    admissions_stats = read_csv(ADMISSIONS_STATS_CSV)
     source_counts = Counter(row.get("source_key", "") or "unknown" for row in comparable_rows)
     agreement_counts = Counter(row.get("agreement_label", "") or "unknown" for row in comparison_rows)
+    quality_counts = Counter(row.get("data_quality_band", "") or "unknown" for row in admissions_stats)
     return {
         "comparable_rows": len(comparable_rows),
         "rows_with_gpa": count_populated(comparable_rows, "gpa"),
@@ -282,6 +286,7 @@ def mcat_gpa_status() -> dict[str, object]:
         "comparison_clusters": len(comparison_rows),
         "conflict_rows": len(conflict_rows),
         "agreement_counts": dict(sorted(agreement_counts.items())),
+        "quality_counts": dict(sorted(quality_counts.items())),
     }
 
 
@@ -349,6 +354,7 @@ def build_site_payload() -> dict[str, object]:
     rankings = read_csv(RANKINGS_CSV)
     applicant_profiles = read_csv(APPLICANT_PROFILES_CSV)
     admissions_stats = read_csv(ADMISSIONS_STATS_CSV)
+    aamc_mcat_gpa_grid = read_csv(AAMC_MCAT_GPA_GRID_CSV)
     cost_and_debt = read_csv(COST_AND_DEBT_CSV)
     admissions_policies = read_csv(ADMISSIONS_POLICIES_CSV)
     letter_requirements = read_csv(LETTER_REQUIREMENTS_CSV)
@@ -413,6 +419,10 @@ def build_site_payload() -> dict[str, object]:
                     "partner_notes_indicator": "yes" if partner_row.get("partner_notes", "").strip() else "no",
                     "hard_no_flag": is_truthy(partner_row.get("hard_no_flag")),
                     "admissions_stats_present": "yes" if has_admissions_stats(stats_row) else "no",
+                    "admissions_data_quality_band": stats_row.get("data_quality_band", "").strip() or "missing",
+                    "published_mcat_band": stats_row.get("published_mcat_band", "").strip() or "missing",
+                    "published_gpa_band": stats_row.get("published_gpa_band", "").strip() or "missing",
+                    "aamc_acceptance_rate_band": stats_row.get("aamc_acceptance_rate_band", "").strip() or "missing",
                     "cost_data_present": "yes" if cost_row else "no",
                     "admissions_policy_count": len(policy_rows),
                     "letter_requirement_count": len(letter_rows),
@@ -451,6 +461,7 @@ def build_site_payload() -> dict[str, object]:
         "school_master": school_master,
         "calculated_rankings": rankings,
         "applicant_profiles": applicant_profiles,
+        "aamc_mcat_gpa_grid": aamc_mcat_gpa_grid,
         "admissions_stats": admissions_stats,
         "cost_and_debt": cost_and_debt,
         "admissions_policies": admissions_policies,
@@ -616,7 +627,7 @@ let currentView = 'dashboard';
 let selectedSchoolId = payload.schools[0]?.school?.school_id || '';
 let sortState = {};
 let filters = {
-  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', warnings: '', partner: ''},
+  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: ''},
   sources: {sourceMissing: ''},
 };
 
@@ -748,6 +759,10 @@ function rankingFilters() {
   const states = [...new Set(payload.schools.map(s => s.school.state).filter(Boolean))].sort();
   const tiers = [...new Set(payload.schools.map(s => s.ranking.dynamic_tier).filter(Boolean))].sort();
   const buckets = [...new Set(payload.schools.map(s => s.ranking.suggested_funnel_bucket).filter(Boolean))].sort();
+  const qualities = [...new Set(payload.schools.map(s => s.derived.admissions_data_quality_band).filter(Boolean))].sort();
+  const mcatBands = [...new Set(payload.schools.map(s => s.derived.published_mcat_band).filter(Boolean))].sort();
+  const gpaBands = [...new Set(payload.schools.map(s => s.derived.published_gpa_band).filter(Boolean))].sort();
+  const aamcRateBands = [...new Set(payload.schools.map(s => s.derived.aamc_acceptance_rate_band).filter(Boolean))].sort();
   const f = filters.rankings;
   return `
     <div class="filters">
@@ -758,11 +773,15 @@ function rankingFilters() {
       <label>Hard No <select id="rankHardNo"><option value="" ${f.hardNo === '' ? 'selected' : ''}>All</option><option value="yes" ${f.hardNo === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${f.hardNo === 'no' ? 'selected' : ''}>No</option></select></label>
       <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>
       <label>Partner <select id="rankPartner"><option value="" ${f.partner === '' ? 'selected' : ''}>All</option><option value="present" ${f.partner === 'present' ? 'selected' : ''}>Present</option><option value="missing" ${f.partner === 'missing' ? 'selected' : ''}>Missing</option></select></label>
+      <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
+      <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
+      <label>GPA Band <select id="rankGpaBand"><option value="" ${f.gpaBand === '' ? 'selected' : ''}>All</option>${optionTags(gpaBands, f.gpaBand)}</select></label>
+      <label>AAMC Rate Band <select id="rankAamcRateBand"><option value="" ${f.aamcRateBand === '' ? 'selected' : ''}>All</option>${optionTags(aamcRateBands, f.aamcRateBand)}</select></label>
     </div>`;
 }
 
 function rankingsRows() {
-  const {degree, state, tier, bucket, hardNo, warnings, partner} = filters.rankings;
+  const {degree, state, tier, bucket, hardNo, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand} = filters.rankings;
   return filteredSchools().filter(s => {
     if (degree && s.school.degree_type !== degree) return false;
     if (state && s.school.state !== state) return false;
@@ -773,6 +792,10 @@ function rankingsRows() {
     if (warnings === 'yes' && s.derived.warning_count < 1) return false;
     if (warnings === 'no' && s.derived.warning_count > 0) return false;
     if (partner && s.derived.partner_input_status !== partner) return false;
+    if (quality && s.derived.admissions_data_quality_band !== quality) return false;
+    if (mcatBand && s.derived.published_mcat_band !== mcatBand) return false;
+    if (gpaBand && s.derived.published_gpa_band !== gpaBand) return false;
+    if (aamcRateBand && s.derived.aamc_acceptance_rate_band !== aamcRateBand) return false;
     return true;
   });
 }
@@ -787,6 +810,10 @@ function renderRankings() {
     rankHardNo: 'hardNo',
     rankWarnings: 'warnings',
     rankPartner: 'partner',
+    rankQuality: 'quality',
+    rankMcatBand: 'mcatBand',
+    rankGpaBand: 'gpaBand',
+    rankAamcRateBand: 'aamcRateBand',
   };
   Object.entries(bindings).forEach(([id, key]) => $(id).addEventListener('change', event => {
     filters.rankings[key] = event.target.value;
@@ -808,6 +835,12 @@ function renderRankingTable() {
     {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
     {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
     {key:'ranking.data_completeness_score', label:'Data', render:s=>missing(s.ranking.data_completeness_score)},
+    {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
+    {key:'admissions_stats.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.admissions_stats.published_mcat_average)},
+    {key:'admissions_stats.published_gpa_average', label:'GPA Avg', render:s=>missing(s.admissions_stats.published_gpa_average)},
+    {key:'derived.published_mcat_band', label:'MCAT Band', render:s=>missing(s.derived.published_mcat_band)},
+    {key:'derived.published_gpa_band', label:'GPA Band', render:s=>missing(s.derived.published_gpa_band)},
+    {key:'admissions_stats.aamc_acceptance_rate', label:'AAMC Rate', render:s=>missing(s.admissions_stats.aamc_acceptance_rate)},
     {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
     {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
     {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status},
@@ -850,8 +883,16 @@ function renderDetail() {
         ['Source status', item.derived.source_queue_status],
         ['Candidate URL', item.admissions_source.candidate_source_url],
         ['Stats present', item.derived.admissions_stats_present],
-        ['MCAT mean/enrolled', item.admissions_stats.mcat_mean_enrolled],
-        ['GPA mean/enrolled', item.admissions_stats.overall_gpa_mean_enrolled],
+        ['Published source count', item.admissions_stats.published_source_count],
+        ['Published MCAT average', item.admissions_stats.published_mcat_average],
+        ['Published GPA average', item.admissions_stats.published_gpa_average],
+        ['MCAT spread', item.admissions_stats.published_mcat_spread],
+        ['GPA spread', item.admissions_stats.published_gpa_spread],
+        ['Data quality', item.admissions_stats.data_quality_band],
+        ['MCAT band', item.admissions_stats.published_mcat_band],
+        ['GPA band', item.admissions_stats.published_gpa_band],
+        ['AAMC grid rate', item.admissions_stats.aamc_acceptance_rate],
+        ['AAMC rate band', item.admissions_stats.aamc_acceptance_rate_band],
         ['Confidence', item.admissions_stats.data_confidence],
       ])}
       ${detailPanel('Cost and Debt', [
@@ -1024,6 +1065,13 @@ function renderStatus() {
           {key:'key', label:'Label', render:r=>r.key},
           {key:'value', label:'Count', render:r=>r.value},
         ], objectRows(mcat.agreement_counts), 'statusAgreement')}
+      </div>
+      <div class="panel">
+        <h3>GPA/MCAT Data Quality</h3>
+        ${table([
+          {key:'key', label:'Band', render:r=>r.key},
+          {key:'value', label:'Rows', render:r=>r.value},
+        ], objectRows(mcat.quality_counts), 'statusQuality')}
       </div>
       <div class="panel">
         <h3>GPA/MCAT Sources</h3>

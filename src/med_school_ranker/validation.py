@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable
 
 from med_school_ranker.paths import (
+    AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
     ADMISSIONS_STATS_CSV,
@@ -22,6 +23,7 @@ from med_school_ranker.paths import (
     PARTNER_INPUTS_CSV,
     PREFERENCES_CSV,
     RAW_DATA,
+    REFERENCE_DATA,
     ROOT,
     SCENARIO_WEIGHTS_CSV,
     SOURCE_MATCH_OVERRIDES_CSV,
@@ -29,6 +31,7 @@ from med_school_ranker.paths import (
 )
 from med_school_ranker.source_integration import (
     ADMISSIONS_POLICIES_COLUMNS,
+    AAMC_MCAT_GPA_GRID_COLUMNS,
     COST_AND_DEBT_COLUMNS,
     LETTER_REQUIREMENTS_COLUMNS,
     SOURCE_REVIEW_QUEUE_COLUMNS,
@@ -81,6 +84,17 @@ ADMISSIONS_STATS_COLUMNS = [
     "overall_gpa_median_matriculated",
     "overall_gpa_mean_enrolled",
     "science_gpa_mean_enrolled",
+    "published_source_count",
+    "published_mcat_average",
+    "published_gpa_average",
+    "published_mcat_spread",
+    "published_gpa_spread",
+    "published_mcat_band",
+    "published_gpa_band",
+    "aamc_acceptance_rate",
+    "aamc_acceptance_rate_band",
+    "data_quality_rank",
+    "data_quality_band",
     "source_name",
     "source_url",
     "source_snapshot_path",
@@ -143,6 +157,7 @@ REQUIRED_COLUMNS = {
     "data/user_preferences.csv": ["score_group", "column_name", "weight"],
     "data/scenario_weights.csv": ["scenario", "column_name", "weight"],
     "data/applicant_profiles.csv": APPLICANT_PROFILE_COLUMNS,
+    "data/reference/aamc_mcat_gpa_acceptance_grid.csv": AAMC_MCAT_GPA_GRID_COLUMNS,
     "data/normalized/admissions_stats.csv": ADMISSIONS_STATS_COLUMNS,
     "data/normalized/cost_and_debt.csv": COST_AND_DEBT_COLUMNS,
     "data/normalized/admissions_policies.csv": ADMISSIONS_POLICIES_COLUMNS,
@@ -163,6 +178,7 @@ MCAT_COLUMNS = [
     "mcat_25th_percentile",
     "mcat_75th_percentile",
     "mcat_90th_percentile",
+    "published_mcat_average",
 ]
 
 GPA_COLUMNS = [
@@ -172,6 +188,7 @@ GPA_COLUMNS = [
     "overall_gpa_median_matriculated",
     "overall_gpa_mean_enrolled",
     "science_gpa_mean_enrolled",
+    "published_gpa_average",
 ]
 
 SOURCE_METADATA_COLUMNS = [
@@ -230,6 +247,7 @@ class DataIssue:
 def ensure_data_layer_dirs(root: Path = ROOT) -> None:
     for path in [
         root / RAW_DATA.relative_to(ROOT),
+        root / REFERENCE_DATA.relative_to(ROOT),
         root / NORMALIZED_DATA.relative_to(ROOT),
         root / MANUAL_DATA.relative_to(ROOT),
         root / "data/manual/private",
