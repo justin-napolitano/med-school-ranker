@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { RotateCcw, X } from "lucide-react";
 import { liveComponentMetadata, liveWeightDescriptions, liveWeightOrder, liveWeightPresets } from "../lib/live-scoring";
 import type { LiveWeightKey, PreferenceState, ProductSchool } from "../lib/school-utils";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export function PreferenceControls({ preferences, schools, onChange, compact = false, mode = "full" }: Props) {
+  const [actionNotice, setActionNotice] = useState("");
   const states = statesForSchools(schools);
   const cityOptions = cityOptionsForSchools(schools);
   const hasOwnershipLabels = schoolsHaveOwnershipLabels(schools);
@@ -31,6 +33,7 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
   function addExcludedState(state: string) {
     if (!state || preferences.excludedStates.includes(state)) return;
     onChange("excludedStates", [...preferences.excludedStates, state].sort());
+    setActionNotice(`Excluded ${stateLabel(state)}.`);
   }
 
   function removeExcludedState(state: string) {
@@ -38,11 +41,13 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
       "excludedStates",
       preferences.excludedStates.filter((item) => item !== state),
     );
+    setActionNotice(`Restored ${stateLabel(state)}.`);
   }
 
   function addExcludedCity(city: string) {
     if (!city || preferences.excludedCities.includes(city)) return;
     onChange("excludedCities", [...preferences.excludedCities, city].sort((a, b) => cityLabelFromKey(a).localeCompare(cityLabelFromKey(b))));
+    setActionNotice(`Excluded ${cityLabelFromKey(city)}.`);
   }
 
   function removeExcludedCity(city: string) {
@@ -50,6 +55,7 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
       "excludedCities",
       preferences.excludedCities.filter((item) => item !== city),
     );
+    setActionNotice(`Restored ${cityLabelFromKey(city)}.`);
   }
 
   function updateWeight(key: LiveWeightKey, value: number) {
@@ -65,13 +71,15 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
   }
 
   function applyPreset(preset: (typeof liveWeightPresets)[number]) {
-    onChange("liveWeights", preset.weights);
+    onChange("liveWeights", { ...preset.weights });
     if (preset.homeState) onChange("homeState", preset.homeState);
+    setActionNotice(`Applied ${preset.label}.`);
   }
 
   function clearExclusions() {
     onChange("excludedStates", []);
     onChange("excludedCities", []);
+    setActionNotice("Cleared geography exclusions.");
   }
 
   function clearFilters() {
@@ -82,10 +90,22 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
     onChange("query", "");
     onChange("ownershipType", "all");
     clearExclusions();
+    setActionNotice("Cleared filters.");
+  }
+
+  function resetWeights() {
+    onChange("liveWeights", { ...defaultLiveWeights });
+    setActionNotice("Reset scoring weights.");
+  }
+
+  function isPresetActive(preset: (typeof liveWeightPresets)[number]): boolean {
+    const weightsMatch = liveWeightOrder.every((key) => preferences.liveWeights[key] === preset.weights[key]);
+    const stateMatches = preset.homeState ? preferences.homeState === preset.homeState : true;
+    return weightsMatch && stateMatches;
   }
 
   return (
-    <form className={compact ? "control-grid compact" : "control-grid"} aria-label="Applicant list inputs">
+    <form className={compact ? "control-grid compact" : "control-grid"} aria-label="Applicant list inputs" onSubmit={(event) => event.preventDefault()}>
       <label>
         <span>MCAT</span>
         <input
@@ -204,26 +224,26 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
           <div className="wide filter-tools" aria-label="Active exclusions and filter tools">
             {hasOwnershipLabels ? null : <p className="control-note">Ownership labels are not populated yet, so ownership filtering is disabled instead of inferred.</p>}
             <div className="quick-actions">
-              <button className="action-button" type="button" onClick={() => addExcludedState("TX")} disabled={preferences.excludedStates.includes("TX")}>
+              <button className="action-button" type="button" onClick={(event) => { event.preventDefault(); addExcludedState("TX"); }} disabled={preferences.excludedStates.includes("TX")}>
                 Exclude TX
               </button>
-              <button className="action-button" type="button" onClick={clearExclusions} disabled={!preferences.excludedStates.length && !preferences.excludedCities.length}>
+              <button className="action-button" type="button" onClick={(event) => { event.preventDefault(); clearExclusions(); }} disabled={!preferences.excludedStates.length && !preferences.excludedCities.length}>
                 Clear exclusions
               </button>
-              <button className="action-button" type="button" onClick={clearFilters}>
+              <button className="action-button" type="button" onClick={(event) => { event.preventDefault(); clearFilters(); }}>
                 Clear filters
               </button>
             </div>
             {preferences.excludedStates.length || preferences.excludedCities.length ? (
               <div className="chip-row" aria-label="Excluded geography">
                 {preferences.excludedStates.map((state) => (
-                  <button className="filter-chip" type="button" key={state} onClick={() => removeExcludedState(state)}>
+                  <button className="filter-chip" type="button" key={state} onClick={(event) => { event.preventDefault(); removeExcludedState(state); }}>
                     {state}
                     <X size={13} aria-hidden="true" />
                   </button>
                 ))}
                 {preferences.excludedCities.map((city) => (
-                  <button className="filter-chip" type="button" key={city} onClick={() => removeExcludedCity(city)}>
+                  <button className="filter-chip" type="button" key={city} onClick={(event) => { event.preventDefault(); removeExcludedCity(city); }}>
                     {cityLabelFromKey(city)}
                     <X size={13} aria-hidden="true" />
                   </button>
@@ -247,11 +267,11 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
         <summary>Scoring weights</summary>
         <div className="preset-row" aria-label="Scoring presets">
           {liveWeightPresets.map((preset) => (
-            <button className="action-button" type="button" key={preset.id} onClick={() => applyPreset(preset)}>
+            <button className={isPresetActive(preset) ? "action-button selected" : "action-button"} type="button" key={preset.id} onClick={(event) => { event.preventDefault(); applyPreset(preset); }}>
               {preset.label}
             </button>
           ))}
-          <button className="action-button" type="button" onClick={() => onChange("liveWeights", defaultLiveWeights)}>
+          <button className="action-button" type="button" onClick={(event) => { event.preventDefault(); resetWeights(); }}>
             <RotateCcw size={15} aria-hidden="true" />
             Reset weights
           </button>
@@ -278,6 +298,7 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
           ))}
         </div>
       </details>
+      {actionNotice ? <p className="wide control-note" role="status">{actionNotice}</p> : null}
     </form>
   );
 }
