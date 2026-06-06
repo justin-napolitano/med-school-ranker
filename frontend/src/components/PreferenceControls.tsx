@@ -16,16 +16,18 @@ type Props = {
   schools: ProductSchool[];
   onChange: <K extends keyof PreferenceState>(key: K, value: PreferenceState[K]) => void;
   compact?: boolean;
+  mode?: "full" | "scoring";
 };
 
 const weightOrder: LiveWeightKey[] = ["mcatFit", "gpaFit", "stateFit", "costFit", "baselineAttendance"];
 
-export function PreferenceControls({ preferences, schools, onChange, compact = false }: Props) {
+export function PreferenceControls({ preferences, schools, onChange, compact = false, mode = "full" }: Props) {
   const states = statesForSchools(schools);
   const cityOptions = cityOptionsForSchools(schools);
   const hasOwnershipLabels = schoolsHaveOwnershipLabels(schools);
   const availableStates = states.filter((state) => !preferences.excludedStates.includes(state));
   const availableCities = cityOptions.filter((city) => !preferences.excludedCities.includes(city));
+  const showFilters = mode === "full";
 
   function addExcludedState(state: string) {
     if (!state || preferences.excludedStates.includes(state)) return;
@@ -108,124 +110,128 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
           ))}
         </select>
       </label>
-      <label>
-        <span>Degree</span>
-        <select value={preferences.degree} onChange={(event) => onChange("degree", event.currentTarget.value as PreferenceState["degree"])}>
-          <option value="all">MD and DO</option>
-          <option value="MD">MD</option>
-          <option value="DO">DO</option>
-        </select>
-      </label>
-      <label>
-        <span>Region</span>
-        <select value={preferences.region} onChange={(event) => onChange("region", event.currentTarget.value)}>
-          <option value="all">All regions</option>
-          <option value="Northeast">Northeast</option>
-          <option value="South">South</option>
-          <option value="Midwest">Midwest</option>
-          <option value="West">West</option>
-        </select>
-      </label>
-      <label>
-        <span>Cost data</span>
-        <select value={preferences.cost} onChange={(event) => onChange("cost", event.currentTarget.value as PreferenceState["cost"])}>
-          <option value="any">Any</option>
-          <option value="has-cost">Has cost data</option>
-          <option value="lower-cost">Lower listed cost first</option>
-        </select>
-      </label>
-      <label>
-        <span>Exclude state</span>
-        <select value="" onChange={(event) => addExcludedState(event.currentTarget.value)}>
-          <option value="">Choose state</option>
-          {availableStates.map((state) => (
-            <option value={state} key={state}>
-              {stateLabel(state)}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span>Exclude city</span>
-        <select value="" onChange={(event) => addExcludedCity(event.currentTarget.value)}>
-          <option value="">Choose city</option>
-          {availableCities.map((city) => (
-            <option value={city} key={city}>
-              {cityLabelFromKey(city)}
-            </option>
-          ))}
-        </select>
-      </label>
-      <label>
-        <span>Institution ownership</span>
-        <select
-          value={hasOwnershipLabels ? preferences.ownershipType : "unknown"}
-          disabled={!hasOwnershipLabels}
-          onChange={(event) => onChange("ownershipType", event.currentTarget.value as PreferenceState["ownershipType"])}
-        >
-          {hasOwnershipLabels ? (
-            <>
-              <option value="all">All ownership types</option>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-              <option value="unknown">Unknown</option>
-            </>
-          ) : (
-            <option value="unknown">Unknown</option>
-          )}
-        </select>
-      </label>
-      <label>
-        <span>Score-screen fit</span>
-        <select value={preferences.fit} onChange={(event) => onChange("fit", event.currentTarget.value as PreferenceState["fit"])}>
-          <option value="all">All</option>
-          <option value="within">Within published range</option>
-          <option value="near">Near published range</option>
-          <option value="below">Below published range</option>
-          <option value="above">Above published range</option>
-          <option value="needs-inputs">Needs inputs or data</option>
-        </select>
-      </label>
-      <div className="wide filter-tools" aria-label="Active exclusions and filter tools">
-        {hasOwnershipLabels ? null : <p className="control-note">Ownership labels are not populated yet, so ownership filtering is disabled instead of inferred.</p>}
-        <div className="quick-actions">
-          <button className="action-button" type="button" onClick={() => addExcludedState("TX")} disabled={preferences.excludedStates.includes("TX")}>
-            Exclude TX
-          </button>
-          <button className="action-button" type="button" onClick={clearExclusions} disabled={!preferences.excludedStates.length && !preferences.excludedCities.length}>
-            Clear exclusions
-          </button>
-          <button className="action-button" type="button" onClick={clearFilters}>
-            Clear filters
-          </button>
-        </div>
-        {preferences.excludedStates.length || preferences.excludedCities.length ? (
-          <div className="chip-row" aria-label="Excluded geography">
-            {preferences.excludedStates.map((state) => (
-              <button className="filter-chip" type="button" key={state} onClick={() => removeExcludedState(state)}>
-                {state}
-                <X size={13} aria-hidden="true" />
+      {showFilters ? (
+        <>
+          <label>
+            <span>Degree</span>
+            <select value={preferences.degree} onChange={(event) => onChange("degree", event.currentTarget.value as PreferenceState["degree"])}>
+              <option value="all">MD and DO</option>
+              <option value="MD">MD</option>
+              <option value="DO">DO</option>
+            </select>
+          </label>
+          <label>
+            <span>Region</span>
+            <select value={preferences.region} onChange={(event) => onChange("region", event.currentTarget.value)}>
+              <option value="all">All regions</option>
+              <option value="Northeast">Northeast</option>
+              <option value="South">South</option>
+              <option value="Midwest">Midwest</option>
+              <option value="West">West</option>
+            </select>
+          </label>
+          <label>
+            <span>Cost data</span>
+            <select value={preferences.cost} onChange={(event) => onChange("cost", event.currentTarget.value as PreferenceState["cost"])}>
+              <option value="any">Any</option>
+              <option value="has-cost">Has cost data</option>
+              <option value="lower-cost">Lower listed cost first</option>
+            </select>
+          </label>
+          <label>
+            <span>Exclude state</span>
+            <select value="" onChange={(event) => addExcludedState(event.currentTarget.value)}>
+              <option value="">Choose state</option>
+              {availableStates.map((state) => (
+                <option value={state} key={state}>
+                  {stateLabel(state)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Exclude city</span>
+            <select value="" onChange={(event) => addExcludedCity(event.currentTarget.value)}>
+              <option value="">Choose city</option>
+              {availableCities.map((city) => (
+                <option value={city} key={city}>
+                  {cityLabelFromKey(city)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span>Institution ownership</span>
+            <select
+              value={hasOwnershipLabels ? preferences.ownershipType : "unknown"}
+              disabled={!hasOwnershipLabels}
+              onChange={(event) => onChange("ownershipType", event.currentTarget.value as PreferenceState["ownershipType"])}
+            >
+              {hasOwnershipLabels ? (
+                <>
+                  <option value="all">All ownership types</option>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                  <option value="unknown">Unknown</option>
+                </>
+              ) : (
+                <option value="unknown">Unknown</option>
+              )}
+            </select>
+          </label>
+          <label>
+            <span>Score-screen fit</span>
+            <select value={preferences.fit} onChange={(event) => onChange("fit", event.currentTarget.value as PreferenceState["fit"])}>
+              <option value="all">All</option>
+              <option value="within">Within published range</option>
+              <option value="near">Near published range</option>
+              <option value="below">Below published range</option>
+              <option value="above">Above published range</option>
+              <option value="needs-inputs">Needs inputs or data</option>
+            </select>
+          </label>
+          <div className="wide filter-tools" aria-label="Active exclusions and filter tools">
+            {hasOwnershipLabels ? null : <p className="control-note">Ownership labels are not populated yet, so ownership filtering is disabled instead of inferred.</p>}
+            <div className="quick-actions">
+              <button className="action-button" type="button" onClick={() => addExcludedState("TX")} disabled={preferences.excludedStates.includes("TX")}>
+                Exclude TX
               </button>
-            ))}
-            {preferences.excludedCities.map((city) => (
-              <button className="filter-chip" type="button" key={city} onClick={() => removeExcludedCity(city)}>
-                {cityLabelFromKey(city)}
-                <X size={13} aria-hidden="true" />
+              <button className="action-button" type="button" onClick={clearExclusions} disabled={!preferences.excludedStates.length && !preferences.excludedCities.length}>
+                Clear exclusions
               </button>
-            ))}
+              <button className="action-button" type="button" onClick={clearFilters}>
+                Clear filters
+              </button>
+            </div>
+            {preferences.excludedStates.length || preferences.excludedCities.length ? (
+              <div className="chip-row" aria-label="Excluded geography">
+                {preferences.excludedStates.map((state) => (
+                  <button className="filter-chip" type="button" key={state} onClick={() => removeExcludedState(state)}>
+                    {state}
+                    <X size={13} aria-hidden="true" />
+                  </button>
+                ))}
+                {preferences.excludedCities.map((city) => (
+                  <button className="filter-chip" type="button" key={city} onClick={() => removeExcludedCity(city)}>
+                    {cityLabelFromKey(city)}
+                    <X size={13} aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {hasOwnershipLabels && preferences.ownershipType !== "all" ? <p className="control-note">Ownership filter: {ownershipLabel(preferences.ownershipType)}</p> : null}
           </div>
-        ) : null}
-        {hasOwnershipLabels && preferences.ownershipType !== "all" ? <p className="control-note">Ownership filter: {ownershipLabel(preferences.ownershipType)}</p> : null}
-      </div>
-      <label className="wide">
-        <span>Search</span>
-        <input
-          value={preferences.query}
-          onChange={(event) => onChange("query", event.currentTarget.value)}
-          placeholder="School, city, state"
-          aria-label="Search schools"
-        />
-      </label>
+          <label className="wide">
+            <span>Search</span>
+            <input
+              value={preferences.query}
+              onChange={(event) => onChange("query", event.currentTarget.value)}
+              placeholder="School, city, state"
+              aria-label="Search schools"
+            />
+          </label>
+        </>
+      ) : null}
       <details className="wide weight-panel">
         <summary>Scoring weights</summary>
         <div className="preset-row" aria-label="Scoring presets">

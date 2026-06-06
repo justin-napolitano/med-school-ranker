@@ -404,6 +404,14 @@ select:focus-visible {
   text-align: center;
 }
 
+.list-heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .card-feed {
   display: grid;
   gap: 14px;
