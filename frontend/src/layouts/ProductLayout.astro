@@ -13,10 +13,12 @@ const {
   description = "Static applicant product frontend for generated medical school ranking data.",
   active = "/",
   surface = "product",
+  shellNav = true,
 } = Astro.props;
 
 const navItems: NavItem[] = [
   { href: "/", label: "Build My List" },
+  { href: "/schools/", label: "Schools" },
   { href: "/interested/", label: "Interested" },
   { href: "/applying/", label: "Applying" },
   { href: "/not-interested/", label: "Not Interested" },
@@ -42,15 +44,17 @@ const navItems: NavItem[] = [
           <span class="brand-mark" aria-hidden="true">AL</span>
           <span>Applicant List</span>
         </a>
-        <nav class="primary-nav" aria-label="Primary">
-          {
-            navItems.map((item) => (
-              <a class:list={["nav-link", item.admin && "admin-link", active === item.href && "active"]} href={withBase(item.href)}>
-                {item.label}
-              </a>
-            ))
-          }
-        </nav>
+        {
+          shellNav ? (
+            <nav class="primary-nav" aria-label="Primary">
+              {navItems.map((item) => (
+                <a class:list={["nav-link", item.admin && "admin-link", active === item.href && "active"]} href={withBase(item.href)}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          ) : null
+        }
       </header>
       <main class="page-frame">
         <slot />

@@ -151,6 +151,21 @@ select:focus-visible {
   padding: 36px 28px 64px;
 }
 
+.product-app-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.app-shell-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin: -10px 0 4px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+
 .page-header,
 .profile-header {
   display: flex;
@@ -791,6 +806,25 @@ dd {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.profile-action-panel {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.profile-action-panel .fit-line {
+  margin: 0;
+}
+
+.profile-actions {
+  margin-top: 0;
+}
+
 .profile-section.wide {
   grid-column: 1 / -1;
 }
@@ -925,6 +959,122 @@ body[data-surface="admin"] .page-header h1 {
   margin-bottom: 12px;
 }
 
+.school-browser-surface {
+  display: grid;
+  grid-template-columns: minmax(270px, 330px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.school-browser-results {
+  min-width: 0;
+}
+
+.school-browser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 14px;
+}
+
+.browser-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.browser-card .card-meta-row,
+.browser-card .card-actions {
+  margin-top: 0;
+}
+
+.compact-metrics {
+  grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+}
+
+.status-chip.override {
+  border-color: rgba(27, 95, 120, 0.28);
+  background: var(--blue-soft);
+  color: var(--accent-strong);
+}
+
+.override-editor {
+  display: grid;
+  gap: 13px;
+  margin-top: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface-strong);
+  padding: 14px;
+}
+
+.override-editor-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.override-editor h3 {
+  margin: 3px 0 0;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.override-preview {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.override-weight-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.override-weight-control {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+  padding: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.override-weight-control span {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.override-weight-control strong {
+  color: var(--ink);
+}
+
+.override-weight-control small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.override-weight-control input {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface-strong);
+  color: var(--ink);
+  padding: 0 9px;
+}
+
+.override-actions {
+  margin-top: 0;
+}
+
 @media (max-width: 1080px) {
   .topbar {
     align-items: flex-start;
@@ -937,8 +1087,14 @@ body[data-surface="admin"] .page-header h1 {
     justify-content: flex-start;
   }
 
+  .app-shell-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
   .recommendation-surface,
   .scoring-workspace,
+  .school-browser-surface,
   .methodology-grid,
   .profile-grid,
   .admin-status-grid {
@@ -975,6 +1131,10 @@ body[data-surface="admin"] .page-header h1 {
     flex-direction: column;
   }
 
+  .override-editor-heading {
+    flex-direction: column;
+  }
+
   .page-header h1,
   .profile-header h1 {
     font-size: 38px;
@@ -993,6 +1153,10 @@ body[data-surface="admin"] .page-header h1 {
 
   .rank-stack {
     width: 100%;
+  }
+
+  .school-browser-grid {
+    grid-template-columns: 1fr;
   }
 
   .card-actions {

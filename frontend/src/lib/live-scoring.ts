@@ -56,6 +56,20 @@ export type LiveSchoolScore = {
   scoringDisabledReason: string;
 };
 
+export type SchoolWeightOverride = {
+  schoolSlug: string;
+  weights: Partial<LiveWeights>;
+  updatedAt: string;
+};
+
+export type SchoolAdjustedScore = {
+  slug: string;
+  globalScore: LiveSchoolScore;
+  adjustedScore: LiveSchoolScore | null;
+  overrideApplied: boolean;
+  adjustedRank: number | null;
+};
+
 type ComponentResult = {
   key: LiveWeightKey;
   group: LiveComponentGroup;
@@ -161,6 +175,19 @@ export const liveComponentMetadata: LiveComponentMetadata[] = [
 
 export const liveWeightOrder: LiveWeightKey[] = liveComponentMetadata.map((component) => component.key);
 
+const overrideWeightAliases: Record<string, LiveWeightKey> = {
+  mcat: "mcatFit",
+  mcatFit: "mcatFit",
+  gpa: "gpaFit",
+  gpaFit: "gpaFit",
+  state: "stateFit",
+  stateFit: "stateFit",
+  cost: "costFit",
+  costFit: "costFit",
+  context: "baselineAttendance",
+  baselineAttendance: "baselineAttendance",
+};
+
 export function scoreSchools(schools: ProductSchool[], preferences: PreferenceState): LiveSchoolScore[] {
   const costRange = buildCostRange(schools, preferences.homeState);
   const scored = schools.map((school) => scoreSchool(school, preferences, costRange));
@@ -172,6 +199,110 @@ export function scoreSchools(schools: ProductSchool[], preferences: PreferenceSt
     ...score,
     yourRank: score.yourScore === null ? null : index + 1,
   }));
+}
+
+export function scoreSchoolWithOverride(
+  school: ProductSchool,
+  schools: ProductSchool[],
+  globalPreferences: PreferenceState,
+  override: SchoolWeightOverride | null | undefined,
+): SchoolAdjustedScore {
+  const costRange = buildCostRange(schools, globalPreferences.homeState);
+  const globalScores = scoreSchools(schools, globalPreferences);
+  const globalScore = globalScores.find((score) => score.school.slug === school.slug) || scoreSchool(school, globalPreferences, costRange);
+  if (!override) {
+    return {
+      slug: school.slug,
+      globalScore,
+      adjustedScore: null,
+      overrideApplied: false,
+      adjustedRank: null,
+    };
+  }
+
+  const adjustedPreferences: PreferenceState = {
+    ...globalPreferences,
+    liveWeights: mergeOverrideWeights(globalPreferences.liveWeights, override.weights),
+  };
+  const adjustedScore = scoreSchool(school, adjustedPreferences, costRange);
+
+  return {
+    slug: school.slug,
+    globalScore,
+    adjustedScore,
+    overrideApplied: true,
+    adjustedRank: null,
+  };
+}
+
+export function scoreSchoolsWithOverrides(
+  schools: ProductSchool[],
+  globalPreferences: PreferenceState,
+  overrides: Record<string, SchoolWeightOverride>,
+): SchoolAdjustedScore[] {
+  const globalScores = scoreSchools(schools, globalPreferences);
+  const globalBySlug = new Map(globalScores.map((score) => [score.school.slug, score]));
+  const costRange = buildCostRange(schools, globalPreferences.homeState);
+  const adjustedRows = schools.map((school) => {
+    const globalScore = globalBySlug.get(school.slug) || scoreSchool(school, globalPreferences, costRange);
+    const override = overrides[school.slug] || null;
+    if (!override) {
+      return {
+        slug: school.slug,
+        globalScore,
+        adjustedScore: null,
+        overrideApplied: false,
+        adjustedRank: null,
+      };
+    }
+
+    const adjustedPreferences: PreferenceState = {
+      ...globalPreferences,
+      liveWeights: mergeOverrideWeights(globalPreferences.liveWeights, override.weights),
+    };
+    const adjustedScore = scoreSchool(school, adjustedPreferences, costRange);
+    return {
+      slug: school.slug,
+      globalScore,
+      adjustedScore,
+      overrideApplied: true,
+      adjustedRank: null,
+    };
+  });
+
+  if (!adjustedRows.some((row) => scoreValueForAdjustedRank(row) !== null)) return adjustedRows;
+
+  const rankBySlug = new Map(
+    [...adjustedRows]
+      .sort(compareAdjustedRows)
+      .map((row, index) => [row.slug, scoreValueForAdjustedRank(row) === null ? null : index + 1]),
+  );
+
+  return adjustedRows.map((row) => ({
+    ...row,
+    adjustedRank: row.overrideApplied ? rankBySlug.get(row.slug) ?? null : null,
+  }));
+}
+
+export function normalizeOverrideWeights(value: unknown): Partial<LiveWeights> {
+  if (!value || typeof value !== "object") return {};
+  const source = value as Record<string, unknown>;
+  const weights: Partial<LiveWeights> = {};
+  for (const [key, targetKey] of Object.entries(overrideWeightAliases)) {
+    if (!(key in source)) continue;
+    const weight = Number(source[key]);
+    if (Number.isFinite(weight) && weight >= 0 && weight <= 100) {
+      weights[targetKey] = weight;
+    }
+  }
+  return weights;
+}
+
+export function mergeOverrideWeights(globalWeights: LiveWeights, overrideWeights: Partial<LiveWeights>): LiveWeights {
+  return {
+    ...globalWeights,
+    ...normalizeOverrideWeights(overrideWeights),
+  };
 }
 
 export function formatLiveScore(value: number | null): string {
@@ -515,6 +646,22 @@ function compareLiveScores(a: LiveSchoolScore, b: LiveSchoolScore, hasLiveScores
   const bRank = b.baselineRank ?? 9999;
   if (aRank !== bRank) return aRank - bRank;
   return a.school.name.localeCompare(b.school.name);
+}
+
+function compareAdjustedRows(a: SchoolAdjustedScore, b: SchoolAdjustedScore): number {
+  const aScore = scoreValueForAdjustedRank(a);
+  const bScore = scoreValueForAdjustedRank(b);
+  if (aScore !== null && bScore === null) return -1;
+  if (aScore === null && bScore !== null) return 1;
+  if (aScore !== null && bScore !== null && aScore !== bScore) return bScore - aScore;
+  const aRank = a.globalScore.baselineRank ?? 9999;
+  const bRank = b.globalScore.baselineRank ?? 9999;
+  if (aRank !== bRank) return aRank - bRank;
+  return a.globalScore.school.name.localeCompare(b.globalScore.school.name);
+}
+
+function scoreValueForAdjustedRank(row: SchoolAdjustedScore): number | null {
+  return row.adjustedScore?.yourScore ?? row.globalScore.yourScore;
 }
 
 type CostRange = {

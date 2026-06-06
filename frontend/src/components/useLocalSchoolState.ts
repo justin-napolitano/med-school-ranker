@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { liveWeightOrder, normalizeOverrideWeights, type SchoolWeightOverride } from "../lib/live-scoring";
 import { defaultLiveWeights, defaultPreferences, type LiveWeights, type OwnershipFilter, type PreferenceState } from "../lib/school-utils";
 
 const INTERESTED_KEY = "msr.product.interested.v1";
@@ -6,6 +7,7 @@ const APPLYING_KEY = "msr.product.applying.v1";
 const NOT_INTERESTED_KEY = "msr.product.notInterested.v1";
 const COMPARE_KEY = "msr.product.compare.v1";
 const PREFERENCES_KEY = "msr.product.preferences.v1";
+const SCHOOL_WEIGHT_OVERRIDES_KEY = "med-school-ranker:school-weight-overrides:v1";
 
 export const INTERESTED_MAX = 50;
 export const APPLYING_MAX = 25;
@@ -30,6 +32,15 @@ function readPreferences(): PreferenceState {
   }
 }
 
+function readSchoolWeightOverrides(): Record<string, SchoolWeightOverride> {
+  try {
+    const value = window.localStorage.getItem(SCHOOL_WEIGHT_OVERRIDES_KEY);
+    return normalizeSchoolWeightOverrides(value ? JSON.parse(value) : {});
+  } catch {
+    return {};
+  }
+}
+
 function normalizePreferences(value: Partial<PreferenceState> | null): PreferenceState {
   const next = { ...defaultPreferences, ...(value || {}) };
   const liveWeights = typeof value?.liveWeights === "object" && value.liveWeights ? value.liveWeights : {};
@@ -40,6 +51,31 @@ function normalizePreferences(value: Partial<PreferenceState> | null): Preferenc
     ownershipType: normalizeOwnershipFilter(value?.ownershipType),
     liveWeights: normalizeWeights(liveWeights),
   };
+}
+
+function normalizeSchoolWeightOverrides(value: unknown): Record<string, SchoolWeightOverride> {
+  const overrides: Record<string, SchoolWeightOverride> = {};
+  const candidates = Array.isArray(value)
+    ? value
+    : value && typeof value === "object"
+      ? Object.values(value as Record<string, unknown>)
+      : [];
+
+  for (const candidate of candidates) {
+    if (!candidate || typeof candidate !== "object") continue;
+    const item = candidate as Partial<SchoolWeightOverride>;
+    const schoolSlug = typeof item.schoolSlug === "string" ? item.schoolSlug : "";
+    if (!schoolSlug) continue;
+    const weights = normalizeOverrideWeights(item.weights);
+    if (!hasValidOverrideWeights(weights)) continue;
+    overrides[schoolSlug] = {
+      schoolSlug,
+      weights,
+      updatedAt: typeof item.updatedAt === "string" && item.updatedAt ? item.updatedAt : new Date().toISOString(),
+    };
+  }
+
+  return overrides;
 }
 
 function normalizeStringArray(value: unknown): string[] {
@@ -76,6 +112,7 @@ export function useLocalSchoolState() {
   const [notInterested, setNotInterested] = useState<string[]>([]);
   const [compare, setCompare] = useState<string[]>([]);
   const [preferences, setPreferencesState] = useState<PreferenceState>(defaultPreferences);
+  const [schoolWeightOverrides, setSchoolWeightOverrides] = useState<Record<string, SchoolWeightOverride>>({});
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
@@ -84,6 +121,7 @@ export function useLocalSchoolState() {
     setNotInterested(readArray(NOT_INTERESTED_KEY));
     setCompare(readArray(COMPARE_KEY).slice(0, COMPARE_MAX));
     setPreferencesState(readPreferences());
+    setSchoolWeightOverrides(readSchoolWeightOverrides());
     setReady(true);
   }, []);
 
@@ -106,6 +144,10 @@ export function useLocalSchoolState() {
   useEffect(() => {
     if (ready) window.localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
   }, [preferences, ready]);
+
+  useEffect(() => {
+    if (ready) window.localStorage.setItem(SCHOOL_WEIGHT_OVERRIDES_KEY, JSON.stringify(schoolWeightOverrides));
+  }, [schoolWeightOverrides, ready]);
 
   function setPreferences(next: PreferenceState) {
     setPreferencesState(normalizePreferences(next));
@@ -173,6 +215,42 @@ export function useLocalSchoolState() {
     });
   }
 
+  function getSchoolWeightOverride(slug: string): SchoolWeightOverride | null {
+    return schoolWeightOverrides[slug] || null;
+  }
+
+  function setSchoolWeightOverride(slug: string, weights: Partial<LiveWeights>) {
+    const normalized = normalizeOverrideWeights(weights);
+    if (!hasValidOverrideWeights(normalized)) {
+      setNotice("Personal scoring override needs at least one weight above 0.");
+      return;
+    }
+    setNotice("");
+    setSchoolWeightOverrides((current) => ({
+      ...current,
+      [slug]: {
+        schoolSlug: slug,
+        weights: normalized,
+        updatedAt: new Date().toISOString(),
+      },
+    }));
+  }
+
+  function removeSchoolWeightOverride(slug: string) {
+    setNotice("");
+    setSchoolWeightOverrides((current) => {
+      if (!current[slug]) return current;
+      const next = { ...current };
+      delete next[slug];
+      return next;
+    });
+  }
+
+  function clearSchoolWeightOverrides() {
+    setNotice("");
+    setSchoolWeightOverrides({});
+  }
+
   function exportState(scope: "interested" | "applying" | "notInterested") {
     const payload = {
       exported_at: new Date().toISOString(),
@@ -197,6 +275,7 @@ export function useLocalSchoolState() {
       notInterested,
       compare,
       preferences,
+      schoolWeightOverrides,
       notice,
       setPreferences,
       updatePreference,
@@ -207,12 +286,25 @@ export function useLocalSchoolState() {
       addNotInterested,
       removeNotInterested,
       toggleCompare,
+      getSchoolWeightOverride,
+      setSchoolWeightOverride,
+      removeSchoolWeightOverride,
+      clearSchoolWeightOverrides,
       exportState,
       isInterested: (slug: string) => interested.includes(slug),
       isApplying: (slug: string) => applying.includes(slug),
       isNotInterested: (slug: string) => notInterested.includes(slug),
       isCompared: (slug: string) => compare.includes(slug),
     }),
-    [ready, interested, applying, notInterested, compare, preferences, notice],
+    [ready, interested, applying, notInterested, compare, preferences, schoolWeightOverrides, notice],
   );
+}
+
+export type LocalSchoolState = ReturnType<typeof useLocalSchoolState>;
+
+function hasValidOverrideWeights(weights: Partial<LiveWeights>): boolean {
+  return liveWeightOrder.some((key) => {
+    const value = weights[key];
+    return typeof value === "number" && Number.isFinite(value) && value > 0;
+  });
 }

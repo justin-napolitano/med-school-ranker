@@ -1,17 +1,13 @@
 ---
-import { BuildMyListApp } from "../components/BuildMyListApp";
+import { ProductAppShell } from "../components/ProductAppShell";
 import ProductLayout from "../layouts/ProductLayout.astro";
 import { loadProductPayload } from "../lib/payload";
 
 const payload = loadProductPayload();
 const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+const aamcCaveat = payload.copy.aamc_grid_caveat || "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific admit chance.";
 ---
 
-<ProductLayout title="Build My List / Applicant List" active="/">
-  <section class="page-header product-first">
-    <p class="eyebrow">First pass</p>
-    <h1>Build My List</h1>
-    <p>{caveat}</p>
-  </section>
-  <BuildMyListApp client:load schools={payload.schools} caveat={caveat} />
+<ProductLayout title="Build My List / Applicant List" active="/" shellNav={false}>
+  <ProductAppShell client:load initialPath="/" schools={payload.schools} caveat={caveat} aamcCaveat={aamcCaveat} methodology={payload.methodology} />
 </ProductLayout>

@@ -1,19 +1,37 @@
 import { X } from "lucide-react";
+import { useMemo } from "react";
+import { formatLiveScore, formatRank, scoreSchoolsWithOverrides } from "../lib/live-scoring";
 import type { ProductSchool } from "../lib/school-utils";
 import { buildWhyBullets, formatCurrency, getScoreScreenFit, metricValue } from "../lib/school-utils";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
   caveat: string;
+  local?: LocalSchoolState;
 };
 
-export function CompareApp({ schools, caveat }: Props) {
+export function CompareApp(props: Props) {
+  if (props.local) return <CompareAppContent {...props} local={props.local} />;
+  return <StandaloneCompareApp {...props} />;
+}
+
+function StandaloneCompareApp(props: Props) {
   const local = useLocalSchoolState();
-  const selectedSchools = local.compare
-    .map((slug) => schools.find((school) => school.slug === slug))
-    .filter((school): school is ProductSchool => Boolean(school));
-  const availableSchools = schools.filter((school) => !local.compare.includes(school.slug)).slice(0, 120);
+  return <CompareAppContent {...props} local={local} />;
+}
+
+function CompareAppContent({ schools, caveat, local }: Props & { local: LocalSchoolState }) {
+  const schoolBySlug = useMemo(() => new Map(schools.map((school) => [school.slug, school])), [schools]);
+  const selectedSchools = useMemo(
+    () => local.compare.map((slug) => schoolBySlug.get(slug)).filter((school): school is ProductSchool => Boolean(school)),
+    [local.compare, schoolBySlug],
+  );
+  const availableSchools = useMemo(() => schools.filter((school) => !local.compare.includes(school.slug)).slice(0, 120), [schools, local.compare]);
+  const scoreRowsBySlug = useMemo(
+    () => new Map(scoreSchoolsWithOverrides(schools, local.preferences, local.schoolWeightOverrides).map((row) => [row.slug, row])),
+    [schools, local.preferences, local.schoolWeightOverrides],
+  );
 
   return (
     <section className="compare-surface">
@@ -42,6 +60,7 @@ export function CompareApp({ schools, caveat }: Props) {
         <div className="compare-grid">
           {selectedSchools.map((school) => {
             const fit = getScoreScreenFit(school, local.preferences);
+            const scoreRow = scoreRowsBySlug.get(school.slug);
             return (
               <article className="compare-card" key={school.slug}>
                 <div className="compare-card-header">
@@ -55,12 +74,29 @@ export function CompareApp({ schools, caveat }: Props) {
                     <X size={18} aria-hidden="true" />
                   </button>
                 </div>
+                {scoreRow?.overrideApplied ? <span className="status-chip override">Override applied</span> : null}
                 <span className={`fit-chip ${fit.category}`}>{fit.label}</span>
                 <dl className="comparison-metrics">
                   <div>
-                    <dt>Rank</dt>
-                    <dd>{school.decisionRank ? `#${school.decisionRank}` : school.rankLabel}</dd>
+                    <dt>Global Rank</dt>
+                    <dd>{formatRank(scoreRow?.globalScore.yourRank ?? school.decisionRank ?? school.overallRank)}</dd>
                   </div>
+                  <div>
+                    <dt>Global Score</dt>
+                    <dd>{formatLiveScore(scoreRow?.globalScore.yourScore ?? null)}</dd>
+                  </div>
+                  {scoreRow?.overrideApplied ? (
+                    <>
+                      <div>
+                        <dt>Adjusted Rank</dt>
+                        <dd>{formatRank(scoreRow.adjustedRank)}</dd>
+                      </div>
+                      <div>
+                        <dt>Adjusted Score</dt>
+                        <dd>{formatLiveScore(scoreRow.adjustedScore?.yourScore ?? null)}</dd>
+                      </div>
+                    </>
+                  ) : null}
                   <div>
                     <dt>MCAT</dt>
                     <dd>{metricValue(school.schoolMcat || school.publishedMcatBand)}</dd>

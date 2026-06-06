@@ -13,11 +13,12 @@ import {
 import type { PreferenceState, ProductSchool } from "../lib/school-utils";
 import { cityLabelFromKey, filterSchools, ownershipLabel, schoolsHaveOwnershipLabels, stateLabel } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
   caveat: string;
+  local?: LocalSchoolState;
 };
 
 type AssumptionRow = {
@@ -54,8 +55,17 @@ const presetGuidance: Record<string, { bestFor: string; limitations: string }> =
   },
 };
 
-export function ScoringAssumptionsApp({ schools, caveat }: Props) {
+export function ScoringAssumptionsApp(props: Props) {
+  if (props.local) return <ScoringAssumptionsContent {...props} local={props.local} />;
+  return <StandaloneScoringAssumptionsApp {...props} />;
+}
+
+function StandaloneScoringAssumptionsApp(props: Props) {
   const local = useLocalSchoolState();
+  return <ScoringAssumptionsContent {...props} local={local} />;
+}
+
+function ScoringAssumptionsContent({ schools, caveat, local }: Props & { local: LocalSchoolState }) {
   const [selectedSlug, setSelectedSlug] = useState("");
   const hasOwnershipLabels = schoolsHaveOwnershipLabels(schools);
   const mdPreferences: PreferenceState = useMemo(() => ({ ...local.preferences, degree: "MD" }), [local.preferences]);

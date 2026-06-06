@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { scoreSchools } from "../lib/live-scoring";
+import { scoreSchools, scoreSchoolsWithOverrides } from "../lib/live-scoring";
 import type { ProductSchool } from "../lib/school-utils";
 import { filterSchools } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
 import { SchoolCard } from "./SchoolCard";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
@@ -13,16 +13,30 @@ type Props = {
   intro?: string;
   limit?: number;
   showControls?: boolean;
+  local?: LocalSchoolState;
 };
 
-export function RecommendationFeed({ schools, caveat, title = "Recommendation Feed", intro, limit = 50, showControls = true }: Props) {
+export function RecommendationFeed(props: Props) {
+  if (props.local) return <RecommendationFeedContent {...props} local={props.local} />;
+  return <StandaloneRecommendationFeed {...props} />;
+}
+
+function StandaloneRecommendationFeed(props: Props) {
   const local = useLocalSchoolState();
+  return <RecommendationFeedContent {...props} local={local} />;
+}
+
+function RecommendationFeedContent({ schools, caveat, title = "Recommendation Feed", intro, limit = 50, showControls = true, local }: Props & { local: LocalSchoolState }) {
   const [visibleLimit, setVisibleLimit] = useState(limit);
   const filteredSchools = useMemo(
     () => filterSchools(schools, local.preferences).filter((school) => !local.notInterested.includes(school.slug)),
     [schools, local.preferences, local.notInterested],
   );
   const scoredSchools = useMemo(() => scoreSchools(filteredSchools, local.preferences), [filteredSchools, local.preferences]);
+  const scoreAdjustments = useMemo(
+    () => new Map(scoreSchoolsWithOverrides(filteredSchools, local.preferences, local.schoolWeightOverrides).map((row) => [row.slug, row])),
+    [filteredSchools, local.preferences, local.schoolWeightOverrides],
+  );
   const visibleScores = scoredSchools.slice(0, visibleLimit);
   const remainingCount = Math.max(scoredSchools.length - visibleScores.length, 0);
 
@@ -86,7 +100,15 @@ export function RecommendationFeed({ schools, caveat, title = "Recommendation Fe
         {visibleScores.length ? (
           <div className="card-feed">
             {visibleScores.map((score) => (
-              <SchoolCard key={score.school.slug} school={score.school} liveScore={score} preferences={local.preferences} caveat={caveat} actions={local} />
+              <SchoolCard
+                key={score.school.slug}
+                school={score.school}
+                liveScore={score}
+                preferences={local.preferences}
+                caveat={caveat}
+                actions={local}
+                scoreAdjustment={scoreAdjustments.get(score.school.slug)}
+              />
             ))}
           </div>
         ) : (

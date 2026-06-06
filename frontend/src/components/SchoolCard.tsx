@@ -1,5 +1,5 @@
 import { ArrowUpRight, ClipboardCheck, MinusCircle, Scale, Star } from "lucide-react";
-import type { LiveSchoolScore } from "../lib/live-scoring";
+import type { LiveSchoolScore, SchoolAdjustedScore } from "../lib/live-scoring";
 import { buildLiveFactorBullets, formatLiveScore, formatRank } from "../lib/live-scoring";
 import type { PreferenceState, ProductSchool } from "../lib/school-utils";
 import { buildWhyBullets, formatCurrency, getScoreScreenFit, metricValue } from "../lib/school-utils";
@@ -24,10 +24,11 @@ type Props = {
   preferences: PreferenceState;
   caveat: string;
   actions: LocalActions;
+  scoreAdjustment?: SchoolAdjustedScore;
   compact?: boolean;
 };
 
-export function SchoolCard({ school, liveScore, preferences, caveat, actions, compact = false }: Props) {
+export function SchoolCard({ school, liveScore, preferences, caveat, actions, scoreAdjustment, compact = false }: Props) {
   const fit = getScoreScreenFit(school, preferences);
   const whyBullets = buildWhyBullets(school);
   const liveBullets = liveScore ? buildLiveFactorBullets(liveScore) : [];
@@ -35,6 +36,9 @@ export function SchoolCard({ school, liveScore, preferences, caveat, actions, co
   const applying = actions.isApplying(school.slug);
   const notInterested = actions.isNotInterested(school.slug);
   const compared = actions.isCompared(school.slug);
+  const overrideApplied = Boolean(scoreAdjustment?.overrideApplied);
+  const globalScore = scoreAdjustment?.globalScore || liveScore || null;
+  const adjustedScore = scoreAdjustment?.adjustedScore || null;
 
   return (
     <article className={compact ? "school-card compact" : "school-card"}>
@@ -63,10 +67,23 @@ export function SchoolCard({ school, liveScore, preferences, caveat, actions, co
       </div>
 
       <dl className="metric-strip">
-        <div>
-          <dt>Your Score</dt>
-          <dd>{formatLiveScore(liveScore?.yourScore ?? null)}</dd>
-        </div>
+        {overrideApplied ? (
+          <>
+            <div>
+              <dt>Global Score</dt>
+              <dd>{formatLiveScore(globalScore?.yourScore ?? null)}</dd>
+            </div>
+            <div>
+              <dt>Adjusted Score</dt>
+              <dd>{formatLiveScore(adjustedScore?.yourScore ?? null)}</dd>
+            </div>
+          </>
+        ) : (
+          <div>
+            <dt>Your Score</dt>
+            <dd>{formatLiveScore(liveScore?.yourScore ?? null)}</dd>
+          </div>
+        )}
         <div>
           <dt>Coverage</dt>
           <dd>{liveScore ? `${liveScore.liveCoverage.label} (${liveScore.liveCoverage.available}/${liveScore.liveCoverage.possible})` : "Needs data"}</dd>
@@ -112,6 +129,7 @@ export function SchoolCard({ school, liveScore, preferences, caveat, actions, co
       </div>
 
       <div className="card-meta-row">
+        {overrideApplied ? <span className="status-chip override">Override applied</span> : null}
         <span className={`status-chip ${liveScore?.liveCoverage.label || "neutral"}`}>Live coverage: {liveScore?.liveCoverage.label || "not scored"}</span>
         <span className={`status-chip ${school.rankConfidence || "provisional"}`}>{school.rankConfidence || "provisional"}</span>
         <span className="status-chip neutral">Stats: {school.statsQuality || "not available"}</span>
