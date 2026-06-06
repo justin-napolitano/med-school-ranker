@@ -255,6 +255,11 @@ select:focus-visible {
   grid-column: 1 / -1;
 }
 
+.filter-tools,
+.weight-panel {
+  min-width: 0;
+}
+
 .control-grid input,
 .control-grid select,
 .inline-picker select {
@@ -265,6 +270,90 @@ select:focus-visible {
   background: var(--surface-strong);
   color: var(--ink);
   padding: 0 10px;
+}
+
+.control-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.quick-actions,
+.preset-row,
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-actions {
+  margin-top: 8px;
+}
+
+.chip-row {
+  margin-top: 10px;
+}
+
+.filter-chip {
+  display: inline-flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-small);
+  background: var(--blue-soft);
+  color: var(--accent-strong);
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.weight-panel {
+  margin-top: 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--surface-strong);
+  padding: 10px;
+}
+
+.weight-panel summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 780;
+}
+
+.preset-row {
+  margin: 12px 0;
+}
+
+.weight-list {
+  display: grid;
+  gap: 12px;
+}
+
+.weight-control {
+  display: grid;
+  gap: 7px;
+}
+
+.weight-control span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.weight-control small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .feed-column,
@@ -291,7 +380,7 @@ select:focus-visible {
 
 .count-block {
   display: grid;
-  min-width: 82px;
+  min-width: 154px;
   min-height: 64px;
   place-items: center;
   border: 1px solid var(--line);
@@ -308,11 +397,23 @@ select:focus-visible {
   color: var(--quiet);
   font-size: 12px;
   font-weight: 700;
+  text-align: center;
 }
 
 .card-feed {
   display: grid;
   gap: 14px;
+}
+
+.feed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .school-card,
@@ -358,6 +459,21 @@ select:focus-visible {
   background: var(--surface-strong);
   padding: 9px 10px;
   text-align: right;
+}
+
+.rank-stack {
+  display: grid;
+  min-width: 126px;
+  gap: 8px;
+}
+
+.rank-pill.primary-rank {
+  border-color: rgba(27, 95, 120, 0.35);
+  background: var(--blue-soft);
+}
+
+.rank-pill.secondary-rank {
+  box-shadow: none;
 }
 
 .rank-pill.large {
@@ -438,7 +554,7 @@ select:focus-visible {
 }
 
 .metric-strip {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
 }
 
 .metric-strip div,
@@ -468,6 +584,10 @@ dd {
 
 .why-block {
   margin-top: 14px;
+}
+
+.why-block p {
+  margin: 0;
 }
 
 .why-block h3,
@@ -510,6 +630,12 @@ dd {
 .status-chip.medium {
   background: var(--amber-soft);
   color: var(--amber);
+}
+
+.status-chip.limited,
+.status-chip.none {
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .status-chip.neutral,
@@ -565,6 +691,12 @@ dd {
 .action-button.selected.strong {
   background: var(--accent-strong);
   color: #fff;
+}
+
+.action-button.selected.danger {
+  border-color: #e1aaa4;
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .action-button:disabled {
@@ -747,6 +879,10 @@ body[data-surface="admin"] .page-header h1 {
   .rank-pill {
     width: 100%;
     text-align: left;
+  }
+
+  .rank-stack {
+    width: 100%;
   }
 
   .card-actions {

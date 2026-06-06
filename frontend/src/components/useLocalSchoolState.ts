@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { defaultPreferences, type PreferenceState } from "../lib/school-utils";
+import { defaultLiveWeights, defaultPreferences, type LiveWeights, type OwnershipFilter, type PreferenceState } from "../lib/school-utils";
 
 const INTERESTED_KEY = "msr.product.interested.v1";
 const APPLYING_KEY = "msr.product.applying.v1";
+const NOT_INTERESTED_KEY = "msr.product.notInterested.v1";
 const COMPARE_KEY = "msr.product.compare.v1";
 const PREFERENCES_KEY = "msr.product.preferences.v1";
 
@@ -23,10 +24,45 @@ function readArray(key: string): string[] {
 function readPreferences(): PreferenceState {
   try {
     const value = window.localStorage.getItem(PREFERENCES_KEY);
-    return value ? { ...defaultPreferences, ...JSON.parse(value) } : defaultPreferences;
+    return value ? normalizePreferences(JSON.parse(value)) : defaultPreferences;
   } catch {
     return defaultPreferences;
   }
+}
+
+function normalizePreferences(value: Partial<PreferenceState> | null): PreferenceState {
+  const next = { ...defaultPreferences, ...(value || {}) };
+  const liveWeights = typeof value?.liveWeights === "object" && value.liveWeights ? value.liveWeights : {};
+  return {
+    ...next,
+    excludedStates: normalizeStringArray(value?.excludedStates),
+    excludedCities: normalizeStringArray(value?.excludedCities),
+    ownershipType: normalizeOwnershipFilter(value?.ownershipType),
+    liveWeights: normalizeWeights(liveWeights),
+  };
+}
+
+function normalizeStringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0) : [];
+}
+
+function normalizeOwnershipFilter(value: unknown): OwnershipFilter {
+  return value === "public" || value === "private" || value === "unknown" || value === "all" ? value : "all";
+}
+
+function normalizeWeights(value: Partial<LiveWeights>): LiveWeights {
+  return {
+    mcatFit: normalizeWeight(value.mcatFit, defaultLiveWeights.mcatFit),
+    gpaFit: normalizeWeight(value.gpaFit, defaultLiveWeights.gpaFit),
+    stateFit: normalizeWeight(value.stateFit, defaultLiveWeights.stateFit),
+    costFit: normalizeWeight(value.costFit, defaultLiveWeights.costFit),
+    baselineAttendance: normalizeWeight(value.baselineAttendance, defaultLiveWeights.baselineAttendance),
+  };
+}
+
+function normalizeWeight(value: unknown, fallback: number): number {
+  const number = Number(value);
+  return Number.isFinite(number) && number >= 0 ? number : fallback;
 }
 
 function unique(values: string[]): string[] {
@@ -37,6 +73,7 @@ export function useLocalSchoolState() {
   const [ready, setReady] = useState(false);
   const [interested, setInterested] = useState<string[]>([]);
   const [applying, setApplying] = useState<string[]>([]);
+  const [notInterested, setNotInterested] = useState<string[]>([]);
   const [compare, setCompare] = useState<string[]>([]);
   const [preferences, setPreferencesState] = useState<PreferenceState>(defaultPreferences);
   const [notice, setNotice] = useState("");
@@ -44,6 +81,7 @@ export function useLocalSchoolState() {
   useEffect(() => {
     setInterested(readArray(INTERESTED_KEY).slice(0, INTERESTED_MAX));
     setApplying(readArray(APPLYING_KEY).slice(0, APPLYING_MAX));
+    setNotInterested(readArray(NOT_INTERESTED_KEY));
     setCompare(readArray(COMPARE_KEY).slice(0, COMPARE_MAX));
     setPreferencesState(readPreferences());
     setReady(true);
@@ -58,6 +96,10 @@ export function useLocalSchoolState() {
   }, [applying, ready]);
 
   useEffect(() => {
+    if (ready) window.localStorage.setItem(NOT_INTERESTED_KEY, JSON.stringify(notInterested));
+  }, [notInterested, ready]);
+
+  useEffect(() => {
     if (ready) window.localStorage.setItem(COMPARE_KEY, JSON.stringify(compare));
   }, [compare, ready]);
 
@@ -66,7 +108,7 @@ export function useLocalSchoolState() {
   }, [preferences, ready]);
 
   function setPreferences(next: PreferenceState) {
-    setPreferencesState(next);
+    setPreferencesState(normalizePreferences(next));
   }
 
   function updatePreference<K extends keyof PreferenceState>(key: K, value: PreferenceState[K]) {
@@ -81,6 +123,7 @@ export function useLocalSchoolState() {
         return current;
       }
       setNotice("");
+      setNotInterested((hidden) => hidden.filter((item) => item !== slug));
       return unique([...current, slug]);
     });
   }
@@ -97,12 +140,25 @@ export function useLocalSchoolState() {
         return current;
       }
       setNotice("");
+      setNotInterested((hidden) => hidden.filter((item) => item !== slug));
       return unique([...current, slug]);
     });
   }
 
   function removeApplying(slug: string) {
     setApplying((current) => current.filter((item) => item !== slug));
+  }
+
+  function addNotInterested(slug: string) {
+    setNotice("");
+    setInterested((current) => current.filter((item) => item !== slug));
+    setApplying((current) => current.filter((item) => item !== slug));
+    setCompare((current) => current.filter((item) => item !== slug));
+    setNotInterested((current) => (current.includes(slug) ? current : unique([...current, slug])));
+  }
+
+  function removeNotInterested(slug: string) {
+    setNotInterested((current) => current.filter((item) => item !== slug));
   }
 
   function toggleCompare(slug: string) {
@@ -117,11 +173,11 @@ export function useLocalSchoolState() {
     });
   }
 
-  function exportState(scope: "interested" | "applying") {
+  function exportState(scope: "interested" | "applying" | "notInterested") {
     const payload = {
       exported_at: new Date().toISOString(),
       scope,
-      slugs: scope === "interested" ? interested : applying,
+      slugs: scope === "interested" ? interested : scope === "applying" ? applying : notInterested,
       preferences,
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
@@ -138,6 +194,7 @@ export function useLocalSchoolState() {
       ready,
       interested,
       applying,
+      notInterested,
       compare,
       preferences,
       notice,
@@ -147,12 +204,15 @@ export function useLocalSchoolState() {
       removeInterested,
       addApplying,
       removeApplying,
+      addNotInterested,
+      removeNotInterested,
       toggleCompare,
       exportState,
       isInterested: (slug: string) => interested.includes(slug),
       isApplying: (slug: string) => applying.includes(slug),
+      isNotInterested: (slug: string) => notInterested.includes(slug),
       isCompared: (slug: string) => compare.includes(slug),
     }),
-    [ready, interested, applying, compare, preferences, notice],
+    [ready, interested, applying, notInterested, compare, preferences, notice],
   );
 }

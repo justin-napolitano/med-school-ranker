@@ -1,4 +1,6 @@
-import { ArrowUpRight, ClipboardCheck, Scale, Star } from "lucide-react";
+import { ArrowUpRight, ClipboardCheck, MinusCircle, Scale, Star } from "lucide-react";
+import type { LiveSchoolScore } from "../lib/live-scoring";
+import { buildLiveFactorBullets, formatLiveScore, formatRank } from "../lib/live-scoring";
 import type { PreferenceState, ProductSchool } from "../lib/school-utils";
 import { buildWhyBullets, formatCurrency, getScoreScreenFit, metricValue } from "../lib/school-utils";
 
@@ -7,25 +9,31 @@ type LocalActions = {
   removeInterested: (slug: string) => void;
   addApplying: (slug: string) => void;
   removeApplying: (slug: string) => void;
+  addNotInterested: (slug: string) => void;
+  removeNotInterested: (slug: string) => void;
   toggleCompare: (slug: string) => void;
   isInterested: (slug: string) => boolean;
   isApplying: (slug: string) => boolean;
+  isNotInterested: (slug: string) => boolean;
   isCompared: (slug: string) => boolean;
 };
 
 type Props = {
   school: ProductSchool;
+  liveScore?: LiveSchoolScore;
   preferences: PreferenceState;
   caveat: string;
   actions: LocalActions;
   compact?: boolean;
 };
 
-export function SchoolCard({ school, preferences, caveat, actions, compact = false }: Props) {
+export function SchoolCard({ school, liveScore, preferences, caveat, actions, compact = false }: Props) {
   const fit = getScoreScreenFit(school, preferences);
   const whyBullets = buildWhyBullets(school);
+  const liveBullets = liveScore ? buildLiveFactorBullets(liveScore) : [];
   const interested = actions.isInterested(school.slug);
   const applying = actions.isApplying(school.slug);
+  const notInterested = actions.isNotInterested(school.slug);
   const compared = actions.isCompared(school.slug);
 
   return (
@@ -37,9 +45,15 @@ export function SchoolCard({ school, preferences, caveat, actions, compact = fal
           </p>
           <h2>{school.name}</h2>
         </div>
-        <div className="rank-pill" aria-label="Decision rank">
-          <span>{school.rankLabel}</span>
-          <strong>{school.decisionRank ? `#${school.decisionRank}` : "Unranked"}</strong>
+        <div className="rank-stack" aria-label="Live and baseline rank">
+          <div className="rank-pill primary-rank">
+            <span>Your Rank</span>
+            <strong>{formatRank(liveScore?.yourRank ?? null)}</strong>
+          </div>
+          <div className="rank-pill secondary-rank">
+            <span>Baseline Rank</span>
+            <strong>{formatRank(liveScore?.baselineRank ?? school.decisionRank ?? school.overallRank)}</strong>
+          </div>
         </div>
       </div>
 
@@ -49,6 +63,14 @@ export function SchoolCard({ school, preferences, caveat, actions, compact = fal
       </div>
 
       <dl className="metric-strip">
+        <div>
+          <dt>Your Score</dt>
+          <dd>{formatLiveScore(liveScore?.yourScore ?? null)}</dd>
+        </div>
+        <div>
+          <dt>Coverage</dt>
+          <dd>{liveScore ? `${liveScore.liveCoverage.label} (${liveScore.liveCoverage.available}/${liveScore.liveCoverage.possible})` : "Needs data"}</dd>
+        </div>
         <div>
           <dt>School MCAT</dt>
           <dd>{metricValue(school.schoolMcat || school.publishedMcatBand)}</dd>
@@ -68,7 +90,20 @@ export function SchoolCard({ school, preferences, caveat, actions, compact = fal
       </dl>
 
       <div className="why-block">
-        <h3>Why it ranks here</h3>
+        <h3>Live fit factors</h3>
+        {liveBullets.length ? (
+          <ul>
+            {liveBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="microcopy">Live scoring is available in Build My List when card context is scored.</p>
+        )}
+      </div>
+
+      <div className="why-block">
+        <h3>Generated baseline context</h3>
         <ul>
           {whyBullets.map((bullet) => (
             <li key={bullet}>{bullet}</li>
@@ -77,6 +112,7 @@ export function SchoolCard({ school, preferences, caveat, actions, compact = fal
       </div>
 
       <div className="card-meta-row">
+        <span className={`status-chip ${liveScore?.liveCoverage.label || "neutral"}`}>Live coverage: {liveScore?.liveCoverage.label || "not scored"}</span>
         <span className={`status-chip ${school.rankConfidence || "provisional"}`}>{school.rankConfidence || "provisional"}</span>
         <span className="status-chip neutral">Stats: {school.statsQuality || "not available"}</span>
         <span className="status-chip neutral">{school.rankBand || "Incomplete data"}</span>
@@ -109,6 +145,15 @@ export function SchoolCard({ school, preferences, caveat, actions, compact = fal
         >
           <Scale size={16} aria-hidden="true" />
           Compare
+        </button>
+        <button
+          className={notInterested ? "action-button selected danger" : "action-button"}
+          type="button"
+          aria-pressed={notInterested}
+          onClick={() => (notInterested ? actions.removeNotInterested(school.slug) : actions.addNotInterested(school.slug))}
+        >
+          <MinusCircle size={16} aria-hidden="true" />
+          Not Interested
         </button>
         <a className="action-link" href={school.profilePath}>
           Profile

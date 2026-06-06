@@ -7,8 +7,8 @@ This runbook tells a headless worker how to continue the project without relying
 The next selected headless execution phase is:
 
 ```text
-Frontend Product Polish: Slice 0 Visual Foundation
-docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md
+Live Scoring And Filter Controls
+docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md
 ```
 
 The most recently executed phase is:
@@ -49,20 +49,16 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 ## Document Read Order
 
-For the selected frontend product polish phase, read in this order first:
+For the selected live scoring and filter-controls phase, read in this order first:
 
-1. `docs/FRONTEND_PRODUCT_POLISH_EXEC_PLAN.md`
-2. `docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md`
-3. `docs/site/product_polish/CRITICAL_REVIEW.md`
-4. `docs/site/product_polish/01_visual_system_and_product_shell.md`
-5. `docs/SITE_VISUAL_DIRECTION_PLAN.md`
-6. `docs/SITE_TEXT_AND_FRONTEND_FORMATTING_EXEC_PLAN.md`
-7. `docs/SITE_GUIDED_INTAKE_EXEC_PLAN.md`
-8. `docs/site/design_direction/01_audience_and_voice.md`
-9. `docs/site/design_direction/02_visual_system_foundations.md`
-10. `docs/site/design_direction/03_cards_and_mobile_patterns.md`
-11. `docs/site/design_direction/04_transparency_and_trust_patterns.md`
-12. `docs/site/design_direction/05_design_qa.md`
+1. `docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md`
+2. `docs/site/live_scoring_filters/CRITICAL_REVIEW.md`
+3. `docs/site/live_scoring_filters/01_filter_controls.md`
+4. `docs/site/live_scoring_filters/02_live_score_engine.md`
+5. `docs/site/live_scoring_filters/03_weight_controls_and_ux.md`
+6. `docs/site/live_scoring_filters/04_card_copy_and_methodology.md`
+7. `docs/site/live_scoring_filters/05_headless_qa_and_critical_review.md`
+8. `docs/site/live_scoring_filters/HEADLESS_PROMPT.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -101,15 +97,13 @@ Use this prompt for the next `codex exec` run:
 ```text
 You are working in /Users/justin/repos/med-school-ranker.
 
-Execute docs/site/product_polish/01_visual_system_and_product_shell.md as the first frontend product polish slice.
+Execute docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md and follow docs/site/live_scoring_filters/HEADLESS_PROMPT.md.
 
-Follow docs/HEADLESS_WORKER_RUNBOOK.md and docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md first. Start from main, pull latest, inspect status, and create branch impl-product-polish-foundation if needed.
+Preserve current uncommitted product-app work. Do not stage untracked screenshot artifacts. Add browser-local live scoring, state/city/Texas exclusions, source-backed-or-disabled ownership filtering, Not Interested behavior, methodology updates, and smoke checks. Remove data-confidence/source-confidence filters for now; confidence/source-quality may remain transparency-only.
 
-Polish the existing applicant workflow. Do not rebuild workflow. Establish the visual system and product shell: typography, spacing, color tokens, card/action styling, focus states, and public/admin visual separation. Preserve existing guided intake, rankings, school profile, application-list, compare, local state, advanced tables, publish-safe mode, and GitHub Pages deployment.
+Do not scrape/download data. Do not implement predictive admissions probability. Do not migrate frameworks or persistence. Do not commit private applicant answers or private-derived outputs.
 
-Do not change scoring formulas. Do not scrape/download data. Do not implement predictive admissions probability. Do not migrate frameworks or persistence. Do not commit private applicant answers or private-derived outputs.
-
-Regenerate required site outputs. Run uv run med-school-build-site --site-mode publish_safe, uv run med-school-validate, uv run pytest, git diff --check, the publish-safe smoke check from docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md, and screenshot QA if dependencies are already available. Commit only intended public-safe code/docs/generated outputs.
+Run cd frontend && npm run build && npm run smoke, then cd .. && uv run med-school-validate && uv run pytest && git diff --check. Commit intended changes only and do not push.
 ```
 
 The executed data-modeling and profile-node prompts are preserved in their respective headless plans for history.

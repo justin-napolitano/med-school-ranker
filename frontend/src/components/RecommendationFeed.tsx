@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { scoreSchools } from "../lib/live-scoring";
 import type { ProductSchool } from "../lib/school-utils";
 import { filterSchools } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
@@ -14,12 +15,45 @@ type Props = {
   showControls?: boolean;
 };
 
-export function RecommendationFeed({ schools, caveat, title = "Recommendation Feed", intro, limit = 24, showControls = true }: Props) {
+export function RecommendationFeed({ schools, caveat, title = "Recommendation Feed", intro, limit = 50, showControls = true }: Props) {
   const local = useLocalSchoolState();
-  const visibleSchools = useMemo(
-    () => filterSchools(schools, local.preferences).slice(0, limit),
-    [schools, local.preferences, limit],
+  const [visibleLimit, setVisibleLimit] = useState(limit);
+  const filteredSchools = useMemo(
+    () => filterSchools(schools, local.preferences).filter((school) => !local.notInterested.includes(school.slug)),
+    [schools, local.preferences, local.notInterested],
   );
+  const scoredSchools = useMemo(() => scoreSchools(filteredSchools, local.preferences), [filteredSchools, local.preferences]);
+  const visibleScores = scoredSchools.slice(0, visibleLimit);
+  const remainingCount = Math.max(scoredSchools.length - visibleScores.length, 0);
+
+  useEffect(() => {
+    setVisibleLimit(limit);
+  }, [
+    limit,
+    local.preferences.cost,
+    local.preferences.degree,
+    local.preferences.fit,
+    local.preferences.gpa,
+    local.preferences.homeState,
+    local.preferences.liveWeights,
+    local.preferences.mcat,
+    local.preferences.ownershipType,
+    local.preferences.query,
+    local.preferences.region,
+    local.preferences.excludedCities,
+    local.preferences.excludedStates,
+  ]);
+
+  function clearRestoringFilters() {
+    local.updatePreference("excludedStates", []);
+    local.updatePreference("excludedCities", []);
+    local.updatePreference("ownershipType", "all");
+    local.updatePreference("query", "");
+    local.updatePreference("degree", "all");
+    local.updatePreference("region", "all");
+    local.updatePreference("cost", "any");
+    local.updatePreference("fit", "all");
+  }
 
   return (
     <div className="recommendation-surface">
@@ -42,18 +76,40 @@ export function RecommendationFeed({ schools, caveat, title = "Recommendation Fe
             {intro ? <p>{intro}</p> : null}
           </div>
           <div className="count-block" aria-label="Visible schools">
-            <strong>{visibleSchools.length}</strong>
-            <span>shown</span>
+            <strong>{visibleScores.length}</strong>
+            <span>shown / {scoredSchools.length} eligible / {schools.length} total</span>
           </div>
         </div>
 
         {local.notice ? <p className="state-notice">{local.notice}</p> : null}
 
-        <div className="card-feed">
-          {visibleSchools.map((school) => (
-            <SchoolCard key={school.slug} school={school} preferences={local.preferences} caveat={caveat} actions={local} />
-          ))}
-        </div>
+        {visibleScores.length ? (
+          <div className="card-feed">
+            {visibleScores.map((score) => (
+              <SchoolCard key={score.school.slug} school={score.school} liveScore={score} preferences={local.preferences} caveat={caveat} actions={local} />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <h2>No eligible schools</h2>
+            <p>Clear exclusions, ownership, search, or score-screen filters to restore schools to Build My List.</p>
+            <button className="action-button" type="button" onClick={clearRestoringFilters}>
+              Clear filters
+            </button>
+          </div>
+        )}
+
+        {remainingCount > 0 ? (
+          <div className="feed-actions" aria-label="More schools">
+            <button className="action-button" type="button" onClick={() => setVisibleLimit((current) => current + 50)}>
+              Load 50 more
+            </button>
+            <button className="action-button" type="button" onClick={() => setVisibleLimit(scoredSchools.length)}>
+              Show all {scoredSchools.length}
+            </button>
+            <span>{remainingCount} not shown yet</span>
+          </div>
+        ) : null}
       </section>
     </div>
   );

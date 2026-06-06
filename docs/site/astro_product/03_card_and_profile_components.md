@@ -11,7 +11,7 @@ Each applicant card must lead with:
 - deterministic "why it ranks here" bullets from generated data;
 - MCAT/GPA context;
 - estimated in-state and out-of-state cost when available;
-- Interested and Applying actions.
+- Interested, Applying, Compare, Not Interested, and Profile actions.
 
 Routine visible Hide controls are out of scope for applicant cards.
 
@@ -53,6 +53,6 @@ School profiles should include:
 - cost context;
 - admissions policy and letter-requirement counts when available;
 - missing-data caveats;
-- links back to recommendations and compare.
+- links back to Build My List and compare.
 
 Profiles remain product-facing, not admin tables.

@@ -30,6 +30,36 @@ const methodology = payload.methodology.slice(0, 12);
       <h2>AAMC grid context</h2>
       <p>{aamcCaveat}</p>
     </article>
+    <article class="method-card">
+      <h2>Live scoring formulas</h2>
+      <p>Your Rank is computed in the browser from selected inputs and weights. MCAT fit is clamp(1, 10, 7 + (applicant MCAT - school MCAT) / 2).</p>
+      <p>GPA fit is clamp(1, 10, 7 + (applicant GPA - school GPA) / 0.08). Cost fit gives the lowest applicable listed cost 10 and the highest 1.</p>
+    </article>
+    <article class="method-card">
+      <h2>Default live weights</h2>
+      <p>Defaults are MCAT fit 25, GPA fit 25, state/residency fit 20, cost fit 15, and baseline attendance context 15.</p>
+      <p>Balanced, Cost-aware, Academic-screen focused, Florida-first, and State-first presets only change those deterministic weights and selected state context.</p>
+    </article>
+    <article class="method-card">
+      <h2>Live vs baseline</h2>
+      <p>Your Rank is the browser-local fit rank after current filters, exclusions, inputs, and weights. Baseline Rank is the generated pipeline rank from the payload.</p>
+      <p>This is not admissions probability, and it is not a school-specific acceptance probability.</p>
+    </article>
+    <article class="method-card">
+      <h2>Missing data policy</h2>
+      <p>Missing MCAT, GPA, state/OOS context, cost, or attendance components are excluded from the live denominator and surfaced as coverage warnings.</p>
+      <p>Missing values are never treated as zero in Your Score.</p>
+    </article>
+    <article class="method-card">
+      <h2>Ownership data status</h2>
+      <p>Institution ownership filtering only activates when source-backed ownership labels are populated in the payload.</p>
+      <p>When labels are missing, the control stays disabled as Unknown instead of inferring public or private status from school names.</p>
+    </article>
+    <article class="method-card">
+      <h2>Confidence fields</h2>
+      <p>Data confidence and source confidence remain transparency fields on cards and profiles.</p>
+      <p>They are not Build My List filters or live score components in this slice.</p>
+    </article>
   </section>
 
   <section class="methodology-list" aria-label="Generated scoring rows">

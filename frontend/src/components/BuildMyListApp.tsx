@@ -12,8 +12,8 @@ export function BuildMyListApp({ schools, caveat }: Props) {
       schools={schools}
       caveat={caveat}
       title="Schools to review first"
-      intro="Cards update from generated ranking data, applicant score inputs, cost availability, and source-confidence filters."
-      limit={18}
+      intro="Your Rank updates locally from applicant inputs, selected weights, cost basis, and reversible exclusions while Baseline Rank stays visible."
+      limit={50}
     />
   );
 }

@@ -1,0 +1,17 @@
+---
+import { LocalListPage } from "../components/LocalListPage";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Not Interested / Applicant List" active="/not-interested/">
+  <section class="page-header">
+    <p class="eyebrow">Removed from review</p>
+    <h1>Not Interested</h1>
+    <p>Browser-local list of schools removed from Build My List. {caveat}</p>
+  </section>
+  <LocalListPage client:load schools={payload.schools} caveat={caveat} listType="notInterested" />
+</ProductLayout>

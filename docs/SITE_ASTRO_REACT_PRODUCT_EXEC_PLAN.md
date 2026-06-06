@@ -9,10 +9,11 @@ The product frontend must be a static export that can run on GitHub Pages or any
 ## Product Contract
 
 - Default route: Build My List at `/`.
-- Product routes: `/recommendations`, `/interested`, `/applying`, `/schools/[slug]`, `/compare`, `/methodology`.
+- Product routes: `/`, `/interested`, `/applying`, `/not-interested`, `/schools/[slug]`, `/compare`, `/methodology`.
+- Legacy route: `/recommendations` may exist as a handoff to Build My List, but it is not a distinct product tab.
 - Admin route: `/admin`, visually and structurally separated from applicant routes.
 - Product UI uses cards/lists by default. Tables remain admin-only or secondary fallback.
-- Applicant actions are browser-local: Interested cap 50, Applying cap 25, compare selection local state, JSON export.
+- Applicant actions are browser-local: Interested cap 50, Applying cap 25, Not Interested removal list, compare selection local state, JSON export.
 - Routine visible Hide controls are not part of applicant cards.
 - Score-fit labels are derived only from MCAT/GPA screen context and must always be caveated as not acceptance probability.
 
@@ -50,7 +51,7 @@ npm run build
 
 ### Phase 3: Applicant Routes
 
-- Build card/list routes for recommendations, interested list, applying list, school profiles, compare, methodology, and admin/data.
+- Build card/list routes for Build My List, interested list, applying list, not-interested list, school profiles, compare, methodology, and admin/data.
 - Use generated fields for school identity, ranking context, MCAT/GPA context, cost, source confidence, and missing-data warnings.
 - Derive "why it ranks here" bullets from generated rank summaries, top drivers, cost context, and missing-data/status fields.
 
@@ -87,7 +88,7 @@ If a command fails, record the exact command and failure in the handoff. Do not 
 
 - The Astro app builds statically from generated publish-safe JSON.
 - `/` renders Build My List as a product onboarding/list-building surface.
-- Recommendations, local lists, profile, compare, methodology, and separated admin/data routes exist.
+- Build My List, local lists, profile, compare, methodology, and separated admin/data routes exist.
 - Cards lead with school name, location, score-screen fit caveat, rank/context bullets, MCAT/GPA, cost when available, and Interested/Applying actions.
 - Frontend smoke check passes.
 - Existing Python validation and tests pass.

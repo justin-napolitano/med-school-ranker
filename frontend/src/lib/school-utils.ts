@@ -1,5 +1,11 @@
 export type RawSchoolNode = Record<string, any>;
 
+export type OwnershipFilter = "all" | "public" | "private" | "unknown";
+
+export type LiveWeightKey = "mcatFit" | "gpaFit" | "stateFit" | "costFit" | "baselineAttendance";
+
+export type LiveWeights = Record<LiveWeightKey, number>;
+
 export type PreferenceState = {
   mcat: string;
   gpa: string;
@@ -7,9 +13,12 @@ export type PreferenceState = {
   degree: "all" | "MD" | "DO";
   region: string;
   cost: "any" | "has-cost" | "lower-cost";
-  dataConfidence: "any" | "medium-plus";
+  excludedStates: string[];
+  excludedCities: string[];
+  ownershipType: OwnershipFilter;
   query: string;
   fit: "all" | "within" | "near" | "below" | "above" | "needs-inputs";
+  liveWeights: LiveWeights;
 };
 
 export type ProductSchool = {
@@ -27,6 +36,10 @@ export type ProductSchool = {
   rankBand: string;
   rankConfidence: string;
   rankScore: string;
+  baselineScore: number | null;
+  admissionsScore: number | null;
+  attendanceScore: number | null;
+  oosFriendlinessScore: number | null;
   rankSummary: string;
   schoolMcat: string;
   schoolGpa: string;
@@ -42,6 +55,7 @@ export type ProductSchool = {
   tuitionInState: string;
   tuitionOutState: string;
   costConfidence: string;
+  ownershipType: "" | "public" | "private" | "unknown";
   policyCount: number;
   letterCount: number;
   positiveDrivers: string;
@@ -59,6 +73,60 @@ export type ProductPayload = {
   methodology: Array<Record<string, any>>;
   curatedLists: Array<Record<string, any>>;
   sourceCount: number;
+};
+
+export const stateNames: Record<string, string> = {
+  AL: "Alabama",
+  AK: "Alaska",
+  AZ: "Arizona",
+  AR: "Arkansas",
+  CA: "California",
+  CO: "Colorado",
+  CT: "Connecticut",
+  DE: "Delaware",
+  DC: "District of Columbia",
+  FL: "Florida",
+  GA: "Georgia",
+  HI: "Hawaii",
+  ID: "Idaho",
+  IL: "Illinois",
+  IN: "Indiana",
+  IA: "Iowa",
+  KS: "Kansas",
+  KY: "Kentucky",
+  LA: "Louisiana",
+  ME: "Maine",
+  MD: "Maryland",
+  MA: "Massachusetts",
+  MI: "Michigan",
+  MN: "Minnesota",
+  MS: "Mississippi",
+  MO: "Missouri",
+  MT: "Montana",
+  NE: "Nebraska",
+  NV: "Nevada",
+  NH: "New Hampshire",
+  NJ: "New Jersey",
+  NM: "New Mexico",
+  NY: "New York",
+  NC: "North Carolina",
+  ND: "North Dakota",
+  OH: "Ohio",
+  OK: "Oklahoma",
+  OR: "Oregon",
+  PA: "Pennsylvania",
+  RI: "Rhode Island",
+  SC: "South Carolina",
+  SD: "South Dakota",
+  TN: "Tennessee",
+  TX: "Texas",
+  UT: "Utah",
+  VT: "Vermont",
+  VA: "Virginia",
+  WA: "Washington",
+  WV: "West Virginia",
+  WI: "Wisconsin",
+  WY: "Wyoming",
 };
 
 const stateRegions: Record<string, string> = {
@@ -115,16 +183,27 @@ const stateRegions: Record<string, string> = {
   WA: "West",
 };
 
+export const defaultLiveWeights: LiveWeights = {
+  mcatFit: 25,
+  gpaFit: 25,
+  stateFit: 20,
+  costFit: 15,
+  baselineAttendance: 15,
+};
+
 export const defaultPreferences: PreferenceState = {
   mcat: "",
   gpa: "",
-  homeState: "",
+  homeState: "FL",
   degree: "all",
   region: "all",
   cost: "any",
-  dataConfidence: "any",
+  excludedStates: [],
+  excludedCities: [],
+  ownershipType: "all",
   query: "",
   fit: "all",
+  liveWeights: defaultLiveWeights,
 };
 
 export function normalizePayload(raw: any): ProductPayload {
@@ -161,6 +240,10 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
     rankBand: ranking.rank_band || derived.rank_band || "Incomplete data",
     rankConfidence: ranking.rank_confidence || derived.rank_confidence || "provisional",
     rankScore: ranking.overall_school_value || ranking.balanced_score || "",
+    baselineScore: toNumberOrNull(ranking.overall_school_value || ranking.balanced_score),
+    admissionsScore: toNumberOrNull(ranking.admissions_score || school.admissions_score),
+    attendanceScore: toNumberOrNull(ranking.attendance_score || school.attendance_score),
+    oosFriendlinessScore: toNumberOrNull(ranking.admissions_oos_friendliness_score || school.admissions_oos_friendliness_score),
     rankSummary: ranking.rank_summary || "",
     schoolMcat: ranking.school_mcat_for_fit || stats.published_mcat_average || school.median_mcat || "",
     schoolGpa: ranking.school_gpa_for_fit || stats.published_gpa_average || school.median_gpa || "",
@@ -176,6 +259,7 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
     tuitionInState: cost.in_state_tuition_fees_insurance || school.in_state_tuition_fees_insurance || "",
     tuitionOutState: cost.out_state_tuition_fees_insurance || school.out_state_tuition_fees_insurance || "",
     costConfidence: cost.data_confidence || ranking.cost_data_confidence || "",
+    ownershipType: normalizeOwnership(ranking.ownership_type || school.ownership_type),
     policyCount: Number(derived.admissions_policy_count || node.admissions_policies?.length || 0),
     letterCount: Number(derived.letter_requirement_count || node.letter_requirements?.length || 0),
     positiveDrivers: ranking.top_positive_drivers || ranking.top_positive_contributors || "",
@@ -196,11 +280,19 @@ export function compareSchools(a: ProductSchool, b: ProductSchool): number {
 
 export function filterSchools(schools: ProductSchool[], preferences: PreferenceState): ProductSchool[] {
   const query = preferences.query.trim().toLowerCase();
+  const excludedStates = new Set(preferences.excludedStates);
+  const excludedCities = new Set(preferences.excludedCities);
+  const hasOwnershipLabels = schoolsHaveOwnershipLabels(schools);
   return schools
     .filter((school) => preferences.degree === "all" || school.degree === preferences.degree)
     .filter((school) => preferences.region === "all" || stateRegions[school.stateAbbrev] === preferences.region)
     .filter((school) => preferences.cost === "any" || hasCost(school))
-    .filter((school) => preferences.dataConfidence === "any" || isMediumPlusQuality(school.statsQuality))
+    .filter((school) => !excludedStates.has(school.stateAbbrev))
+    .filter((school) => !excludedCities.has(cityKeyForSchool(school)))
+    .filter((school) => {
+      if (!hasOwnershipLabels || preferences.ownershipType === "all") return true;
+      return (school.ownershipType || "unknown") === preferences.ownershipType;
+    })
     .filter((school) => {
       if (!query) return true;
       return [school.name, school.city, school.state, school.degree].join(" ").toLowerCase().includes(query);
@@ -295,10 +387,50 @@ export function statesForSchools(schools: ProductSchool[]): string[] {
   return Array.from(new Set(schools.map((school) => school.stateAbbrev).filter(Boolean))).sort();
 }
 
+export function stateLabel(state: string): string {
+  return stateNames[state] ? `${state} - ${stateNames[state]}` : state;
+}
+
+export function cityKeyForSchool(school: ProductSchool): string {
+  const city = school.city.trim();
+  const state = (school.stateAbbrev || school.state).trim();
+  return city && state ? `${city}|${state}` : "";
+}
+
+export function cityLabelFromKey(key: string): string {
+  const [city, state] = key.split("|");
+  return city && state ? `${city}, ${state}` : key;
+}
+
+export function cityOptionsForSchools(schools: ProductSchool[]): string[] {
+  return Array.from(new Set(schools.map(cityKeyForSchool).filter(Boolean))).sort((a, b) => cityLabelFromKey(a).localeCompare(cityLabelFromKey(b)));
+}
+
+export function schoolsHaveOwnershipLabels(schools: ProductSchool[]): boolean {
+  return schools.some((school) => school.ownershipType === "public" || school.ownershipType === "private");
+}
+
+export function ownershipLabel(value: OwnershipFilter): string {
+  if (value === "public") return "Public";
+  if (value === "private") return "Private";
+  if (value === "unknown") return "Unknown";
+  return "All ownership types";
+}
+
 export function toNumberOrNull(value: unknown): number | null {
   if (value === null || value === undefined || value === "") return null;
   const number = Number(String(value).replace(/[$,]/g, ""));
   return Number.isFinite(number) ? number : null;
+}
+
+function normalizeOwnership(value: unknown): ProductSchool["ownershipType"] {
+  const normalized = String(value ?? "")
+    .trim()
+    .toLowerCase();
+  if (!normalized) return "";
+  if (normalized === "public" || normalized.includes("public")) return "public";
+  if (normalized === "private" || normalized.includes("private")) return "private";
+  return "unknown";
 }
 
 function addBullet(bullets: string[], value: string) {
@@ -321,11 +453,6 @@ function missingSummary(value: string): string {
     .filter(Boolean)
     .slice(0, 3);
   return parts.join(", ");
-}
-
-function isMediumPlusQuality(value: string): boolean {
-  const normalized = value.toLowerCase();
-  return normalized.includes("high") || normalized.includes("medium");
 }
 
 function rangeFor(band: string, fallbackAverage: string, fallbackSpread: number): [number, number] | null {

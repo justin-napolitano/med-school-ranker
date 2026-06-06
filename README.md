@@ -18,6 +18,7 @@ Start here before expanding the seed data model:
 - [Headless Product Site Rebuild Execution Plan](docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
 - [Astro React Product Frontend Executive Plan](docs/SITE_ASTRO_REACT_PRODUCT_EXEC_PLAN.md)
 - [Headless Astro React Product Execution Plan](docs/HEADLESS_ASTRO_REACT_PRODUCT_EXECUTION_PLAN.md)
+- [Live Scoring and Filter Controls Executive Plan](docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md)
 - [Frontend Product Polish Executive Plan](docs/FRONTEND_PRODUCT_POLISH_EXEC_PLAN.md)
 - [Headless Frontend Product Polish Plan](docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md)
 - [Headless Site Execution Plan: Phase 1.5A](docs/HEADLESS_SITE_EXECUTION_PLAN.md)
@@ -66,6 +67,15 @@ Astro React product frontend plans:
 - [Admin Separation and Claim Safety](docs/site/astro_product/04_admin_separation_and_claim_safety.md)
 - [QA, Headless, and Deploy](docs/site/astro_product/05_qa_headless_and_deploy.md)
 - [Astro Product Critical Review](docs/site/astro_product/CRITICAL_REVIEW.md)
+
+Live scoring and filter control plans:
+
+- [Filter Controls](docs/site/live_scoring_filters/01_filter_controls.md)
+- [Live Score Engine](docs/site/live_scoring_filters/02_live_score_engine.md)
+- [Weight Controls and UX](docs/site/live_scoring_filters/03_weight_controls_and_ux.md)
+- [Card Copy and Methodology](docs/site/live_scoring_filters/04_card_copy_and_methodology.md)
+- [Headless QA and Execution](docs/site/live_scoring_filters/05_headless_qa_and_critical_review.md)
+- [Live Scoring Critical Review](docs/site/live_scoring_filters/CRITICAL_REVIEW.md)
 
 Frontend product polish plans:
 
