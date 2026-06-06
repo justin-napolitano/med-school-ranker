@@ -2,28 +2,28 @@
   "contains_admin_data": true,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-06T01:53:27+00:00",
+  "generated_at": "2026-06-06T02:27:06+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "admin_status",
   "nodes": [
     {
       "build_metadata": {
-        "generated_at": "2026-06-06T01:53:27+00:00",
+        "generated_at": "2026-06-06T02:27:06+00:00",
         "site_mode": "local_full"
       },
-      "generated_at": "2026-06-06T01:53:27+00:00",
+      "generated_at": "2026-06-06T02:27:06+00:00",
       "id": "admin_status",
       "node_schema_version": "site_nodes_v1",
       "node_type": "admin_status",
       "plan_status_counts": {
-        "active": 3,
+        "active": 4,
         "completed": 6,
-        "drafted": 16,
+        "drafted": 21,
         "drafted_after_modeling": 8,
         "future_scope": 1,
         "implemented": 35,
-        "ready": 1,
-        "reviewed": 4,
+        "ready": 2,
+        "reviewed": 5,
         "reviewed_after_scoring": 1,
         "seeded": 21
       },

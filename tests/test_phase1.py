@@ -815,10 +815,12 @@ def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkey
     assert "#/intake" in public_routes
     assert "#/dossiers" in public_routes
     assert "#/research" in public_routes
-    assert "#/application-list" in public_routes
+    assert "#/interested" in public_routes
+    assert "#/applications" in public_routes
     assert 'section id="intake"' in html_text
     assert 'section id="dossiers"' in html_text
     assert 'section id="research"' in html_text
+    assert 'section id="consideringList"' in html_text
     assert 'section id="applicationList"' in html_text
     assert "function renderIntake()" in html_text
     assert "med_school_ranker_intake_v1" in html_text
@@ -828,6 +830,7 @@ def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkey
     assert "Lower Priority Or Hidden" in html_text
     assert "function renderDossiers()" in html_text
     assert "function renderResearch()" in html_text
+    assert "function renderConsideringList()" in html_text
     assert "function renderApplicationList()" in html_text
     assert "function renderCompare()" in html_text
     assert "final_application_list_export.csv" in html_text
@@ -835,7 +838,8 @@ def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkey
     assert "Review Actions" in html_text
     assert "downloadRankingDossiers" in html_text
     assert "downloadProfileDossierState" in html_text
-    assert "Application decision" in html_text
+    assert "Interested" in html_text
+    assert "Applying" in html_text
     assert "school_visibility_v1" in html_text
     assert "school_dossier_edits_v1" in html_text
     assert "school_visibility_export.csv" in html_text

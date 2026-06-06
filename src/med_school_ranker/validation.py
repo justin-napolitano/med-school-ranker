@@ -257,6 +257,7 @@ ALLOWED_RESEARCH_STATUSES = {
 ALLOWED_INTEREST_LEVELS = {"", "high", "medium", "low", "none"}
 ALLOWED_DECISION_STATUSES = {
     "",
+    "interested",
     "considering",
     "applying",
     "applied",
