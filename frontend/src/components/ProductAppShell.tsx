@@ -8,6 +8,7 @@ import { LocalListPage } from "./LocalListPage";
 import { AppMethodologyView } from "./AppMethodologyView";
 import { AppSchoolProfileView } from "./AppSchoolProfileView";
 import { ScoringAssumptionsApp } from "./ScoringAssumptionsApp";
+import { SchoolBrowserView } from "./SchoolBrowserView";
 import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type ProductAppShellProps = {
@@ -142,6 +143,7 @@ function renderRoute(
   local: LocalSchoolState,
 ) {
   if (route.kind === "build") return <BuildMyListApp schools={schools} caveat={caveat} local={local} />;
+  if (route.kind === "schools") return <SchoolBrowserView schools={schools} caveat={caveat} local={local} />;
   if (route.kind === "interested") return <LocalListPage schools={schools} caveat={caveat} listType="interested" local={local} />;
   if (route.kind === "applying") return <LocalListPage schools={schools} caveat={caveat} listType="applying" local={local} />;
   if (route.kind === "notInterested") return <LocalListPage schools={schools} caveat={caveat} listType="notInterested" local={local} />;
@@ -167,6 +169,13 @@ function buildRouteHeader(route: AppRoute, schools: ProductSchool[], caveat: str
       eyebrow: "Shortlist",
       title: "Interested",
       description: `Browser-local list with a 50 school cap. ${caveat}`,
+    };
+  }
+  if (route.kind === "schools") {
+    return {
+      eyebrow: "Directory",
+      title: "Schools",
+      description: `Browse the full school universe, open profiles, and apply optional browser-local scoring overrides. ${caveat}`,
     };
   }
   if (route.kind === "applying") {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { scoreSchools } from "../lib/live-scoring";
+import { scoreSchools, scoreSchoolsWithOverrides } from "../lib/live-scoring";
 import type { ProductSchool } from "../lib/school-utils";
 import { filterSchools } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
@@ -33,6 +33,10 @@ function RecommendationFeedContent({ schools, caveat, title = "Recommendation Fe
     [schools, local.preferences, local.notInterested],
   );
   const scoredSchools = useMemo(() => scoreSchools(filteredSchools, local.preferences), [filteredSchools, local.preferences]);
+  const scoreAdjustments = useMemo(
+    () => new Map(scoreSchoolsWithOverrides(filteredSchools, local.preferences, local.schoolWeightOverrides).map((row) => [row.slug, row])),
+    [filteredSchools, local.preferences, local.schoolWeightOverrides],
+  );
   const visibleScores = scoredSchools.slice(0, visibleLimit);
   const remainingCount = Math.max(scoredSchools.length - visibleScores.length, 0);
 
@@ -96,7 +100,15 @@ function RecommendationFeedContent({ schools, caveat, title = "Recommendation Fe
         {visibleScores.length ? (
           <div className="card-feed">
             {visibleScores.map((score) => (
-              <SchoolCard key={score.school.slug} school={score.school} liveScore={score} preferences={local.preferences} caveat={caveat} actions={local} />
+              <SchoolCard
+                key={score.school.slug}
+                school={score.school}
+                liveScore={score}
+                preferences={local.preferences}
+                caveat={caveat}
+                actions={local}
+                scoreAdjustment={scoreAdjustments.get(score.school.slug)}
+              />
             ))}
           </div>
         ) : (

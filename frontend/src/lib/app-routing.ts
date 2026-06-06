@@ -2,6 +2,7 @@ import { withBase } from "./site-url";
 
 export type AppRoute =
   | { kind: "build"; deprecatedFrom?: "/recommendations/" }
+  | { kind: "schools" }
   | { kind: "interested" }
   | { kind: "applying" }
   | { kind: "notInterested" }
@@ -19,6 +20,7 @@ export type AppNavItem = {
 
 export const appNavItems: AppNavItem[] = [
   { path: "/", label: "Build My List", routeKind: "build" },
+  { path: "/schools/", label: "Schools", routeKind: "schools" },
   { path: "/interested/", label: "Interested", routeKind: "interested" },
   { path: "/applying/", label: "Applying", routeKind: "applying" },
   { path: "/not-interested/", label: "Not Interested", routeKind: "notInterested" },
@@ -41,6 +43,7 @@ export function resolveAppRoute(value: string): AppRoute {
   const path = normalizeAppPath(value);
   if (path === "/") return { kind: "build" };
   if (path === "/recommendations/") return { kind: "build", deprecatedFrom: "/recommendations/" };
+  if (path === "/schools/") return { kind: "schools" };
   if (path === "/interested/") return { kind: "interested" };
   if (path === "/applying/") return { kind: "applying" };
   if (path === "/not-interested/") return { kind: "notInterested" };

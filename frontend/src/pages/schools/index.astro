@@ -1,0 +1,13 @@
+---
+import { ProductAppShell } from "../../components/ProductAppShell";
+import ProductLayout from "../../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+const aamcCaveat = payload.copy.aamc_grid_caveat || "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific admit chance.";
+---
+
+<ProductLayout title="Schools / Applicant List" active="/schools/" shellNav={false}>
+  <ProductAppShell client:load initialPath="/schools/" schools={payload.schools} caveat={caveat} aamcCaveat={aamcCaveat} methodology={payload.methodology} />
+</ProductLayout>

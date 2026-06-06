@@ -1,6 +1,6 @@
 import { Download } from "lucide-react";
 import { useMemo } from "react";
-import { scoreSchools } from "../lib/live-scoring";
+import { scoreSchools, scoreSchoolsWithOverrides } from "../lib/live-scoring";
 import { appHref } from "../lib/app-routing";
 import type { ProductSchool } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
@@ -32,6 +32,10 @@ function LocalListPageContent({ schools, caveat, listType, local }: Props & { lo
     [schoolBySlug, slugs],
   );
   const scoredSchools = useMemo(() => scoreSchools(selectedSchools, local.preferences), [selectedSchools, local.preferences]);
+  const scoreAdjustments = useMemo(
+    () => new Map(scoreSchoolsWithOverrides(selectedSchools, local.preferences, local.schoolWeightOverrides).map((row) => [row.slug, row])),
+    [selectedSchools, local.preferences, local.schoolWeightOverrides],
+  );
   const title = listType === "interested" ? "Interested" : listType === "applying" ? "Applying" : "Not Interested";
   const cap = listType === "interested" ? 50 : listType === "applying" ? 25 : null;
   const showRankingControls = listType === "interested" || listType === "applying";
@@ -79,7 +83,15 @@ function LocalListPageContent({ schools, caveat, listType, local }: Props & { lo
         {selectedSchools.length ? (
           <div className="card-feed">
             {scoredSchools.map((score) => (
-              <SchoolCard key={score.school.slug} school={score.school} liveScore={score} preferences={local.preferences} caveat={caveat} actions={local} />
+              <SchoolCard
+                key={score.school.slug}
+                school={score.school}
+                liveScore={score}
+                preferences={local.preferences}
+                caveat={caveat}
+                actions={local}
+                scoreAdjustment={scoreAdjustments.get(score.school.slug)}
+              />
             ))}
           </div>
         ) : (

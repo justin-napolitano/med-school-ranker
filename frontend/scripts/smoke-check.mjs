@@ -45,6 +45,7 @@ const methodology = read("methodology/index.html");
 const notInterested = read("not-interested/index.html");
 const recommendations = read("recommendations/index.html");
 const scoring = read("scoring/index.html");
+const schools = read("schools/index.html");
 const schoolProfile = read("schools/nyu-grossman-long-island-school-of-medicine/index.html");
 const deploymentBase = normalizeDeploymentBase(process.env.ASTRO_BASE_PATH);
 
@@ -79,6 +80,15 @@ if (!index.includes("shown /") || !index.includes("eligible /") || !index.includ
 assertShellRoute(interested, "Interested", "50 school cap");
 assertShellRoute(applying, "Applying", "25 school cap");
 assertShellRoute(notInterested, "Not Interested", "removed from Build My List");
+assertShellRoute(schools, "Schools", "Personal scoring override");
+
+if (!schools.includes('data-app-route="schools"') || !schools.includes('data-school-browser="true"')) {
+  fail("Schools route does not include the school-browser shell marker.");
+}
+
+if (!schools.includes("School directory") || !schools.includes("Global Score") || !schools.includes("Adjusted Score")) {
+  fail("Schools route is missing directory scoring labels.");
+}
 
 if (!notInterested.includes("<h1>Not Interested</h1>")) {
   fail("Not Interested route is missing.");
@@ -146,6 +156,9 @@ const applicantNav = extractShellNav(index);
 if (!applicantNav) {
   fail("Applicant shell nav is missing from the product route.");
 } else {
+  if (!applicantNav.includes("Schools")) {
+    fail("Schools is missing from the applicant shell nav.");
+  }
   if (applicantNav.includes("Admin/Data")) {
     fail("Admin/Data appears as a normal applicant shell nav item.");
   }
