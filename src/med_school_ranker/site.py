@@ -75,7 +75,7 @@ JSON_OUTPUTS = {
 SITE_MODE_LOCAL_FULL = "local_full"
 SITE_MODE_PUBLISH_SAFE = "publish_safe"
 SITE_MODES = {SITE_MODE_LOCAL_FULL, SITE_MODE_PUBLISH_SAFE}
-DEFAULT_ROUTE = "#/rankings"
+DEFAULT_ROUTE = "#/intake"
 NODE_SCHEMA_VERSION = "site_nodes_v1"
 
 AAMC_GRID_CAVEAT = (
@@ -84,6 +84,7 @@ AAMC_GRID_CAVEAT = (
 )
 
 PUBLIC_ROUTES = [
+    {"path": "#/intake", "label": "Intake", "route_type": "public"},
     {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
     {"path": "#/dossiers", "label": "Dossiers", "route_type": "public"},
     {"path": "#/research", "label": "Research Queue", "route_type": "public"},
@@ -1820,6 +1821,7 @@ def render_site_html(payload: dict[str, object]) -> str:
     {public_nav}{admin_nav}
   </nav>
   <main>
+    <section id="intake" class="view"></section>
     <section id="rankings" class="view"></section>
     <section id="dossiers" class="view"></section>
     <section id="research" class="view"></section>
@@ -1918,6 +1920,23 @@ main { padding: 18px; }
 .field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
 .field-grid label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
 .full-span { grid-column: 1 / -1; }
+.intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.intake-form { position: sticky; top: 12px; display: grid; gap: 10px; }
+.intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 0; background: #fbfdff; }
+.intake-form legend { color: var(--header); font-weight: 700; font-size: 13px; padding: 0 4px; }
+.intake-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
+.intake-check-grid label, .checkline { display: flex; gap: 6px; align-items: center; color: #203347; font-size: 13px; }
+.intake-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.guided-group { margin-bottom: 14px; }
+.guided-group-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; width: 100%; text-align: left; }
+.guided-group-header strong { color: var(--header); }
+.guided-group-header.active strong, .guided-group-header.active span { color: #fff; }
+.school-review-card { display: grid; gap: 10px; min-height: 100%; }
+.school-review-card h3 { margin-bottom: 0; }
+.card-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: auto; }
+.card-actions select { max-width: 180px; }
+.card-note { border-top: 1px solid var(--border); padding-top: 8px; }
 .inline-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .compact-select { min-width: 150px; padding: 6px 8px; font-size: 12px; }
 .control-stack { display: grid; gap: 6px; min-width: 170px; }
@@ -1961,6 +1980,8 @@ a { color: var(--accent); }
   .app-header { display: grid; align-items: stretch; }
   .search-label { min-width: 0; }
   main { padding: 12px; }
+  .intake-layout { grid-template-columns: 1fr; }
+  .intake-form { position: static; }
 }
 """
 
@@ -1989,6 +2010,21 @@ let compareState = {
 };
 let visibilityState = {};
 let dossierState = {};
+let intakeState = null;
+let guidedGroupOpenState = {};
+
+const INTAKE_STORAGE_KEY = 'med_school_ranker_intake_v1';
+const INTAKE_DISCLOSURE_STORAGE_KEY = 'med_school_ranker_guided_groups_v1';
+const INTAKE_SCHEMA_VERSION = 'guided_intake_v1';
+const INTAKE_STATE_HIDE_PREFIX = 'Intake state avoid: ';
+const GUIDED_GROUPS = [
+  {id: 'start_here', label: 'Start Here', defaultOpen: true},
+  {id: 'florida_options', label: 'Florida Options', defaultOpen: true},
+  {id: 'reach_schools_to_research', label: 'Reach Schools To Research', defaultOpen: true},
+  {id: 'compare_next', label: 'Compare Next', defaultOpen: true},
+  {id: 'need_more_data', label: 'Need More Data', defaultOpen: false},
+  {id: 'lower_priority_or_hidden', label: 'Lower Priority Or Hidden', defaultOpen: false},
+];
 
 const VISIBILITY_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'visibility_state', 'visibility_reason', 'hidden_at', 'updated_at', 'source', 'notes'];
 const DOSSIER_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'research_status', 'interest_level', 'four_year_happiness', 'location_fit', 'culture_fit', 'regret_index', 'hard_no_flag', 'hard_no_reason', 'application_decision_status', 'notes'];
@@ -2078,6 +2114,10 @@ dossierState = Object.fromEntries(rows('school_dossiers')
     updated_at: record.updated_at || '',
     source: record.source || 'manual/school_dossiers.csv',
   }]));
+intakeState = loadIntakeState();
+guidedGroupOpenState = loadGuidedGroupOpenState();
+syncSelectorFromIntake();
+syncStateAvoidVisibility();
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
 const truthy = (value) => ['1', 'true', 't', 'yes', 'y'].includes(String(value || '').trim().toLowerCase());
 const parseScore = (value) => {
@@ -2107,6 +2147,7 @@ function filteredSchools() {
 function parseRoute() {
   const path = routePath(window.location.hash);
   if (path.startsWith('/admin') && !ADMIN_ENABLED) return {view: 'rankings', path: '/rankings'};
+  if (path === '/intake') return {view: 'intake', path};
   if (path === '/rankings') return {view: 'rankings', path};
   if (path === '/dossiers') return {view: 'dossiers', path};
   if (path === '/research') return {view: 'research', path};
@@ -2178,6 +2219,206 @@ function labelize(value) {
   const text = String(value || '').trim();
   if (!text) return 'Unselected';
   return text.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function safeLocalRead(key) {
+  try {
+    return window.localStorage?.getItem(key) || '';
+  } catch {
+    return '';
+  }
+}
+
+function safeLocalWrite(key, value) {
+  try {
+    window.localStorage?.setItem(key, value);
+  } catch {
+    // Local storage can be unavailable in private windows or locked-down browsers.
+  }
+}
+
+function safeLocalRemove(key) {
+  try {
+    window.localStorage?.removeItem(key);
+  } catch {
+    // Local storage can be unavailable in private windows or locked-down browsers.
+  }
+}
+
+function schoolStateOptions() {
+  return unique(rows('schools').map(item => item.school.state_abbrev || item.ranking.state_abbrev)).sort();
+}
+
+function mcatBandOptions() {
+  return unique(rows('aamc_mcat_gpa_grid').map(row => row.mcat_band));
+}
+
+function gpaBandOptions() {
+  return unique(rows('aamc_mcat_gpa_grid').map(row => row.gpa_band));
+}
+
+function defaultIntakeState() {
+  const states = schoolStateOptions();
+  return {
+    schema_version: INTAKE_SCHEMA_VERSION,
+    degree_goal: 'md_only',
+    applicant_state: states.includes('FL') ? 'FL' : '',
+    mcat_band: '',
+    gpa_band: '',
+    application_strategy: 'balanced_list',
+    target_application_count: '25',
+    include_reach_schools: 'yes',
+    urbanicity_preference: 'urban_preferred',
+    cost_sensitivity: 'medium',
+    states_to_avoid: [],
+    career_optionality: 'em_leaning',
+    school_environment_preferences: [],
+    dealbreakers: [],
+    updated_at: '',
+  };
+}
+
+function arrayValue(value) {
+  return Array.isArray(value) ? value.map(String).filter(Boolean) : [];
+}
+
+function normalizeIntakeState(raw) {
+  const defaults = defaultIntakeState();
+  const parsed = raw && typeof raw === 'object' ? raw : {};
+  const normalized = {...defaults, ...parsed, schema_version: INTAKE_SCHEMA_VERSION};
+  normalized.states_to_avoid = arrayValue(parsed.states_to_avoid);
+  normalized.school_environment_preferences = arrayValue(parsed.school_environment_preferences);
+  normalized.dealbreakers = arrayValue(parsed.dealbreakers);
+  if (!['md_only'].includes(normalized.degree_goal)) normalized.degree_goal = defaults.degree_goal;
+  if (!['safer_list', 'balanced_list', 'reach_heavy_list'].includes(normalized.application_strategy)) normalized.application_strategy = defaults.application_strategy;
+  if (!['15', '20', '25', '30', '35'].includes(String(normalized.target_application_count))) normalized.target_application_count = defaults.target_application_count;
+  if (!['yes', 'no'].includes(normalized.include_reach_schools)) normalized.include_reach_schools = defaults.include_reach_schools;
+  if (!['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'].includes(normalized.urbanicity_preference)) normalized.urbanicity_preference = defaults.urbanicity_preference;
+  if (!['low', 'medium', 'high', 'debt_averse'].includes(normalized.cost_sensitivity)) normalized.cost_sensitivity = defaults.cost_sensitivity;
+  if (!['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'].includes(normalized.career_optionality)) normalized.career_optionality = defaults.career_optionality;
+  return normalized;
+}
+
+function loadIntakeState() {
+  const stored = safeLocalRead(INTAKE_STORAGE_KEY);
+  if (!stored) return normalizeIntakeState({});
+  try {
+    return normalizeIntakeState(JSON.parse(stored));
+  } catch {
+    return normalizeIntakeState({});
+  }
+}
+
+function persistIntakeState() {
+  if (!intakeState) return;
+  intakeState.updated_at = nowIso();
+  safeLocalWrite(INTAKE_STORAGE_KEY, JSON.stringify(intakeState));
+}
+
+function loadGuidedGroupOpenState() {
+  const defaults = Object.fromEntries(GUIDED_GROUPS.map(group => [group.id, group.defaultOpen]));
+  const stored = safeLocalRead(INTAKE_DISCLOSURE_STORAGE_KEY);
+  if (!stored) return defaults;
+  try {
+    return {...defaults, ...JSON.parse(stored)};
+  } catch {
+    return defaults;
+  }
+}
+
+function persistGuidedGroupOpenState() {
+  safeLocalWrite(INTAKE_DISCLOSURE_STORAGE_KEY, JSON.stringify(guidedGroupOpenState));
+}
+
+function clearIntakeStateAvoidVisibility() {
+  rows('schools').forEach(item => {
+    const current = visibilityFor(item);
+    const reason = String(current.visibility_reason || '');
+    if (current.visibility_state === 'hidden' && reason.startsWith(INTAKE_STATE_HIDE_PREFIX)) {
+      setSchoolVisibility(schoolId(item), 'visible', 'Intake reset');
+    }
+  });
+}
+
+function resetIntakeState() {
+  clearIntakeStateAvoidVisibility();
+  safeLocalRemove(INTAKE_STORAGE_KEY);
+  safeLocalRemove(INTAKE_DISCLOSURE_STORAGE_KEY);
+  intakeState = normalizeIntakeState({});
+  guidedGroupOpenState = loadGuidedGroupOpenState();
+  syncSelectorFromIntake();
+}
+
+function syncSelectorFromIntake() {
+  if (!intakeState) return;
+  selectorState.mcatBand = intakeState.mcat_band || '';
+  selectorState.gpaBand = intakeState.gpa_band || '';
+  selectorState.applicantState = intakeState.applicant_state || '';
+}
+
+function intakeReady() {
+  if (!intakeState) return false;
+  return Boolean(
+    intakeState.degree_goal
+    && intakeState.applicant_state
+    && intakeState.mcat_band
+    && intakeState.gpa_band
+    && intakeState.application_strategy
+    && intakeState.target_application_count
+    && intakeState.urbanicity_preference
+    && intakeState.cost_sensitivity
+  );
+}
+
+function setIntakeField(field, value) {
+  if (!intakeState) intakeState = normalizeIntakeState({});
+  intakeState[field] = value;
+  if (field === 'applicant_state') {
+    intakeState.states_to_avoid = arrayValue(intakeState.states_to_avoid).filter(state => state !== value);
+  }
+  persistIntakeState();
+  syncSelectorFromIntake();
+  if (field === 'states_to_avoid' || field === 'applicant_state') syncStateAvoidVisibility();
+}
+
+function toggleIntakeArrayField(field, value, checked) {
+  if (!intakeState) intakeState = normalizeIntakeState({});
+  const current = new Set(arrayValue(intakeState[field]));
+  if (checked) current.add(value);
+  else current.delete(value);
+  setIntakeField(field, [...current].sort());
+}
+
+function syncStateAvoidVisibility() {
+  if (!intakeState) return;
+  const avoided = new Set(arrayValue(intakeState.states_to_avoid));
+  rows('schools').forEach(item => {
+    if (item.school.degree_type !== 'MD') return;
+    const id = schoolId(item);
+    const state = schoolState(item);
+    const current = visibilityFor(item);
+    const reason = String(current.visibility_reason || '');
+    if (state && avoided.has(state)) {
+      setSchoolVisibility(id, 'hidden', `${INTAKE_STATE_HIDE_PREFIX}${state}`);
+      return;
+    }
+    if (current.visibility_state === 'hidden' && reason.startsWith(INTAKE_STATE_HIDE_PREFIX)) {
+      setSchoolVisibility(id, 'visible', 'Intake state avoid cleared');
+    }
+  });
+}
+
+function intakeExportRecord() {
+  const grouped = intakeReady() ? guidedRowsByGroup() : {};
+  return {
+    export_schema_version: INTAKE_SCHEMA_VERSION,
+    exported_at: nowIso(),
+    privacy_label: 'browser_local_user_answers',
+    answers: intakeState,
+    selected_context: selectedAssumptionRecords()[0],
+    group_counts: Object.fromEntries(GUIDED_GROUPS.map(group => [group.label, (grouped[group.id] || []).length])),
+    caveat: payload.copy.aamc_grid_caveat,
+  };
 }
 
 function nodeDisplayValue(value) {
@@ -2530,7 +2771,7 @@ function selectorCostBasis(item) {
     : ['estimated_coa_out_state', 'out_state_tuition_fees_insurance'];
   for (const field of fields) {
     const value = parseScore(cost[field]);
-    if (value !== null) return value;
+    if (value !== null && value > 0) return value;
   }
   return null;
 }
@@ -2553,17 +2794,18 @@ function selectorOosScore(item) {
   return 4;
 }
 
-function activeMdSchools() {
+function activeMdSchools(options={}) {
+  const includeHidden = options.includeHidden === true;
   return filteredSchools().filter(item => (
     item.school.degree_type === 'MD'
     && !truthy(item.school.manual_exclusion_flag)
     && !truthy(item.ranking.excluded_from_rank)
-    && !isSchoolHidden(item)
+    && (includeHidden || !isSchoolHidden(item))
   ));
 }
 
-function selectorRankedRows() {
-  const mdRows = activeMdSchools();
+function selectorRankedRows(options={}) {
+  const mdRows = activeMdSchools(options);
   const mcatValue = bandMidpoint(selectorState.mcatBand, 'mcat');
   const gpaValue = bandMidpoint(selectorState.gpaBand, 'gpa');
   const costBasisBySchool = new Map(mdRows.map(item => [item.school.school_id, selectorCostBasis(item)]));
@@ -2617,6 +2859,18 @@ function downloadCsv(filename, headers, records) {
     ...records.map(record => headers.map(header => csvEscape(record[header])).join(',')),
   ];
   const blob = new Blob([lines.join('\n') + '\n'], {type: 'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function downloadJson(filename, record) {
+  const blob = new Blob([JSON.stringify(record, null, 2) + '\n'], {type: 'application/json'});
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -2871,6 +3125,303 @@ function renderVisibilityPanel() {
     <p>Visibility is local to this browser session. Export the CSV before closing the page if you want to preserve hide/restore decisions.</p>
     <div style="margin-top:10px">${hiddenTable}</div>
   </div>`;
+}
+
+function intakeSelect(field, label, values, selected=intakeState?.[field] || '') {
+  const selectedValue = String(selected || '');
+  const optionValues = values.includes('') ? values : [''].concat(values);
+  const options = optionValues.map(value => `<option value="${attr(value)}" ${value === selectedValue ? 'selected' : ''}>${value ? safeText(labelize(value)) : 'Unselected'}</option>`).join('');
+  return `<label>${safeText(label)}<select data-intake-field="${attr(field)}">${options}</select></label>`;
+}
+
+function intakeCheckboxGroup(field, values, selectedValues) {
+  const selected = new Set(arrayValue(selectedValues));
+  if (!values.length) return '<div class="empty-state">No options available from the current data.</div>';
+  return `<div class="intake-check-grid">${values.map(value => `<label><input type="checkbox" data-intake-multi="${attr(field)}" value="${attr(value)}" ${selected.has(value) ? 'checked' : ''}>${safeText(value)}</label>`).join('')}</div>`;
+}
+
+function intakeDisclosureGroup(field, values, selectedValues) {
+  const selected = new Set(arrayValue(selectedValues));
+  return `<div class="intake-check-grid">${values.map(value => `<label class="checkline"><input type="checkbox" data-intake-multi="${attr(field)}" value="${attr(value)}" ${selected.has(value) ? 'checked' : ''}>${safeText(labelize(value))}</label>`).join('')}</div>`;
+}
+
+function intakeSummaryChips() {
+  if (!intakeState) return '';
+  const chips = [
+    'MD only',
+    `${intakeState.applicant_state || 'No state'} applicant`,
+    `${intakeState.mcat_band || 'No MCAT band'} MCAT`,
+    `${intakeState.gpa_band || 'No GPA band'} GPA`,
+    labelize(intakeState.application_strategy),
+    `${intakeState.target_application_count} target apps`,
+    labelize(intakeState.urbanicity_preference),
+    `${labelize(intakeState.cost_sensitivity)} cost sensitivity`,
+  ];
+  if (intakeState.states_to_avoid.length) chips.push(`Avoiding ${intakeState.states_to_avoid.join(', ')}`);
+  return `<div class="card-chip-row">${chips.map(text => badge(text)).join('')}</div>`;
+}
+
+function guidedStrategySettings() {
+  const target = Number(intakeState?.target_application_count || 25) || 25;
+  const strategy = intakeState?.application_strategy || 'balanced_list';
+  if (strategy === 'safer_list') {
+    return {
+      startLimit: Math.max(6, Math.ceil(target * 0.32)),
+      compareLimit: Math.max(10, Math.ceil(target * 0.8)),
+      reachLimit: target + 4,
+      label: 'Safer list lens',
+    };
+  }
+  if (strategy === 'reach_heavy_list') {
+    return {
+      startLimit: Math.max(10, Math.ceil(target * 0.48)),
+      compareLimit: target,
+      reachLimit: target + 20,
+      label: 'Reach-heavy list lens',
+    };
+  }
+  return {
+    startLimit: Math.max(8, Math.ceil(target * 0.4)),
+    compareLimit: target,
+    reachLimit: target + 10,
+    label: 'Balanced list lens',
+  };
+}
+
+function guidedMissingData(row) {
+  const item = row.item;
+  const hasMcat = Boolean(item.ranking?.published_mcat_average || item.admissions_stats?.published_mcat_average);
+  const hasGpa = Boolean(item.ranking?.published_gpa_average || item.admissions_stats?.published_gpa_average);
+  const lowCoverage = row.overall?.score === null || (row.overall?.coverage ?? 0) < 0.35;
+  return lowCoverage || !hasMcat || !hasGpa;
+}
+
+function guidedGroupForRow(row) {
+  const item = row.item;
+  const settings = guidedStrategySettings();
+  const rank = Number(row.decisionRank || 9999);
+  const sameState = intakeState?.applicant_state && schoolState(item) === intakeState.applicant_state;
+  const avoided = new Set(arrayValue(intakeState?.states_to_avoid));
+  if (isSchoolHidden(item) || avoided.has(schoolState(item))) return 'lower_priority_or_hidden';
+  if (guidedMissingData(row)) return 'need_more_data';
+  if (sameState && intakeState.applicant_state === 'FL') return 'florida_options';
+  if (rank <= settings.startLimit) return 'start_here';
+  if (rank > settings.compareLimit && rank <= settings.reachLimit && intakeState?.include_reach_schools !== 'no') return 'reach_schools_to_research';
+  if (rank <= settings.compareLimit) return 'compare_next';
+  return 'lower_priority_or_hidden';
+}
+
+function guidedRowsByGroup() {
+  const grouped = Object.fromEntries(GUIDED_GROUPS.map(group => [group.id, []]));
+  if (!intakeReady()) return grouped;
+  syncSelectorFromIntake();
+  const rankedRows = selectorRankedRows({includeHidden: true});
+  const rankedIds = new Set(rankedRows.map(row => schoolId(row.item)));
+  const unrankedRows = activeMdSchools({includeHidden: true})
+    .filter(item => !rankedIds.has(schoolId(item)))
+    .map(item => ({
+      item,
+      overrides: {},
+      admissions: {score: null, coverage: 0},
+      attendance: {score: null, coverage: 0},
+      overall: {score: null, coverage: 0},
+      costBasis: selectorCostBasis(item),
+      decisionRank: '',
+    }));
+  [...rankedRows, ...unrankedRows].forEach(row => {
+    grouped[guidedGroupForRow(row)].push(row);
+  });
+  return grouped;
+}
+
+function guidedReasonChips(row, groupId) {
+  const item = row.item;
+  const reasons = ['MD-only review', `${intakeState.mcat_band} / ${intakeState.gpa_band}`];
+  if (row.decisionRank) reasons.push(`Selected rank ${row.decisionRank}`);
+  if (groupId === 'florida_options') reasons.push('Florida option');
+  if (schoolState(item) === intakeState.applicant_state) reasons.push('In-state context');
+  if (row.overrides?.admissions_oos_friendliness_score !== undefined) reasons.push('State fit applied');
+  if (row.overrides?.attendance_cost_score !== undefined) reasons.push('Cost context applied');
+  if (intakeState.urbanicity_preference === 'urban_preferred') reasons.push('Urban preference noted');
+  if (intakeState.career_optionality === 'em_leaning') reasons.push('EM interest awareness-only');
+  return reasons.slice(0, 7);
+}
+
+function guidedRiskChips(row, groupId) {
+  const item = row.item;
+  const risks = [];
+  if (isSchoolHidden(item)) risks.push(`Hidden: ${visibilityFor(item).visibility_reason || 'local decision'}`);
+  if (groupId === 'need_more_data') risks.push('Incomplete data');
+  if ((row.overall?.coverage ?? 0) < 0.5) risks.push('Low score coverage');
+  if (row.costBasis && ['high', 'debt_averse'].includes(intakeState.cost_sensitivity) && row.costBasis > 90000) risks.push('High cost signal');
+  if (row.decisionRank && Number(row.decisionRank) > Number(intakeState.target_application_count || 25)) risks.push('Outside target count');
+  if (item.derived.admissions_data_quality_band && !['high', 'medium'].includes(item.derived.admissions_data_quality_band)) risks.push(`Stats quality ${item.derived.admissions_data_quality_band}`);
+  if (item.ranking.score_warnings) risks.push('Score warning present');
+  return risks.slice(0, 6);
+}
+
+function guidedMissingChips(row) {
+  const missingParts = missingDossierSections(row.item);
+  if (row.overall?.score === null) missingParts.unshift('selected rank');
+  if (!row.item.ranking.published_mcat_average && !row.item.admissions_stats.published_mcat_average) missingParts.unshift('MCAT avg');
+  if (!row.item.ranking.published_gpa_average && !row.item.admissions_stats.published_gpa_average) missingParts.unshift('GPA avg');
+  return unique(missingParts).slice(0, 6);
+}
+
+function guidedNextAction(row, groupId) {
+  if (groupId === 'need_more_data') return 'Open dossier and fill missing research fields';
+  if (groupId === 'lower_priority_or_hidden' && isSchoolHidden(row.item)) return 'Restore only if this school should return to review';
+  if (groupId === 'reach_schools_to_research') return 'Research fit before adding to the 25-school target list';
+  return applicationNextActionFor(row.item, applicationStatusFor(row.item));
+}
+
+function guidedCostDisplay(row) {
+  const directValues = [
+    row.costBasis,
+    parseScore(row.item.ranking?.cost_basis),
+    parseScore(row.item.cost_and_debt?.estimated_coa_out_state),
+    parseScore(row.item.cost_and_debt?.out_state_tuition_fees_insurance),
+  ];
+  const value = directValues.find(candidate => candidate !== null && candidate !== undefined && candidate > 0);
+  return value ? `$${Math.round(value).toLocaleString()}` : 'Missing';
+}
+
+function renderGuidedSchoolCard(row, groupId) {
+  const item = row.item;
+  const id = schoolId(item);
+  const reasonChips = guidedReasonChips(row, groupId).map(text => badge(text, 'good')).join('');
+  const riskChips = guidedRiskChips(row, groupId).map(text => badge(text, 'warn')).join('') || badge('No current risk chip', 'good');
+  const missingChips = guidedMissingChips(row).map(text => badge(text, 'warn')).join('') || badge('No major missing chip', 'good');
+  const decisionRank = row.decisionRank || item.ranking.decision_rank || item.ranking.overall_rank || 'Missing';
+  const overall = row.overall?.score === null ? 'Missing' : row.overall.score.toFixed(2);
+  const admissions = row.admissions?.score === null ? 'Missing' : row.admissions.score.toFixed(2);
+  const attendance = row.attendance?.score === null ? 'Missing' : row.attendance.score.toFixed(2);
+  return `<div class="panel school-review-card">
+    <div>
+      <h3>${linkSchool(item)}</h3>
+      <p>${missing(item.school.degree_type)} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${visibilityBadge(item)}</p>
+    </div>
+    <div class="node-fact-row"><strong>Decision Rank</strong><span>${missing(decisionRank)} · ${missing(item.ranking.rank_band || item.derived.rank_band)}</span></div>
+    <div class="node-fact-row"><strong>Selected Scores</strong><span>Overall ${overall} · Admissions ${admissions} · Attendance ${attendance}</span></div>
+    <div class="node-fact-row"><strong>MCAT/GPA</strong><span>${missing(item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average)} / ${missing(item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average)} · ${missing(item.ranking.profile_aamc_acceptance_rate_band || item.derived.aamc_acceptance_rate_band)}</span></div>
+    <div class="node-fact-row"><strong>Cost</strong><span>${guidedCostDisplay(row)}</span></div>
+    <div class="card-note"><strong>Why here</strong><div class="card-chip-row">${reasonChips}</div></div>
+    <div class="card-note"><strong>Risks</strong><div class="card-chip-row">${riskChips}</div></div>
+    <div class="card-note"><strong>Missing data</strong><div class="card-chip-row">${missingChips}</div></div>
+    <p><strong>Next action:</strong> ${guidedNextAction(row, groupId)}</p>
+    <div class="card-actions">
+      <a href="${item.profile_route || `#/schools/${item.school_slug}`}">Profile</a>
+      ${compareButton(item)}
+      ${applicationDecisionControl(item)}
+      ${isSchoolHidden(item)
+        ? `<button type="button" data-action="restore-school" data-school-id="${attr(id)}">Restore</button>`
+        : `<button type="button" data-action="hide-school" data-school-id="${attr(id)}">Hide</button>`}
+    </div>
+  </div>`;
+}
+
+function renderGuidedGroup(group, groupedRows) {
+  const rows = groupedRows[group.id] || [];
+  const isOpen = guidedGroupOpenState[group.id] !== undefined ? guidedGroupOpenState[group.id] : group.defaultOpen;
+  const body = isOpen
+    ? rows.length
+      ? `<div class="intake-card-grid">${rows.map(row => renderGuidedSchoolCard(row, group.id)).join('')}</div>`
+      : '<div class="empty-state">No schools currently fall into this group.</div>'
+    : '';
+  return `<div class="guided-group">
+    <button type="button" class="guided-group-header ${isOpen ? 'active' : ''}" data-action="toggle-guided-group" data-group-id="${attr(group.id)}">
+      <strong>${safeText(group.label)}</strong>
+      <span>${rows.length} schools · ${isOpen ? 'Collapse' : 'Expand'}</span>
+    </button>
+    ${body}
+  </div>`;
+}
+
+function renderGuidedResults() {
+  if (!intakeReady()) {
+    return `<div class="empty-state">Choose MCAT band, GPA band, applicant state, and list preferences to generate grouped MD school cards.</div>`;
+  }
+  const grouped = guidedRowsByGroup();
+  const totalRows = Object.values(grouped).reduce((sum, rows) => sum + rows.length, 0);
+  const settings = guidedStrategySettings();
+  return `<div class="grid">
+      ${metric('Grouped MD schools', totalRows)}
+      ${metric('Target applications', intakeState.target_application_count)}
+      ${metric('Strategy', settings.label)}
+      ${metric('Hidden schools', hiddenSchools().length)}
+    </div>
+    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    ${GUIDED_GROUPS.map(group => renderGuidedGroup(group, grouped)).join('')}`;
+}
+
+function renderIntake() {
+  const states = schoolStateOptions();
+  const stateAvoidOptions = states.filter(state => state !== intakeState.applicant_state);
+  $('intake').innerHTML = `<h2>Applicant Intake</h2>
+    <div class="intake-layout">
+      <div class="panel intake-form">
+        <div>
+          <h3>Build A Review List</h3>
+          <p>Answers stay in this browser and change the review lens, not the source CSVs.</p>
+        </div>
+        <fieldset>
+          <legend>Academic Context</legend>
+          <div class="field-grid">
+            ${intakeSelect('degree_goal', 'Degree Goal', ['md_only'])}
+            ${intakeSelect('applicant_state', 'Applicant State', states)}
+            ${intakeSelect('mcat_band', 'MCAT Band', mcatBandOptions())}
+            ${intakeSelect('gpa_band', 'GPA Band', gpaBandOptions())}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>List Strategy</legend>
+          <div class="field-grid">
+            ${intakeSelect('application_strategy', 'Strategy', ['safer_list', 'balanced_list', 'reach_heavy_list'])}
+            ${intakeSelect('target_application_count', 'Target Count', ['15', '20', '25', '30', '35'])}
+            ${intakeSelect('include_reach_schools', 'Include Reaches', ['yes', 'no'])}
+            ${intakeSelect('cost_sensitivity', 'Cost Sensitivity', ['low', 'medium', 'high', 'debt_averse'])}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Location And Fit</legend>
+          <div class="field-grid">
+            ${intakeSelect('urbanicity_preference', 'Setting Preference', ['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'])}
+            ${intakeSelect('career_optionality', 'Career Optionality', ['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'])}
+          </div>
+          <p class="muted" style="margin-top:8px">States to avoid are reversible local hides.</p>
+          ${intakeCheckboxGroup('states_to_avoid', stateAvoidOptions, intakeState.states_to_avoid)}
+        </fieldset>
+        <fieldset>
+          <legend>Awareness Prompts</legend>
+          ${intakeDisclosureGroup('school_environment_preferences', ['true_pass_fail', 'low_mandatory_attendance', 'recorded_lectures', 'research_heavy', 'clinical_focus', 'large_academic_center', 'community_focus'], intakeState.school_environment_preferences)}
+        </fieldset>
+        <fieldset>
+          <legend>Dealbreakers</legend>
+          ${intakeDisclosureGroup('dealbreakers', ['hide_rural', 'hide_high_cost', 'hide_low_confidence', 'hide_state', 'hide_already_ruled_out'], intakeState.dealbreakers)}
+        </fieldset>
+        <div class="inline-actions">
+          <button type="button" id="downloadIntakeJson">Download Intake JSON</button>
+          <button type="button" id="resetIntake">Reset Intake</button>
+          <a href="#/rankings">Open Rankings</a>
+          <a href="#/application-list">Application List</a>
+        </div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:12px">
+          <div class="inline-actions" style="justify-content:space-between">
+            <h3 style="margin:0">Current Lens</h3>
+            ${badge(intakeReady() ? 'Ready' : 'Needs required bands', intakeReady() ? 'good' : 'warn')}
+          </div>
+          ${intakeSummaryChips()}
+        </div>
+        ${renderGuidedResults()}
+      </div>
+    </div>`;
+  $('downloadIntakeJson')?.addEventListener('click', () => downloadJson('guided_intake_export.json', intakeExportRecord()));
+  $('resetIntake')?.addEventListener('click', () => {
+    resetIntakeState();
+    renderIntake();
+  });
 }
 
 function renderRankings() {
@@ -3922,6 +4473,7 @@ function render() {
   $('summaryText').textContent = `${payload.meta.active_school_count} active schools · ${payload.meta.site_mode} mode`;
   setActiveNav(currentRoute.path);
   setActiveSection(currentRoute.view);
+  if (currentRoute.view === 'intake') renderIntake();
   if (currentRoute.view === 'rankings') renderRankings();
   if (currentRoute.view === 'dossiers') renderDossiers();
   if (currentRoute.view === 'research') renderResearch();
@@ -3943,6 +4495,15 @@ document.addEventListener('click', event => {
   const action = actionButton.dataset.action;
   const id = actionButton.dataset.schoolId;
   event.preventDefault();
+  if (action === 'toggle-guided-group') {
+    const groupId = actionButton.dataset.groupId;
+    if (groupId) {
+      guidedGroupOpenState[groupId] = !guidedGroupOpenState[groupId];
+      persistGuidedGroupOpenState();
+      render();
+    }
+    return;
+  }
   if (action === 'clear-compare') {
     compareState.selectedIds = [];
     render();
@@ -3979,10 +4540,22 @@ document.addEventListener('input', event => {
   }
 });
 document.addEventListener('change', event => {
+  const intakeField = event.target.closest('[data-intake-field]');
+  if (intakeField) {
+    setIntakeField(intakeField.dataset.intakeField, intakeField.value);
+    render();
+    return;
+  }
+  const intakeMulti = event.target.closest('[data-intake-multi]');
+  if (intakeMulti) {
+    toggleIntakeArrayField(intakeMulti.dataset.intakeMulti, intakeMulti.value, intakeMulti.checked);
+    render();
+    return;
+  }
   const dossierField = event.target.closest('[data-dossier-field]');
   if (!dossierField) return;
   updateDossierField(dossierField.dataset.dossierSchool, dossierField.dataset.dossierField, dossierField.value);
-  if (['rankings', 'dossiers', 'research', 'applicationList', 'compare', 'profile'].includes(currentRoute.view)) render();
+  if (['intake', 'rankings', 'dossiers', 'research', 'applicationList', 'compare', 'profile'].includes(currentRoute.view)) render();
 });
 document.addEventListener('click', event => {
   const th = event.target.closest('th[data-key]');

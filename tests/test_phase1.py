@@ -428,7 +428,7 @@ def test_site_generation_writes_local_payload_and_json(tmp_path, monkeypatch):
     master_rows = site_builder.read_csv(tmp_path / "data/school_master.csv")
     assert embedded_payload["meta"]["active_school_count"] == len(master_rows)
     assert embedded_payload["meta"]["site_mode"] == "local_full"
-    assert embedded_payload["routes"]["default"] == "#/rankings"
+    assert embedded_payload["routes"]["default"] == "#/intake"
     assert embedded_payload["routes"]["admin"]
     assert all(school["school_slug"] for school in embedded_payload["schools"])
     assert all(school["profile_route"].startswith("#/schools/") for school in embedded_payload["schools"])
@@ -778,7 +778,7 @@ def test_curated_list_readiness_metadata_uses_ready_partial_provisional_semantic
     assert all(row["slug"] and row["route"] == f"#/lists/{row['slug']}" for row in payload["curated_lists"])
 
 
-def test_default_rankings_route_and_admin_route_are_separated(tmp_path, monkeypatch):
+def test_default_intake_route_and_admin_route_are_separated(tmp_path, monkeypatch):
     write_minimal_project(tmp_path)
     validation.validate_project(tmp_path)
     patch_ranking_paths(monkeypatch, tmp_path)
@@ -789,15 +789,18 @@ def test_default_rankings_route_and_admin_route_are_separated(tmp_path, monkeypa
     html_text = output.read_text()
     embedded_payload = extract_embedded_payload(html_text)
 
-    assert embedded_payload["routes"]["default"] == "#/rankings"
-    assert embedded_payload["routes"]["public"][0]["path"] == "#/rankings"
+    assert embedded_payload["routes"]["default"] == "#/intake"
+    assert embedded_payload["routes"]["public"][0]["path"] == "#/intake"
+    assert any(route["path"] == "#/rankings" for route in embedded_payload["routes"]["public"])
     assert any(route["path"] == "#/admin" for route in embedded_payload["routes"]["admin"])
+    assert 'data-route="#/intake"' in html_text
     assert 'data-route="#/rankings"' in html_text
     assert 'data-route="#/admin"' in html_text
+    assert 'section id="intake"' in html_text
     assert 'data-view="dashboard"' not in html_text
 
 
-def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path, monkeypatch):
+def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkeypatch):
     write_minimal_project(tmp_path)
     validation.validate_project(tmp_path)
     patch_ranking_paths(monkeypatch, tmp_path)
@@ -809,12 +812,20 @@ def test_site_contains_local_visibility_dossier_and_research_workflows(tmp_path,
     embedded_payload = extract_embedded_payload(html_text)
     public_routes = {route["path"] for route in embedded_payload["routes"]["public"]}
 
+    assert "#/intake" in public_routes
     assert "#/dossiers" in public_routes
     assert "#/research" in public_routes
     assert "#/application-list" in public_routes
+    assert 'section id="intake"' in html_text
     assert 'section id="dossiers"' in html_text
     assert 'section id="research"' in html_text
     assert 'section id="applicationList"' in html_text
+    assert "function renderIntake()" in html_text
+    assert "med_school_ranker_intake_v1" in html_text
+    assert "Start Here" in html_text
+    assert "Florida Options" in html_text
+    assert "Need More Data" in html_text
+    assert "Lower Priority Or Hidden" in html_text
     assert "function renderDossiers()" in html_text
     assert "function renderResearch()" in html_text
     assert "function renderApplicationList()" in html_text

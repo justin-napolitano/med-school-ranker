@@ -149,6 +149,33 @@ async function setSelectorValues(cdp) {
   await sleep(600);
 }
 
+async function setIntakeValues(cdp) {
+  await evalPage(
+    cdp,
+    `(() => {
+      const setValue = (selector, preferred) => {
+        const element = document.querySelector(selector);
+        if (!element) return null;
+        const values = [...element.options].map(option => option.value);
+        const value = values.includes(preferred) ? preferred : values.find(Boolean) || "";
+        element.value = value;
+        element.dispatchEvent(new Event("change", { bubbles: true }));
+        return value;
+      };
+      return {
+        state: setValue('[data-intake-field="applicant_state"]', "FL"),
+        mcat: setValue('[data-intake-field="mcat_band"]', "506-509"),
+        gpa: setValue('[data-intake-field="gpa_band"]', "Greater than 3.79"),
+        strategy: setValue('[data-intake-field="application_strategy"]', "balanced_list"),
+        count: setValue('[data-intake-field="target_application_count"]', "25"),
+        setting: setValue('[data-intake-field="urbanicity_preference"]', "urban_preferred"),
+        cost: setValue('[data-intake-field="cost_sensitivity"]', "medium"),
+      };
+    })();`,
+  );
+  await sleep(800);
+}
+
 async function firstMdProfileRoute(cdp) {
   const result = await evalPage(
     cdp,
@@ -200,6 +227,11 @@ async function main() {
     const tablet = { width: 1024, height: 768, deviceScaleFactor: 1, mobile: false };
     const mobile = { width: 390, height: 844, deviceScaleFactor: 2, mobile: true };
 
+    await loadPage(cdp, "#/intake", desktop);
+    await screenshot(cdp, `intake_desktop_${label}.png`);
+    await setIntakeValues(cdp);
+    await screenshot(cdp, `intake_guided_cards_desktop_${label}.png`);
+
     await loadPage(cdp, "#/rankings", desktop);
     await screenshot(cdp, `rankings_desktop_${label}.png`);
     await screenshot(cdp, `rankings_selector_desktop_${label}.png`);
@@ -231,6 +263,11 @@ async function main() {
     await screenshot(cdp, `rankings_mobile_${label}.png`);
     await setSelectorValues(cdp);
     await screenshot(cdp, `rankings_selector_changed_mobile_${label}.png`);
+
+    await loadPage(cdp, "#/intake", mobile);
+    await screenshot(cdp, `intake_mobile_${label}.png`);
+    await setIntakeValues(cdp);
+    await screenshot(cdp, `intake_guided_cards_mobile_${label}.png`);
 
     await loadPage(cdp, "#/dossiers", mobile);
     await screenshot(cdp, `dossiers_mobile_${label}.png`);
