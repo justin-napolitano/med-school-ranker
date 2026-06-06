@@ -2,7 +2,7 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-06T03:20:44+00:00",
+  "generated_at": "2026-06-06T04:47:20+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "methodology",
   "nodes": [
@@ -26,14 +26,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_aamc-caveat",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "aamc_caveat",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -136,14 +136,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_aamc-gpa-selector",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "aamc_gpa_selector",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -238,14 +238,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_aamc-mcat-selector",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "aamc_mcat_selector",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -276,14 +276,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_cost-fit",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "cost_fit",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -338,14 +338,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_gpa-fit",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "gpa_fit",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -400,14 +400,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_mcat-fit",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "mcat_fit",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -454,14 +454,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_oos-fit",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "oos_fit",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -612,14 +612,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_preference-weight",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "preference_weight",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -642,14 +642,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_privacy",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "privacy",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -704,14 +704,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_rank-confidence",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "rank_confidence",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -942,14 +942,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_scenario-weight",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "scenario_weight",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -1012,14 +1012,14 @@
         "excluded"
       ],
       "formula_summary": "See scoring methodology table.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_subjective-rubric",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "Public outputs use template/public-safe profile context; private-derived ranks stay local-only.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "subjective_rubric",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "present_components_only"
     },
     {
@@ -1029,20 +1029,20 @@
         "national aggregate context"
       ],
       "formula_summary": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
-      "generated_at": "2026-06-06T03:20:44+00:00",
+      "generated_at": "2026-06-06T04:47:20+00:00",
       "id": "methodology_aamc_context",
       "node_schema_version": "site_nodes_v1",
       "node_type": "methodology",
       "private_public_note": "AAMC grid values are context, not school-specific probability.",
-      "publish_safe": false,
+      "publish_safe": true,
       "scoring_group": "AAMC Context",
-      "site_mode": "local_full",
+      "site_mode": "publish_safe",
       "weight_basis": "not_applicable"
     }
   ],
-  "publish_safe": false,
+  "publish_safe": true,
   "record_count": 13,
-  "site_mode": "local_full",
+  "site_mode": "publish_safe",
   "source_tables": [
     "outputs/scoring_methodology.csv"
   ]

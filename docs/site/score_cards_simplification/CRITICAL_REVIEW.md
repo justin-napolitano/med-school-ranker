@@ -32,6 +32,6 @@ Resolution: Keep export controls accessible in Data Details or a secondary actio
 
 ## Finding 6: MCAT/GPA missingness can look like missing research when it may be approval policy
 
-Risk: Blank MCAT/GPA values may make the user think no data exists, even when candidate source evidence exists but was not safely matched for canonical scoring.
+Risk: Blank MCAT/GPA values may make the user think no data exists, even when candidate source evidence exists but was not promoted because no best school row exists.
 
-Resolution: Label admissions-stat gaps as approved value missing, candidate value available but not safely matched, or no candidate value found. Do not change source normalization inside this UI slice.
+Resolution: Label admissions-stat values as approved, assumed candidate, or no candidate value found. Do not hide `assumed_match_*` confidence labels.

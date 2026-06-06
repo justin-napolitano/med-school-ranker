@@ -274,16 +274,16 @@ Rules:
 
 - Preserve all comparable rows in candidate output with source key, source URL, metric context, GPA, MCAT, and notes.
 - Map candidate rows to `school_id` when high-confidence name matching is possible.
-- Treat CycleTrack values as approved context only when the source row is safely matched.
+- Treat CycleTrack values as approved context when the source row is matched or temporarily assumed matched.
 - Treat published third-party values as provisional.
-- Create selected normalized rows for safely matched candidate values, including `close_agreement`, `single_source`, `minor_conflict`, and `major_conflict`.
-- Keep conflict and review queue rows visible even when safely matched values are selected for scoring.
+- Create selected normalized rows for matched and assumed-matched candidate values, including `close_agreement`, `single_source`, `minor_conflict`, and `major_conflict`.
+- Keep conflict and review queue rows visible even when assumed values are selected for scoring.
 - Keep `data_confidence` and `data_quality_band` explicit so approved conflict/single-source values are not mistaken for official school data.
 - Never mix accepted, matriculated, mean, median, and crowdsourced rows without encoding that distinction in `metric_population` and `metric_type`.
 
 Default current expectation:
 
-- Some GPA/MCAT rows will remain review-needed because they lack a safely matched source value.
+- Some GPA/MCAT rows will remain missing because they lack any candidate source value.
 - It is acceptable for the integration report to show that rankings should still be treated as low confidence.
 
 ### 7. Source Registry Update
@@ -403,7 +403,7 @@ Add tests for:
 - source integration command creates required normalized outputs
 - safe AAMC tuition candidates become cost rows
 - review/no-match tuition rows become source review queue entries
-- safely matched major GPA/MCAT conflicts become selected rows with conflict confidence labels
+- matched and assumed-matched major GPA/MCAT conflicts become selected rows with conflict confidence labels
 - close agreement GPA/MCAT rows become selected provisional rows
 - source registry additions are deduped
 - workbook includes new source tabs

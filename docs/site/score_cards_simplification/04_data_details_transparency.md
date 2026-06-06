@@ -25,7 +25,7 @@ Preserve transparency without making the default profile feel like an admin cons
 Use source-normalization-neutral labels:
 
 - `Approved value` when `data/normalized/admissions_stats.csv` supplies the scoring value;
-- `Candidate value available` when `outputs/admissions_stats_candidates.csv` has source evidence that was not safely matched/promoted;
+- `Assumed candidate value` when `outputs/admissions_stats_candidates.csv` has source evidence promoted from a review/no-match best match;
 - `No candidate value found` when the source layer has no value.
 
 Do not promote candidate values or alter source normalization in this UI slice.

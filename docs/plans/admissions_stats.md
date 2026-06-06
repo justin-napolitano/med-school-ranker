@@ -52,11 +52,11 @@ Recommended fields:
 - Public school websites are acceptable when the page clearly states population, year, and metric type.
 - Public scraping is allowed only for non-login, publicly accessible pages where access is permitted; adapters must store source URL, fetch date, and extraction confidence.
 - When a school page is public but inconsistent or hard to parse, the system should generate an import/review template rather than guess.
-- Third-party values remain provisional unless independently verified, but safely matched candidates are approved for current scoring.
+- Third-party values remain provisional unless independently verified, but matched and temporarily assumed candidate values are approved for current scoring.
 - Third-party close-agreement values may be displayed as provisional values with confidence labels.
 - Third-party single-source values may be selected as low-confidence provisional values with warnings.
 - Third-party minor or major conflicts must create review queue rows and confidence labels when selected for fit scoring.
-- CycleTrack GPA/MCAT values are crowdsourced context, not official entering-class averages, and may be selected only when safely matched.
+- CycleTrack GPA/MCAT values are crowdsourced context, not official entering-class averages, and may be selected when matched or temporarily assumed matched.
 - Accepted, matriculated, mean, median, and percentile values must remain separate.
 
 ## Current Source Drop
@@ -70,7 +70,7 @@ Current source tables contain useful evidence but are not yet integrated into th
 - Comparison clusters: 316.
 - Agreement labels: 202 single-source, 60 major conflict, 27 minor conflict, 27 close agreement.
 
-Phase 2A generates candidate rows and conflict reports; current policy allows safely matched candidate values to affect ranking while preserving confidence labels.
+Phase 2A generates candidate rows and conflict reports; current policy allows matched and temporarily assumed candidate values to affect ranking while preserving confidence labels.
 
 ## Implementation Steps
 

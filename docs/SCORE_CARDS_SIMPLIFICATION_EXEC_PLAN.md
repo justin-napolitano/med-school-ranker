@@ -133,12 +133,12 @@ The site currently has two admissions-stat layers:
 - approved canonical stats in `data/normalized/admissions_stats.csv`;
 - candidate/source evidence in `outputs/admissions_stats_candidates.csv`.
 
-Rankings only use the approved canonical layer. As of the current build, the active school universe has 233 schools and 155 have canonical MCAT/GPA values available for scoring. The remaining 78 schools still lack a complete approved MCAT/GPA pair. Of those, 35 have candidate evidence but only through review/no-match source matches, and 43 do not currently have a candidate value in the source layer.
+Rankings only use the approved canonical layer. As of the current build, the active school universe has 233 schools and 190 have canonical MCAT/GPA values available for scoring. Review/no-match candidates are temporarily assumed correct when the matcher has a best school row, and those rows are labeled with `assumed_match_*` confidence values. The remaining schools do not currently have a candidate value in the source layer.
 
 This Score Cards UI slice should not change source normalization. It should make the distinction clear:
 
 - `Approved value` when the canonical file drives scoring;
-- `Candidate value available` when source evidence exists but is not safely matched yet;
+- `Assumed candidate value` when source evidence exists but was promoted from a review/no-match best match;
 - `No candidate value found` when no source-layer value exists.
 
 ## Work Slices
