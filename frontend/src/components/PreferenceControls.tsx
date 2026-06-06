@@ -56,6 +56,14 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
     onChange("liveWeights", { ...preferences.liveWeights, [key]: value });
   }
 
+  function updateMcat(value: string) {
+    onChange("mcat", value);
+  }
+
+  function updateGpa(value: string) {
+    onChange("gpa", value);
+  }
+
   function applyPreset(preset: (typeof liveWeightPresets)[number]) {
     onChange("liveWeights", preset.weights);
     if (preset.homeState) onChange("homeState", preset.homeState);
@@ -83,7 +91,8 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
         <input
           inputMode="numeric"
           value={preferences.mcat}
-          onChange={(event) => onChange("mcat", event.currentTarget.value)}
+          onInput={(event) => updateMcat(event.currentTarget.value)}
+          onChange={(event) => updateMcat(event.currentTarget.value)}
           placeholder="512"
           aria-label="Applicant MCAT"
         />
@@ -93,7 +102,8 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
         <input
           inputMode="decimal"
           value={preferences.gpa}
-          onChange={(event) => onChange("gpa", event.currentTarget.value)}
+          onInput={(event) => updateGpa(event.currentTarget.value)}
+          onChange={(event) => updateGpa(event.currentTarget.value)}
           placeholder="3.70"
           aria-label="Applicant GPA"
         />
@@ -259,6 +269,7 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
                 max="50"
                 step="5"
                 value={preferences.liveWeights[key]}
+                onInput={(event) => updateWeight(key, Number(event.currentTarget.value))}
                 onChange={(event) => updateWeight(key, Number(event.currentTarget.value))}
                 aria-label={`${weightLabel(key)} weight`}
               />

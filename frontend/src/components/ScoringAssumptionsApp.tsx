@@ -70,6 +70,7 @@ export function ScoringAssumptionsApp({ schools, caveat }: Props) {
   const allWeightsZero = liveWeightOrder.every((key) => local.preferences.liveWeights[key] === 0);
   const assumptionRows = buildAssumptionRows(local.preferences, local.notInterested.length, hasOwnershipLabels, activePreset);
   const movementRows = scoredSchools.slice(0, 25);
+  const scoringFingerprint = buildScoringFingerprint(local.preferences);
 
   useEffect(() => {
     try {
@@ -262,7 +263,7 @@ export function ScoringAssumptionsApp({ schools, caveat }: Props) {
 
           {selectedScore ? (
             <>
-              <ScoreSummary score={selectedScore} />
+              <ScoreSummary score={selectedScore} key={`${selectedScore.school.slug}-${scoringFingerprint}-summary`} />
               <p className="scoring-copy">Weighted points use present components only. Missing values are not treated as zero.</p>
               <ResponsiveTable>
                 <thead>
@@ -278,7 +279,7 @@ export function ScoringAssumptionsApp({ schools, caveat }: Props) {
                     <th>Reason</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody key={`${selectedScore.school.slug}-${scoringFingerprint}-breakdown`}>
                   {selectedScore.liveContributionRows.map((row) => (
                     <tr key={row.componentKey}>
                       <td data-label="Component">{row.componentLabel}</td>
@@ -319,6 +320,8 @@ export function ScoringAssumptionsApp({ schools, caveat }: Props) {
                 <th>Baseline Rank</th>
                 <th>Rank movement</th>
                 <th>Your Score</th>
+                <th>MCAT fit</th>
+                <th>GPA fit</th>
                 <th>Coverage</th>
                 <th>Why did this move?</th>
                 <th>Missing pieces</th>
@@ -332,6 +335,8 @@ export function ScoringAssumptionsApp({ schools, caveat }: Props) {
                   <td data-label="Baseline Rank">{formatRank(score.baselineRank)}</td>
                   <td data-label="Rank movement">{formatRankMovement(score)}</td>
                   <td data-label="Your Score">{formatLiveScore(score.yourScore)}</td>
+                  <td data-label="MCAT fit">{componentScoreLabel(score, "mcatFit")}</td>
+                  <td data-label="GPA fit">{componentScoreLabel(score, "gpaFit")}</td>
                   <td data-label="Coverage">
                     {score.liveCoverage.label} ({score.liveCoverage.available}/{score.liveCoverage.possible})
                   </td>
@@ -564,6 +569,23 @@ function findActivePreset(preferences: PreferenceState): string {
 
 function formatWeight(value: number): string {
   return value === 0 ? "0 (Not included because weight is 0.)" : String(value);
+}
+
+function buildScoringFingerprint(preferences: PreferenceState): string {
+  return [
+    preferences.mcat,
+    preferences.gpa,
+    preferences.homeState,
+    ...liveWeightOrder.map((key) => `${key}:${preferences.liveWeights[key]}`),
+  ].join("|");
+}
+
+function componentScoreLabel(score: LiveSchoolScore, key: LiveContributionRow["componentKey"]): string {
+  const row = score.liveContributionRows.find((item) => item.componentKey === key);
+  if (!row) return "Not available";
+  if (row.scoreValue !== null) return row.scoreValue.toFixed(1);
+  if (row.notIncludedReasonType === "zero_weight") return "Weight 0";
+  return "Missing";
 }
 
 function formatRankMovement(score: LiveSchoolScore): string {
