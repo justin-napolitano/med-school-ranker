@@ -193,6 +193,13 @@ def parse_number(value: str | None) -> float | None:
         return None
 
 
+def parse_positive_number(value: str | None) -> float | None:
+    number = parse_number(value)
+    if number is None or number <= 0:
+        return None
+    return number
+
+
 def is_truthy(value: str | None) -> bool:
     return str(value or "").strip().lower() in TRUTHY
 
@@ -417,13 +424,18 @@ def cost_basis_for_profile(
 ) -> float | None:
     school_state = state_abbrev(school.get("state_abbrev") or school.get("state"))
     same_state = bool(applicant_state and school_state and applicant_state == school_state)
-    if same_state:
-        for field in ["estimated_coa_in_state", "in_state_tuition_fees_insurance"]:
-            value = parse_number(cost_row.get(field))
-            if value is not None:
-                return value
-    for field in ["estimated_coa_out_state", "out_state_tuition_fees_insurance"]:
-        value = parse_number(cost_row.get(field))
+    preferred_fields = (
+        ["estimated_coa_in_state", "in_state_tuition_fees_insurance"]
+        if same_state
+        else ["estimated_coa_out_state", "out_state_tuition_fees_insurance"]
+    )
+    fallback_fields = (
+        ["estimated_coa_out_state", "out_state_tuition_fees_insurance"]
+        if same_state
+        else ["estimated_coa_in_state", "in_state_tuition_fees_insurance"]
+    )
+    for field in [*preferred_fields, *fallback_fields]:
+        value = parse_positive_number(cost_row.get(field))
         if value is not None:
             return value
     return None

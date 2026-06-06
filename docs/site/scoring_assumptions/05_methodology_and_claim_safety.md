@@ -14,6 +14,7 @@ Update `/methodology/` to include:
 - DO scoring as a future/separate flow;
 - formula labels;
 - present-components-only denominator;
+- cost fallback policy: zero is missing, and a single positive listed cost may stand in for the missing residency side;
 - weight preset definitions;
 - missing-data policy;
 - zero-weight component policy;

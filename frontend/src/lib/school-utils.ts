@@ -227,6 +227,10 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
   const cost = node.cost_and_debt || {};
   const derived = node.derived || {};
   const slug = ranking.school_slug || school.school_slug || node.school_slug || "";
+  const costInState = firstPositiveValue(cost.estimated_coa_in_state, ranking.estimated_coa_in_state, school.estimated_coa_in_state);
+  const costOutState = firstPositiveValue(cost.estimated_coa_out_state, ranking.estimated_coa_out_state, school.estimated_coa_out_state);
+  const tuitionInState = firstPositiveValue(cost.in_state_tuition_fees_insurance, school.in_state_tuition_fees_insurance);
+  const tuitionOutState = firstPositiveValue(cost.out_state_tuition_fees_insurance, school.out_state_tuition_fees_insurance);
   return {
     id: ranking.school_id || school.school_id || slug,
     slug,
@@ -256,10 +260,10 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
     sourceName: ranking.source_name || school.source_name || "",
     sourceUrl: ranking.source_url || school.source_url || "",
     dataConfidence: ranking.data_confidence || school.data_confidence || "",
-    costInState: cost.estimated_coa_in_state || ranking.estimated_coa_in_state || school.estimated_coa_in_state || "",
-    costOutState: cost.estimated_coa_out_state || ranking.estimated_coa_out_state || school.estimated_coa_out_state || "",
-    tuitionInState: cost.in_state_tuition_fees_insurance || school.in_state_tuition_fees_insurance || "",
-    tuitionOutState: cost.out_state_tuition_fees_insurance || school.out_state_tuition_fees_insurance || "",
+    costInState: costInState || costOutState,
+    costOutState: costOutState || costInState,
+    tuitionInState: tuitionInState || tuitionOutState,
+    tuitionOutState: tuitionOutState || tuitionInState,
     costConfidence: cost.data_confidence || ranking.cost_data_confidence || "",
     ownershipType: normalizeOwnership(ranking.ownership_type || school.ownership_type),
     policyCount: Number(derived.admissions_policy_count || node.admissions_policies?.length || 0),
@@ -306,8 +310,8 @@ export function filterSchools(schools: ProductSchool[], preferences: PreferenceS
     })
     .sort((a, b) => {
       if (preferences.cost === "lower-cost") {
-        const aCost = toNumberOrNull(a.costInState || a.costOutState) ?? 999999;
-        const bCost = toNumberOrNull(b.costInState || b.costOutState) ?? 999999;
+        const aCost = lowestListedCost(a) ?? 999999;
+        const bCost = lowestListedCost(b) ?? 999999;
         if (aCost !== bCost) return aCost - bCost;
       }
       return compareSchools(a, b);
@@ -368,7 +372,7 @@ export function buildWhyBullets(school: ProductSchool): string[] {
 }
 
 export function formatCurrency(value: string): string {
-  const number = toNumberOrNull(value);
+  const number = toPositiveNumberOrNull(value);
   if (number === null) return "Not available";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -382,7 +386,7 @@ export function metricValue(value: string): string {
 }
 
 export function hasCost(school: ProductSchool): boolean {
-  return toNumberOrNull(school.costInState || school.costOutState || school.tuitionInState || school.tuitionOutState) !== null;
+  return lowestListedCost(school) !== null;
 }
 
 export function statesForSchools(schools: ProductSchool[]): string[] {
@@ -423,6 +427,25 @@ export function toNumberOrNull(value: unknown): number | null {
   if (value === null || value === undefined || value === "") return null;
   const number = Number(String(value).replace(/[$,]/g, ""));
   return Number.isFinite(number) ? number : null;
+}
+
+export function toPositiveNumberOrNull(value: unknown): number | null {
+  const number = toNumberOrNull(value);
+  return number !== null && number > 0 ? number : null;
+}
+
+export function lowestListedCost(school: ProductSchool): number | null {
+  const values = [school.costInState, school.costOutState, school.tuitionInState, school.tuitionOutState]
+    .map(toPositiveNumberOrNull)
+    .filter((value): value is number => value !== null);
+  return values.length ? Math.min(...values) : null;
+}
+
+function firstPositiveValue(...values: unknown[]): string {
+  for (const value of values) {
+    if (toPositiveNumberOrNull(value) !== null) return String(value).trim();
+  }
+  return "";
 }
 
 function normalizeOwnership(value: unknown): ProductSchool["ownershipType"] {

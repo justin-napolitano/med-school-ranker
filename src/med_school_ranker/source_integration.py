@@ -475,7 +475,7 @@ def fmt_decimal(value: float | None, digits: int = 3) -> str:
 
 def fmt_currency(value: object) -> str:
     number = parse_float(value)
-    if number is None:
+    if number is None or number <= 0:
         return ""
     return str(int(number))
 

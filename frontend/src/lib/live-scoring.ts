@@ -1,5 +1,5 @@
 import type { LiveWeightKey, LiveWeights, PreferenceState, ProductSchool } from "./school-utils";
-import { toNumberOrNull } from "./school-utils";
+import { toNumberOrNull, toPositiveNumberOrNull } from "./school-utils";
 
 type ContributionEffect = "helps" | "hurts" | "neutral";
 type CoverageLabel = "full" | "partial" | "limited" | "none";
@@ -229,16 +229,16 @@ function buildStateFit(school: ProductSchool, preferences: PreferenceState): Com
 
 function buildCostFit(school: ProductSchool, preferences: PreferenceState, costRange: CostRange): ComponentResult {
   const cost = applicableCost(school, preferences.homeState);
-  if (cost === null || costRange.min === null || costRange.max === null) {
+  if (cost.value === null || costRange.min === null || costRange.max === null) {
     return missingComponent("costFit", "attendance", "Cost fit", "applicable cost data is unavailable, so cost is excluded from the denominator.");
   }
-  const value = costRange.max === costRange.min ? 10 : 10 - ((cost - costRange.min) / (costRange.max - costRange.min)) * 9;
+  const value = costRange.max === costRange.min ? 10 : 10 - ((cost.value - costRange.min) / (costRange.max - costRange.min)) * 9;
   return {
     key: "costFit",
     group: "attendance",
     label: "Cost fit",
     value: clampScore(value),
-    detail: `Applicable listed cost is ${formatDollars(cost)}`,
+    detail: `Applicable listed cost is ${formatDollars(cost.value)}. ${cost.detail}`,
     warning: "",
   };
 }
@@ -304,7 +304,7 @@ type CostRange = {
 };
 
 function buildCostRange(schools: ProductSchool[], homeState: string): CostRange {
-  const costs = schools.map((school) => applicableCost(school, homeState)).filter((value): value is number => value !== null);
+  const costs = schools.map((school) => applicableCost(school, homeState).value).filter((value): value is number => value !== null);
   if (!costs.length) return { min: null, max: null };
   return {
     min: Math.min(...costs),
@@ -312,12 +312,43 @@ function buildCostRange(schools: ProductSchool[], homeState: string): CostRange 
   };
 }
 
-function applicableCost(school: ProductSchool, homeState: string): number | null {
-  const inState = toNumberOrNull(school.costInState);
-  const outState = toNumberOrNull(school.costOutState);
-  if (homeState && school.stateAbbrev === homeState) return inState ?? outState;
-  if (homeState) return outState ?? inState;
-  return outState ?? inState;
+type ApplicableCost = {
+  value: number | null;
+  detail: string;
+};
+
+function applicableCost(school: ProductSchool, homeState: string): ApplicableCost {
+  const inState = firstPositiveCost(school.costInState, school.tuitionInState);
+  const outState = firstPositiveCost(school.costOutState, school.tuitionOutState);
+  const stateMatches = Boolean(homeState && school.stateAbbrev === homeState);
+
+  if (stateMatches && inState !== null) {
+    return { value: inState, detail: `Using in-state or single listed cost for selected home state ${homeState}.` };
+  }
+  if (stateMatches && outState !== null) {
+    return { value: outState, detail: `In-state cost is unavailable; using the other positive listed cost as a single listed cost fallback.` };
+  }
+  if (homeState && outState !== null) {
+    return { value: outState, detail: `Using out-of-state or single listed cost for selected home state ${homeState}.` };
+  }
+  if (homeState && inState !== null) {
+    return { value: inState, detail: `Out-of-state cost is unavailable; using the other positive listed cost as a single listed cost fallback.` };
+  }
+  if (outState !== null) {
+    return { value: outState, detail: "No home state selected; using out-of-state or single listed cost." };
+  }
+  if (inState !== null) {
+    return { value: inState, detail: "No home state selected; using the available positive listed cost." };
+  }
+  return { value: null, detail: "" };
+}
+
+function firstPositiveCost(...values: unknown[]): number | null {
+  for (const value of values) {
+    const number = toPositiveNumberOrNull(value);
+    if (number !== null) return number;
+  }
+  return null;
 }
 
 function effectFor(value: number): ContributionEffect {

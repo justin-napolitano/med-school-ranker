@@ -138,6 +138,21 @@ Missing data must:
 - lower coverage;
 - appear in the school breakdown table.
 
+## Cost Data Contract
+
+Cost scoring must treat non-positive currency values as missing.
+
+Rules:
+
+- `0`, blank, negative, or unparsable cost values are not valid costs;
+- a missing in-state cost can fall back to a positive out-of-state or tuition value;
+- a missing out-of-state cost can fall back to a positive in-state or tuition value;
+- if only one positive residency cost is available, label it as a single listed cost fallback;
+- do not score a missing cost side as zero;
+- do not infer source-backed ownership status from missing cost shape.
+
+The first implementation should avoid calling this fallback `private school` unless a source-backed `ownership_type` field is present. The transparent label is `single listed cost`.
+
 Zero-weight components must:
 
 - set `included = false`;
