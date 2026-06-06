@@ -36,10 +36,11 @@ docs/site/scoring_assumptions/
 4. Build assumptions table from existing local preference state.
 5. Build weights/formulas table from current live scoring metadata.
 6. Build selected-school breakdown table.
-7. Build rank movement table for top currently eligible schools.
-8. Update methodology.
-9. Extend smoke checks.
-10. Run verification.
+7. Build rank movement table for top currently eligible MD schools.
+8. Add deterministic `Why did this move?` labels from contribution data.
+9. Update methodology.
+10. Extend smoke checks.
+11. Run verification.
 
 ## QA Checklist
 
@@ -52,8 +53,13 @@ Manual or Playwright/screenshot QA should verify:
 - changing home state changes state/residency row where data exists;
 - changing a weight changes weighted points;
 - selected school dropdown works;
+- selected school dropdown excludes DO schools;
 - Build My List still works;
 - Interested/Applying/Not Interested still work;
+- Scoring page explains that DO scoring is separate/future scope;
+- generated school context appears and can be set to weight 0;
+- all-zero weights disable scoring visibly;
+- rank movement table includes `Why did this move?`;
 - no horizontal overflow hides table content on mobile.
 
 ## Required Commands

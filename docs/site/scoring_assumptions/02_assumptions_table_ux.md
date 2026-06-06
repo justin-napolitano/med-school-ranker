@@ -37,6 +37,7 @@ Assumption
 Current value
 Used by
 Can change?
+Source
 Notes
 ```
 
@@ -47,7 +48,7 @@ Initial rows:
 - Applicant MCAT;
 - Applicant GPA;
 - Home state;
-- Degree filter;
+- Scoring universe;
 - Cost basis;
 - Excluded states;
 - Excluded cities;
@@ -58,7 +59,21 @@ Initial rows:
 - GPA fit weight;
 - State/residency fit weight;
 - Cost fit weight;
-- Baseline attendance context weight.
+- Generated school context weight.
+
+`Scoring universe` must display:
+
+```text
+MD schools only
+```
+
+Notes should explain:
+
+```text
+DO schools use a different source context and are planned for a separate scoring flow.
+```
+
+Do not include a DO scoring toggle in this slice.
 
 ## Controls
 
@@ -67,7 +82,6 @@ Editable rows should use the same controls and state handlers as Build My List:
 - MCAT input;
 - GPA input;
 - home state dropdown;
-- degree dropdown;
 - excluded state dropdown;
 - excluded city dropdown;
 - ownership dropdown when source-backed labels exist;
@@ -76,6 +90,8 @@ Editable rows should use the same controls and state handlers as Build My List:
 - reset weights button.
 
 Do not create a second state model.
+
+The Scoring page can show the existing Build My List degree filter as context if needed, but scoring calculations and score breakdown tables must remain MD-only in this slice.
 
 ## Empty Values
 
@@ -90,6 +106,14 @@ The notes column should explain the effect:
 ```text
 This component is excluded from Your Score until entered.
 ```
+
+If a component has weight `0`, display:
+
+```text
+Not included because weight is 0.
+```
+
+This must be visually distinct from missing data.
 
 ## Ownership Filter
 
@@ -115,3 +139,5 @@ If source-backed ownership labels are not populated:
 - User can change the assumptions that already exist in Build My List.
 - Values persist through the existing local browser state.
 - The page does not expose unsupported claims.
+- The page states that the scoring workspace is MD-only for now.
+- The page distinguishes missing assumptions from zero-weight assumptions.

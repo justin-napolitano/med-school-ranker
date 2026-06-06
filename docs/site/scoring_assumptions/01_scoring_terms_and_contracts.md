@@ -36,6 +36,8 @@ Weighted 1-10 score computed from available live components.
 
 Generated rank from the Python pipeline payload. It is useful context, but it does not automatically reflect the current browser assumptions.
 
+Baseline Rank must remain visible as audit context wherever `Your Rank` appears on the Scoring page. It is not itself a live scoring component.
+
 `Coverage`
 
 How many configured components were available for a school. Coverage is not a probability.
@@ -65,12 +67,29 @@ The first scoring assumptions workspace should expose only current live componen
 - GPA fit;
 - state/residency fit;
 - cost fit;
-- baseline attendance context.
+- generated school context.
+
+`generated school context` is the display label for the existing baseline attendance context component. It is experimental/optional because the underlying payload score is less intuitive than MCAT, GPA, state, or cost. It must stay visible in the breakdown and weights table, and users must be able to set its weight to zero.
+
+## School Universe In Scope
+
+The first scoring assumptions workspace is MD-only.
+
+DO schools must not appear in `/scoring/` rank movement tables, selected-school dropdowns, or selected-school breakdowns in this slice.
+
+Reason:
+
+- current MCAT/GPA and AAMC-band interpretation is primarily MD-context;
+- DO schools may need different source assumptions and applicant-pool framing;
+- mixing MD and DO in one scoring table would make the assumptions harder to trust.
+
+Build My List can continue to display MD and DO schools. This scope applies only to the Scoring assumptions workspace.
 
 ## Live Components Out Of Scope
 
 Do not add new ranking power yet for:
 
+- DO-specific scoring;
 - prestige;
 - research;
 - match outcomes;
@@ -99,6 +118,7 @@ weight
 present_weight_sum
 weighted_points
 included
+not_included_reason_type
 reason
 source_label
 confidence_label
@@ -111,11 +131,22 @@ Implementation should prefer deriving these from existing scoring internals inst
 Missing data must:
 
 - set `included = false`;
+- set `not_included_reason_type = missing_data`;
 - display a reason;
 - not add zero points;
 - not increase denominator;
 - lower coverage;
 - appear in the school breakdown table.
+
+Zero-weight components must:
+
+- set `included = false`;
+- set `not_included_reason_type = zero_weight`;
+- display `Not included: weight is 0`;
+- not lower data coverage when the underlying data exists;
+- remain visible in the school breakdown table.
+
+If all component weights are zero, scoring must be disabled with a visible validation message. Do not silently fall back to default weights.
 
 ## Privacy Contract
 

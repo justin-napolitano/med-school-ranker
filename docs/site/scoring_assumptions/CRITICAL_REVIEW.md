@@ -66,6 +66,28 @@ Resolution:
 - do not duplicate scoring formulas in React components;
 - add smoke coverage for both pages.
 
+## Finding 7: Mixing MD And DO Scoring Would Break Context
+
+The first scoring workspace is based on current live-scoring assumptions and MD-heavy MCAT/GPA context. Mixing DO schools into the same rank table could make the assumptions feel more precise than they are.
+
+Resolution:
+
+- make `/scoring/` MD-only in the first implementation;
+- exclude DO schools from dropdowns and rank movement tables;
+- explain that DO scoring needs a separate future flow;
+- do not make quality claims about MD vs DO.
+
+## Finding 8: Baseline Attendance Context Could Remain A Black Box
+
+The existing baseline attendance context component is useful to inspect, but its label is too opaque.
+
+Resolution:
+
+- relabel it as `Generated school context`;
+- show it in assumptions, formulas, and score breakdown;
+- make it easy to set its weight to zero;
+- show `Not included: weight is 0` distinctly from missing data.
+
 ## Open Decisions
 
 These can be changed before implementation, but the default plan resolves them:
