@@ -179,15 +179,15 @@
       },
       "estimated_coa_out_state": {
         "active_school_count": 233,
-        "populated_school_count": 151
+        "populated_school_count": 146
       },
       "in_state_tuition_fees_insurance": {
         "active_school_count": 233,
-        "populated_school_count": 151
+        "populated_school_count": 150
       },
       "out_state_tuition_fees_insurance": {
         "active_school_count": 233,
-        "populated_school_count": 151
+        "populated_school_count": 145
       }
     },
     "default_apply_mode": "replace_scoring",

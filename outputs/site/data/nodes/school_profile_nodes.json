@@ -2,12 +2,12 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-06T05:38:52+00:00",
+  "generated_at": "2026-06-06T18:36:09+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "school_profile",
   "nodes": [
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "ATSU-KCOM",
         "city": "Kirksville",
@@ -241,7 +241,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "ATSU-SOMA",
         "city": "Mesa",
@@ -475,7 +475,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "ACOM",
         "city": "Dothan",
@@ -726,7 +726,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albany",
@@ -804,8 +804,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.00",
-            "decision_rank": "35"
+            "attendance_score": "4.80",
+            "decision_rank": "33"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -980,7 +980,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "35"
+          "value": "33"
         },
         {
           "card_id": "mcat_average",
@@ -1016,7 +1016,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -1094,8 +1094,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -1271,7 +1271,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -1307,7 +1307,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bentonville",
@@ -1385,8 +1385,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "7.70",
-            "decision_rank": "8"
+            "attendance_score": "9.30",
+            "decision_rank": "3"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -1560,7 +1560,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "8"
+          "value": "3"
         },
         {
           "card_id": "mcat_average",
@@ -1596,7 +1596,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Worth",
@@ -1667,8 +1667,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [
             "mcat_average",
@@ -1796,7 +1796,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -1832,7 +1832,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -2055,7 +2055,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "ARCOM",
         "city": "Fort Smith",
@@ -2306,7 +2306,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "BUCOM",
         "city": "Memphis",
@@ -2540,7 +2540,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -2613,8 +2613,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.00",
-            "decision_rank": "18"
+            "attendance_score": "6.00",
+            "decision_rank": "15"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -2750,7 +2750,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "18"
+          "value": "15"
         },
         {
           "card_id": "mcat_average",
@@ -2786,7 +2786,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dayton",
@@ -2862,8 +2862,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -3026,7 +3026,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -3062,7 +3062,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -3136,8 +3136,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "4.00",
+            "decision_rank": "61"
           },
           "missing_fields": [
             "mcat_average",
@@ -3293,7 +3293,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "61"
         },
         {
           "card_id": "mcat_average",
@@ -3329,7 +3329,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -3405,7 +3405,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.90",
+            "attendance_score": "4.60",
             "decision_rank": "38"
           },
           "missing_fields": [],
@@ -3603,7 +3603,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "BCSOM",
         "city": "Las Cruces",
@@ -3837,7 +3837,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "BCSOM-FL",
         "city": "Melbourne",
@@ -4060,7 +4060,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -4136,8 +4136,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.80",
-            "decision_rank": "43"
+            "attendance_score": "4.50",
+            "decision_rank": "42"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -4298,7 +4298,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "43"
+          "value": "42"
         },
         {
           "card_id": "mcat_average",
@@ -4334,7 +4334,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "CHSU-COM",
         "city": "Clovis",
@@ -4568,7 +4568,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Elk Grove",
@@ -4644,8 +4644,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -4808,7 +4808,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -4844,7 +4844,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Colton",
@@ -4920,8 +4920,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -5083,7 +5083,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -5119,7 +5119,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "CUSOM",
         "city": "Buies Creek",
@@ -5353,7 +5353,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Urbana-Champaign",
@@ -5429,7 +5429,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.90",
+            "attendance_score": "4.60",
             "decision_rank": "38"
           },
           "missing_fields": [],
@@ -5629,7 +5629,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cleveland",
@@ -5705,8 +5705,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.90",
-            "decision_rank": "103"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -5869,7 +5869,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "103"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -5905,7 +5905,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boca Raton",
@@ -5981,8 +5981,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.70",
-            "decision_rank": "48"
+            "attendance_score": "4.40",
+            "decision_rank": "46"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -6145,7 +6145,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "48"
+          "value": "46"
         },
         {
           "card_id": "mcat_average",
@@ -6181,7 +6181,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -6457,7 +6457,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Chicago",
@@ -6533,8 +6533,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -6699,7 +6699,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -6735,7 +6735,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -6811,8 +6811,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -6975,7 +6975,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -7011,7 +7011,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Camden",
@@ -7087,8 +7087,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -7252,7 +7252,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -7280,7 +7280,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Watchlist",
+          "context": "Research seriously",
           "label": "Data Quality",
           "value": "high"
         }
@@ -7288,7 +7288,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mount Pleasant",
@@ -7361,7 +7361,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.90",
+            "attendance_score": "4.60",
             "decision_rank": "38"
           },
           "missing_fields": [],
@@ -7534,7 +7534,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -7610,7 +7610,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -7810,7 +7810,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -7881,7 +7881,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [
@@ -8046,7 +8046,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Austin",
@@ -8122,8 +8122,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.00",
-            "decision_rank": "18"
+            "attendance_score": "6.00",
+            "decision_rank": "15"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -8285,7 +8285,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "18"
+          "value": "15"
         },
         {
           "card_id": "mcat_average",
@@ -8321,7 +8321,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "DMU-COM",
         "city": "West Des Moines",
@@ -8555,7 +8555,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hempstead",
@@ -8631,8 +8631,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -8796,7 +8796,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -8832,7 +8832,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -8908,7 +8908,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -9109,7 +9109,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Durham",
@@ -9185,8 +9185,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -9349,7 +9349,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -9385,7 +9385,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "DUQCOM",
         "city": "Pittsburgh",
@@ -9608,7 +9608,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "DYU-COM",
         "city": "Buffalo",
@@ -9831,7 +9831,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Johnson City",
@@ -9907,7 +9907,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.60",
+            "attendance_score": "5.40",
             "decision_rank": "22"
           },
           "missing_fields": [],
@@ -10105,7 +10105,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Norfolk",
@@ -10179,8 +10179,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.10",
-            "decision_rank": "31"
+            "attendance_score": "4.90",
+            "decision_rank": "30"
           },
           "missing_fields": [
             "mcat_average",
@@ -10324,7 +10324,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "31"
+          "value": "30"
         },
         {
           "card_id": "mcat_average",
@@ -10360,7 +10360,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "VCOM-Auburn Campus",
         "city": "Auburn",
@@ -10594,7 +10594,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "VCOM-Carolinas",
         "city": "Spartanburg",
@@ -10817,7 +10817,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "VCOM-Virginia",
         "city": "Blacksburg",
@@ -11040,7 +11040,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "VCOM-Louisiana",
         "city": "Monroe",
@@ -11291,7 +11291,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -11367,7 +11367,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -11568,7 +11568,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -11644,7 +11644,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.40",
+            "attendance_score": "2.80",
             "decision_rank": "133"
           },
           "missing_fields": [],
@@ -11844,7 +11844,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tallahassee",
@@ -11920,8 +11920,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -12084,7 +12084,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -12120,7 +12120,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Haven",
@@ -12196,8 +12196,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.20",
+            "decision_rank": "51"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -12361,7 +12361,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "51"
         },
         {
           "card_id": "mcat_average",
@@ -12397,7 +12397,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mobile",
@@ -12471,8 +12471,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [
             "mcat_average",
@@ -12628,7 +12628,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -12664,7 +12664,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hanover",
@@ -12740,8 +12740,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.20",
+            "decision_rank": "51"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -12903,7 +12903,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "51"
         },
         {
           "card_id": "mcat_average",
@@ -12939,7 +12939,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Scranton",
@@ -13017,8 +13017,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -13194,7 +13194,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -13230,7 +13230,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13306,8 +13306,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -13470,7 +13470,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -13506,7 +13506,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13582,8 +13582,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -13747,7 +13747,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -13783,7 +13783,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nutley",
@@ -13861,8 +13861,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.00",
-            "decision_rank": "142"
+            "attendance_score": "2.30",
+            "decision_rank": "141"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -14036,7 +14036,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "142"
+          "value": "141"
         },
         {
           "card_id": "mcat_average",
@@ -14072,7 +14072,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -14150,8 +14150,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -14325,7 +14325,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -14353,7 +14353,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Low priority",
+          "context": "Watchlist",
           "label": "Data Quality",
           "value": "high"
         }
@@ -14361,7 +14361,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -14437,8 +14437,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -14602,7 +14602,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -14638,7 +14638,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -14714,8 +14714,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "10.00",
-            "decision_rank": "1"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -14756,11 +14756,11 @@
         },
         {
           "facts": {
-            "cost_basis": "0",
+            "cost_basis": "107007",
             "estimated_coa_in_state": "107007",
-            "estimated_coa_out_state": "0",
+            "estimated_coa_out_state": "",
             "in_state_tuition_fees_insurance": "83157",
-            "out_state_tuition_fees_insurance": "0"
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -14878,7 +14878,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "1"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -14900,13 +14900,13 @@
         },
         {
           "card_id": "out_state_estimated_cost",
-          "context": "Cost field used for selected score when available.",
+          "context": "Cost used for selected score: $107,007",
           "label": "Out-of-state estimated cost",
           "value": "Missing"
         },
         {
           "card_id": "data_quality",
-          "context": "Top application candidate",
+          "context": "Watchlist",
           "label": "Data Quality",
           "value": "high"
         }
@@ -14914,7 +14914,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "ICOM",
         "city": "Meridian",
@@ -15165,7 +15165,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "IllinoisCOM",
         "city": "Chicago",
@@ -15399,7 +15399,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Indianapolis",
@@ -15475,8 +15475,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.80",
-            "decision_rank": "43"
+            "attendance_score": "4.50",
+            "decision_rank": "42"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -15636,7 +15636,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "43"
+          "value": "42"
         },
         {
           "card_id": "mcat_average",
@@ -15672,7 +15672,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "IUPCOM",
         "city": "Indiana",
@@ -15895,7 +15895,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Buffalo",
@@ -15971,8 +15971,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -16136,7 +16136,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -16172,7 +16172,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Honolulu",
@@ -16248,8 +16248,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -16413,7 +16413,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -16449,7 +16449,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -16525,8 +16525,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -16689,7 +16689,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -16725,7 +16725,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pasadena",
@@ -16801,8 +16801,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "7.50",
-            "decision_rank": "9"
+            "attendance_score": "9.10",
+            "decision_rank": "4"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -16846,8 +16846,8 @@
             "cost_basis": "39636",
             "estimated_coa_in_state": "39636",
             "estimated_coa_out_state": "39636",
-            "in_state_tuition_fees_insurance": "0",
-            "out_state_tuition_fees_insurance": "0"
+            "in_state_tuition_fees_insurance": "",
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -16966,7 +16966,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "9"
+          "value": "4"
         },
         {
           "card_id": "mcat_average",
@@ -17002,7 +17002,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "KCU-COM-Joplin",
         "city": "Joplin",
@@ -17236,7 +17236,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "KCU-COM",
         "city": "Kansas City",
@@ -17459,7 +17459,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "KansasCOM",
         "city": "Wichita",
@@ -17682,7 +17682,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -17758,8 +17758,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -17921,7 +17921,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -17957,7 +17957,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -18031,8 +18031,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.40",
-            "decision_rank": "133"
+            "attendance_score": "2.70",
+            "decision_rank": "134"
           },
           "missing_fields": [
             "mcat_average",
@@ -18186,7 +18186,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "133"
+          "value": "134"
         },
         {
           "card_id": "mcat_average",
@@ -18222,7 +18222,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -18293,8 +18293,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [
             "mcat_average",
@@ -18422,7 +18422,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -18458,7 +18458,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LECOM-Bradenton",
         "city": "Bradenton",
@@ -18709,7 +18709,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LECOM-Elmira",
         "city": "Elmira",
@@ -18932,7 +18932,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LECOM",
         "city": "Erie",
@@ -19183,7 +19183,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LECOM-Jacksonville",
         "city": "Jacksonville",
@@ -19406,7 +19406,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LECOM-Seton Hill",
         "city": "Greensburg",
@@ -19629,7 +19629,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -19705,8 +19705,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.10",
-            "decision_rank": "31"
+            "attendance_score": "4.90",
+            "decision_rank": "30"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -19870,7 +19870,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "31"
+          "value": "30"
         },
         {
           "card_id": "mcat_average",
@@ -19906,7 +19906,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LUCOM",
         "city": "Lynchburg",
@@ -20140,7 +20140,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LMU-DCOM",
         "city": "Harrogate",
@@ -20374,7 +20374,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LMU-DCOM Knoxville",
         "city": "Knoxville",
@@ -20597,7 +20597,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "LMU-DCOM \u2013 Orange Park",
         "city": "Orange Park",
@@ -20820,7 +20820,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Loma Linda",
@@ -20896,8 +20896,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -21060,7 +21060,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -21096,7 +21096,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Shreveport",
@@ -21172,8 +21172,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.20",
+            "decision_rank": "51"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -21336,7 +21336,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "51"
         },
         {
           "card_id": "mcat_average",
@@ -21372,7 +21372,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Maywood",
@@ -21448,8 +21448,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -21613,7 +21613,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -21649,7 +21649,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MU-WCOM",
         "city": "Indianapolis",
@@ -21872,7 +21872,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Huntington",
@@ -21948,8 +21948,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.80",
-            "decision_rank": "43"
+            "attendance_score": "4.50",
+            "decision_rank": "42"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -22112,7 +22112,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "43"
+          "value": "42"
         },
         {
           "card_id": "mcat_average",
@@ -22148,7 +22148,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -22224,8 +22224,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -22387,7 +22387,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -22423,7 +22423,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -22494,8 +22494,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.50",
-            "decision_rank": "13"
+            "attendance_score": "6.70",
+            "decision_rank": "7"
           },
           "missing_fields": [
             "mcat_average",
@@ -22623,7 +22623,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "13"
+          "value": "7"
         },
         {
           "card_id": "mcat_average",
@@ -22659,7 +22659,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Augusta",
@@ -22735,8 +22735,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -22899,7 +22899,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -22935,7 +22935,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Milwaukee",
@@ -23013,8 +23013,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -23191,7 +23191,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -23227,7 +23227,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charleston",
@@ -23303,7 +23303,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.90",
+            "attendance_score": "3.40",
             "decision_rank": "103"
           },
           "missing_fields": [],
@@ -23505,7 +23505,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -23578,8 +23578,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -23715,7 +23715,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -23743,7 +23743,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Watchlist",
+          "context": "Research seriously",
           "label": "Data Quality",
           "value": "high"
         }
@@ -23751,7 +23751,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Macon",
@@ -23827,8 +23827,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "10.00",
-            "decision_rank": "1"
+            "attendance_score": "6.00",
+            "decision_rank": "15"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -23869,11 +23869,11 @@
         },
         {
           "facts": {
-            "cost_basis": "0",
+            "cost_basis": "78788",
             "estimated_coa_in_state": "78788",
-            "estimated_coa_out_state": "0",
+            "estimated_coa_out_state": "",
             "in_state_tuition_fees_insurance": "48895",
-            "out_state_tuition_fees_insurance": "0"
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -23991,7 +23991,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "1"
+          "value": "15"
         },
         {
           "card_id": "mcat_average",
@@ -24013,7 +24013,7 @@
         },
         {
           "card_id": "out_state_estimated_cost",
-          "context": "Cost field used for selected score when available.",
+          "context": "Cost used for selected score: $78,788",
           "label": "Out-of-state estimated cost",
           "value": "Missing"
         },
@@ -24027,7 +24027,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MSOM",
         "city": "Hagerstown",
@@ -24278,7 +24278,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fayetteville",
@@ -24529,7 +24529,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "East Lansing",
@@ -24605,7 +24605,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.90",
+            "attendance_score": "4.60",
             "decision_rank": "38"
           },
           "missing_fields": [],
@@ -24806,7 +24806,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MSUCOM-DMC",
         "city": "Detroit",
@@ -25040,7 +25040,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MSUCOM",
         "city": "East Lansing",
@@ -25263,7 +25263,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MSUCOM-MUC",
         "city": "Macomb",
@@ -25486,7 +25486,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MWU/AZCOM",
         "city": "Glendale",
@@ -25720,7 +25720,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "MWU/CCOM",
         "city": "Downers Grove",
@@ -25954,7 +25954,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -26032,8 +26032,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "3.00",
+            "decision_rank": "128"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -26209,7 +26209,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "128"
         },
         {
           "card_id": "mcat_average",
@@ -26245,7 +26245,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mineola",
@@ -26319,8 +26319,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "8.20",
-            "decision_rank": "6"
+            "attendance_score": "10.00",
+            "decision_rank": "1"
           },
           "missing_fields": [
             "mcat_average",
@@ -26475,7 +26475,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "6"
+          "value": "1"
         },
         {
           "card_id": "mcat_average",
@@ -26511,7 +26511,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -26587,8 +26587,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "7.80",
-            "decision_rank": "7"
+            "attendance_score": "9.40",
+            "decision_rank": "2"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -26749,7 +26749,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "7"
+          "value": "2"
         },
         {
           "card_id": "mcat_average",
@@ -26785,7 +26785,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "NYITCOM",
         "city": "Old Westbury",
@@ -27019,7 +27019,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "NYITCOM-Jonesboro",
         "city": "Jonesboro",
@@ -27242,7 +27242,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Valhalla",
@@ -27320,8 +27320,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -27497,7 +27497,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -27533,7 +27533,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "NoordaCOM",
         "city": "Provo",
@@ -27784,7 +27784,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rootstown",
@@ -28030,7 +28030,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -28106,8 +28106,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "3.00",
+            "decision_rank": "128"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -28271,7 +28271,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "128"
         },
         {
           "card_id": "mcat_average",
@@ -28307,7 +28307,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Lauderdale",
@@ -28383,7 +28383,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.50",
+            "attendance_score": "1.60",
             "decision_rank": "147"
           },
           "missing_fields": [],
@@ -28582,7 +28582,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "NSU-KPCOM-Clearwater",
         "city": "Clearwater",
@@ -28816,7 +28816,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "NSU-KPCOM",
         "city": "Fort Lauderdale",
@@ -29039,7 +29039,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -29115,8 +29115,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.20",
-            "decision_rank": "29"
+            "attendance_score": "5.00",
+            "decision_rank": "28"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -29280,7 +29280,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "29"
+          "value": "28"
         },
         {
           "card_id": "mcat_average",
@@ -29316,7 +29316,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OU-HCOM-Cleveland",
         "city": "Cleveland",
@@ -29550,7 +29550,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OU-HCOM",
         "city": "Athens",
@@ -29773,7 +29773,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OU-HCOM-Dublin",
         "city": "Dublin",
@@ -29996,7 +29996,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OSU-COM",
         "city": "Tulsa",
@@ -30230,7 +30230,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OSU-COM Tahlequah",
         "city": "Tahlequah",
@@ -30453,7 +30453,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Portland",
@@ -30529,8 +30529,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.30",
-            "decision_rank": "135"
+            "attendance_score": "2.70",
+            "decision_rank": "134"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -30693,7 +30693,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "135"
+          "value": "134"
         },
         {
           "card_id": "mcat_average",
@@ -30729,7 +30729,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "OCOM",
         "city": "Celebration",
@@ -30980,7 +30980,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "PNWU-COM",
         "city": "Yakima",
@@ -31214,7 +31214,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "El Paso",
@@ -31477,7 +31477,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hershey",
@@ -31550,8 +31550,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -31687,7 +31687,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -31723,7 +31723,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "PCOM",
         "city": "Philadelphia",
@@ -31974,7 +31974,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "PCOM Georgia",
         "city": "Suwanee",
@@ -32225,7 +32225,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "PCOM South Georgia",
         "city": "Moultrie",
@@ -32476,7 +32476,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -32549,8 +32549,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -32686,7 +32686,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -32722,7 +32722,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Stony Brook",
@@ -32798,8 +32798,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -32963,7 +32963,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -32999,7 +32999,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Burlington",
@@ -33075,8 +33075,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -33239,7 +33239,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -33275,7 +33275,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "RVUCOM",
         "city": "Parker",
@@ -33509,7 +33509,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "RVUCOM-SU Campus",
         "city": "Ivins",
@@ -33732,7 +33732,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "RVU-MCOM",
         "city": "Billings",
@@ -33966,7 +33966,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -34042,8 +34042,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -34205,7 +34205,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -34241,7 +34241,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM",
         "city": "Stratford",
@@ -34475,7 +34475,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM-Sewell",
         "city": "Sewell",
@@ -34698,7 +34698,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -34774,8 +34774,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -34939,7 +34939,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -34975,7 +34975,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Newark",
@@ -35051,8 +35051,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.90",
-            "decision_rank": "143"
+            "attendance_score": "2.10",
+            "decision_rank": "144"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -35215,7 +35215,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "143"
+          "value": "144"
         },
         {
           "card_id": "mcat_average",
@@ -35251,7 +35251,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Piscataway",
@@ -35327,8 +35327,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.80",
-            "decision_rank": "145"
+            "attendance_score": "1.90",
+            "decision_rank": "146"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -35489,7 +35489,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "145"
+          "value": "146"
         },
         {
           "card_id": "mcat_average",
@@ -35525,7 +35525,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Brooklyn",
@@ -35601,7 +35601,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.90",
+            "attendance_score": "3.40",
             "decision_rank": "103"
           },
           "missing_fields": [],
@@ -35803,7 +35803,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -35879,8 +35879,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.80",
-            "decision_rank": "43"
+            "attendance_score": "4.40",
+            "decision_rank": "46"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -36043,7 +36043,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "43"
+          "value": "46"
         },
         {
           "card_id": "mcat_average",
@@ -36079,7 +36079,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "SHSU-COM",
         "city": "Huntsville",
@@ -36313,7 +36313,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -36389,8 +36389,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -36555,7 +36555,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -36591,7 +36591,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Springfield",
@@ -36667,8 +36667,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "10.00",
-            "decision_rank": "1"
+            "attendance_score": "7.00",
+            "decision_rank": "5"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -36709,11 +36709,11 @@
         },
         {
           "facts": {
-            "cost_basis": "0",
+            "cost_basis": "65706",
             "estimated_coa_in_state": "65706",
-            "estimated_coa_out_state": "0",
+            "estimated_coa_out_state": "",
             "in_state_tuition_fees_insurance": "43901",
-            "out_state_tuition_fees_insurance": "0"
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -36833,7 +36833,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "1"
+          "value": "5"
         },
         {
           "card_id": "mcat_average",
@@ -36855,7 +36855,7 @@
         },
         {
           "card_id": "out_state_estimated_cost",
-          "context": "Cost field used for selected score when available.",
+          "context": "Cost used for selected score: $65,706",
           "label": "Out-of-state estimated cost",
           "value": "Missing"
         },
@@ -36869,7 +36869,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Salt Lake City",
@@ -36943,7 +36943,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.50",
+            "attendance_score": "1.60",
             "decision_rank": "147"
           },
           "missing_fields": [
@@ -37136,7 +37136,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Palo Alto",
@@ -37212,8 +37212,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.30",
-            "decision_rank": "135"
+            "attendance_score": "2.60",
+            "decision_rank": "136"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -37375,7 +37375,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "135"
+          "value": "136"
         },
         {
           "card_id": "mcat_average",
@@ -37411,7 +37411,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Syracuse",
@@ -37487,8 +37487,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -37653,7 +37653,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -37689,7 +37689,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "College Station",
@@ -37760,8 +37760,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.60",
-            "decision_rank": "10"
+            "attendance_score": "6.80",
+            "decision_rank": "6"
           },
           "missing_fields": [
             "mcat_average",
@@ -37889,7 +37889,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "10"
+          "value": "6"
         },
         {
           "card_id": "mcat_average",
@@ -37925,7 +37925,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lubbock",
@@ -38001,8 +38001,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.60",
-            "decision_rank": "10"
+            "attendance_score": "6.70",
+            "decision_rank": "7"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -38166,7 +38166,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "10"
+          "value": "7"
         },
         {
           "card_id": "mcat_average",
@@ -38202,7 +38202,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbus",
@@ -38278,8 +38278,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.50",
-            "decision_rank": "25"
+            "attendance_score": "5.30",
+            "decision_rank": "24"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -38443,7 +38443,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "25"
+          "value": "24"
         },
         {
           "card_id": "mcat_average",
@@ -38479,7 +38479,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Antonio",
@@ -38552,8 +38552,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.20",
-            "decision_rank": "15"
+            "attendance_score": "6.20",
+            "decision_rank": "12"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -38689,7 +38689,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "15"
+          "value": "12"
         },
         {
           "card_id": "mcat_average",
@@ -38725,7 +38725,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tyler",
@@ -38801,8 +38801,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.10",
-            "decision_rank": "16"
+            "attendance_score": "6.20",
+            "decision_rank": "12"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -38964,7 +38964,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "16"
+          "value": "12"
         },
         {
           "card_id": "mcat_average",
@@ -39000,7 +39000,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TVCOM",
         "city": "Phoenix",
@@ -39223,7 +39223,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Providence",
@@ -39299,8 +39299,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -39464,7 +39464,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -39500,7 +39500,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -39574,8 +39574,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [
             "mcat_average",
@@ -39729,7 +39729,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -39765,7 +39765,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TouroCOM-Harlem",
         "city": "New York",
@@ -39999,7 +39999,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TouroCOM-Middletown",
         "city": "Middletown",
@@ -40222,7 +40222,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TouroCOM-Great Falls",
         "city": "Great Falls",
@@ -40445,7 +40445,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TUCOM",
         "city": "Vallejo",
@@ -40679,7 +40679,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "TUNCOM",
         "city": "Henderson",
@@ -40913,7 +40913,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -40989,8 +40989,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.90",
-            "decision_rank": "103"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -41154,7 +41154,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "103"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -41190,7 +41190,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -41266,8 +41266,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.10",
+            "decision_rank": "120"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -41431,7 +41431,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "120"
         },
         {
           "card_id": "mcat_average",
@@ -41467,7 +41467,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tampa",
@@ -41543,8 +41543,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.90",
-            "decision_rank": "38"
+            "attendance_score": "4.70",
+            "decision_rank": "35"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -41708,7 +41708,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "38"
+          "value": "35"
         },
         {
           "card_id": "mcat_average",
@@ -41736,7 +41736,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Research seriously",
+          "context": "Top application candidate",
           "label": "Data Quality",
           "value": "low"
         }
@@ -41744,7 +41744,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bethesda",
@@ -42007,7 +42007,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Birmingham",
@@ -42083,8 +42083,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -42247,7 +42247,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -42283,7 +42283,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -42359,8 +42359,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "4.00",
+            "decision_rank": "61"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -42522,7 +42522,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "61"
         },
         {
           "card_id": "mcat_average",
@@ -42558,7 +42558,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tucson",
@@ -42811,7 +42811,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Little Rock",
@@ -42887,8 +42887,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -43050,7 +43050,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -43078,7 +43078,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Watchlist",
+          "context": "Research seriously",
           "label": "Data Quality",
           "value": "high"
         }
@@ -43086,7 +43086,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Davis",
@@ -43162,8 +43162,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.30",
+            "decision_rank": "48"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -43326,7 +43326,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "48"
         },
         {
           "card_id": "mcat_average",
@@ -43362,7 +43362,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Irvine",
@@ -43438,8 +43438,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.20",
-            "decision_rank": "29"
+            "attendance_score": "5.00",
+            "decision_rank": "28"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -43603,7 +43603,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "29"
+          "value": "28"
         },
         {
           "card_id": "mcat_average",
@@ -43639,7 +43639,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Riverside",
@@ -43715,7 +43715,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -43915,7 +43915,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Diego",
@@ -43991,8 +43991,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.40",
-            "decision_rank": "26"
+            "attendance_score": "5.30",
+            "decision_rank": "24"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -44155,7 +44155,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "26"
+          "value": "24"
         },
         {
           "card_id": "mcat_average",
@@ -44191,7 +44191,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Francisco",
@@ -44267,8 +44267,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -44431,7 +44431,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -44467,7 +44467,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Orlando",
@@ -44543,8 +44543,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.60",
-            "decision_rank": "22"
+            "attendance_score": "5.50",
+            "decision_rank": "21"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -44706,7 +44706,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "22"
+          "value": "21"
         },
         {
           "card_id": "mcat_average",
@@ -44742,7 +44742,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -44816,8 +44816,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.20",
+            "decision_rank": "51"
           },
           "missing_fields": [
             "mcat_average",
@@ -44972,7 +44972,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "51"
         },
         {
           "card_id": "mcat_average",
@@ -45008,7 +45008,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cincinnati",
@@ -45084,8 +45084,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.80",
-            "decision_rank": "21"
+            "attendance_score": "5.70",
+            "decision_rank": "20"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -45248,7 +45248,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "21"
+          "value": "20"
         },
         {
           "card_id": "mcat_average",
@@ -45284,7 +45284,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Denver",
@@ -45360,8 +45360,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.70",
-            "decision_rank": "118"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -45524,7 +45524,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "118"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -45560,7 +45560,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Farmington",
@@ -45636,7 +45636,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.90",
+            "attendance_score": "2.20",
             "decision_rank": "143"
           },
           "missing_fields": [],
@@ -45838,7 +45838,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Gainesville",
@@ -45914,7 +45914,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.60",
+            "attendance_score": "5.40",
             "decision_rank": "22"
           },
           "missing_fields": [],
@@ -46113,7 +46113,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Athens",
@@ -46373,7 +46373,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -46449,8 +46449,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.60",
-            "decision_rank": "10"
+            "attendance_score": "6.70",
+            "decision_rank": "7"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -46612,7 +46612,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "10"
+          "value": "7"
         },
         {
           "card_id": "mcat_average",
@@ -46648,7 +46648,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -46724,7 +46724,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.20",
+            "attendance_score": "2.50",
             "decision_rank": "137"
           },
           "missing_fields": [],
@@ -46924,7 +46924,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Iowa City",
@@ -47000,8 +47000,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.10",
-            "decision_rank": "31"
+            "attendance_score": "4.90",
+            "decision_rank": "30"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -47163,7 +47163,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "31"
+          "value": "30"
         },
         {
           "card_id": "mcat_average",
@@ -47199,7 +47199,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -47275,8 +47275,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -47439,7 +47439,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -47475,7 +47475,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lexington",
@@ -47551,7 +47551,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -47752,7 +47752,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Louisville",
@@ -47828,8 +47828,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.90",
+            "decision_rank": "65"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -47993,7 +47993,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "65"
         },
         {
           "card_id": "mcat_average",
@@ -48029,7 +48029,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -48105,7 +48105,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.20",
+            "attendance_score": "2.50",
             "decision_rank": "137"
           },
           "missing_fields": [],
@@ -48306,7 +48306,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Worcester",
@@ -48382,8 +48382,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.20",
+            "decision_rank": "114"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -48547,7 +48547,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "114"
         },
         {
           "card_id": "mcat_average",
@@ -48583,7 +48583,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -48659,8 +48659,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -48824,7 +48824,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -48860,7 +48860,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Ann Arbor",
@@ -48936,7 +48936,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.20",
+            "attendance_score": "2.50",
             "decision_rank": "137"
           },
           "missing_fields": [],
@@ -49137,7 +49137,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Minneapolis",
@@ -49213,8 +49213,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -49376,7 +49376,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -49404,7 +49404,7 @@
         },
         {
           "card_id": "data_quality",
-          "context": "Watchlist",
+          "context": "Research seriously",
           "label": "Data Quality",
           "value": "medium"
         }
@@ -49412,7 +49412,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Jackson",
@@ -49488,8 +49488,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "10.00",
-            "decision_rank": "1"
+            "attendance_score": "5.90",
+            "decision_rank": "19"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -49530,11 +49530,11 @@
         },
         {
           "facts": {
-            "cost_basis": "0",
+            "cost_basis": "80020",
             "estimated_coa_in_state": "80020",
-            "estimated_coa_out_state": "0",
+            "estimated_coa_out_state": "",
             "in_state_tuition_fees_insurance": "42336",
-            "out_state_tuition_fees_insurance": "0"
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -49650,7 +49650,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "1"
+          "value": "19"
         },
         {
           "card_id": "mcat_average",
@@ -49672,7 +49672,7 @@
         },
         {
           "card_id": "out_state_estimated_cost",
-          "context": "Cost field used for selected score when available.",
+          "context": "Cost used for selected score: $80,020",
           "label": "Out-of-state estimated cost",
           "value": "Missing"
         },
@@ -49686,7 +49686,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -49762,7 +49762,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "1.80",
+            "attendance_score": "2.00",
             "decision_rank": "145"
           },
           "missing_fields": [],
@@ -49963,7 +49963,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -50039,7 +50039,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.10",
+            "attendance_score": "2.30",
             "decision_rank": "141"
           },
           "missing_fields": [],
@@ -50237,7 +50237,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -50313,8 +50313,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.30",
-            "decision_rank": "27"
+            "attendance_score": "5.20",
+            "decision_rank": "26"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -50475,7 +50475,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "27"
+          "value": "26"
         },
         {
           "card_id": "mcat_average",
@@ -50511,7 +50511,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Reno",
@@ -50587,8 +50587,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.30",
-            "decision_rank": "68"
+            "attendance_score": "3.80",
+            "decision_rank": "71"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -50752,7 +50752,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "68"
+          "value": "71"
         },
         {
           "card_id": "mcat_average",
@@ -50788,7 +50788,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "UNECOM",
         "city": "Biddeford",
@@ -51022,7 +51022,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albuquerque",
@@ -51098,7 +51098,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.30",
+            "attendance_score": "5.10",
             "decision_rank": "27"
           },
           "missing_fields": [],
@@ -51300,7 +51300,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chapel Hill",
@@ -51534,7 +51534,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Grand Forks",
@@ -51610,7 +51610,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.00",
+            "attendance_score": "4.70",
             "decision_rank": "35"
           },
           "missing_fields": [],
@@ -51809,7 +51809,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "UNTHSC/TCOM",
         "city": "Fort Worth",
@@ -52043,7 +52043,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "UNC-COM",
         "city": "Greely",
@@ -52266,7 +52266,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Oklahoma City",
@@ -52342,8 +52342,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.80",
-            "decision_rank": "107"
+            "attendance_score": "3.30",
+            "decision_rank": "105"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -52507,7 +52507,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "107"
+          "value": "105"
         },
         {
           "card_id": "mcat_average",
@@ -52543,7 +52543,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "UP-KYCOM",
         "city": "Pikeville",
@@ -52777,7 +52777,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pittsburgh",
@@ -52853,8 +52853,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "4.00",
+            "decision_rank": "61"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -53017,7 +53017,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "61"
         },
         {
           "card_id": "mcat_average",
@@ -53053,7 +53053,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -53129,8 +53129,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.40",
-            "decision_rank": "62"
+            "attendance_score": "4.00",
+            "decision_rank": "61"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -53292,7 +53292,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "62"
+          "value": "61"
         },
         {
           "card_id": "mcat_average",
@@ -53328,7 +53328,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -53551,7 +53551,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -53627,7 +53627,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.20",
+            "attendance_score": "2.50",
             "decision_rank": "137"
           },
           "missing_fields": [],
@@ -53827,7 +53827,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Vermillion",
@@ -53903,7 +53903,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -54103,7 +54103,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Memphis",
@@ -54179,7 +54179,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.00",
+            "attendance_score": "4.70",
             "decision_rank": "35"
           },
           "missing_fields": [],
@@ -54379,7 +54379,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Galveston",
@@ -54455,8 +54455,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.10",
-            "decision_rank": "16"
+            "attendance_score": "6.10",
+            "decision_rank": "14"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -54617,7 +54617,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "16"
+          "value": "14"
         },
         {
           "card_id": "mcat_average",
@@ -54653,7 +54653,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Edinburg",
@@ -54729,8 +54729,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.40",
-            "decision_rank": "14"
+            "attendance_score": "6.50",
+            "decision_rank": "10"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -54891,7 +54891,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "14"
+          "value": "10"
         },
         {
           "card_id": "mcat_average",
@@ -54927,7 +54927,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dallas",
@@ -55003,8 +55003,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "5.00",
-            "decision_rank": "18"
+            "attendance_score": "6.00",
+            "decision_rank": "15"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -55165,7 +55165,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "18"
+          "value": "15"
         },
         {
           "card_id": "mcat_average",
@@ -55201,7 +55201,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Toledo",
@@ -55277,8 +55277,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -55441,7 +55441,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -55477,7 +55477,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charlottesville",
@@ -55553,8 +55553,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.30",
+            "decision_rank": "48"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -55718,7 +55718,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "48"
         },
         {
           "card_id": "mcat_average",
@@ -55754,7 +55754,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Seattle",
@@ -56030,7 +56030,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Madison",
@@ -56106,8 +56106,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.80",
-            "decision_rank": "43"
+            "attendance_score": "4.50",
+            "decision_rank": "42"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -56270,7 +56270,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "43"
+          "value": "42"
         },
         {
           "card_id": "mcat_average",
@@ -56306,7 +56306,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "UIWSOM",
         "city": "San Antonio",
@@ -56540,7 +56540,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -56616,8 +56616,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "2.90",
+            "decision_rank": "132"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -56780,7 +56780,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "132"
         },
         {
           "card_id": "mcat_average",
@@ -56816,7 +56816,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Richmond",
@@ -56892,8 +56892,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "3.00",
+            "decision_rank": "128"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -57056,7 +57056,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "128"
         },
         {
           "card_id": "mcat_average",
@@ -57092,7 +57092,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Roanoke",
@@ -57168,8 +57168,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "4.10",
-            "decision_rank": "31"
+            "attendance_score": "4.80",
+            "decision_rank": "33"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -57331,7 +57331,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "31"
+          "value": "33"
         },
         {
           "card_id": "mcat_average",
@@ -57367,7 +57367,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Winston-Salem",
@@ -57443,7 +57443,7 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.00",
+            "attendance_score": "3.50",
             "decision_rank": "95"
           },
           "missing_fields": [],
@@ -57639,7 +57639,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Spokane",
@@ -57715,8 +57715,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "10.00",
-            "decision_rank": "1"
+            "attendance_score": "6.30",
+            "decision_rank": "11"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -57757,11 +57757,11 @@
         },
         {
           "facts": {
-            "cost_basis": "0",
+            "cost_basis": "74688",
             "estimated_coa_in_state": "74688",
-            "estimated_coa_out_state": "0",
+            "estimated_coa_out_state": "",
             "in_state_tuition_fees_insurance": "45012",
-            "out_state_tuition_fees_insurance": "0"
+            "out_state_tuition_fees_insurance": ""
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -57878,7 +57878,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "1"
+          "value": "11"
         },
         {
           "card_id": "mcat_average",
@@ -57900,7 +57900,7 @@
         },
         {
           "card_id": "out_state_estimated_cost",
-          "context": "Cost field used for selected score when available.",
+          "context": "Cost used for selected score: $74,688",
           "label": "Out-of-state estimated cost",
           "value": "Missing"
         },
@@ -57914,7 +57914,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -57990,8 +57990,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.60",
-            "decision_rank": "49"
+            "attendance_score": "4.30",
+            "decision_rank": "48"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -58153,7 +58153,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "49"
+          "value": "48"
         },
         {
           "card_id": "mcat_average",
@@ -58189,7 +58189,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Detroit",
@@ -58265,8 +58265,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.20",
-            "decision_rank": "76"
+            "attendance_score": "3.70",
+            "decision_rank": "79"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -58428,7 +58428,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "76"
+          "value": "79"
         },
         {
           "card_id": "mcat_average",
@@ -58464,7 +58464,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -58540,8 +58540,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -58703,7 +58703,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -58739,7 +58739,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "WVSOM",
         "city": "Lewisburg",
@@ -58990,7 +58990,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Morgantown",
@@ -59066,8 +59066,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.10",
-            "decision_rank": "86"
+            "attendance_score": "3.60",
+            "decision_rank": "87"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -59231,7 +59231,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "86"
+          "value": "87"
         },
         {
           "card_id": "mcat_average",
@@ -59267,7 +59267,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kalamazoo",
@@ -59343,8 +59343,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "3.50",
-            "decision_rank": "56"
+            "attendance_score": "4.10",
+            "decision_rank": "55"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -59506,7 +59506,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "56"
+          "value": "55"
         },
         {
           "card_id": "mcat_average",
@@ -59542,7 +59542,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "WesternU/COMP",
         "city": "Pomona",
@@ -59776,7 +59776,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "WesternU/COMP-Northwest",
         "city": "Lebanon",
@@ -60010,7 +60010,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "WCUCOM",
         "city": "Hattiesburg",
@@ -60244,7 +60244,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-06T05:38:52+00:00",
+      "generated_at": "2026-06-06T18:36:09+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Haven",
@@ -60322,8 +60322,8 @@
             "aamc_context": "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical school applicants and acceptees; it is not a school-specific acceptance probability.",
             "admissions_fit_tier": "Unscored",
             "admissions_score": "",
-            "attendance_score": "2.60",
-            "decision_rank": "127"
+            "attendance_score": "3.00",
+            "decision_rank": "128"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -60499,7 +60499,7 @@
           "card_id": "decision_rank",
           "context": "partial",
           "label": "Decision Rank",
-          "value": "127"
+          "value": "128"
         },
         {
           "card_id": "mcat_average",

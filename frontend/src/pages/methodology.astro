@@ -33,7 +33,8 @@ const methodology = payload.methodology.slice(0, 12);
     <article class="method-card">
       <h2>Live scoring formulas</h2>
       <p>Your Rank is computed in the browser from selected inputs and weights. MCAT fit is clamp(1, 10, 7 + (applicant MCAT - school MCAT) / 2).</p>
-      <p>GPA fit is clamp(1, 10, 7 + (applicant GPA - school GPA) / 0.08). Cost fit gives the lowest applicable listed cost 10 and the highest 1.</p>
+      <p>GPA fit is clamp(1, 10, 7 + (applicant GPA - school GPA) / 0.08). Cost fit gives the lowest applicable positive listed cost 10 and the highest 1.</p>
+      <p>Zero or negative cost values are treated as missing. If only one residency cost is listed, the scorer uses that value as a single listed cost fallback instead of scoring the missing side as zero.</p>
     </article>
     <article class="method-card">
       <h2>Default live weights</h2>
@@ -48,7 +49,7 @@ const methodology = payload.methodology.slice(0, 12);
     <article class="method-card">
       <h2>Missing data policy</h2>
       <p>Missing MCAT, GPA, state/OOS context, cost, or attendance components are excluded from the live denominator and surfaced as coverage warnings.</p>
-      <p>Missing values are never treated as zero in Your Score.</p>
+      <p>Missing values are never treated as zero in Your Score. For cost, a single positive listed cost may stand in for the missing residency side.</p>
     </article>
     <article class="method-card">
       <h2>Ownership data status</h2>
