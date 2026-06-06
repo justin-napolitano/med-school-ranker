@@ -1947,6 +1947,15 @@ tr:hover td { background: #f8fbfd; }
 .route-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
 .route-tools a { color: var(--accent); }
 .caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; }
+.node-card-header { display: flex; justify-content: space-between; gap: 8px; align-items: start; margin-bottom: 8px; }
+.node-card-header h3 { margin: 0; }
+.node-metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 10px; margin: 12px 0; }
+.node-metric strong { display: block; font-size: 20px; color: var(--header); line-height: 1.15; }
+.node-fact-row { display: grid; grid-template-columns: minmax(120px, 0.65fr) minmax(140px, 1fr); gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.node-fact-row:last-child { border-bottom: 0; }
+.node-fact-row strong { color: var(--header); font-size: 12px; }
+.node-missing { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.node-source-list { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
 a { color: var(--accent); }
 @media (max-width: 760px) {
   .app-header { display: grid; align-items: stretch; }
@@ -1993,6 +2002,51 @@ const APPLICATION_EXCLUDED_STATUSES = ['rejected', 'withdrawn', 'not_applying'];
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
+function getNodeFamilies(payload) {
+  return payload?.site_nodes || {};
+}
+
+function nodeFamilyNodes(familyName) {
+  const family = getNodeFamilies(payload)[familyName];
+  return Array.isArray(family?.nodes) ? family.nodes : [];
+}
+
+function indexNodesById(nodes) {
+  return Object.fromEntries((nodes || [])
+    .filter(node => node && (node.school_id || node.id))
+    .map(node => [node.school_id || node.id, node]));
+}
+
+function indexNodesBySlug(nodes) {
+  return Object.fromEntries((nodes || [])
+    .filter(node => node && node.school_slug)
+    .map(node => [node.school_slug, node]));
+}
+
+const nodeFamilies = getNodeFamilies(payload);
+const schoolNodesById = indexNodesById(nodeFamilyNodes('school_nodes'));
+const schoolProfileNodesById = indexNodesById(nodeFamilyNodes('school_profile_nodes'));
+const schoolProfileNodesBySlug = indexNodesBySlug(nodeFamilyNodes('school_profile_nodes'));
+const schoolCardNodesById = indexNodesById(nodeFamilyNodes('school_card_nodes'));
+const rankingCardNodesById = indexNodesById(nodeFamilyNodes('ranking_card_nodes'));
+const compareCardNodesById = indexNodesById(nodeFamilyNodes('compare_card_nodes'));
+
+function getSchoolProfileNode(schoolIdOrSlug) {
+  return schoolProfileNodesById[schoolIdOrSlug] || schoolProfileNodesBySlug[schoolIdOrSlug] || null;
+}
+
+function getSchoolCardNode(schoolId) {
+  return schoolCardNodesById[schoolId] || null;
+}
+
+function getRankingCardNode(schoolId) {
+  return rankingCardNodesById[schoolId] || null;
+}
+
+function getCompareCardNode(schoolId) {
+  return compareCardNodesById[schoolId] || null;
+}
+
 visibilityState = Object.fromEntries(rows('school_visibility')
   .filter(record => record.school_id)
   .map(record => [record.school_id, {
@@ -2124,6 +2178,93 @@ function labelize(value) {
   const text = String(value || '').trim();
   if (!text) return 'Unselected';
   return text.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function nodeDisplayValue(value) {
+  if (Array.isArray(value)) {
+    const text = value.filter(part => part !== undefined && part !== null && String(part).trim() !== '').join(', ');
+    return safeText(missing(text));
+  }
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+  if (value && typeof value === 'object') return safeText(JSON.stringify(value));
+  return safeText(missing(value));
+}
+
+function nodeStatusChip(value) {
+  const text = String(value || '').trim();
+  const type = ['ready', 'partial', 'provisional', 'missing', 'high', 'medium', 'low'].includes(text) ? text : '';
+  return badge(text || 'missing', type);
+}
+
+function renderCardShell(title, body, meta='') {
+  return `<div class="panel">
+    <div class="node-card-header"><h3>${safeText(title)}</h3>${meta || ''}</div>
+    ${body}
+  </div>`;
+}
+
+function renderMetricCard(card) {
+  return `<div class="panel node-metric">
+    <span class="muted">${safeText(card?.label || card?.card_id || 'Metric')}</span>
+    <strong>${nodeDisplayValue(card?.value)}</strong>
+    ${card?.context ? `<p>${safeText(card.context)}</p>` : ''}
+  </div>`;
+}
+
+function renderFactRows(facts) {
+  const entries = Object.entries(facts || {}).filter(([key]) => key !== 'source_refs');
+  if (!entries.length) return '<div class="empty-state">No facts available in this node section.</div>';
+  return entries.map(([key, value]) => `<div class="node-fact-row"><strong>${safeText(labelize(key))}</strong><span>${nodeDisplayValue(value)}</span></div>`).join('');
+}
+
+function renderMissingFieldsBlock(missingFields) {
+  const fields = Array.isArray(missingFields) ? missingFields.filter(Boolean) : [];
+  if (!fields.length) return '';
+  return `<div class="node-missing">${fields.map(field => badge(labelize(field), 'warn')).join('')}</div>`;
+}
+
+function renderSourceCaveatBlock(sourceRefs) {
+  const refs = Array.isArray(sourceRefs) ? sourceRefs.filter(ref => ref?.source_name || ref?.source_url) : [];
+  if (!refs.length) return '';
+  return `<ul class="node-source-list">${refs.slice(0, 5).map(ref => {
+    const label = safeText(ref.source_name || 'Source');
+    return `<li>${ref.source_url ? `<a href="${attr(ref.source_url)}" target="_blank">${label}</a>` : label}</li>`;
+  }).join('')}</ul>`;
+}
+
+function renderProfileSectionBlock(section) {
+  return renderCardShell(
+    section?.title || section?.section_id || 'Profile Section',
+    `${renderFactRows(section?.facts || {})}
+     ${renderMissingFieldsBlock(section?.missing_fields)}
+     ${renderSourceCaveatBlock(section?.source_refs)}`,
+    nodeStatusChip(section?.readiness)
+  );
+}
+
+function renderSchoolCardNodePreview(schoolId) {
+  const schoolCard = getSchoolCardNode(schoolId);
+  const rankingCard = getRankingCardNode(schoolId);
+  if (!schoolCard && !rankingCard) return '';
+  const schoolRows = schoolCard ? [
+    ['Readiness', schoolCard.readiness],
+    ['Confidence', schoolCard.confidence],
+    ['Application bucket', schoolCard.rank_summary?.application_bucket],
+    ['MCAT/GPA', [schoolCard.mcat_gpa_summary?.mcat_average, schoolCard.mcat_gpa_summary?.gpa_average].filter(Boolean).join(' / ')],
+    ['Cost basis', schoolCard.cost_summary?.cost_basis],
+  ] : [];
+  const rankingRows = rankingCard ? [
+    ['Decision rank', rankingCard.decision_rank],
+    ['Rank band', rankingCard.rank_band],
+    ['Admissions score', rankingCard.admissions_score],
+    ['Attendance score', rankingCard.attendance_score],
+    ['Positive contributors', rankingCard.top_positive_contributors],
+    ['Low-confidence drivers', rankingCard.missing_or_low_confidence_drivers],
+  ] : [];
+  return `<div class="detail-grid" style="margin-top:12px">
+    ${schoolCard ? detailPanel('School Summary', schoolRows) : ''}
+    ${rankingCard ? detailPanel('Ranking Summary', rankingRows) : ''}
+  </div>`;
 }
 
 function nowIso() {
@@ -2881,6 +3022,30 @@ function renderListDetail() {
 }
 
 function compareDetailRows(item) {
+  const compareNode = getCompareCardNode(schoolId(item));
+  if (compareNode) {
+    return [
+      ['Decision rank', compareNode.rank_fit?.decision_rank],
+      ['Application decision', labelize(applicationStatusFor(item))],
+      ['Research status', labelize(researchStatusFor(item))],
+      ['Interest', labelize(dossierFor(item).interest_level)],
+      ['Admissions tier', compareNode.rank_fit?.admissions_fit_tier],
+      ['Rank band', compareNode.rank_fit?.rank_band],
+      ['Admissions score', compareNode.rank_fit?.admissions_score],
+      ['Attendance score', compareNode.rank_fit?.attendance_score],
+      ['MCAT avg', compareNode.admissions_facts?.mcat_average],
+      ['GPA avg', compareNode.admissions_facts?.gpa_average],
+      ['AAMC band', compareNode.admissions_facts?.aamc_rate_band],
+      ['OOS COA', compareNode.cost_facts?.out_state],
+      ['Cost basis', compareNode.cost_facts?.cost_basis],
+      ['Policy rows', compareNode.requirements_summary?.policy_count],
+      ['Letter rows', compareNode.requirements_summary?.letter_requirement_count],
+      ['Missing sections', compareNode.missing_data_summary?.missing_fields?.join(', ') || 'Complete'],
+      ['Next action', applicationNextActionFor(item, applicationStatusFor(item))],
+      ['Notes', dossierFor(item).notes],
+    ];
+  }
+  // Defensive fallback for older payloads that do not yet include compare_card_nodes.
   return [
     ['Decision rank', item.ranking.decision_rank || item.ranking.overall_rank],
     ['Application decision', labelize(applicationStatusFor(item))],
@@ -2905,12 +3070,17 @@ function compareDetailRows(item) {
 }
 
 function renderCompareCard(item) {
+  const compareNode = getCompareCardNode(schoolId(item));
+  const identity = compareNode?.identity || {};
+  const degree = identity.degree_type || item.school.degree_type;
+  const city = identity.city || item.school.city;
+  const state = identity.state || item.school.state;
   return `<div class="compare-card">
     <div class="inline-actions" style="justify-content:space-between">
       <h3 style="margin:0">${linkSchool(item)}</h3>
       ${compareButton(item)}
     </div>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${visibilityBadge(item)}</p>
+    <p>${missing(degree)} · ${missing(city)}, ${missing(state)} · ${visibilityBadge(item)} ${compareNode ? nodeStatusChip(compareNode.missing_data_summary?.readiness) : ''}</p>
     ${compareDetailRows(item).map(([label, value]) => `<div class="compare-row"><strong>${label}</strong><span>${missing(value)}</span></div>`).join('')}
   </div>`;
 }
@@ -3397,16 +3567,29 @@ function renderApplicationList() {
 }
 
 function renderProfile() {
-  const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
-  if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
-  const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
-  const localDossier = dossierFor(item);
-  const contributionRows = rows('score_contributions').filter(row => (
+  const profileNode = getSchoolProfileNode(currentRoute.slug);
+  const routeItem = rows('schools').find(s => s.school_slug === currentRoute.slug);
+  const item = (profileNode ? schoolById(profileNode.school_id) : routeItem) || routeItem || rows('schools')[0];
+  const node = profileNode || (item ? getSchoolProfileNode(schoolId(item)) : null);
+  if (!item && !node) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
+
+  const header = node?.header || {};
+  const schoolIdValue = node?.school_id || (item ? schoolId(item) : '');
+  const rankingCard = getRankingCardNode(schoolIdValue);
+  const schoolName = header.display_name || item?.school?.school_name || 'School profile';
+  const degreeType = header.degree_type || item?.school?.degree_type || '';
+  const city = header.city || item?.school?.city || '';
+  const state = header.state || item?.school?.state || '';
+  const officialUrl = header.official_url || item?.school?.source_url || item?.school?.official_url || '';
+  const sourceUrl = officialUrl ? `<a href="${attr(officialUrl)}" target="_blank">Source</a>` : 'Missing';
+  const decisionRank = rankingCard?.decision_rank || item?.ranking?.decision_rank || item?.ranking?.overall_rank;
+  const contributionRows = item ? rows('score_contributions').filter(row => (
     row.school_id === item.school.school_id
     && row.applicant_profile_id === item.ranking.applicant_profile_id
     && row.score_model === 'Decision Rank'
-  ));
-  const adminPanels = ADMIN_ENABLED ? `
+  )) : [];
+  const localDossier = item ? dossierFor(item) : {};
+  const adminPanels = ADMIN_ENABLED && item ? `
       ${detailPanel('Partner Review', [
         ['Could live here', item.partner_input?.could_live_here_4_years_score],
         ['Location fit', item.partner_input?.location_fit_score],
@@ -3424,7 +3607,7 @@ function renderProfile() {
         ['Errors', item.derived.error_count],
         ['Next action', item.derived.suggested_next_action],
       ])}` : '';
-  const issuesPanel = ADMIN_ENABLED ? `<div class="panel" style="margin-top:12px">
+  const issuesPanel = ADMIN_ENABLED && item ? `<div class="panel" style="margin-top:12px">
       <h3>Issues</h3>
       ${table([
         {key:'severity', label:'Severity', render:i=>badge(i.severity, i.severity)},
@@ -3434,7 +3617,7 @@ function renderProfile() {
         {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
       ], item.data_quality || [], 'detailIssues')}
     </div>` : '';
-  const profileActionPanel = `<div class="panel" style="margin-bottom:12px">
+  const profileActionPanel = item ? `<div class="panel" style="margin-bottom:12px">
       <div class="inline-actions">
         <h3 style="margin:0">Review Actions</h3>
         ${visibilityBadge(item)}
@@ -3453,82 +3636,36 @@ function renderProfile() {
       </div>
       <p><strong>Next action:</strong> ${applicationNextActionFor(item, applicationStatusFor(item))}</p>
       <p><strong>Missing dossier sections:</strong> ${missingDossierSections(item).join(', ') || 'Complete'}</p>
-    </div>`;
+    </div>` : '';
+  const snapshotCards = Array.isArray(node?.snapshot_cards) ? node.snapshot_cards : [];
+  const snapshotMarkup = snapshotCards.length
+    ? `<div class="node-metric-grid">${snapshotCards.map(renderMetricCard).join('')}</div>`
+    : '';
+  const nodeSectionMarkup = node
+    ? `<div class="detail-grid">${(node.sections || []).map(renderProfileSectionBlock).join('')}</div>${renderSchoolCardNodePreview(node.school_id)}`
+    : `<div class="empty-state">Profile data is unavailable for this route; local controls are still available.</div>`;
+  const legacyLocalStatus = item ? detailPanel('Local Dossier Status', [
+    ['Visibility', visibilityFor(item).visibility_state],
+    ['Research status', labelize(researchStatusFor(item))],
+    ['Interest level', labelize(localDossier.interest_level)],
+    ['Application decision', labelize(localDossier.application_decision_status)],
+    ['Missing dossier sections', missingDossierSections(item).join(', ') || 'Complete'],
+    ['Next research action', nextResearchAction(item)],
+  ]) : '';
+
+  // Primary profile path: route slug -> school_profile_node -> section blocks.
   $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Dossiers</a><a href="#/research">Research Queue</a><a href="#/application-list">Application List</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
-    <h2>${item.school.school_name}</h2>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl} · Decision Rank ${missing(item.ranking.decision_rank || item.ranking.overall_rank)}</p>
+    <h2>${safeText(schoolName)}</h2>
+    <p>${missing(degreeType)} · ${missing(city)}, ${missing(state)} · ${sourceUrl} · Decision Rank ${missing(decisionRank)}</p>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
     ${profileActionPanel}
-    <div class="detail-grid">
-      ${detailPanel('Identity', [
-        ['School ID', item.school.school_id],
-        ['Parent', item.school.parent_school_name],
-        ['Campus', item.school.campus_name],
-        ['Accreditation', item.school.accreditation_status],
-      ])}
-      ${detailPanel('Ranking', [
-        ['Profile', item.ranking.profile_name],
-        ['Decision rank', item.ranking.decision_rank || item.ranking.overall_rank],
-        ['Rank band', item.ranking.rank_band],
-        ['Rank confidence', item.ranking.rank_confidence],
-        ['Admissions tier', item.ranking.admissions_fit_tier || item.ranking.dynamic_tier],
-        ['Bucket', item.ranking.application_bucket || item.ranking.suggested_funnel_bucket],
-        ['Admissions', item.ranking.admissions_score],
-        ['Attendance', item.ranking.attendance_score],
-        ['MCAT fit', item.ranking.admissions_mcat_fit_score],
-        ['GPA fit', item.ranking.admissions_gpa_fit_score],
-        ['OOS fit', item.ranking.admissions_oos_friendliness_score],
-        ['Cost fit', item.ranking.attendance_cost_score],
-        ['Data completeness', item.ranking.data_completeness_score],
-        ['Missing score inputs', item.ranking.missing_score_inputs],
-        ['Score warnings', item.ranking.score_warnings],
-        ['Positive contributors', item.ranking.top_positive_contributors || item.ranking.top_positive_drivers],
-        ['Negative contributors', item.ranking.top_negative_contributors || item.ranking.top_negative_drivers],
-        ['Low-confidence drivers', item.ranking.missing_or_low_confidence_drivers],
-        ['Rank summary', item.ranking.rank_summary],
-      ])}
-      ${detailPanel('Local Dossier Status', [
-        ['Visibility', visibilityFor(item).visibility_state],
-        ['Research status', labelize(researchStatusFor(item))],
-        ['Interest level', labelize(localDossier.interest_level)],
-        ['Application decision', labelize(localDossier.application_decision_status)],
-        ['Missing dossier sections', missingDossierSections(item).join(', ') || 'Complete'],
-        ['Next research action', nextResearchAction(item)],
-      ])}
-      ${detailPanel('Admissions Facts', [
-        ['Stats present', item.derived.admissions_stats_present],
-        ['Published source count', item.admissions_stats.published_source_count],
-        ['Published MCAT average', item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average],
-        ['Published GPA average', item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average],
-        ['School MCAT used for fit', item.ranking.school_mcat_for_fit],
-        ['School GPA used for fit', item.ranking.school_gpa_for_fit],
-        ['Profile MCAT band', item.ranking.profile_aamc_mcat_band],
-        ['Profile GPA band', item.ranking.profile_aamc_gpa_band],
-        ['Profile AAMC national rate', item.ranking.profile_aamc_acceptance_rate],
-        ['Profile AAMC national rate band', item.ranking.profile_aamc_acceptance_rate_band],
-        ['MCAT band', item.ranking.published_mcat_band || item.admissions_stats.published_mcat_band],
-        ['GPA band', item.ranking.published_gpa_band || item.admissions_stats.published_gpa_band],
-        ['AAMC grid rate', item.admissions_stats.aamc_acceptance_rate],
-        ['AAMC rate band', item.admissions_stats.aamc_acceptance_rate_band],
-        ['Confidence', item.admissions_stats.data_confidence],
-      ])}
-      ${detailPanel('Cost and Debt', [
-        ['Cost data present', item.derived.cost_data_present],
-        ['In-state tuition+fees+insurance', item.cost_and_debt.in_state_tuition_fees_insurance],
-        ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
-        ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
-        ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
-        ['Applicant cost basis', item.ranking.cost_basis],
-        ['Adjusted cost basis', item.ranking.cost_basis_adjusted],
-        ['Confidence', item.cost_and_debt.data_confidence],
-      ])}
-      ${detailPanel('Public Source Coverage', [
-        ['Admissions policy rows', item.derived.admissions_policy_count],
-        ['Letter requirement rows', item.derived.letter_requirement_count],
-      ])}
+    ${snapshotMarkup}
+    ${nodeSectionMarkup}
+    <div class="detail-grid" style="margin-top:12px">
+      ${legacyLocalStatus}
       ${adminPanels}
     </div>
-    ${renderDossierForm(item)}
+    ${item ? renderDossierForm(item) : ''}
     <div class="panel" style="margin-top:12px">
       <h3>Why This Rank?</h3>
       ${table([

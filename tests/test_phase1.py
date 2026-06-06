@@ -596,6 +596,45 @@ def test_site_generation_writes_json_node_read_models(tmp_path, monkeypatch):
     assert embedded_payload["site_nodes"]["school_nodes"]["record_count"] == len(master_rows)
 
 
+def test_profile_node_ui_adoption_uses_node_contracts(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site()
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+    site_nodes = embedded_payload["site_nodes"]
+    active_count = embedded_payload["meta"]["active_school_count"]
+
+    for family in [
+        "school_nodes",
+        "school_card_nodes",
+        "school_profile_nodes",
+        "ranking_card_nodes",
+        "compare_card_nodes",
+    ]:
+        assert site_nodes[family]["record_count"] == active_count
+
+    profile_nodes = site_nodes["school_profile_nodes"]["nodes"]
+    profile_slugs = {node["school_slug"] for node in profile_nodes}
+    school_slugs = {school["school_slug"] for school in embedded_payload["schools"]}
+    assert profile_slugs == school_slugs
+    assert all(node["sections"] for node in profile_nodes)
+    assert all("missing_fields" in section for node in profile_nodes for section in node["sections"])
+
+    assert "function getNodeFamilies(payload)" in html_text
+    assert "function indexNodesById(nodes)" in html_text
+    assert "function indexNodesBySlug(nodes)" in html_text
+    assert "function getSchoolProfileNode(schoolIdOrSlug)" in html_text
+    assert "const profileNode = getSchoolProfileNode(currentRoute.slug)" in html_text
+    assert "renderProfileSectionBlock" in html_text
+    assert "renderSchoolCardNodePreview(node.school_id)" in html_text
+    assert "const compareNode = getCompareCardNode(schoolId(item))" in html_text
+
+
 def test_publish_safe_site_excludes_admin_source_review_and_private_payloads(tmp_path, monkeypatch):
     secret = "super_secret_partner_review_value"
     partner_row = {

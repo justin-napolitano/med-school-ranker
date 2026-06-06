@@ -812,23 +812,23 @@
     "status": "implemented"
   },
   {
-    "current_decision_summary": "Adopt generated school/profile/card nodes in the existing static site before visual redesign while preserving admin workflows and publish-safe guardrails.",
+    "current_decision_summary": "The existing static site now uses generated school_profile_nodes for school profile main sections and bounded generated card/ranking/compare node previews while preserving local workflows and publish-safe guardrails.",
     "doc_path": "docs/SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md",
-    "next_action": "Execute the selected headless profile-node UI slice from a clean branch.",
+    "next_action": "Proceed to the downstream visual direction or product card design pass using the node-backed profile/card helpers.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_ui_exec",
     "plan_name": "Site Profile Node UI Adoption Executive Plan",
     "plan_type": "executive",
     "priority": "highest",
-    "reviewer": "tbd",
+    "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "active"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Headless plan for auditing node contracts, adding reusable render helpers, moving school profiles to school_profile_nodes, and proving one card-node preview surface.",
+    "current_decision_summary": "Implemented node lookup helpers, shared node render helpers, profile section rendering from school_profile_nodes, card/ranking node preview panels, and compare_card_nodes in the compare surface.",
     "doc_path": "docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md",
-    "next_action": "Run next with codex exec after baseline checks.",
+    "next_action": "Keep as historical execution record.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "headless_site_profile_node_ui",
@@ -837,12 +837,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "ready"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Confirms generated node files have the fields and counts needed before changing profile rendering.",
+    "current_decision_summary": "Generated school, profile, card, ranking, and compare node counts align with active schools and contain profile section readiness/missing-field metadata.",
     "doc_path": "docs/site/profile_node_ui/01_node_contract_audit.md",
-    "next_action": "Complete first in the implementation slice.",
+    "next_action": "Reuse as the profile-node contract checklist for future node field additions.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_contract_audit",
@@ -851,12 +851,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Defines small reusable static-site render helpers for node-backed cards, sections, chips, facts, caveats, and missing fields.",
+    "current_decision_summary": "Static-site helpers now render node-backed card shells, metric cards, fact rows, readiness chips, missing fields, source refs, and profile section blocks.",
     "doc_path": "docs/site/profile_node_ui/02_shared_card_components.md",
-    "next_action": "Implement before migrating the profile route.",
+    "next_action": "Style these helpers in the visual-design pass rather than rebuilding data access.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_card_components",
@@ -865,12 +865,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Makes school profile routes render main sections from school_profile_nodes while keeping existing local workflows attached by school_id.",
+    "current_decision_summary": "School profile routes resolve by slug to school_profile_nodes and render snapshot cards plus section blocks as the primary profile content while retaining local dossier/action panels by school_id.",
     "doc_path": "docs/site/profile_node_ui/03_profile_route_node_consumption.md",
-    "next_action": "This is the core implementation target.",
+    "next_action": "Extend profile content by adding fields to node builders before adding new browser joins.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_route_consumption",
@@ -879,12 +879,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Uses generated card/ranking/compare nodes in one bounded visible surface without broad-rebuilding rankings or compare.",
+    "current_decision_summary": "Profile pages show bounded school/ranking card node previews and compare cards consume compare_card_nodes without rebuilding rankings or compare tables.",
     "doc_path": "docs/site/profile_node_ui/04_rankings_and_compare_preview.md",
-    "next_action": "Implement after profile route consumption works.",
+    "next_action": "Use the same node families for future card-grid design work.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_card_preview",
@@ -893,12 +893,12 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Keeps local-full admin workflows intact and confirms publish-safe mode excludes admin/private/reviewer-only node data.",
+    "current_decision_summary": "Local-full admin/reviewer workflows remain adjacent to node-backed profile rendering and publish-safe payloads continue to exclude admin status and reviewer-only node fields.",
     "doc_path": "docs/site/profile_node_ui/05_admin_payload_compatibility.md",
-    "next_action": "Validate before committing implementation.",
+    "next_action": "Keep publish-safe exclusion tests in every future site slice.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_admin_compatibility",
@@ -907,12 +907,12 @@
     "priority": "highest",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
-    "current_decision_summary": "Defines build/test/privacy checks and manual profile route review for the node-backed profile slice.",
+    "current_decision_summary": "Required build, test, validation, diff, privacy, and available screenshot QA checks are part of the implementation handoff for this node-backed profile slice.",
     "doc_path": "docs/site/profile_node_ui/06_visual_qa_and_validation.md",
-    "next_action": "Run as final implementation verification.",
+    "next_action": "Use screenshot/browser QA again when styling these node helpers.",
     "owner": "user",
     "phase": "phase_2f",
     "plan_id": "site_profile_node_visual_qa",
@@ -921,7 +921,7 @@
     "priority": "high",
     "reviewer": "codex",
     "source_of_truth": "markdown",
-    "status": "drafted"
+    "status": "implemented"
   },
   {
     "current_decision_summary": "Identifies drift risks around raw payload joins, premature design scope, publish-safe regressions, local workflow breakage, and node field gaps.",
