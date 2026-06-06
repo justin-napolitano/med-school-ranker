@@ -40,6 +40,7 @@ const index = read("index.html");
 const admin = read("admin/index.html");
 const methodology = read("methodology/index.html");
 const notInterested = read("not-interested/index.html");
+const scoring = read("scoring/index.html");
 const deploymentBase = normalizeDeploymentBase(process.env.ASTRO_BASE_PATH);
 
 if (!existsSync(dist)) {
@@ -72,6 +73,30 @@ if (!notInterested.includes("<h1>Not Interested</h1>")) {
 
 if (!methodology.includes("Live scoring formulas") || !methodology.includes("Missing values are never treated as zero")) {
   fail("Methodology does not document live scoring formulas and missing-data policy.");
+}
+
+if (!methodology.includes("/scoring/") || !methodology.includes("Zero-weight policy") || !methodology.includes("DO schools need a separate scoring flow")) {
+  fail("Methodology does not link to Scoring or document zero-weight and DO-scope policy.");
+}
+
+if (!scoring.includes("<h1>Scoring</h1>")) {
+  fail("Scoring route is missing.");
+}
+
+for (const requiredScoringText of [
+  "Assumptions in use",
+  "Weights and formulas",
+  "School score breakdown",
+  "present components only",
+  "Why did this move?",
+  "DO schools need a separate scoring flow",
+  "Not included: weight is 0",
+  "Your Rank",
+  "Baseline Rank",
+]) {
+  if (!scoring.includes(requiredScoringText)) {
+    fail(`Scoring route is missing required text: ${requiredScoringText}`);
+  }
 }
 
 if (index.includes("Data quality</span>") || index.includes("data-confidence filter") || index.includes("source-confidence filter")) {

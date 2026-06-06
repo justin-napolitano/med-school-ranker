@@ -1,5 +1,5 @@
 import { RotateCcw, X } from "lucide-react";
-import { liveWeightDescriptions, liveWeightPresets } from "../lib/live-scoring";
+import { liveComponentMetadata, liveWeightDescriptions, liveWeightOrder, liveWeightPresets } from "../lib/live-scoring";
 import type { LiveWeightKey, PreferenceState, ProductSchool } from "../lib/school-utils";
 import {
   cityLabelFromKey,
@@ -19,15 +19,14 @@ type Props = {
   mode?: "full" | "scoring";
 };
 
-const weightOrder: LiveWeightKey[] = ["mcatFit", "gpaFit", "stateFit", "costFit", "baselineAttendance"];
-
 export function PreferenceControls({ preferences, schools, onChange, compact = false, mode = "full" }: Props) {
   const states = statesForSchools(schools);
   const cityOptions = cityOptionsForSchools(schools);
   const hasOwnershipLabels = schoolsHaveOwnershipLabels(schools);
   const availableStates = states.filter((state) => !preferences.excludedStates.includes(state));
   const availableCities = cityOptions.filter((city) => !preferences.excludedCities.includes(city));
-  const showFilters = mode === "full";
+  const showFilterControls = mode === "full" || mode === "scoring";
+  const showFullFilters = mode === "full";
 
   function addExcludedState(state: string) {
     if (!state || preferences.excludedStates.includes(state)) return;
@@ -110,16 +109,18 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
           ))}
         </select>
       </label>
-      {showFilters ? (
+      {showFilterControls ? (
         <>
-          <label>
-            <span>Degree</span>
-            <select value={preferences.degree} onChange={(event) => onChange("degree", event.currentTarget.value as PreferenceState["degree"])}>
-              <option value="all">MD and DO</option>
-              <option value="MD">MD</option>
-              <option value="DO">DO</option>
-            </select>
-          </label>
+          {showFullFilters ? (
+            <label>
+              <span>Degree</span>
+              <select value={preferences.degree} onChange={(event) => onChange("degree", event.currentTarget.value as PreferenceState["degree"])}>
+                <option value="all">MD and DO</option>
+                <option value="MD">MD</option>
+                <option value="DO">DO</option>
+              </select>
+            </label>
+          ) : null}
           <label>
             <span>Region</span>
             <select value={preferences.region} onChange={(event) => onChange("region", event.currentTarget.value)}>
@@ -246,7 +247,7 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
           </button>
         </div>
         <div className="weight-list">
-          {weightOrder.map((key) => (
+          {liveWeightOrder.map((key) => (
             <label className="weight-control" key={key}>
               <span>
                 {weightLabel(key)}
@@ -271,9 +272,5 @@ export function PreferenceControls({ preferences, schools, onChange, compact = f
 }
 
 function weightLabel(key: LiveWeightKey): string {
-  if (key === "mcatFit") return "MCAT fit";
-  if (key === "gpaFit") return "GPA fit";
-  if (key === "stateFit") return "State/residency fit";
-  if (key === "costFit") return "Cost fit";
-  return "Baseline attendance context";
+  return liveComponentMetadata.find((component) => component.key === key)?.label || key;
 }

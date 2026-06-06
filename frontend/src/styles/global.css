@@ -832,6 +832,99 @@ body[data-surface="admin"] .page-header h1 {
   line-height: 1.5;
 }
 
+.scoring-workspace {
+  display: grid;
+  grid-template-columns: minmax(290px, 380px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.scoring-controls {
+  top: 84px;
+}
+
+.scoring-main {
+  display: grid;
+  min-width: 0;
+  gap: 18px;
+}
+
+.scoring-section {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 18px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.section-heading h2 {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.scoring-copy {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.responsive-table {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+}
+
+.responsive-table table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.responsive-table th,
+.responsive-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 10px 11px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.responsive-table th {
+  background: var(--surface-strong);
+  color: var(--quiet);
+  font-size: 11px;
+  font-weight: 780;
+  text-transform: uppercase;
+}
+
+.responsive-table td {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.responsive-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.scoring-summary {
+  margin-bottom: 12px;
+}
+
 @media (max-width: 1080px) {
   .topbar {
     align-items: flex-start;
@@ -845,6 +938,7 @@ body[data-surface="admin"] .page-header h1 {
   }
 
   .recommendation-surface,
+  .scoring-workspace,
   .methodology-grid,
   .profile-grid,
   .admin-status-grid {
@@ -875,6 +969,7 @@ body[data-surface="admin"] .page-header h1 {
   .page-header,
   .profile-header,
   .feed-heading,
+  .section-heading,
   .school-card-topline {
     align-items: flex-start;
     flex-direction: column;
@@ -913,5 +1008,62 @@ body[data-surface="admin"] .page-header h1 {
   .inline-picker {
     width: 100%;
     min-width: 0;
+  }
+
+  .responsive-table {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .responsive-table table,
+  .responsive-table thead,
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table th,
+  .responsive-table td {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .responsive-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .responsive-table tr {
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-small);
+    background: var(--surface);
+  }
+
+  .responsive-table td {
+    display: grid;
+    grid-template-columns: minmax(104px, 34%) minmax(0, 1fr);
+    gap: 10px;
+    border-bottom: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    color: var(--quiet);
+    font-size: 11px;
+    font-weight: 780;
+    text-transform: uppercase;
+  }
+
+  .responsive-table tr:last-child td {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .responsive-table tr td:last-child {
+    border-bottom: 0;
   }
 }

@@ -3,6 +3,8 @@ import { toNumberOrNull, toPositiveNumberOrNull } from "./school-utils";
 
 type ContributionEffect = "helps" | "hurts" | "neutral";
 type CoverageLabel = "full" | "partial" | "limited" | "none";
+export type LiveComponentGroup = "admissions" | "attendance";
+export type LiveNotIncludedReasonType = "missing_data" | "zero_weight";
 
 export type LiveContribution = {
   key: LiveWeightKey;
@@ -11,6 +13,24 @@ export type LiveContribution = {
   weight: number;
   effect: ContributionEffect;
   detail: string;
+};
+
+export type LiveContributionRow = {
+  componentKey: LiveWeightKey;
+  componentLabel: string;
+  componentGroup: LiveComponentGroup;
+  applicantValueLabel: string;
+  schoolValueLabel: string;
+  formulaLabel: string;
+  scoreValue: number | null;
+  weight: number;
+  presentWeightSum: number;
+  weightedPoints: number | null;
+  included: boolean;
+  notIncludedReasonType: LiveNotIncludedReasonType | null;
+  reason: string;
+  sourceLabel: string;
+  confidenceLabel: string;
 };
 
 export type LiveCoverage = {
@@ -30,16 +50,24 @@ export type LiveSchoolScore = {
   liveAttendanceScore: number | null;
   liveCoverage: LiveCoverage;
   liveContributions: LiveContribution[];
+  liveContributionRows: LiveContributionRow[];
   liveWarnings: string[];
+  scoringDisabled: boolean;
+  scoringDisabledReason: string;
 };
 
 type ComponentResult = {
   key: LiveWeightKey;
-  group: "admissions" | "attendance";
+  group: LiveComponentGroup;
   label: string;
   value: number | null;
   detail: string;
   warning: string;
+  applicantValueLabel: string;
+  schoolValueLabel: string;
+  formulaLabel: string;
+  sourceLabel: string;
+  confidenceLabel: string;
 };
 
 export const liveWeightPresets: Array<{ id: string; label: string; weights: LiveWeights; homeState?: string }> = [
@@ -76,8 +104,62 @@ export const liveWeightDescriptions: Record<LiveWeightKey, string> = {
   gpaFit: "Compares applicant GPA with the school GPA value when available.",
   stateFit: "Rewards in-state schools and uses generated OOS context when available.",
   costFit: "Scores the applicable listed cost against other available costs.",
-  baselineAttendance: "Uses generated attendance context from the existing payload.",
+  baselineAttendance: "Uses generated school context from the existing payload.",
 };
+
+export type LiveComponentMetadata = {
+  key: LiveWeightKey;
+  label: string;
+  group: LiveComponentGroup;
+  formulaLabel: string;
+  missingPolicy: string;
+  highScoreMeans: string;
+};
+
+export const liveComponentMetadata: LiveComponentMetadata[] = [
+  {
+    key: "mcatFit",
+    label: "MCAT fit",
+    group: "admissions",
+    formulaLabel: "7 + (applicant MCAT - school MCAT) / 2",
+    missingPolicy: "Excluded from Your Score until applicant MCAT and school MCAT are available.",
+    highScoreMeans: "Applicant MCAT is at or above this school's listed MCAT context.",
+  },
+  {
+    key: "gpaFit",
+    label: "GPA fit",
+    group: "admissions",
+    formulaLabel: "7 + (applicant GPA - school GPA) / 0.08",
+    missingPolicy: "Excluded from Your Score until applicant GPA and school GPA are available.",
+    highScoreMeans: "Applicant GPA is at or above this school's listed GPA context.",
+  },
+  {
+    key: "stateFit",
+    label: "State/residency fit",
+    group: "admissions",
+    formulaLabel: "Same state or source-backed OOS context",
+    missingPolicy: "Excluded from Your Score until home state and state/OOS context are available.",
+    highScoreMeans: "The school is in the selected home state or has stronger generated OOS context.",
+  },
+  {
+    key: "costFit",
+    label: "Cost fit",
+    group: "attendance",
+    formulaLabel: "Lowest applicable cost = 10, highest = 1",
+    missingPolicy: "Excluded from Your Score when no positive applicable listed cost is available.",
+    highScoreMeans: "The applicable listed cost is lower than other eligible schools in the current score set.",
+  },
+  {
+    key: "baselineAttendance",
+    label: "Generated school context",
+    group: "attendance",
+    formulaLabel: "Generated attendance context score",
+    missingPolicy: "Excluded from Your Score when generated school context is unavailable.",
+    highScoreMeans: "The generated payload contains stronger attendance context for this school.",
+  },
+];
+
+export const liveWeightOrder: LiveWeightKey[] = liveComponentMetadata.map((component) => component.key);
 
 export function scoreSchools(schools: ProductSchool[], preferences: PreferenceState): LiveSchoolScore[] {
   const costRange = buildCostRange(schools, preferences.homeState);
@@ -117,6 +199,8 @@ export function buildLiveFactorBullets(score: LiveSchoolScore): string[] {
 function scoreSchool(school: ProductSchool, preferences: PreferenceState, costRange: CostRange): LiveSchoolScore {
   const weights = preferences.liveWeights;
   const components = buildComponents(school, preferences, costRange);
+  const scoringDisabled = liveWeightOrder.every((key) => weights[key] === 0);
+  const scoringDisabledReason = scoringDisabled ? "Scoring is disabled because all component weights are 0." : "";
   const activeComponents = components.filter((component) => weights[component.key] > 0);
   const liveContributions = activeComponents.flatMap((component) => {
     if (component.value === null) return [];
@@ -132,6 +216,8 @@ function scoreSchool(school: ProductSchool, preferences: PreferenceState, costRa
     ];
   });
   const liveWarnings = activeComponents.flatMap((component) => (component.value === null ? [component.warning] : []));
+  const presentWeightSum = liveContributions.reduce((total, contribution) => total + weights[contribution.key], 0);
+  const liveContributionRows = components.map((component) => buildContributionRow(component, weights, presentWeightSum));
 
   const yourScore = weightedAverage(liveContributions, weights);
   const liveAdmissionsScore = weightedAverage(
@@ -153,7 +239,10 @@ function scoreSchool(school: ProductSchool, preferences: PreferenceState, costRa
     liveAttendanceScore,
     liveCoverage: buildCoverage(liveContributions.length, activeComponents.length),
     liveContributions,
+    liveContributionRows,
     liveWarnings,
+    scoringDisabled,
+    scoringDisabledReason,
   };
 }
 
@@ -171,7 +260,17 @@ function buildMcatFit(school: ProductSchool, preferences: PreferenceState): Comp
   const applicantMcat = toNumberOrNull(preferences.mcat);
   const schoolMcat = toNumberOrNull(school.schoolMcat);
   if (applicantMcat === null || schoolMcat === null) {
-    return missingComponent("mcatFit", "admissions", "MCAT fit", "applicant MCAT or school MCAT is unavailable, so MCAT is excluded from the denominator.");
+    return missingComponent(
+      "mcatFit",
+      "admissions",
+      "MCAT fit",
+      "applicant MCAT or school MCAT is unavailable, so MCAT is excluded from the denominator.",
+      applicantMcat === null ? "Not entered" : String(applicantMcat),
+      schoolMcat === null ? "Not available" : String(schoolMcat),
+      "7 + (applicant MCAT - school MCAT) / 2",
+      school.statsSource || "School MCAT field",
+      school.statsQuality || school.dataConfidence || "Not available",
+    );
   }
   return {
     key: "mcatFit",
@@ -180,6 +279,11 @@ function buildMcatFit(school: ProductSchool, preferences: PreferenceState): Comp
     value: clampScore(7 + (applicantMcat - schoolMcat) / 2),
     detail: `Applicant MCAT ${applicantMcat} compared with school MCAT ${schoolMcat}`,
     warning: "",
+    applicantValueLabel: String(applicantMcat),
+    schoolValueLabel: String(schoolMcat),
+    formulaLabel: "7 + (applicant MCAT - school MCAT) / 2",
+    sourceLabel: school.statsSource || "School MCAT field",
+    confidenceLabel: school.statsQuality || school.dataConfidence || "Not available",
   };
 }
 
@@ -187,7 +291,17 @@ function buildGpaFit(school: ProductSchool, preferences: PreferenceState): Compo
   const applicantGpa = toNumberOrNull(preferences.gpa);
   const schoolGpa = toNumberOrNull(school.schoolGpa);
   if (applicantGpa === null || schoolGpa === null) {
-    return missingComponent("gpaFit", "admissions", "GPA fit", "applicant GPA or school GPA is unavailable, so GPA is excluded from the denominator.");
+    return missingComponent(
+      "gpaFit",
+      "admissions",
+      "GPA fit",
+      "applicant GPA or school GPA is unavailable, so GPA is excluded from the denominator.",
+      applicantGpa === null ? "Not entered" : applicantGpa.toFixed(2),
+      schoolGpa === null ? "Not available" : schoolGpa.toFixed(2),
+      "7 + (applicant GPA - school GPA) / 0.08",
+      school.statsSource || "School GPA field",
+      school.statsQuality || school.dataConfidence || "Not available",
+    );
   }
   return {
     key: "gpaFit",
@@ -196,13 +310,28 @@ function buildGpaFit(school: ProductSchool, preferences: PreferenceState): Compo
     value: clampScore(7 + (applicantGpa - schoolGpa) / 0.08),
     detail: `Applicant GPA ${applicantGpa.toFixed(2)} compared with school GPA ${schoolGpa.toFixed(2)}`,
     warning: "",
+    applicantValueLabel: applicantGpa.toFixed(2),
+    schoolValueLabel: schoolGpa.toFixed(2),
+    formulaLabel: "7 + (applicant GPA - school GPA) / 0.08",
+    sourceLabel: school.statsSource || "School GPA field",
+    confidenceLabel: school.statsQuality || school.dataConfidence || "Not available",
   };
 }
 
 function buildStateFit(school: ProductSchool, preferences: PreferenceState): ComponentResult {
   const homeState = preferences.homeState;
   if (!homeState) {
-    return missingComponent("stateFit", "admissions", "State/residency fit", "home state is not selected, so state/residency fit is excluded from the denominator.");
+    return missingComponent(
+      "stateFit",
+      "admissions",
+      "State/residency fit",
+      "home state is not selected, so state/residency fit is excluded from the denominator.",
+      "Not entered",
+      school.stateAbbrev || school.state || "Not available",
+      "Same state or source-backed OOS context",
+      "School state and generated OOS context",
+      school.dataConfidence || "Not available",
+    );
   }
   if (school.stateAbbrev === homeState) {
     return {
@@ -212,6 +341,11 @@ function buildStateFit(school: ProductSchool, preferences: PreferenceState): Com
       value: 10,
       detail: `${school.stateAbbrev} matches selected home state ${homeState}`,
       warning: "",
+      applicantValueLabel: homeState,
+      schoolValueLabel: school.stateAbbrev || school.state || "Not available",
+      formulaLabel: "Same state or source-backed OOS context",
+      sourceLabel: "School state",
+      confidenceLabel: school.dataConfidence || "Not available",
     };
   }
   if (school.oosFriendlinessScore !== null) {
@@ -222,15 +356,40 @@ function buildStateFit(school: ProductSchool, preferences: PreferenceState): Com
       value: clampScore(school.oosFriendlinessScore),
       detail: `Generated OOS context score is ${school.oosFriendlinessScore.toFixed(1)}`,
       warning: "",
+      applicantValueLabel: homeState,
+      schoolValueLabel: `${school.stateAbbrev || school.state || "Out of state"}; OOS context ${school.oosFriendlinessScore.toFixed(1)}`,
+      formulaLabel: "Same state or source-backed OOS context",
+      sourceLabel: "Generated OOS context",
+      confidenceLabel: school.dataConfidence || "Not available",
     };
   }
-  return missingComponent("stateFit", "admissions", "State/residency fit", "OOS context is unavailable for this school, so state/residency fit is excluded from the denominator.");
+  return missingComponent(
+    "stateFit",
+    "admissions",
+    "State/residency fit",
+    "OOS context is unavailable for this school, so state/residency fit is excluded from the denominator.",
+    homeState,
+    school.stateAbbrev || school.state || "Not available",
+    "Same state or source-backed OOS context",
+    "Generated OOS context",
+    school.dataConfidence || "Not available",
+  );
 }
 
 function buildCostFit(school: ProductSchool, preferences: PreferenceState, costRange: CostRange): ComponentResult {
   const cost = applicableCost(school, preferences.homeState);
   if (cost.value === null || costRange.min === null || costRange.max === null) {
-    return missingComponent("costFit", "attendance", "Cost fit", "applicable cost data is unavailable, so cost is excluded from the denominator.");
+    return missingComponent(
+      "costFit",
+      "attendance",
+      "Cost fit",
+      "applicable cost data is unavailable, so cost is excluded from the denominator.",
+      preferences.homeState ? `Home state ${preferences.homeState}` : "No home state selected",
+      "Not available",
+      "Lowest applicable cost = 10, highest = 1",
+      "Cost and tuition fields",
+      school.costConfidence || school.dataConfidence || "Not available",
+    );
   }
   const value = costRange.max === costRange.min ? 10 : 10 - ((cost.value - costRange.min) / (costRange.max - costRange.min)) * 9;
   return {
@@ -240,6 +399,11 @@ function buildCostFit(school: ProductSchool, preferences: PreferenceState, costR
     value: clampScore(value),
     detail: `Applicable listed cost is ${formatDollars(cost.value)}. ${cost.detail}`,
     warning: "",
+    applicantValueLabel: preferences.homeState ? `Home state ${preferences.homeState}` : "No home state selected",
+    schoolValueLabel: formatDollars(cost.value),
+    formulaLabel: "Lowest applicable cost = 10, highest = 1",
+    sourceLabel: "Cost and tuition fields",
+    confidenceLabel: school.costConfidence || school.dataConfidence || "Not available",
   };
 }
 
@@ -248,21 +412,41 @@ function buildBaselineAttendance(school: ProductSchool): ComponentResult {
     return missingComponent(
       "baselineAttendance",
       "attendance",
-      "Baseline attendance context",
-      "generated attendance context is unavailable, so it is excluded from the denominator.",
+      "Generated school context",
+      "generated school context is unavailable, so it is excluded from the denominator.",
+      "No applicant input",
+      "Not available",
+      "Generated attendance context score",
+      "Generated payload attendance context",
+      school.dataConfidence || "Not available",
     );
   }
   return {
     key: "baselineAttendance",
     group: "attendance",
-    label: "Baseline attendance context",
+    label: "Generated school context",
     value: clampScore(school.attendanceScore),
-    detail: `Generated attendance context score is ${school.attendanceScore.toFixed(1)}`,
+    detail: `Generated school context score is ${school.attendanceScore.toFixed(1)}`,
     warning: "",
+    applicantValueLabel: "No applicant input",
+    schoolValueLabel: school.attendanceScore.toFixed(1),
+    formulaLabel: "Generated attendance context score",
+    sourceLabel: "Generated payload attendance context",
+    confidenceLabel: school.dataConfidence || "Not available",
   };
 }
 
-function missingComponent(key: LiveWeightKey, group: ComponentResult["group"], label: string, warning: string): ComponentResult {
+function missingComponent(
+  key: LiveWeightKey,
+  group: ComponentResult["group"],
+  label: string,
+  warning: string,
+  applicantValueLabel: string,
+  schoolValueLabel: string,
+  formulaLabel: string,
+  sourceLabel: string,
+  confidenceLabel: string,
+): ComponentResult {
   return {
     key,
     group,
@@ -270,6 +454,41 @@ function missingComponent(key: LiveWeightKey, group: ComponentResult["group"], l
     value: null,
     detail: "",
     warning,
+    applicantValueLabel,
+    schoolValueLabel,
+    formulaLabel,
+    sourceLabel,
+    confidenceLabel,
+  };
+}
+
+function buildContributionRow(component: ComponentResult, weights: LiveWeights, presentWeightSum: number): LiveContributionRow {
+  const weight = weights[component.key];
+  const included = weight > 0 && component.value !== null;
+  const weightedPoints = included && presentWeightSum ? Math.round(((component.value * weight) / presentWeightSum) * 10) / 10 : null;
+  const notIncludedReasonType: LiveNotIncludedReasonType | null = included ? null : weight === 0 ? "zero_weight" : "missing_data";
+  const reason = included
+    ? component.detail
+    : weight === 0
+      ? "Not included: weight is 0"
+      : component.warning.replace(/\s+/g, " ").trim();
+
+  return {
+    componentKey: component.key,
+    componentLabel: component.label,
+    componentGroup: component.group,
+    applicantValueLabel: component.applicantValueLabel,
+    schoolValueLabel: component.schoolValueLabel,
+    formulaLabel: component.formulaLabel,
+    scoreValue: component.value,
+    weight,
+    presentWeightSum,
+    weightedPoints,
+    included,
+    notIncludedReasonType,
+    reason,
+    sourceLabel: component.sourceLabel,
+    confidenceLabel: component.confidenceLabel,
   };
 }
 

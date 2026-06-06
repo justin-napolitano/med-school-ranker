@@ -1,6 +1,7 @@
 ---
 import ProductLayout from "../layouts/ProductLayout.astro";
 import { loadProductPayload } from "../lib/payload";
+import { withBase } from "../lib/site-url";
 
 const payload = loadProductPayload();
 const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
@@ -12,7 +13,7 @@ const methodology = payload.methodology.slice(0, 12);
   <section class="page-header">
     <p class="eyebrow">Transparent scoring</p>
     <h1>Methodology</h1>
-    <p>The app uses generated deterministic data and browser-local preferences. It does not run a predictive admissions model.</p>
+    <p>The app uses generated deterministic data and browser-local preferences. It does not run a predictive admissions model. Open the <a href={withBase("/scoring/")}>Scoring page</a> to inspect the current browser-local score.</p>
   </section>
 
   <section class="methodology-grid">
@@ -38,7 +39,7 @@ const methodology = payload.methodology.slice(0, 12);
     </article>
     <article class="method-card">
       <h2>Default live weights</h2>
-      <p>Defaults are MCAT fit 25, GPA fit 25, state/residency fit 20, cost fit 15, and baseline attendance context 15.</p>
+      <p>Defaults are MCAT fit 25, GPA fit 25, state/residency fit 20, cost fit 15, and generated school context 15.</p>
       <p>Balanced, Cost-aware, Academic-screen focused, Florida-first, and State-first presets only change those deterministic weights and selected state context.</p>
     </article>
     <article class="method-card">
@@ -48,8 +49,28 @@ const methodology = payload.methodology.slice(0, 12);
     </article>
     <article class="method-card">
       <h2>Missing data policy</h2>
-      <p>Missing MCAT, GPA, state/OOS context, cost, or attendance components are excluded from the live denominator and surfaced as coverage warnings.</p>
-      <p>Missing values are never treated as zero in Your Score. For cost, a single positive listed cost may stand in for the missing residency side.</p>
+      <p>Missing MCAT, GPA, state/OOS context, cost, or generated school context components are excluded from the live denominator and surfaced as coverage warnings.</p>
+      <p>Missing values are never treated as zero in Your Score. Weighted points use a present-components-only denominator. For cost, a single positive listed cost may stand in for the missing residency side.</p>
+    </article>
+    <article class="method-card">
+      <h2>Zero-weight policy</h2>
+      <p>A component with weight 0 stays visible and is labeled Not included: weight is 0.</p>
+      <p>If all weights are 0, scoring is disabled visibly instead of falling back to default weights.</p>
+    </article>
+    <article class="method-card">
+      <h2>Scoring workspace scope</h2>
+      <p>This Scoring page covers MD schools only. DO schools need a separate scoring flow because the source context and applicant-pool assumptions differ.</p>
+      <p>Build My List can still show MD and DO schools; the first scoring audit table is MD-only.</p>
+    </article>
+    <article class="method-card">
+      <h2>Rank movement</h2>
+      <p>The Scoring page compares Your Rank with Baseline Rank and shows Rank movement for currently eligible MD schools.</p>
+      <p>Why did this move? uses deterministic contribution data: the largest positive weighted component, the lowest weighted component, or the largest missing component.</p>
+    </article>
+    <article class="method-card">
+      <h2>Local-state privacy</h2>
+      <p>Your inputs are stored in this browser only. They are not sent to a server by this static site.</p>
+      <p>Committed code and public payloads do not include private applicant MCAT or GPA values.</p>
     </article>
     <article class="method-card">
       <h2>Ownership data status</h2>
