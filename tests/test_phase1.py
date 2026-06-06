@@ -800,6 +800,35 @@ def test_default_intake_route_and_admin_route_are_separated(tmp_path, monkeypatc
     assert 'data-view="dashboard"' not in html_text
 
 
+def test_product_shell_score_fit_and_no_routine_hide_buttons(tmp_path, monkeypatch):
+    write_minimal_project(tmp_path)
+    validation.validate_project(tmp_path)
+    patch_ranking_paths(monkeypatch, tmp_path)
+    rankings.build_rankings()
+    patch_site_paths(monkeypatch, tmp_path)
+
+    output = site_builder.build_site(site_mode="publish_safe")
+    html_text = output.read_text()
+    embedded_payload = extract_embedded_payload(html_text)
+    routes_by_path = {route["path"]: route for route in embedded_payload["routes"]["public"]}
+
+    assert routes_by_path["#/intake"]["label"] == "Build Lens"
+    assert routes_by_path["#/applications"]["label"] == "Applying"
+    assert routes_by_path["#/intake"]["route_type"] == "workflow"
+    assert routes_by_path["#/methodology"]["route_type"] == "support"
+    assert 'data-route-type="workflow"' in html_text
+    assert 'data-route-type="support"' in html_text
+    assert embedded_payload["copy"]["score_fit_caveat"] == site_builder.SCORE_FIT_CAVEAT
+    assert "MCAT/GPA score-screen fit only" in html_text
+    assert "Highly likely score fit" in html_text
+    assert "Likely score fit" in html_text
+    assert "Possible score fit" in html_text
+    assert "Reach on scores" in html_text
+    assert "Unlikely score fit" in html_text
+    assert ">Hide</button>" not in html_text
+    assert ">Hide School</button>" not in html_text
+
+
 def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkeypatch):
     write_minimal_project(tmp_path)
     validation.validate_project(tmp_path)

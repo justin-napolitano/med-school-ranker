@@ -82,16 +82,19 @@ AAMC_GRID_CAVEAT = (
     "AAMC MCAT/GPA grid context is national aggregate data for U.S. MD-granting medical "
     "school applicants and acceptees; it is not a school-specific acceptance probability."
 )
+SCORE_FIT_CAVEAT = (
+    "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance."
+)
 
 PUBLIC_ROUTES = [
-    {"path": "#/intake", "label": "Intake", "route_type": "public"},
-    {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
-    {"path": "#/interested", "label": "Interested", "route_type": "public"},
-    {"path": "#/applications", "label": "Applications", "route_type": "public"},
-    {"path": "#/dossiers", "label": "Score Cards", "route_type": "public"},
-    {"path": "#/compare", "label": "Compare", "route_type": "public"},
-    {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
-    {"path": "#/sources", "label": "Sources", "route_type": "public"},
+    {"path": "#/intake", "label": "Build Lens", "route_type": "workflow"},
+    {"path": "#/rankings", "label": "Rankings", "route_type": "workflow"},
+    {"path": "#/interested", "label": "Interested", "route_type": "workflow"},
+    {"path": "#/applications", "label": "Applying", "route_type": "workflow"},
+    {"path": "#/dossiers", "label": "Score Cards", "route_type": "workflow"},
+    {"path": "#/compare", "label": "Compare", "route_type": "workflow"},
+    {"path": "#/methodology", "label": "How It Works", "route_type": "support"},
+    {"path": "#/sources", "label": "Sources", "route_type": "support"},
 ]
 
 ADMIN_ROUTES = [
@@ -1743,6 +1746,7 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
         },
         "copy": {
             "aamc_grid_caveat": AAMC_GRID_CAVEAT,
+            "score_fit_caveat": SCORE_FIT_CAVEAT,
             "curated_list_readiness": {
                 "ready": "Required fields are populated at high coverage and can support source-backed list claims.",
                 "partial": "Some required fields are present, but coverage gaps require visible caveats.",
@@ -1814,12 +1818,12 @@ def render_site_html(payload: dict[str, object]) -> str:
     payload_json = json.dumps(payload, separators=(",", ":"), ensure_ascii=False)
     escaped_payload = html.escape(payload_json, quote=False)
     public_nav = "\n    ".join(
-        f'<a data-route="{route["path"]}" href="{route["path"]}">{html.escape(route["label"])}</a>'
+        f'<a data-route="{route["path"]}" data-route-type="{route["route_type"]}" href="{route["path"]}">{html.escape(route["label"])}</a>'
         for route in payload["routes"]["public"]  # type: ignore[index]
     )
     admin_nav = ""
     if payload["routes"]["admin"]:  # type: ignore[index]
-        admin_nav = '\n    <a data-route="#/admin" href="#/admin" class="admin-link">Admin</a>'
+        admin_nav = '\n    <a data-route="#/admin" data-route-type="admin" href="#/admin" class="admin-link">Admin</a>'
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -1830,9 +1834,10 @@ def render_site_html(payload: dict[str, object]) -> str:
 </head>
 <body>
   <header class="app-header">
-    <div>
+    <div class="brand-block">
+      <span class="eyebrow">Applicant list builder</span>
       <h1>Medical School Ranker</h1>
-      <p id="summaryText">Applicant-facing rankings and school profiles</p>
+      <p id="summaryText">Source-aware rankings, school score cards, and application-list actions.</p>
     </div>
     <label class="search-label">Search
       <input id="globalSearch" type="search" placeholder="School, city, state">
@@ -1866,139 +1871,248 @@ def render_site_html(payload: dict[str, object]) -> str:
 CSS = r"""
 :root {
   color-scheme: light;
-  --border: #d7dee8;
-  --header: #13324f;
-  --muted: #627386;
-  --bg: #f5f7fa;
+  --ink: #172331;
+  --ink-strong: #0c1824;
+  --muted: #667789;
+  --subtle: #8493a3;
+  --border: #d9e0e8;
+  --border-strong: #b7c4cf;
+  --header: #102a43;
+  --bg: #f4f6f8;
   --panel: #ffffff;
-  --accent: #146c94;
+  --panel-tint: #f9fbfc;
+  --accent: #0f6f7f;
+  --accent-strong: #0a5260;
+  --accent-soft: #d8eef1;
+  --selected: #154d6f;
+  --selected-bg: #e3f0f7;
+  --good: #186246;
+  --good-bg: #e8f6ee;
   --warn: #8a5a00;
+  --warn-bg: #fff5d6;
   --error: #a12d2d;
+  --error-bg: #fdecec;
+  --missing: #5f6670;
+  --missing-bg: #eef2f5;
+  --focus: #2c7be5;
+  --shadow-sm: 0 1px 2px rgba(12, 24, 36, 0.06);
+  --shadow-md: 0 8px 24px rgba(12, 24, 36, 0.08);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--bg);
-  color: #172331;
+  color: var(--ink);
+  line-height: 1.45;
 }
 .app-header {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  align-items: end;
-  padding: 18px 22px 14px;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-5) var(--space-6) var(--space-4);
   border-bottom: 1px solid var(--border);
   background: var(--panel);
+  box-shadow: var(--shadow-sm);
 }
-h1 { margin: 0; font-size: 22px; color: var(--header); }
-h2 { margin: 0 0 12px; font-size: 18px; color: var(--header); }
-h3 { margin: 0 0 8px; font-size: 15px; color: var(--header); }
-p { margin: 4px 0 0; color: var(--muted); }
-.search-label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; min-width: 280px; }
+.brand-block { min-width: 0; }
+.eyebrow {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--accent-strong);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+h1 { margin: 0; font-size: 24px; color: var(--ink-strong); line-height: 1.1; }
+h2 { margin: 0 0 var(--space-3); font-size: 20px; color: var(--header); line-height: 1.2; }
+h3 { margin: 0 0 var(--space-2); font-size: 15px; color: var(--header); line-height: 1.25; }
+p { margin: var(--space-1) 0 0; color: var(--muted); }
+.search-label { display: grid; gap: var(--space-1); color: var(--muted); font-size: 12px; min-width: 280px; font-weight: 700; }
 input, select, textarea {
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 8px 10px;
   font: inherit;
   background: #fff;
+  color: var(--ink);
+  min-height: 36px;
 }
 textarea { min-height: 120px; resize: vertical; width: 100%; }
+input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(44, 123, 229, 0.28);
+  outline-offset: 2px;
+  border-color: var(--focus);
+}
 .tabs {
   display: flex;
-  gap: 6px;
-  padding: 10px 16px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
   border-bottom: 1px solid var(--border);
-  background: #eaf0f6;
+  background: rgba(255, 255, 255, 0.92);
   overflow-x: auto;
+  scrollbar-gutter: stable;
 }
 .tabs a, button {
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 8px 10px;
+  padding: 8px 11px;
   background: #fff;
-  color: #203347;
+  color: var(--ink);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
+  font-weight: 700;
+  min-height: 36px;
+  box-shadow: var(--shadow-sm);
 }
+.tabs a:hover, button:hover { border-color: var(--border-strong); background: var(--panel-tint); }
 .tabs a.active, button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-button:disabled { color: var(--muted); background: #eef3f7; cursor: not-allowed; }
+.tabs a[data-route-type="support"] {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  box-shadow: none;
+}
+.tabs a[data-route-type="support"].active {
+  background: var(--selected-bg);
+  border-color: var(--accent-soft);
+  color: var(--selected);
+}
+.tabs a[data-route-type="admin"] {
+  margin-left: auto;
+  background: #f7f1e7;
+  border-color: #ead7b9;
+  color: #755315;
+}
+button:disabled { color: var(--subtle); background: #eef3f7; cursor: not-allowed; box-shadow: none; }
 button.secondary { background: #f7fafc; }
-main { padding: 18px; }
+main { padding: var(--space-5); }
 .view { display: none; }
 .view.active { display: block; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-5); }
 .metric, .panel {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 14px;
+  padding: var(--space-4);
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
+  box-shadow: var(--shadow-sm);
 }
-.metric strong { display: block; font-size: 24px; color: var(--header); overflow-wrap: anywhere; }
-.filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; align-items: end; }
-.selector-panel { margin: 0 0 14px; }
-.selector-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
-.field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
+.metric strong { display: block; font-size: 24px; color: var(--header); overflow-wrap: anywhere; line-height: 1.15; }
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: 0 0 var(--space-3); align-items: end; }
+.filters label { color: var(--muted); font-size: 12px; font-weight: 700; }
+.selector-panel { margin: 0 0 var(--space-4); }
+.selector-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-3); }
+.field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--space-3); }
 .field-grid label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
 .full-span { grid-column: 1 / -1; }
-.intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--intake-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
-.intake-form { display: grid; gap: 10px; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: var(--space-4); align-items: stretch; height: var(--intake-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
+.intake-form { display: grid; gap: var(--space-3); height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .intake-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
-.rankings-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--rankings-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
-.rankings-menu { display: grid; gap: 10px; align-content: start; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.rankings-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: var(--space-4); align-items: stretch; height: var(--rankings-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
+.rankings-menu { display: grid; gap: var(--space-3); align-content: start; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .rankings-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
-.rankings-results-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
-.hidden-schools-panel { margin-top: 14px; }
+.rankings-results-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); align-items: center; margin-bottom: var(--space-3); }
+.hidden-schools-panel { margin-top: var(--space-4); }
 .hidden-schools-panel summary { cursor: pointer; color: var(--header); font-weight: 700; }
-.intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 0; background: #fbfdff; }
+.intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: var(--space-3); margin: 0; background: var(--panel-tint); }
 .intake-form legend { color: var(--header); font-weight: 700; font-size: 13px; padding: 0 4px; }
 .intake-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
-.intake-check-grid label, .checkline { display: flex; gap: 6px; align-items: center; color: #203347; font-size: 13px; }
-.intake-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
-.guided-group { margin-bottom: 14px; }
+.intake-check-grid label, .checkline { display: flex; gap: 6px; align-items: center; color: var(--ink); font-size: 13px; }
+.intake-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--space-3); }
+.guided-group { margin-bottom: var(--space-4); }
 .guided-group-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; width: 100%; text-align: left; }
 .guided-group-header strong { color: var(--header); }
 .guided-group-header.active strong, .guided-group-header.active span { color: #fff; }
-.school-review-card { display: grid; gap: 10px; min-height: 100%; min-width: 0; overflow: hidden; }
+.school-review-card { display: grid; gap: var(--space-3); min-height: 100%; min-width: 0; overflow: hidden; border-color: #cfd8e3; }
 .school-review-card h3 { margin-bottom: 0; overflow-wrap: anywhere; }
 .card-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-.card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: auto; }
+.card-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: auto; }
 .card-actions select { max-width: 180px; }
 .card-note { border-top: 1px solid var(--border); padding-top: 8px; }
-.inline-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.inline-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.inline-actions > a, .card-actions > a, .route-tools a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 11px;
+  background: #fff;
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+.inline-actions > a:hover, .card-actions > a:hover, .route-tools a:hover { border-color: var(--accent-soft); background: #f1fafb; }
 .compact-select { min-width: 150px; padding: 6px 8px; font-size: 12px; }
 .control-stack { display: grid; gap: 6px; min-width: 170px; }
-.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; margin: 12px 0; }
-.compare-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; min-width: 0; overflow: hidden; overflow-wrap: anywhere; }
+.compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: var(--space-3); margin: var(--space-3) 0; }
+.compare-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: var(--space-3); min-width: 0; overflow: hidden; overflow-wrap: anywhere; box-shadow: var(--shadow-sm); }
 .compare-row { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); min-width: 0; }
 .compare-row:last-child { border-bottom: 0; }
 .compare-row strong { color: var(--header); font-size: 12px; }
 .compare-row strong, .compare-row span { min-width: 0; overflow-wrap: anywhere; }
-.table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
+.table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); box-shadow: var(--shadow-sm); }
 table { width: 100%; border-collapse: collapse; min-width: 1100px; }
 #rankTable table { min-width: 1500px; }
 #mdSelectorTable table { min-width: 1300px; }
-th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; font-size: 13px; }
-th { position: sticky; top: 0; background: #eef4f8; color: var(--header); cursor: pointer; z-index: 1; }
+th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; font-size: 13px; }
+th { position: sticky; top: 0; background: #edf3f7; color: var(--header); cursor: pointer; z-index: 1; font-size: 12px; }
 tr:hover td { background: #f8fbfd; }
-.badge { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 12px; border: 1px solid var(--border); background: #f7fafc; }
-.badge.warn { color: var(--warn); border-color: #e6c773; background: #fff8df; }
-.badge.error { color: var(--error); border-color: #e7aaaa; background: #fff0f0; }
-.badge.good { color: #17623a; border-color: #a9d6bb; background: #eefaf2; }
-.badge.provisional { color: var(--warn); border-color: #e6c773; background: #fff8df; }
-.badge.partial { color: #7b5a00; border-color: #d8bf72; background: #fff9e8; }
-.badge.ready { color: #17623a; border-color: #a9d6bb; background: #eefaf2; }
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 12px;
+  line-height: 1.25;
+  border: 1px solid var(--border);
+  background: #f7fafc;
+  color: var(--ink);
+  font-weight: 700;
+}
+.badge.warn { color: var(--warn); border-color: #e0bd63; background: var(--warn-bg); }
+.badge.error { color: var(--error); border-color: #e7aaaa; background: var(--error-bg); }
+.badge.good { color: var(--good); border-color: #a9d6bb; background: var(--good-bg); }
+.badge.provisional { color: var(--warn); border-color: #e0bd63; background: var(--warn-bg); }
+.badge.partial { color: #765600; border-color: #d8bf72; background: #fff9e8; }
+.badge.ready { color: var(--good); border-color: #a9d6bb; background: var(--good-bg); }
+.badge.missing { color: var(--missing); border-color: #cbd5df; background: var(--missing-bg); }
+.badge.high, .badge.medium, .badge.low { color: var(--selected); border-color: #b7d5e6; background: var(--selected-bg); }
+.badge.score-fit { white-space: normal; text-align: left; }
+.badge.score-fit-highly { color: #115038; border-color: #8fc8a7; background: #e2f4ea; }
+.badge.score-fit-likely { color: #0d5762; border-color: #9ad1d8; background: #e3f5f7; }
+.badge.score-fit-possible { color: #644f08; border-color: #e0c46d; background: #fff7d9; }
+.badge.score-fit-reach { color: #8a4f00; border-color: #d9b275; background: #fff2de; }
+.badge.score-fit-unlikely { color: #8e2f2f; border-color: #e3aaaa; background: #fff0f0; }
+.badge.score-fit-missing { color: var(--missing); border-color: #cbd5df; background: var(--missing-bg); }
 .muted { color: var(--muted); }
 .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 12px; }
 .panel p { overflow-wrap: anywhere; line-height: 1.25; }
-.empty-state { border: 1px dashed var(--border); border-radius: 8px; padding: 12px; color: var(--muted); background: #f8fbfd; }
-.route-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
+.empty-state { border: 1px dashed var(--border-strong); border-radius: 8px; padding: var(--space-3); color: var(--muted); background: #f8fbfd; }
+.route-tools { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-3); }
 .route-tools a { color: var(--accent); }
-.caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; }
+.caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; border-radius: 0 8px 8px 0; }
+.score-fit-summary {
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--accent-soft);
+  border-radius: 8px;
+  background: #f4fbfc;
+  padding: 10px 12px;
+}
+.score-fit-summary p { margin: 0; font-size: 12px; line-height: 1.35; }
 .node-card-header { display: flex; justify-content: space-between; gap: 8px; align-items: start; margin-bottom: 8px; }
 .node-card-header h3 { margin: 0; overflow-wrap: anywhere; }
 .node-metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 10px; margin: 12px 0; }
@@ -2011,7 +2125,9 @@ tr:hover td { background: #f8fbfd; }
 .node-source-list { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
 a { color: var(--accent); }
 @media (max-width: 760px) {
-  .app-header { display: grid; align-items: stretch; }
+  .app-header { display: grid; align-items: stretch; padding: var(--space-4); }
+  .tabs { padding: var(--space-2) var(--space-4); }
+  .tabs a[data-route-type="admin"] { margin-left: 0; }
   .search-label { min-width: 0; }
   main { padding: 12px; }
   .intake-layout { grid-template-columns: 1fr; height: auto; min-height: 0; overflow: visible; }
@@ -2096,6 +2212,7 @@ const APPLICATION_ACTIVE_STATUSES = ['interested', 'considering', 'applying', 'a
 const APPLICATION_EXCLUDED_STATUSES = ['rejected', 'withdrawn', 'not_applying'];
 const INTERESTED_LIMIT = 50;
 const APPLYING_LIMIT = 25;
+const SCORE_FIT_CAVEAT = payload.copy?.score_fit_caveat || 'MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.';
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
@@ -2883,6 +3000,72 @@ function weightedAverage(item, group, overrides={}) {
   return {score: numerator / denominator, coverage: possible ? denominator / possible : 0};
 }
 
+function scoreFitSignal(item, overrides={}) {
+  const mcat = scoreValue(item, 'admissions_mcat_fit_score', overrides);
+  const gpa = scoreValue(item, 'admissions_gpa_fit_score', overrides);
+  const values = [mcat, gpa].filter(value => value !== null);
+  if (!values.length) {
+    return {
+      label: 'Score fit unavailable',
+      type: 'score-fit score-fit-missing',
+      detail: 'Missing MCAT/GPA fit components.',
+    };
+  }
+  const average = values.reduce((sum, value) => sum + value, 0) / values.length;
+  const minimum = Math.min(...values);
+  let label = 'Unlikely score fit';
+  let type = 'score-fit score-fit-unlikely';
+  if (values.length < 2) {
+    if (average >= 6.5) {
+      label = 'Possible score fit';
+      type = 'score-fit score-fit-possible';
+    } else if (average >= 4.2) {
+      label = 'Reach on scores';
+      type = 'score-fit score-fit-reach';
+    }
+    return {
+      label,
+      type,
+      detail: `Incomplete score-screen context. MCAT ${mcat === null ? 'Missing' : mcat.toFixed(1)} · GPA ${gpa === null ? 'Missing' : gpa.toFixed(1)}.`,
+    };
+  }
+  if (average >= 8.5 && minimum >= 7.5) {
+    label = 'Highly likely score fit';
+    type = 'score-fit score-fit-highly';
+  } else if (average >= 7.2 && minimum >= 6) {
+    label = 'Likely score fit';
+    type = 'score-fit score-fit-likely';
+  } else if (average >= 5.8) {
+    label = 'Possible score fit';
+    type = 'score-fit score-fit-possible';
+  } else if (average >= 4.2) {
+    label = 'Reach on scores';
+    type = 'score-fit score-fit-reach';
+  }
+  return {
+    label,
+    type,
+    detail: `MCAT fit ${mcat.toFixed(1)} · GPA fit ${gpa.toFixed(1)}.`,
+  };
+}
+
+function scoreFitBadge(item, overrides={}) {
+  const signal = scoreFitSignal(item, overrides);
+  return badge(signal.label, signal.type);
+}
+
+function scoreFitSummary(item, overrides={}) {
+  const signal = scoreFitSignal(item, overrides);
+  return `<div class="score-fit-summary">
+    ${badge(signal.label, signal.type)}
+    <p>${safeText(signal.detail)} ${safeText(SCORE_FIT_CAVEAT)}</p>
+  </div>`;
+}
+
+function scoreFitCaveat() {
+  return `<div class="caveat">${safeText(SCORE_FIT_CAVEAT)}</div>`;
+}
+
 function schoolState(item) {
   return item.school.state_abbrev || item.ranking.state_abbrev || '';
 }
@@ -3211,6 +3394,7 @@ function renderMdSelectorTable() {
     {key:'selector.overall', label:'Selected Overall', render:r=>r.overall.score.toFixed(2)},
     {key:'selector.admissions', label:'Admissions', render:r=>r.admissions.score === null ? 'Missing' : r.admissions.score.toFixed(2)},
     {key:'selector.attendance', label:'Attendance', render:r=>r.attendance.score === null ? 'Missing' : r.attendance.score.toFixed(2)},
+    {key:'selector.scoreFit', label:'Score Fit', render:r=>scoreFitBadge(r.item, r.overrides)},
     {key:'selector.mcat', label:'MCAT Fit', render:r=>r.overrides.admissions_mcat_fit_score === undefined ? 'Missing' : r.overrides.admissions_mcat_fit_score.toFixed(1)},
     {key:'selector.gpa', label:'GPA Fit', render:r=>r.overrides.admissions_gpa_fit_score === undefined ? 'Missing' : r.overrides.admissions_gpa_fit_score.toFixed(1)},
     {key:'selector.oos', label:'Out-of-state fit', render:r=>r.overrides.admissions_oos_friendliness_score === undefined ? 'Missing' : r.overrides.admissions_oos_friendliness_score.toFixed(1)},
@@ -3495,6 +3679,9 @@ function renderGuidedSchoolCard(row, groupId) {
   const admissions = row.admissions?.score === null ? 'Missing' : row.admissions.score.toFixed(2);
   const attendance = row.attendance?.score === null ? 'Missing' : row.attendance.score.toFixed(2);
   const costFacts = guidedCostFacts(row);
+  const restoreAction = isSchoolHidden(item)
+    ? `<button type="button" data-action="restore-school" data-school-id="${attr(id)}">Restore</button>`
+    : '';
   return `<div class="panel school-review-card">
     <div>
       <h3>${linkSchool(item)}</h3>
@@ -3503,6 +3690,7 @@ function renderGuidedSchoolCard(row, groupId) {
     <div class="node-fact-row"><strong>Decision Rank</strong><span>${missing(decisionRank)} · ${missing(item.ranking.rank_band || item.derived.rank_band)}</span></div>
     <div class="node-fact-row"><strong>Selected Scores</strong><span>Overall ${overall} · Admissions ${admissions} · Attendance ${attendance}</span></div>
     <div class="node-fact-row"><strong>MCAT and GPA</strong><span>${missing(item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average)} / ${missing(item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average)} · ${missing(item.ranking.profile_aamc_acceptance_rate_band || item.derived.aamc_acceptance_rate_band)}</span></div>
+    ${scoreFitSummary(item, row.overrides || {})}
     <div class="node-fact-row"><strong>In-state estimated cost</strong><span>${formatCurrency(costFacts.inState)}</span></div>
     <div class="node-fact-row"><strong>Out-of-state estimated cost</strong><span>${formatCurrency(costFacts.outState)}</span></div>
     <div class="node-fact-row"><strong>Cost used for selected score</strong><span>${formatCurrency(costFacts.selected)}</span></div>
@@ -3514,9 +3702,7 @@ function renderGuidedSchoolCard(row, groupId) {
       <a href="${item.profile_route || `#/schools/${item.school_slug}`}">Score Card</a>
       ${compareButton(item)}
       ${statusSwitchActions(item)}
-      ${isSchoolHidden(item)
-        ? `<button type="button" data-action="restore-school" data-school-id="${attr(id)}">Restore</button>`
-        : `<button type="button" data-action="hide-school" data-school-id="${attr(id)}">Hide</button>`}
+      ${restoreAction}
     </div>
   </div>`;
 }
@@ -3551,6 +3737,7 @@ function renderGuidedResults() {
       ${metric('Strategy', settings.label)}
       ${metric('Hidden schools', hiddenSchools().length)}
     </div>
+    ${scoreFitCaveat()}
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
     ${GUIDED_GROUPS.map(group => renderGuidedGroup(group, grouped)).join('')}`;
 }
@@ -3629,6 +3816,7 @@ function renderRankings() {
           </div>
           ${intakeSummaryChips()}
         </div>
+        ${scoreFitCaveat()}
         <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
         <div id="rankTable"></div>
       </div>
@@ -3685,6 +3873,7 @@ function renderRankingTable() {
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
     {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
     {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
+    {key:'ranking.score_fit', label:'Score Fit', render:s=>scoreFitBadge(s, selectedById.get(schoolId(s))?.overrides || {})},
     {key:'ranking.overall_school_value', label:'Overall', render:s=>selectedById.get(schoolId(s))?.overall?.score?.toFixed(2) || missing(s.ranking.overall_school_value)},
     {key:'ranking.published_mcat_average', label:'MCAT average', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
     {key:'ranking.published_gpa_average', label:'GPA average', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
@@ -3895,14 +4084,15 @@ function dossierTextarea(item, field, label, placeholder='') {
 
 function renderDossierForm(item) {
   const editCount = dossierExportRecords().length;
+  const restoreAction = isSchoolHidden(item)
+    ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
+    : '';
   return `<div class="panel" style="margin-top:12px">
     <div class="inline-actions">
       <h3 style="margin:0">Local Score Card</h3>
       ${badge(`${editCount} edited`, editCount ? 'warn' : '')}
       <button type="button" id="downloadDossierExport">Download Score Card Edits CSV</button>
-      ${isSchoolHidden(item)
-        ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
-        : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(item))}">Hide School</button>`}
+      ${restoreAction}
     </div>
     <p>These edits stay in browser memory until exported. They do not change the source ranking model.</p>
     <div class="field-grid" style="margin-top:10px">
@@ -3973,7 +4163,7 @@ function renderDossiers() {
       {key:'visibility.visibility_state', label:'Visibility', render:s=>visibilityBadge(s)},
       {key:'dossier.missing', label:'Missing Score-Card Sections', render:s=>missingDossierSections(s).join(', ') || 'Complete'},
       {key:'research.next', label:'Next Action', render:s=>nextResearchAction(s)},
-      {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Open</a>${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(s))}">Hide</button>`}</div>`},
+      {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Open</a>${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : ''}</div>`},
     ], tableRows, 'dossiers')}`;
   const bindings = {
     dossierVisibility: 'visibility',
@@ -4066,7 +4256,7 @@ function renderResearch() {
       {key:'visibility', label:'Visibility', render:r=>visibilityBadge(r.item)},
       {key:'missing', label:'Missing Sections', render:r=>r.missingSections.join(', ') || 'Complete'},
       {key:'action', label:'Next Action', render:r=>r.action},
-      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Open</a>${isSchoolHidden(r.item) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(r.item))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(r.item))}">Hide</button>`}</div>`},
+      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Open</a>${isSchoolHidden(r.item) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(r.item))}">Restore</button>` : ''}</div>`},
     ], queueRows, 'researchQueue')}`;
   const bindings = {
     researchVisibility: 'visibility',
@@ -4436,17 +4626,19 @@ function renderProfile() {
         {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
       ], item.data_quality || [], 'detailIssues')}
     </div>` : '';
+  const profileRestoreAction = item && isSchoolHidden(item)
+    ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
+    : '';
   const profileActionPanel = item ? `<div class="panel" style="margin-bottom:12px">
       <div class="inline-actions">
         <h3 style="margin:0">Review Actions</h3>
         ${visibilityBadge(item)}
         ${applicationStatusBadge(item)}
         ${compareButton(item)}
-        ${isSchoolHidden(item)
-          ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
-          : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(item))}">Hide School</button>`}
+        ${profileRestoreAction}
         <button type="button" id="downloadProfileDossierState">Download Score Card Edits CSV</button>
       </div>
+      <div style="margin-top:10px">${scoreFitSummary(item)}</div>
       <div class="field-grid" style="margin-top:10px">
         <label>List status ${statusSwitchActions(item)}</label>
         <label>Interest ${interestControl(item)}</label>
@@ -4476,6 +4668,7 @@ function renderProfile() {
   $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Score Cards</a><a href="#/interested">Interested</a><a href="#/applications">Applications</a><a href="#/rankings">Rankings</a></div>
     <h2>${safeText(schoolName)}</h2>
     <p>${missing(degreeType)} · ${missing(city)}, ${missing(state)} · ${sourceUrl} · Decision Rank ${missing(decisionRank)}</p>
+    ${scoreFitCaveat()}
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
     ${profileActionPanel}
     ${snapshotMarkup}
