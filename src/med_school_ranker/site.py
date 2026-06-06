@@ -75,7 +75,7 @@ JSON_OUTPUTS = {
 SITE_MODE_LOCAL_FULL = "local_full"
 SITE_MODE_PUBLISH_SAFE = "publish_safe"
 SITE_MODES = {SITE_MODE_LOCAL_FULL, SITE_MODE_PUBLISH_SAFE}
-DEFAULT_ROUTE = "#/rankings"
+DEFAULT_ROUTE = "#/intake"
 NODE_SCHEMA_VERSION = "site_nodes_v1"
 
 AAMC_GRID_CAVEAT = (
@@ -84,11 +84,11 @@ AAMC_GRID_CAVEAT = (
 )
 
 PUBLIC_ROUTES = [
+    {"path": "#/intake", "label": "Intake", "route_type": "public"},
     {"path": "#/rankings", "label": "Rankings", "route_type": "public"},
-    {"path": "#/dossiers", "label": "Dossiers", "route_type": "public"},
-    {"path": "#/research", "label": "Research Queue", "route_type": "public"},
-    {"path": "#/application-list", "label": "Application List", "route_type": "public"},
-    {"path": "#/lists", "label": "Curated Lists", "route_type": "public"},
+    {"path": "#/interested", "label": "Interested", "route_type": "public"},
+    {"path": "#/applications", "label": "Applications", "route_type": "public"},
+    {"path": "#/dossiers", "label": "Score Cards", "route_type": "public"},
     {"path": "#/compare", "label": "Compare", "route_type": "public"},
     {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
     {"path": "#/sources", "label": "Sources", "route_type": "public"},
@@ -366,6 +366,13 @@ def parse_number(value: str | None) -> float | None:
         return float(text)
     except ValueError:
         return None
+
+
+def format_currency_value(value: object) -> str:
+    number = parse_number(str(value) if value is not None else "")
+    if number is None or number <= 0:
+        return ""
+    return f"${number:,.0f}"
 
 
 def has_partner_input(row: dict[str, str]) -> bool:
@@ -1101,6 +1108,7 @@ def snapshot_cards_for_item(item: dict[str, object]) -> list[dict[str, str]]:
     stats = item.get("admissions_stats", {}) if isinstance(item.get("admissions_stats"), dict) else {}
     cost = item.get("cost_and_debt", {}) if isinstance(item.get("cost_and_debt"), dict) else {}
     derived = item.get("derived", {}) if isinstance(item.get("derived"), dict) else {}
+    cost_basis_display = format_currency_value(ranking.get("cost_basis"))
     return [
         {
             "card_id": "decision_rank",
@@ -1110,21 +1118,35 @@ def snapshot_cards_for_item(item: dict[str, object]) -> list[dict[str, str]]:
         },
         {
             "card_id": "mcat_average",
-            "label": "MCAT Avg",
+            "label": "MCAT average",
             "value": first_present(ranking.get("published_mcat_average"), stats.get("published_mcat_average"), "Missing"),
             "context": first_present(ranking.get("published_mcat_band"), stats.get("published_mcat_band")),
         },
         {
             "card_id": "gpa_average",
-            "label": "GPA Avg",
+            "label": "GPA average",
             "value": first_present(ranking.get("published_gpa_average"), stats.get("published_gpa_average"), "Missing"),
             "context": first_present(ranking.get("published_gpa_band"), stats.get("published_gpa_band")),
         },
         {
-            "card_id": "out_state_cost",
-            "label": "OOS Cost",
-            "value": first_present(cost.get("estimated_coa_out_state"), cost.get("out_state_tuition_fees_insurance"), "Missing"),
-            "context": clean_node_value(ranking.get("cost_basis")),
+            "card_id": "in_state_estimated_cost",
+            "label": "In-state estimated cost",
+            "value": first_present(
+                format_currency_value(cost.get("estimated_coa_in_state")),
+                format_currency_value(cost.get("in_state_tuition_fees_insurance")),
+                "Missing",
+            ),
+            "context": "Source-backed school cost field when available.",
+        },
+        {
+            "card_id": "out_state_estimated_cost",
+            "label": "Out-of-state estimated cost",
+            "value": first_present(
+                format_currency_value(cost.get("estimated_coa_out_state")),
+                format_currency_value(cost.get("out_state_tuition_fees_insurance")),
+                "Missing",
+            ),
+            "context": f"Cost used for selected score: {cost_basis_display}" if cost_basis_display else "Cost field used for selected score when available.",
         },
         {
             "card_id": "data_quality",
@@ -1820,7 +1842,9 @@ def render_site_html(payload: dict[str, object]) -> str:
     {public_nav}{admin_nav}
   </nav>
   <main>
+    <section id="intake" class="view"></section>
     <section id="rankings" class="view"></section>
+    <section id="consideringList" class="view"></section>
     <section id="dossiers" class="view"></section>
     <section id="research" class="view"></section>
     <section id="applicationList" class="view"></section>
@@ -1910,25 +1934,53 @@ main { padding: 18px; }
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
-.metric strong { display: block; font-size: 24px; color: var(--header); }
+.metric strong { display: block; font-size: 24px; color: var(--header); overflow-wrap: anywhere; }
 .filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 12px; align-items: end; }
 .selector-panel { margin: 0 0 14px; }
 .selector-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
 .field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; }
 .field-grid label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
 .full-span { grid-column: 1 / -1; }
+.intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--intake-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
+.intake-form { display: grid; gap: 10px; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.intake-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.rankings-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--rankings-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
+.rankings-menu { display: grid; gap: 10px; align-content: start; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.rankings-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.rankings-results-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
+.hidden-schools-panel { margin-top: 14px; }
+.hidden-schools-panel summary { cursor: pointer; color: var(--header); font-weight: 700; }
+.intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 0; background: #fbfdff; }
+.intake-form legend { color: var(--header); font-weight: 700; font-size: 13px; padding: 0 4px; }
+.intake-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
+.intake-check-grid label, .checkline { display: flex; gap: 6px; align-items: center; color: #203347; font-size: 13px; }
+.intake-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.guided-group { margin-bottom: 14px; }
+.guided-group-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center; width: 100%; text-align: left; }
+.guided-group-header strong { color: var(--header); }
+.guided-group-header.active strong, .guided-group-header.active span { color: #fff; }
+.school-review-card { display: grid; gap: 10px; min-height: 100%; min-width: 0; overflow: hidden; }
+.school-review-card h3 { margin-bottom: 0; overflow-wrap: anywhere; }
+.card-chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: auto; }
+.card-actions select { max-width: 180px; }
+.card-note { border-top: 1px solid var(--border); padding-top: 8px; }
 .inline-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .compact-select { min-width: 150px; padding: 6px 8px; font-size: 12px; }
 .control-stack { display: grid; gap: 6px; min-width: 170px; }
 .compare-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px; margin: 12px 0; }
-.compare-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-.compare-row { display: grid; grid-template-columns: minmax(100px, 0.8fr) minmax(120px, 1fr); gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.compare-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; min-width: 0; overflow: hidden; overflow-wrap: anywhere; }
+.compare-row { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); min-width: 0; }
 .compare-row:last-child { border-bottom: 0; }
 .compare-row strong { color: var(--header); font-size: 12px; }
+.compare-row strong, .compare-row span { min-width: 0; overflow-wrap: anywhere; }
 .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
 table { width: 100%; border-collapse: collapse; min-width: 1100px; }
-#rankTable table { min-width: 2100px; }
+#rankTable table { min-width: 1500px; }
 #mdSelectorTable table { min-width: 1300px; }
 th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; font-size: 13px; }
 th { position: sticky; top: 0; background: #eef4f8; color: var(--header); cursor: pointer; z-index: 1; }
@@ -1947,11 +1999,26 @@ tr:hover td { background: #f8fbfd; }
 .route-tools { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; }
 .route-tools a { color: var(--accent); }
 .caveat { border-left: 4px solid #d8bf72; background: #fff9e8; padding: 10px 12px; margin: 10px 0 12px; color: #4d4125; }
+.node-card-header { display: flex; justify-content: space-between; gap: 8px; align-items: start; margin-bottom: 8px; }
+.node-card-header h3 { margin: 0; overflow-wrap: anywhere; }
+.node-metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 10px; margin: 12px 0; }
+.node-metric strong { display: block; font-size: 20px; color: var(--header); line-height: 1.15; overflow-wrap: anywhere; }
+.node-fact-row { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); min-width: 0; }
+.node-fact-row:last-child { border-bottom: 0; }
+.node-fact-row strong { color: var(--header); font-size: 12px; }
+.node-fact-row strong, .node-fact-row span { min-width: 0; overflow-wrap: anywhere; }
+.node-missing { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.node-source-list { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
 a { color: var(--accent); }
 @media (max-width: 760px) {
   .app-header { display: grid; align-items: stretch; }
   .search-label { min-width: 0; }
   main { padding: 12px; }
+  .intake-layout { grid-template-columns: 1fr; height: auto; min-height: 0; overflow: visible; }
+  .rankings-layout { grid-template-columns: 1fr; height: auto; min-height: 0; overflow: visible; }
+  .intake-form, .intake-results { height: auto; overflow: visible; }
+  .rankings-menu, .rankings-results { height: auto; overflow: visible; }
+  .compare-row, .node-fact-row { grid-template-columns: 1fr; gap: 2px; }
 }
 """
 
@@ -1963,7 +2030,8 @@ const ADMIN_ENABLED = (payload.routes?.admin || []).length > 0;
 let currentRoute = {view: 'rankings', path: '/rankings'};
 let sortState = {};
 let filters = {
-  rankings: {degree: '', state: '', tier: '', bucket: '', visibility: 'visible', hardNo: '', excluded: '', warnings: '', partner: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
+  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', excluded: '', warnings: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
+  consideringList: {visibility: 'visible', degree: 'MD', tier: '', rankBand: '', interest: '', maxRank: ''},
   dossiers: {visibility: 'visible', status: '', missing: '', tier: '', rankBand: ''},
   research: {visibility: 'visible', status: '', tier: '', rankBand: '', action: ''},
   applicationList: {visibility: 'visible', degree: 'MD', status: 'active', tier: '', rankBand: '', interest: '', priority: '', maxRank: ''},
@@ -1980,6 +2048,40 @@ let compareState = {
 };
 let visibilityState = {};
 let dossierState = {};
+let intakeState = null;
+let guidedGroupOpenState = {};
+let lastRenderedPath = '';
+
+const INTAKE_STORAGE_KEY = 'med_school_ranker_intake_v1';
+const INTAKE_DISCLOSURE_STORAGE_KEY = 'med_school_ranker_guided_groups_v1';
+const INTAKE_SCHEMA_VERSION = 'guided_intake_v1';
+const INTAKE_STATE_HIDE_PREFIX = 'Intake state avoid: ';
+const GUIDED_GROUPS = [
+  {id: 'start_here', label: 'Start Here', defaultOpen: true},
+  {id: 'florida_options', label: 'Florida Options', defaultOpen: true},
+  {id: 'reach_schools_to_research', label: 'Reach Schools To Research', defaultOpen: true},
+  {id: 'compare_next', label: 'Compare Next', defaultOpen: true},
+  {id: 'need_more_data', label: 'Need More Data', defaultOpen: false},
+  {id: 'lower_priority_or_hidden', label: 'Lower Priority Or Hidden', defaultOpen: false},
+];
+const STRATEGY_OPTIONS = ['safer_list', 'balanced_list', 'reach_heavy_list'];
+const STRATEGY_DETAILS = {
+  safer_list: {
+    label: 'More Likely Schools',
+    summary: 'Prioritizes schools where the applicant profile appears more realistic before adding many reaches.',
+    changes: 'Smaller first review set, more conservative compare set, fewer reach schools in the early pass.',
+  },
+  balanced_list: {
+    label: 'Balanced Mix',
+    summary: 'Keeps a practical blend of likely, target, and reach schools for the first serious review.',
+    changes: 'Uses the target application count as the main review size and keeps a moderate reach buffer.',
+  },
+  reach_heavy_list: {
+    label: 'More Reach Schools',
+    summary: 'Keeps more high-upside schools visible for research before narrowing to the final list.',
+    changes: 'Larger first review set, larger reach buffer, and more schools promoted into compare/research.',
+  },
+};
 
 const VISIBILITY_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'visibility_state', 'visibility_reason', 'hidden_at', 'updated_at', 'source', 'notes'];
 const DOSSIER_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'research_status', 'interest_level', 'four_year_happiness', 'location_fit', 'culture_fit', 'regret_index', 'hard_no_flag', 'hard_no_reason', 'application_decision_status', 'notes'];
@@ -1987,12 +2089,61 @@ const APPLICATION_EXPORT_HEADERS = ['school_id', 'school_name', 'degree_type', '
 const DOSSIER_FIELDS = DOSSIER_EXPORT_HEADERS.filter(field => !['export_schema_version', 'exported_at', 'school_id', 'school_name'].includes(field));
 const RESEARCH_STATUSES = ['not_started', 'skimmed', 'needs_deep_research', 'researched', 'ready_to_decide', 'excluded', 'applied'];
 const INTEREST_LEVELS = ['high', 'medium', 'low', 'none'];
-const DECISION_STATUSES = ['considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted', 'rejected', 'withdrawn', 'not_applying'];
-const APPLICATION_ACTIVE_STATUSES = ['considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted'];
+const DECISION_STATUSES = ['interested', 'applying'];
+const APPLICATION_INTERESTED_STATUSES = ['interested', 'considering'];
+const APPLICATION_APPLYING_STATUSES = ['applying'];
+const APPLICATION_ACTIVE_STATUSES = ['interested', 'considering', 'applying', 'applied', 'interview', 'accepted', 'waitlisted'];
 const APPLICATION_EXCLUDED_STATUSES = ['rejected', 'withdrawn', 'not_applying'];
+const INTERESTED_LIMIT = 50;
+const APPLYING_LIMIT = 25;
 
 const $ = (id) => document.getElementById(id);
 const rows = (key) => Array.isArray(payload[key]) ? payload[key] : [];
+function getNodeFamilies(payload) {
+  return payload?.site_nodes || {};
+}
+
+function nodeFamilyNodes(familyName) {
+  const family = getNodeFamilies(payload)[familyName];
+  return Array.isArray(family?.nodes) ? family.nodes : [];
+}
+
+function indexNodesById(nodes) {
+  return Object.fromEntries((nodes || [])
+    .filter(node => node && (node.school_id || node.id))
+    .map(node => [node.school_id || node.id, node]));
+}
+
+function indexNodesBySlug(nodes) {
+  return Object.fromEntries((nodes || [])
+    .filter(node => node && node.school_slug)
+    .map(node => [node.school_slug, node]));
+}
+
+const nodeFamilies = getNodeFamilies(payload);
+const schoolNodesById = indexNodesById(nodeFamilyNodes('school_nodes'));
+const schoolProfileNodesById = indexNodesById(nodeFamilyNodes('school_profile_nodes'));
+const schoolProfileNodesBySlug = indexNodesBySlug(nodeFamilyNodes('school_profile_nodes'));
+const schoolCardNodesById = indexNodesById(nodeFamilyNodes('school_card_nodes'));
+const rankingCardNodesById = indexNodesById(nodeFamilyNodes('ranking_card_nodes'));
+const compareCardNodesById = indexNodesById(nodeFamilyNodes('compare_card_nodes'));
+
+function getSchoolProfileNode(schoolIdOrSlug) {
+  return schoolProfileNodesById[schoolIdOrSlug] || schoolProfileNodesBySlug[schoolIdOrSlug] || null;
+}
+
+function getSchoolCardNode(schoolId) {
+  return schoolCardNodesById[schoolId] || null;
+}
+
+function getRankingCardNode(schoolId) {
+  return rankingCardNodesById[schoolId] || null;
+}
+
+function getCompareCardNode(schoolId) {
+  return compareCardNodesById[schoolId] || null;
+}
+
 visibilityState = Object.fromEntries(rows('school_visibility')
   .filter(record => record.school_id)
   .map(record => [record.school_id, {
@@ -2024,6 +2175,10 @@ dossierState = Object.fromEntries(rows('school_dossiers')
     updated_at: record.updated_at || '',
     source: record.source || 'manual/school_dossiers.csv',
   }]));
+intakeState = loadIntakeState();
+guidedGroupOpenState = loadGuidedGroupOpenState();
+syncSelectorFromIntake();
+syncStateAvoidVisibility();
 const missing = (value) => value === undefined || value === null || value === '' ? 'Missing' : value;
 const truthy = (value) => ['1', 'true', 't', 'yes', 'y'].includes(String(value || '').trim().toLowerCase());
 const parseScore = (value) => {
@@ -2053,10 +2208,12 @@ function filteredSchools() {
 function parseRoute() {
   const path = routePath(window.location.hash);
   if (path.startsWith('/admin') && !ADMIN_ENABLED) return {view: 'rankings', path: '/rankings'};
+  if (path === '/intake') return {view: 'intake', path};
   if (path === '/rankings') return {view: 'rankings', path};
+  if (path === '/interested' || path === '/considering') return {view: 'consideringList', path};
   if (path === '/dossiers') return {view: 'dossiers', path};
   if (path === '/research') return {view: 'research', path};
-  if (path === '/application-list') return {view: 'applicationList', path};
+  if (path === '/applications' || path === '/application-list') return {view: 'applicationList', path};
   if (path === '/lists') return {view: 'lists', path};
   if (path.startsWith('/lists/')) return {view: 'listDetail', path, slug: path.split('/')[2] || ''};
   if (path === '/compare') return {view: 'compare', path};
@@ -2083,6 +2240,8 @@ function setActiveNav(path) {
   document.querySelectorAll('.tabs a').forEach(link => {
     const navPath = routePath(link.dataset.route);
     const active = navPath === path
+      || (path === '/considering' && navPath === '/interested')
+      || (path === '/application-list' && navPath === '/applications')
       || (path.startsWith('/lists/') && navPath === '/lists')
       || (path.startsWith('/schools/') && navPath === '/dossiers')
       || (path.startsWith('/admin') && navPath === '/admin');
@@ -2095,7 +2254,7 @@ function metric(label, value) {
 }
 
 function badge(text, type='') {
-  return `<span class="badge ${type}">${missing(text)}</span>`;
+  return `<span class="badge ${type}">${safeText(missing(text))}</span>`;
 }
 
 function table(headers, tableRows, key) {
@@ -2120,10 +2279,357 @@ function attr(value) {
   return safeText(value).replace(/"/g, '&quot;');
 }
 
+const FIELD_LABELS = {
+  admissions_data_quality_band: 'Admissions data quality band',
+  admissions_fit_tier: 'Admissions fit tier',
+  admissions_score: 'Admissions score',
+  aamc_context: 'AAMC context',
+  aamc_rate_band: 'AAMC acceptance-rate band',
+  application_bucket: 'Application bucket',
+  attendance_score: 'Attendance score',
+  cost_basis: 'Cost used for selected score',
+  data_quality_band: 'Data quality band',
+  decision_rank: 'Decision Rank',
+  estimated_coa_in_state: 'In-state estimated cost',
+  estimated_coa_out_state: 'Out-of-state estimated cost',
+  gpa_average: 'GPA average',
+  gpa_band: 'GPA band',
+  in_state: 'In-state estimated cost',
+  in_state_tuition_fees_insurance: 'In-state tuition, fees, and insurance',
+  mcat_average: 'MCAT average',
+  mcat_band: 'MCAT band',
+  missing_fields: 'Missing fields',
+  out_state: 'Out-of-state estimated cost',
+  out_state_tuition_fees_insurance: 'Out-of-state tuition, fees, and insurance',
+  rank_band: 'Rank band',
+  rank_confidence: 'Rank confidence',
+};
+
 function labelize(value) {
   const text = String(value || '').trim();
   if (!text) return 'Unselected';
+  if (STRATEGY_DETAILS[text]) return STRATEGY_DETAILS[text].label;
+  if (FIELD_LABELS[text]) return FIELD_LABELS[text];
   return text.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+}
+
+function isCurrencyFieldKey(key) {
+  return [
+    'cost',
+    'coa',
+    'tuition',
+    'debt',
+    'in_state',
+    'out_state',
+  ].some(part => String(key || '').toLowerCase().includes(part));
+}
+
+function formatCurrency(value) {
+  const number = parseScore(value);
+  if (number === null || number <= 0) return 'Missing';
+  return `$${Math.round(number).toLocaleString()}`;
+}
+
+function firstPositiveNumber(...values) {
+  for (const value of values) {
+    const number = parseScore(value);
+    if (number !== null && number > 0) return number;
+  }
+  return null;
+}
+
+function nodeDisplayValueForKey(key, value) {
+  if (isCurrencyFieldKey(key)) return safeText(formatCurrency(value));
+  return nodeDisplayValue(value);
+}
+
+function safeLocalRead(key) {
+  try {
+    return window.localStorage?.getItem(key) || '';
+  } catch {
+    return '';
+  }
+}
+
+function safeLocalWrite(key, value) {
+  try {
+    window.localStorage?.setItem(key, value);
+  } catch {
+    // Local storage can be unavailable in private windows or locked-down browsers.
+  }
+}
+
+function safeLocalRemove(key) {
+  try {
+    window.localStorage?.removeItem(key);
+  } catch {
+    // Local storage can be unavailable in private windows or locked-down browsers.
+  }
+}
+
+function schoolStateOptions() {
+  return unique(rows('schools').map(item => item.school.state_abbrev || item.ranking.state_abbrev)).sort();
+}
+
+function mcatBandOptions() {
+  return unique(rows('aamc_mcat_gpa_grid').map(row => row.mcat_band));
+}
+
+function gpaBandOptions() {
+  return unique(rows('aamc_mcat_gpa_grid').map(row => row.gpa_band));
+}
+
+function defaultIntakeState() {
+  const states = schoolStateOptions();
+  return {
+    schema_version: INTAKE_SCHEMA_VERSION,
+    degree_goal: 'md_only',
+    applicant_state: states.includes('FL') ? 'FL' : '',
+    mcat_band: '',
+    gpa_band: '',
+    application_strategy: 'balanced_list',
+    target_application_count: '25',
+    include_reach_schools: 'yes',
+    urbanicity_preference: 'urban_preferred',
+    cost_sensitivity: 'medium',
+    states_to_avoid: [],
+    career_optionality: 'em_leaning',
+    school_environment_preferences: [],
+    dealbreakers: [],
+    updated_at: '',
+  };
+}
+
+function arrayValue(value) {
+  return Array.isArray(value) ? value.map(String).filter(Boolean) : [];
+}
+
+function normalizeIntakeState(raw) {
+  const defaults = defaultIntakeState();
+  const parsed = raw && typeof raw === 'object' ? raw : {};
+  const normalized = {...defaults, ...parsed, schema_version: INTAKE_SCHEMA_VERSION};
+  normalized.states_to_avoid = arrayValue(parsed.states_to_avoid);
+  normalized.school_environment_preferences = arrayValue(parsed.school_environment_preferences);
+  normalized.dealbreakers = arrayValue(parsed.dealbreakers);
+  if (!['md_only'].includes(normalized.degree_goal)) normalized.degree_goal = defaults.degree_goal;
+  if (!STRATEGY_OPTIONS.includes(normalized.application_strategy)) normalized.application_strategy = defaults.application_strategy;
+  if (!['15', '20', '25', '30', '35'].includes(String(normalized.target_application_count))) normalized.target_application_count = defaults.target_application_count;
+  if (!['yes', 'no'].includes(normalized.include_reach_schools)) normalized.include_reach_schools = defaults.include_reach_schools;
+  if (!['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'].includes(normalized.urbanicity_preference)) normalized.urbanicity_preference = defaults.urbanicity_preference;
+  if (!['low', 'medium', 'high', 'debt_averse'].includes(normalized.cost_sensitivity)) normalized.cost_sensitivity = defaults.cost_sensitivity;
+  if (!['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'].includes(normalized.career_optionality)) normalized.career_optionality = defaults.career_optionality;
+  return normalized;
+}
+
+function loadIntakeState() {
+  const stored = safeLocalRead(INTAKE_STORAGE_KEY);
+  if (!stored) return normalizeIntakeState({});
+  try {
+    return normalizeIntakeState(JSON.parse(stored));
+  } catch {
+    return normalizeIntakeState({});
+  }
+}
+
+function persistIntakeState() {
+  if (!intakeState) return;
+  intakeState.updated_at = nowIso();
+  safeLocalWrite(INTAKE_STORAGE_KEY, JSON.stringify(intakeState));
+}
+
+function loadGuidedGroupOpenState() {
+  const defaults = Object.fromEntries(GUIDED_GROUPS.map(group => [group.id, group.defaultOpen]));
+  const stored = safeLocalRead(INTAKE_DISCLOSURE_STORAGE_KEY);
+  if (!stored) return defaults;
+  try {
+    return {...defaults, ...JSON.parse(stored)};
+  } catch {
+    return defaults;
+  }
+}
+
+function persistGuidedGroupOpenState() {
+  safeLocalWrite(INTAKE_DISCLOSURE_STORAGE_KEY, JSON.stringify(guidedGroupOpenState));
+}
+
+function clearIntakeStateAvoidVisibility() {
+  rows('schools').forEach(item => {
+    const current = visibilityFor(item);
+    const reason = String(current.visibility_reason || '');
+    if (current.visibility_state === 'hidden' && reason.startsWith(INTAKE_STATE_HIDE_PREFIX)) {
+      setSchoolVisibility(schoolId(item), 'visible', 'Intake reset');
+    }
+  });
+}
+
+function resetIntakeState() {
+  clearIntakeStateAvoidVisibility();
+  safeLocalRemove(INTAKE_STORAGE_KEY);
+  safeLocalRemove(INTAKE_DISCLOSURE_STORAGE_KEY);
+  intakeState = normalizeIntakeState({});
+  guidedGroupOpenState = loadGuidedGroupOpenState();
+  syncSelectorFromIntake();
+}
+
+function syncSelectorFromIntake() {
+  if (!intakeState) return;
+  selectorState.mcatBand = intakeState.mcat_band || '';
+  selectorState.gpaBand = intakeState.gpa_band || '';
+  selectorState.applicantState = intakeState.applicant_state || '';
+}
+
+function intakeReady() {
+  if (!intakeState) return false;
+  return Boolean(
+    intakeState.degree_goal
+    && intakeState.applicant_state
+    && intakeState.mcat_band
+    && intakeState.gpa_band
+    && intakeState.application_strategy
+    && intakeState.target_application_count
+    && intakeState.urbanicity_preference
+    && intakeState.cost_sensitivity
+  );
+}
+
+function setIntakeField(field, value) {
+  if (!intakeState) intakeState = normalizeIntakeState({});
+  intakeState[field] = value;
+  if (field === 'applicant_state') {
+    intakeState.states_to_avoid = arrayValue(intakeState.states_to_avoid).filter(state => state !== value);
+  }
+  persistIntakeState();
+  syncSelectorFromIntake();
+  if (field === 'states_to_avoid' || field === 'applicant_state') syncStateAvoidVisibility();
+}
+
+function toggleIntakeArrayField(field, value, checked) {
+  if (!intakeState) intakeState = normalizeIntakeState({});
+  const current = new Set(arrayValue(intakeState[field]));
+  if (checked) current.add(value);
+  else current.delete(value);
+  setIntakeField(field, [...current].sort());
+}
+
+function syncStateAvoidVisibility() {
+  if (!intakeState) return;
+  const avoided = new Set(arrayValue(intakeState.states_to_avoid));
+  rows('schools').forEach(item => {
+    if (item.school.degree_type !== 'MD') return;
+    const id = schoolId(item);
+    const state = schoolState(item);
+    const current = visibilityFor(item);
+    const reason = String(current.visibility_reason || '');
+    if (state && avoided.has(state)) {
+      setSchoolVisibility(id, 'hidden', `${INTAKE_STATE_HIDE_PREFIX}${state}`);
+      return;
+    }
+    if (current.visibility_state === 'hidden' && reason.startsWith(INTAKE_STATE_HIDE_PREFIX)) {
+      setSchoolVisibility(id, 'visible', 'Intake state avoid cleared');
+    }
+  });
+}
+
+function intakeExportRecord() {
+  const grouped = intakeReady() ? guidedRowsByGroup() : {};
+  return {
+    export_schema_version: INTAKE_SCHEMA_VERSION,
+    exported_at: nowIso(),
+    privacy_label: 'browser_local_user_answers',
+    answers: intakeState,
+    selected_context: selectedAssumptionRecords()[0],
+    group_counts: Object.fromEntries(GUIDED_GROUPS.map(group => [group.label, (grouped[group.id] || []).length])),
+    caveat: payload.copy.aamc_grid_caveat,
+  };
+}
+
+function nodeDisplayValue(value) {
+  if (Array.isArray(value)) {
+    const text = value.filter(part => part !== undefined && part !== null && String(part).trim() !== '').join(', ');
+    return safeText(missing(text));
+  }
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+  if (value && typeof value === 'object') return safeText(JSON.stringify(value));
+  return safeText(missing(value));
+}
+
+function nodeStatusChip(value) {
+  const text = String(value || '').trim();
+  const type = ['ready', 'partial', 'provisional', 'missing', 'high', 'medium', 'low'].includes(text) ? text : '';
+  return badge(text || 'missing', type);
+}
+
+function renderCardShell(title, body, meta='') {
+  return `<div class="panel">
+    <div class="node-card-header"><h3>${safeText(title)}</h3>${meta || ''}</div>
+    ${body}
+  </div>`;
+}
+
+function renderMetricCard(card) {
+  return `<div class="panel node-metric">
+    <span class="muted">${safeText(card?.label || card?.card_id || 'Metric')}</span>
+    <strong>${nodeDisplayValue(card?.value)}</strong>
+    ${card?.context ? `<p>${safeText(card.context)}</p>` : ''}
+  </div>`;
+}
+
+function renderFactRows(facts) {
+  const entries = Object.entries(facts || {}).filter(([key]) => key !== 'source_refs');
+  if (!entries.length) return '<div class="empty-state">No facts available in this node section.</div>';
+  return entries.map(([key, value]) => `<div class="node-fact-row"><strong>${safeText(labelize(key))}</strong><span>${nodeDisplayValueForKey(key, value)}</span></div>`).join('');
+}
+
+function renderMissingFieldsBlock(missingFields) {
+  const fields = Array.isArray(missingFields) ? missingFields.filter(Boolean) : [];
+  if (!fields.length) return '';
+  return `<div class="node-missing">${fields.map(field => badge(labelize(field), 'warn')).join('')}</div>`;
+}
+
+function renderSourceCaveatBlock(sourceRefs) {
+  const refs = Array.isArray(sourceRefs) ? sourceRefs.filter(ref => ref?.source_name || ref?.source_url) : [];
+  if (!refs.length) return '';
+  return `<ul class="node-source-list">${refs.slice(0, 5).map(ref => {
+    const label = safeText(ref.source_name || 'Source');
+    return `<li>${ref.source_url ? `<a href="${attr(ref.source_url)}" target="_blank">${label}</a>` : label}</li>`;
+  }).join('')}</ul>`;
+}
+
+function renderProfileSectionBlock(section) {
+  return renderCardShell(
+    section?.title || section?.section_id || 'Profile Section',
+    `${renderFactRows(section?.facts || {})}
+     ${renderMissingFieldsBlock(section?.missing_fields)}
+     ${renderSourceCaveatBlock(section?.source_refs)}`,
+    nodeStatusChip(section?.readiness)
+  );
+}
+
+function renderSchoolCardNodePreview(schoolId) {
+  const schoolCard = getSchoolCardNode(schoolId);
+  const rankingCard = getRankingCardNode(schoolId);
+  if (!schoolCard && !rankingCard) return '';
+  const schoolRows = schoolCard ? [
+    ['Readiness', schoolCard.readiness],
+    ['Confidence', schoolCard.confidence],
+    ['Application bucket', schoolCard.rank_summary?.application_bucket],
+    ['MCAT and GPA', [schoolCard.mcat_gpa_summary?.mcat_average, schoolCard.mcat_gpa_summary?.gpa_average].filter(Boolean).join(' / ')],
+    ['Cost used for selected score', formatCurrency(schoolCard.cost_summary?.cost_basis)],
+    ['In-state estimated cost', formatCurrency(schoolCard.cost_summary?.in_state)],
+    ['Out-of-state estimated cost', formatCurrency(schoolCard.cost_summary?.out_state)],
+  ] : [];
+  const rankingRows = rankingCard ? [
+    ['Decision rank', rankingCard.decision_rank],
+    ['Rank band', rankingCard.rank_band],
+    ['Admissions score', rankingCard.admissions_score],
+    ['Attendance score', rankingCard.attendance_score],
+    ['Positive contributors', rankingCard.top_positive_contributors],
+    ['Low-confidence drivers', rankingCard.missing_or_low_confidence_drivers],
+  ] : [];
+  return `<div class="detail-grid" style="margin-top:12px">
+    ${schoolCard ? detailPanel('School Summary', schoolRows) : ''}
+    ${rankingCard ? detailPanel('Ranking Summary', rankingRows) : ''}
+  </div>`;
 }
 
 function nowIso() {
@@ -2319,7 +2825,7 @@ function nextResearchAction(item) {
   const dossier = dossierFor(item);
   const missingSections = missingDossierSections(item);
   if (isSchoolHidden(item)) return 'Review hidden status';
-  if (!dossier.research_status) return 'Start dossier';
+  if (!dossier.research_status) return 'Start score card';
   if (!dossier.four_year_happiness) return 'Score four-year fit';
   if (!dossier.interest_level) return 'Set interest level';
   if (missingSections.length) return `Fill ${missingSections[0]}`;
@@ -2389,7 +2895,7 @@ function selectorCostBasis(item) {
     : ['estimated_coa_out_state', 'out_state_tuition_fees_insurance'];
   for (const field of fields) {
     const value = parseScore(cost[field]);
-    if (value !== null) return value;
+    if (value !== null && value > 0) return value;
   }
   return null;
 }
@@ -2412,17 +2918,18 @@ function selectorOosScore(item) {
   return 4;
 }
 
-function activeMdSchools() {
+function activeMdSchools(options={}) {
+  const includeHidden = options.includeHidden === true;
   return filteredSchools().filter(item => (
     item.school.degree_type === 'MD'
     && !truthy(item.school.manual_exclusion_flag)
     && !truthy(item.ranking.excluded_from_rank)
-    && !isSchoolHidden(item)
+    && (includeHidden || !isSchoolHidden(item))
   ));
 }
 
-function selectorRankedRows() {
-  const mdRows = activeMdSchools();
+function selectorRankedRows(options={}) {
+  const mdRows = activeMdSchools(options);
   const mcatValue = bandMidpoint(selectorState.mcatBand, 'mcat');
   const gpaValue = bandMidpoint(selectorState.gpaBand, 'gpa');
   const costBasisBySchool = new Map(mdRows.map(item => [item.school.school_id, selectorCostBasis(item)]));
@@ -2486,6 +2993,18 @@ function downloadCsv(filename, headers, records) {
   URL.revokeObjectURL(url);
 }
 
+function downloadJson(filename, record) {
+  const blob = new Blob([JSON.stringify(record, null, 2) + '\n'], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 function sortRows(tableRows, tableKey, defaultKey, defaultDir='asc') {
   const state = sortState[tableKey] || {key: defaultKey, dir: defaultDir};
   const valueFor = (row) => state.get ? state.get(row) : state.key.split('.').reduce((o,k)=>o?.[k], row);
@@ -2532,8 +3051,36 @@ function dossierInlineScoreSelect(item, field, label='') {
   return `<select class="compact-select" data-dossier-school="${attr(id)}" data-dossier-field="${attr(field)}"${title}>${scoreOptions(dossier[field])}</select>`;
 }
 
-function applicationDecisionControl(item) {
-  return dossierInlineSelect(item, 'application_decision_status', DECISION_STATUSES, 'Application decision');
+function setApplicationStatus(id, status) {
+  updateDossierField(id, 'application_decision_status', status);
+}
+
+function applicationStatusBadge(item) {
+  const status = applicationStatusFor(item);
+  if (APPLICATION_INTERESTED_STATUSES.includes(status)) return badge('Interested', 'good');
+  if (APPLICATION_APPLYING_STATUSES.includes(status)) return badge('Applying', 'good');
+  if (status && status !== 'unselected') return badge(labelize(status), '');
+  return badge('Not listed', '');
+}
+
+function applicationStatusButton(item, status, label) {
+  const current = applicationStatusFor(item);
+  const active = (status === 'interested' && APPLICATION_INTERESTED_STATUSES.includes(current))
+    || (status === 'applying' && APPLICATION_APPLYING_STATUSES.includes(current))
+    || current === status;
+  if (active) return badge(label, 'good');
+  const counts = applicationStatusCounts();
+  if (status === 'interested' && counts.interested >= INTERESTED_LIMIT) return `<button type="button" disabled title="Remove a school from Interested before adding another.">${safeText(label)}</button>`;
+  if (status === 'applying' && counts.applying >= APPLYING_LIMIT) return `<button type="button" disabled title="Remove a school from Applying before adding another.">${safeText(label)}</button>`;
+  return `<button type="button" data-action="set-application-status" data-school-id="${attr(schoolId(item))}" data-application-status="${attr(status)}">${safeText(label)}</button>`;
+}
+
+function removeFromApplicationListButton(item, label='None') {
+  return `<button type="button" data-action="set-application-status" data-school-id="${attr(schoolId(item))}" data-application-status="">${safeText(label)}</button>`;
+}
+
+function statusSwitchActions(item) {
+  return `<div class="inline-actions">${applicationStatusButton(item, 'interested', 'Interested')}${applicationStatusButton(item, 'applying', 'Applying')}${removeFromApplicationListButton(item, 'None')}</div>`;
 }
 
 function interestControl(item) {
@@ -2584,15 +3131,13 @@ function rankingFilters() {
   const adminFilters = ADMIN_ENABLED ? `
       <label>Hard No <select id="rankHardNo"><option value="" ${f.hardNo === '' ? 'selected' : ''}>All</option><option value="yes" ${f.hardNo === 'yes' ? 'selected' : ''}>Yes</option><option value="no" ${f.hardNo === 'no' ? 'selected' : ''}>No</option></select></label>
       <label>Rankable <select id="rankExcluded"><option value="" ${f.excluded === '' ? 'selected' : ''}>All</option><option value="yes" ${f.excluded === 'yes' ? 'selected' : ''}>Excluded</option><option value="no" ${f.excluded === 'no' ? 'selected' : ''}>Rankable</option></select></label>
-      <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>
-      <label>Partner <select id="rankPartner"><option value="" ${f.partner === '' ? 'selected' : ''}>All</option><option value="present" ${f.partner === 'present' ? 'selected' : ''}>Present</option><option value="missing" ${f.partner === 'missing' ? 'selected' : ''}>Missing</option></select></label>` : '';
+      <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>` : '';
   return `
-    <div class="filters">
+    <div class="field-grid">
       <label>Degree <select id="rankDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
       <label>State <select id="rankState"><option value="" ${f.state === '' ? 'selected' : ''}>All</option>${optionTags(states, f.state)}</select></label>
       <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
       <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
-      <label>Visibility <select id="rankVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
       ${adminFilters}
       <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
       <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
@@ -2604,21 +3149,19 @@ function rankingFilters() {
 }
 
 function rankingsRows() {
-  const {degree, state, tier, bucket, visibility, hardNo, excluded, warnings, partner, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
+  const {degree, state, tier, bucket, hardNo, excluded, warnings, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
   return filteredSchools().filter(s => {
     if (degree && s.school.degree_type !== degree) return false;
     if (state && s.school.state !== state) return false;
     if (tier && s.derived.admissions_fit_tier !== tier) return false;
     if (bucket && s.derived.application_bucket !== bucket) return false;
-    if (visibility === 'visible' && isSchoolHidden(s)) return false;
-    if (visibility === 'hidden' && !isSchoolHidden(s)) return false;
+    if (isSchoolHidden(s)) return false;
     if (ADMIN_ENABLED && hardNo === 'yes' && !s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && hardNo === 'no' && s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && excluded === 'yes' && !s.derived.excluded_from_rank) return false;
     if (ADMIN_ENABLED && excluded === 'no' && s.derived.excluded_from_rank) return false;
     if (ADMIN_ENABLED && warnings === 'yes' && s.derived.warning_count < 1) return false;
     if (ADMIN_ENABLED && warnings === 'no' && s.derived.warning_count > 0) return false;
-    if (ADMIN_ENABLED && partner && s.derived.partner_input_status !== partner) return false;
     if (quality && s.derived.admissions_data_quality_band !== quality) return false;
     if (mcatBand && s.derived.published_mcat_band !== mcatBand) return false;
     if (gpaBand && s.derived.published_gpa_band !== gpaBand) return false;
@@ -2637,10 +3180,10 @@ function mdSelectorControls() {
   const selectorStatus = ready
     ? `${selectorRankedRows().length} active MD schools in selector view`
     : 'Select MCAT band, GPA band, and applicant state to calculate the MD selector ranking.';
-  return `<div class="panel selector-panel">
-      <h3>MD Band Selector ${badge('local/private-derived', 'warn')}</h3>
+  return `<fieldset class="selector-panel">
+      <legend>MD Band Selector</legend>
       <div class="caveat">MD-only proof of concept. DO schools are excluded from this interactive reranking view. Selected-profile rankings stay in browser memory and are not written back.</div>
-      <div class="filters">
+      <div class="field-grid">
         <label>MCAT Band <select id="selectorMcatBand"><option value="" ${selectorState.mcatBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(mcatBands, selectorState.mcatBand)}</select></label>
         <label>GPA Band <select id="selectorGpaBand"><option value="" ${selectorState.gpaBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(gpaBands, selectorState.gpaBand)}</select></label>
         <label>Applicant State <select id="selectorApplicantState"><option value="" ${selectorState.applicantState === '' ? 'selected' : ''}>Unselected</option>${optionTags(states, selectorState.applicantState)}</select></label>
@@ -2648,10 +3191,11 @@ function mdSelectorControls() {
       <div class="selector-actions">
         <button type="button" id="downloadSelectorAssumptions">Download Assumptions CSV</button>
         <button type="button" id="downloadSelectorRows" ${ready ? '' : 'disabled title="Select all assumptions first"'}>Download Current MD Ranking CSV</button>
+        ${badge('local/private-derived', 'warn')}
         <span class="muted">${selectorStatus}</span>
       </div>
       <div id="mdSelectorTable"></div>
-    </div>`;
+    </fieldset>`;
 }
 
 function renderMdSelectorTable() {
@@ -2669,7 +3213,7 @@ function renderMdSelectorTable() {
     {key:'selector.attendance', label:'Attendance', render:r=>r.attendance.score === null ? 'Missing' : r.attendance.score.toFixed(2)},
     {key:'selector.mcat', label:'MCAT Fit', render:r=>r.overrides.admissions_mcat_fit_score === undefined ? 'Missing' : r.overrides.admissions_mcat_fit_score.toFixed(1)},
     {key:'selector.gpa', label:'GPA Fit', render:r=>r.overrides.admissions_gpa_fit_score === undefined ? 'Missing' : r.overrides.admissions_gpa_fit_score.toFixed(1)},
-    {key:'selector.oos', label:'OOS Fit', render:r=>r.overrides.admissions_oos_friendliness_score === undefined ? 'Missing' : r.overrides.admissions_oos_friendliness_score.toFixed(1)},
+    {key:'selector.oos', label:'Out-of-state fit', render:r=>r.overrides.admissions_oos_friendliness_score === undefined ? 'Missing' : r.overrides.admissions_oos_friendliness_score.toFixed(1)},
     {key:'selector.cost', label:'Cost Fit', render:r=>r.overrides.attendance_cost_score === undefined ? 'Missing' : r.overrides.attendance_cost_score.toFixed(1)},
     {key:'ranking.rank_confidence', label:'Rank Confidence', render:r=>badge(r.item.ranking.rank_confidence)},
   ];
@@ -2711,7 +3255,7 @@ function selectedRankingRecords() {
   }));
 }
 
-function renderVisibilityPanel() {
+function renderHiddenSchoolsPanel() {
   const hidden = hiddenSchools();
   const hiddenTable = hidden.length ? table([
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
@@ -2721,33 +3265,380 @@ function renderVisibilityPanel() {
     {key:'visibility.hidden_at', label:'Hidden At', render:s=>missing(visibilityFor(s).hidden_at)},
     {key:'actions', label:'Actions', render:s=>`<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>`},
   ], hidden, 'hiddenSchools') : '<div class="empty-state">No schools are hidden in this browser session.</div>';
-  return `<div class="panel selector-panel">
-    <div class="inline-actions">
-      <h3 style="margin:0">Visibility Controls</h3>
-      ${badge(`${hidden.length} hidden`, hidden.length ? 'warn' : 'good')}
+  return `<details class="panel hidden-schools-panel">
+    <summary>Hidden Schools ${badge(`${hidden.length} hidden`, hidden.length ? 'warn' : 'good')}</summary>
+    <div class="inline-actions" style="margin-top:10px">
       <button type="button" id="downloadVisibilityExport">Download Visibility CSV</button>
     </div>
     <p>Visibility is local to this browser session. Export the CSV before closing the page if you want to preserve hide/restore decisions.</p>
     <div style="margin-top:10px">${hiddenTable}</div>
+  </details>`;
+}
+
+function intakeSelect(field, label, values, selected=intakeState?.[field] || '') {
+  const selectedValue = String(selected || '');
+  const optionValues = values.includes('') ? values : [''].concat(values);
+  const options = optionValues.map(value => `<option value="${attr(value)}" ${value === selectedValue ? 'selected' : ''}>${value ? safeText(labelize(value)) : 'Unselected'}</option>`).join('');
+  return `<label>${safeText(label)}<select data-intake-field="${attr(field)}">${options}</select></label>`;
+}
+
+function intakeCheckboxGroup(field, values, selectedValues) {
+  const selected = new Set(arrayValue(selectedValues));
+  if (!values.length) return '<div class="empty-state">No options available from the current data.</div>';
+  return `<div class="intake-check-grid">${values.map(value => `<label><input type="checkbox" data-intake-multi="${attr(field)}" value="${attr(value)}" ${selected.has(value) ? 'checked' : ''}>${safeText(value)}</label>`).join('')}</div>`;
+}
+
+function intakeDisclosureGroup(field, values, selectedValues) {
+  const selected = new Set(arrayValue(selectedValues));
+  return `<div class="intake-check-grid">${values.map(value => `<label class="checkline"><input type="checkbox" data-intake-multi="${attr(field)}" value="${attr(value)}" ${selected.has(value) ? 'checked' : ''}>${safeText(labelize(value))}</label>`).join('')}</div>`;
+}
+
+function intakeSummaryChips() {
+  if (!intakeState) return '';
+  const chips = [
+    'MD only',
+    `${intakeState.applicant_state || 'No state'} applicant`,
+    `${intakeState.mcat_band || 'No MCAT band'} MCAT`,
+    `${intakeState.gpa_band || 'No GPA band'} GPA`,
+    labelize(intakeState.application_strategy),
+    `${intakeState.target_application_count} target apps`,
+    labelize(intakeState.urbanicity_preference),
+    `${labelize(intakeState.cost_sensitivity)} cost sensitivity`,
+  ];
+  if (intakeState.states_to_avoid.length) chips.push(`Avoiding ${intakeState.states_to_avoid.join(', ')}`);
+  return `<div class="card-chip-row">${chips.map(text => badge(text)).join('')}</div>`;
+}
+
+function renderIntakeMenu() {
+  const states = schoolStateOptions();
+  const stateAvoidOptions = states.filter(state => state !== intakeState.applicant_state);
+  return `<div class="panel intake-form">
+    <div>
+      <h3>Build A Review List</h3>
+      <p>Answers stay in this browser and change the review lens, not the source CSVs.</p>
+    </div>
+    <fieldset>
+      <legend>Academic Context</legend>
+      <div class="field-grid">
+        ${intakeSelect('degree_goal', 'Degree Goal', ['md_only'])}
+        ${intakeSelect('applicant_state', 'Applicant State', states)}
+        ${intakeSelect('mcat_band', 'MCAT Band', mcatBandOptions())}
+        ${intakeSelect('gpa_band', 'GPA Band', gpaBandOptions())}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>List Strategy</legend>
+      <div class="field-grid">
+        ${intakeSelect('application_strategy', 'Review Strategy', STRATEGY_OPTIONS)}
+        ${intakeSelect('target_application_count', 'Target Count', ['15', '20', '25', '30', '35'])}
+        ${intakeSelect('include_reach_schools', 'Include Reaches', ['yes', 'no'])}
+        ${intakeSelect('cost_sensitivity', 'Cost Sensitivity', ['low', 'medium', 'high', 'debt_averse'])}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Location And Fit</legend>
+      <div class="field-grid">
+        ${intakeSelect('urbanicity_preference', 'Setting Preference', ['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'])}
+        ${intakeSelect('career_optionality', 'Career Optionality', ['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'])}
+      </div>
+      <p class="muted" style="margin-top:8px">States to avoid are reversible local hides.</p>
+      ${intakeCheckboxGroup('states_to_avoid', stateAvoidOptions, intakeState.states_to_avoid)}
+    </fieldset>
+    <fieldset>
+      <legend>Awareness Prompts</legend>
+      ${intakeDisclosureGroup('school_environment_preferences', ['true_pass_fail', 'low_mandatory_attendance', 'recorded_lectures', 'research_heavy', 'clinical_focus', 'large_academic_center', 'community_focus'], intakeState.school_environment_preferences)}
+    </fieldset>
+    <fieldset>
+      <legend>Dealbreakers</legend>
+      ${intakeDisclosureGroup('dealbreakers', ['hide_rural', 'hide_high_cost', 'hide_low_confidence', 'hide_state', 'hide_already_ruled_out'], intakeState.dealbreakers)}
+    </fieldset>
+    <div class="inline-actions">
+      <button type="button" data-action="download-intake-json">Download Intake JSON</button>
+      <button type="button" data-action="reset-intake">Reset Intake</button>
+      <a href="#/rankings">Open Rankings</a>
+      <a href="#/interested">Interested</a>
+      <a href="#/applications">Applications</a>
+    </div>
   </div>`;
+}
+
+function guidedStrategySettings() {
+  const target = Number(intakeState?.target_application_count || 25) || 25;
+  const strategy = intakeState?.application_strategy || 'balanced_list';
+  if (strategy === 'safer_list') {
+    return {
+      startLimit: Math.max(6, Math.ceil(target * 0.32)),
+      compareLimit: Math.max(10, Math.ceil(target * 0.8)),
+      reachLimit: target + 4,
+      label: STRATEGY_DETAILS.safer_list.label,
+    };
+  }
+  if (strategy === 'reach_heavy_list') {
+    return {
+      startLimit: Math.max(10, Math.ceil(target * 0.48)),
+      compareLimit: target,
+      reachLimit: target + 20,
+      label: STRATEGY_DETAILS.reach_heavy_list.label,
+    };
+  }
+  return {
+    startLimit: Math.max(8, Math.ceil(target * 0.4)),
+    compareLimit: target,
+    reachLimit: target + 10,
+    label: STRATEGY_DETAILS.balanced_list.label,
+  };
+}
+
+function guidedMissingData(row) {
+  const item = row.item;
+  const hasMcat = Boolean(item.ranking?.published_mcat_average || item.admissions_stats?.published_mcat_average);
+  const hasGpa = Boolean(item.ranking?.published_gpa_average || item.admissions_stats?.published_gpa_average);
+  const lowCoverage = row.overall?.score === null || (row.overall?.coverage ?? 0) < 0.35;
+  return lowCoverage || !hasMcat || !hasGpa;
+}
+
+function guidedGroupForRow(row) {
+  const item = row.item;
+  const settings = guidedStrategySettings();
+  const rank = Number(row.decisionRank || 9999);
+  const sameState = intakeState?.applicant_state && schoolState(item) === intakeState.applicant_state;
+  const avoided = new Set(arrayValue(intakeState?.states_to_avoid));
+  if (isSchoolHidden(item) || avoided.has(schoolState(item))) return 'lower_priority_or_hidden';
+  if (guidedMissingData(row)) return 'need_more_data';
+  if (sameState && intakeState.applicant_state === 'FL') return 'florida_options';
+  if (rank <= settings.startLimit) return 'start_here';
+  if (rank > settings.compareLimit && rank <= settings.reachLimit && intakeState?.include_reach_schools !== 'no') return 'reach_schools_to_research';
+  if (rank <= settings.compareLimit) return 'compare_next';
+  return 'lower_priority_or_hidden';
+}
+
+function guidedRowsByGroup() {
+  const grouped = Object.fromEntries(GUIDED_GROUPS.map(group => [group.id, []]));
+  if (!intakeReady()) return grouped;
+  syncSelectorFromIntake();
+  const rankedRows = selectorRankedRows({includeHidden: true});
+  const rankedIds = new Set(rankedRows.map(row => schoolId(row.item)));
+  const unrankedRows = activeMdSchools({includeHidden: true})
+    .filter(item => !rankedIds.has(schoolId(item)))
+    .map(item => ({
+      item,
+      overrides: {},
+      admissions: {score: null, coverage: 0},
+      attendance: {score: null, coverage: 0},
+      overall: {score: null, coverage: 0},
+      costBasis: selectorCostBasis(item),
+      decisionRank: '',
+    }));
+  [...rankedRows, ...unrankedRows].forEach(row => {
+    grouped[guidedGroupForRow(row)].push(row);
+  });
+  return grouped;
+}
+
+function guidedReasonChips(row, groupId) {
+  const item = row.item;
+  const reasons = ['MD-only review', `${intakeState.mcat_band} / ${intakeState.gpa_band}`];
+  if (row.decisionRank) reasons.push(`Selected rank ${row.decisionRank}`);
+  if (groupId === 'florida_options') reasons.push('Florida option');
+  if (schoolState(item) === intakeState.applicant_state) reasons.push('In-state context');
+  if (row.overrides?.admissions_oos_friendliness_score !== undefined) reasons.push('State fit applied');
+  if (row.overrides?.attendance_cost_score !== undefined) reasons.push('Cost context applied');
+  if (intakeState.urbanicity_preference === 'urban_preferred') reasons.push('Urban preference noted');
+  if (intakeState.career_optionality === 'em_leaning') reasons.push('EM interest awareness-only');
+  return reasons.slice(0, 7);
+}
+
+function guidedRiskChips(row, groupId) {
+  const item = row.item;
+  const risks = [];
+  if (isSchoolHidden(item)) risks.push(`Hidden: ${visibilityFor(item).visibility_reason || 'local decision'}`);
+  if (groupId === 'need_more_data') risks.push('Incomplete data');
+  if ((row.overall?.coverage ?? 0) < 0.5) risks.push('Low score coverage');
+  if (row.costBasis && ['high', 'debt_averse'].includes(intakeState.cost_sensitivity) && row.costBasis > 90000) risks.push('High cost signal');
+  if (row.decisionRank && Number(row.decisionRank) > Number(intakeState.target_application_count || 25)) risks.push('Outside target count');
+  if (item.derived.admissions_data_quality_band && !['high', 'medium'].includes(item.derived.admissions_data_quality_band)) risks.push(`Stats quality ${item.derived.admissions_data_quality_band}`);
+  if (item.ranking.score_warnings) risks.push('Score warning present');
+  return risks.slice(0, 6);
+}
+
+function guidedMissingChips(row) {
+  const missingParts = missingDossierSections(row.item);
+  if (row.overall?.score === null) missingParts.unshift('selected rank');
+  if (!row.item.ranking.published_mcat_average && !row.item.admissions_stats.published_mcat_average) missingParts.unshift('MCAT avg');
+  if (!row.item.ranking.published_gpa_average && !row.item.admissions_stats.published_gpa_average) missingParts.unshift('GPA avg');
+  return unique(missingParts).slice(0, 6);
+}
+
+function guidedNextAction(row, groupId) {
+  if (groupId === 'need_more_data') return 'Open score card and fill missing research fields';
+  if (groupId === 'lower_priority_or_hidden' && isSchoolHidden(row.item)) return 'Restore only if this school should return to review';
+  if (groupId === 'reach_schools_to_research') return 'Research fit before adding to the 25-school target list';
+  return applicationNextActionFor(row.item, applicationStatusFor(row.item));
+}
+
+function guidedCostFacts(row) {
+  const cost = row.item.cost_and_debt || {};
+  const inState = firstPositiveNumber(cost.estimated_coa_in_state, cost.in_state_tuition_fees_insurance);
+  const outState = firstPositiveNumber(cost.estimated_coa_out_state, cost.out_state_tuition_fees_insurance);
+  const selected = firstPositiveNumber(row.costBasis, row.item.ranking?.cost_basis, outState, inState);
+  return {inState, outState, selected};
+}
+
+function renderGuidedSchoolCard(row, groupId) {
+  const item = row.item;
+  const id = schoolId(item);
+  const reasonChips = guidedReasonChips(row, groupId).map(text => badge(text, 'good')).join('');
+  const riskChips = guidedRiskChips(row, groupId).map(text => badge(text, 'warn')).join('') || badge('No current risk chip', 'good');
+  const missingChips = guidedMissingChips(row).map(text => badge(text, 'warn')).join('') || badge('No major missing chip', 'good');
+  const decisionRank = row.decisionRank || item.ranking.decision_rank || item.ranking.overall_rank || 'Missing';
+  const overall = row.overall?.score === null ? 'Missing' : row.overall.score.toFixed(2);
+  const admissions = row.admissions?.score === null ? 'Missing' : row.admissions.score.toFixed(2);
+  const attendance = row.attendance?.score === null ? 'Missing' : row.attendance.score.toFixed(2);
+  const costFacts = guidedCostFacts(row);
+  return `<div class="panel school-review-card">
+    <div>
+      <h3>${linkSchool(item)}</h3>
+      <p>${missing(item.school.degree_type)} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${visibilityBadge(item)}</p>
+    </div>
+    <div class="node-fact-row"><strong>Decision Rank</strong><span>${missing(decisionRank)} · ${missing(item.ranking.rank_band || item.derived.rank_band)}</span></div>
+    <div class="node-fact-row"><strong>Selected Scores</strong><span>Overall ${overall} · Admissions ${admissions} · Attendance ${attendance}</span></div>
+    <div class="node-fact-row"><strong>MCAT and GPA</strong><span>${missing(item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average)} / ${missing(item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average)} · ${missing(item.ranking.profile_aamc_acceptance_rate_band || item.derived.aamc_acceptance_rate_band)}</span></div>
+    <div class="node-fact-row"><strong>In-state estimated cost</strong><span>${formatCurrency(costFacts.inState)}</span></div>
+    <div class="node-fact-row"><strong>Out-of-state estimated cost</strong><span>${formatCurrency(costFacts.outState)}</span></div>
+    <div class="node-fact-row"><strong>Cost used for selected score</strong><span>${formatCurrency(costFacts.selected)}</span></div>
+    <div class="card-note"><strong>Why here</strong><div class="card-chip-row">${reasonChips}</div></div>
+    <div class="card-note"><strong>Risks</strong><div class="card-chip-row">${riskChips}</div></div>
+    <div class="card-note"><strong>Missing data</strong><div class="card-chip-row">${missingChips}</div></div>
+    <p><strong>Next action:</strong> ${guidedNextAction(row, groupId)}</p>
+    <div class="card-actions">
+      <a href="${item.profile_route || `#/schools/${item.school_slug}`}">Score Card</a>
+      ${compareButton(item)}
+      ${statusSwitchActions(item)}
+      ${isSchoolHidden(item)
+        ? `<button type="button" data-action="restore-school" data-school-id="${attr(id)}">Restore</button>`
+        : `<button type="button" data-action="hide-school" data-school-id="${attr(id)}">Hide</button>`}
+    </div>
+  </div>`;
+}
+
+function renderGuidedGroup(group, groupedRows) {
+  const rows = groupedRows[group.id] || [];
+  const isOpen = guidedGroupOpenState[group.id] !== undefined ? guidedGroupOpenState[group.id] : group.defaultOpen;
+  const body = isOpen
+    ? rows.length
+      ? `<div class="intake-card-grid">${rows.map(row => renderGuidedSchoolCard(row, group.id)).join('')}</div>`
+      : '<div class="empty-state">No schools currently fall into this group.</div>'
+    : '';
+  return `<div class="guided-group">
+    <button type="button" class="guided-group-header ${isOpen ? 'active' : ''}" data-action="toggle-guided-group" data-group-id="${attr(group.id)}">
+      <strong>${safeText(group.label)}</strong>
+      <span>${rows.length} schools · ${isOpen ? 'Collapse' : 'Expand'}</span>
+    </button>
+    ${body}
+  </div>`;
+}
+
+function renderGuidedResults() {
+  if (!intakeReady()) {
+    return `<div class="empty-state">Choose MCAT band, GPA band, applicant state, and list preferences to generate grouped MD school cards.</div>`;
+  }
+  const grouped = guidedRowsByGroup();
+  const totalRows = Object.values(grouped).reduce((sum, rows) => sum + rows.length, 0);
+  const settings = guidedStrategySettings();
+  return `<div class="grid">
+      ${metric('Grouped MD schools', totalRows)}
+      ${metric('Target applications', intakeState.target_application_count)}
+      ${metric('Strategy', settings.label)}
+      ${metric('Hidden schools', hiddenSchools().length)}
+    </div>
+    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    ${GUIDED_GROUPS.map(group => renderGuidedGroup(group, grouped)).join('')}`;
+}
+
+function updateSplitPaneHeight(selector, cssProperty) {
+  const layout = document.querySelector(selector);
+  if (!layout || window.matchMedia('(max-width: 760px)').matches) return;
+  const top = layout.getBoundingClientRect().top;
+  const available = Math.max(420, window.innerHeight - top - 12);
+  layout.style.setProperty(cssProperty, `${available}px`);
+}
+
+function updateIntakePaneHeight() {
+  updateSplitPaneHeight('.intake-layout', '--intake-layout-height');
+}
+
+function updateRankingsPaneHeight() {
+  updateSplitPaneHeight('.rankings-layout', '--rankings-layout-height');
+}
+
+function captureScrollSnapshot() {
+  const selectors = ['.view.active', '.intake-form', '.intake-results', '.rankings-menu', '.rankings-results', '.table-wrap'];
+  return {
+    windowX: window.scrollX,
+    windowY: window.scrollY,
+    elements: selectors.map(selector => {
+      const element = document.querySelector(selector);
+      return element ? {selector, top: element.scrollTop, left: element.scrollLeft} : null;
+    }).filter(Boolean),
+  };
+}
+
+function restoreScrollSnapshot(snapshot) {
+  if (!snapshot) return;
+  requestAnimationFrame(() => {
+    window.scrollTo({top: snapshot.windowY || 0, left: snapshot.windowX || 0});
+    snapshot.elements.forEach(record => {
+      const element = document.querySelector(record.selector);
+      if (element) {
+        element.scrollTop = record.top || 0;
+        element.scrollLeft = record.left || 0;
+      }
+    });
+    if (currentRoute.view === 'intake') updateIntakePaneHeight();
+    if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
+  });
+}
+
+function renderIntake() {
+  $('intake').innerHTML = `<h2>Applicant Intake</h2>
+    <div class="intake-layout">
+      ${renderIntakeMenu()}
+      <div class="intake-results">
+        <div class="panel" style="margin-bottom:12px">
+          <div class="inline-actions" style="justify-content:space-between">
+            <h3 style="margin:0">Current Lens</h3>
+            ${badge(intakeReady() ? 'Ready' : 'Needs required bands', intakeReady() ? 'good' : 'warn')}
+          </div>
+          ${intakeSummaryChips()}
+        </div>
+        ${renderGuidedResults()}
+      </div>
+    </div>`;
+  updateIntakePaneHeight();
 }
 
 function renderRankings() {
   $('rankings').innerHTML = `<h2>Rankings</h2>
-    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
-    <div class="inline-actions" style="margin-bottom:12px">
-      <button type="button" id="downloadRankingDossiers">Download Dossier Edits CSV</button>
-      <button type="button" id="downloadRankingVisibility">Download Visibility CSV</button>
-      <a href="#/application-list">Open Application List</a>
-      <a href="#/compare">Open Compare</a>
+    <div class="rankings-layout">
+      <div class="rankings-menu">${renderIntakeMenu()}</div>
+      <div class="rankings-results">
+        <div class="panel" style="margin-bottom:12px">
+          <div class="inline-actions" style="justify-content:space-between">
+            <h3 style="margin:0">Current Lens</h3>
+            ${badge(intakeReady() ? 'Ready' : 'Needs required bands', intakeReady() ? 'good' : 'warn')}
+          </div>
+          ${intakeSummaryChips()}
+        </div>
+        <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+        <div id="rankTable"></div>
+      </div>
     </div>
-    ${renderVisibilityPanel()}${mdSelectorControls()}${rankingFilters()}<div id="rankTable"></div>`;
+    ${renderHiddenSchoolsPanel()}`;
   const bindings = {
     rankDegree: 'degree',
     rankState: 'state',
     rankTier: 'tier',
     rankBucket: 'bucket',
-    rankVisibility: 'visibility',
     rankQuality: 'quality',
     rankMcatBand: 'mcatBand',
     rankGpaBand: 'gpaBand',
@@ -2759,7 +3650,6 @@ function renderRankings() {
     bindings.rankHardNo = 'hardNo';
     bindings.rankExcluded = 'excluded';
     bindings.rankWarnings = 'warnings';
-    bindings.rankPartner = 'partner';
   }
   Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
     filters.rankings[key] = event.target.value;
@@ -2774,61 +3664,48 @@ function renderRankings() {
     selectorState[key] = event.target.value;
     renderRankings();
   }));
-  $('downloadSelectorAssumptions')?.addEventListener('click', () => {
-    downloadCsv('selected-profile-assumptions.csv', Object.keys(selectedAssumptionRecords()[0]), selectedAssumptionRecords());
-  });
-  $('downloadSelectorRows')?.addEventListener('click', () => {
-    const records = selectedRankingRecords();
-    if (!records.length) return;
-    downloadCsv('selected-md-decision-rankings.csv', Object.keys(records[0]), records);
-  });
   $('downloadRankingDossiers')?.addEventListener('click', downloadDossierExport);
   $('downloadRankingVisibility')?.addEventListener('click', downloadVisibilityExport);
   $('downloadVisibilityExport')?.addEventListener('click', downloadVisibilityExport);
-  renderMdSelectorTable();
+  if ($('mdSelectorTable')) renderMdSelectorTable();
   renderRankingTable();
+  updateRankingsPaneHeight();
 }
 
 function renderRankingTable() {
-  const visibleRows = sortRows(rankingsRows(), 'rankings', 'ranking.overall_rank');
+  const selectedRows = selectorReady() ? selectorRankedRows() : [];
+  const selectedById = new Map(selectedRows.map(row => [schoolId(row.item), row]));
+  let visibleRows = selectorReady() ? selectedRows.map(row => row.item) : rankingsRows();
+  if (!selectorReady() || sortState.rankings?.key) {
+    visibleRows = sortRows(visibleRows, 'rankings', 'ranking.overall_rank');
+  }
   const columns = [
-    {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(s.ranking.decision_rank || s.ranking.overall_rank)},
+    {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(selectedById.get(schoolId(s))?.decisionRank || s.ranking.decision_rank || s.ranking.overall_rank)},
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
     {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-    {key:'ranking.rank_band', label:'Rank Band', render:s=>missing(s.ranking.rank_band)},
-    {key:'ranking.rank_confidence', label:'Confidence', render:s=>badge(s.ranking.rank_confidence)},
     {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
-    {key:'ranking.application_bucket', label:'Bucket', render:s=>missing(s.ranking.application_bucket || s.ranking.suggested_funnel_bucket)},
-    {key:'visibility.visibility_state', label:'Visibility', render:s=>visibilityBadge(s)},
-    {key:'dossier.application_decision_status', label:'Application Decision', render:s=>applicationDecisionControl(s)},
-    {key:'dossier.interest_level', label:'Interest', render:s=>interestControl(s)},
-    {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
-    {key:'ranking.admissions_score', label:'Admissions', render:s=>missing(s.ranking.admissions_score)},
-    {key:'ranking.attendance_score', label:'Attendance', render:s=>missing(s.ranking.attendance_score)},
-    {key:'ranking.admissions_mcat_fit_score', label:'MCAT Fit', render:s=>missing(s.ranking.admissions_mcat_fit_score)},
-    {key:'ranking.admissions_gpa_fit_score', label:'GPA Fit', render:s=>missing(s.ranking.admissions_gpa_fit_score)},
-    {key:'ranking.admissions_oos_friendliness_score', label:'OOS Fit', render:s=>missing(s.ranking.admissions_oos_friendliness_score)},
-    {key:'ranking.attendance_cost_score', label:'Cost Fit', render:s=>missing(s.ranking.attendance_cost_score)},
-    {key:'ranking.data_completeness_score', label:'Data', render:s=>missing(s.ranking.data_completeness_score)},
-    {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
-    {key:'ranking.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
-    {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
-    {key:'ranking.profile_aamc_acceptance_rate', label:'Profile AAMC', render:s=>missing(s.ranking.profile_aamc_acceptance_rate)},
+    {key:'ranking.overall_school_value', label:'Overall', render:s=>selectedById.get(schoolId(s))?.overall?.score?.toFixed(2) || missing(s.ranking.overall_school_value)},
+    {key:'ranking.published_mcat_average', label:'MCAT average', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
+    {key:'ranking.published_gpa_average', label:'GPA average', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
     {key:'derived.aamc_acceptance_rate_band', label:'AAMC Band', render:s=>missing(s.ranking.profile_aamc_acceptance_rate_band || s.derived.aamc_acceptance_rate_band)},
-    {key:'ranking.score_warnings', label:'Score Warnings', render:s=>s.ranking.score_warnings ? badge('Has warnings', 'warn') : 'Clear'},
-    {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Dossier</a>${compareButton(s)}${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(s))}">Hide</button>`}</div>`},
+    {key:'cost_and_debt.estimated_coa_in_state', label:'In-state estimated cost', render:s=>formatCurrency(s.cost_and_debt.estimated_coa_in_state || s.cost_and_debt.in_state_tuition_fees_insurance)},
+    {key:'cost_and_debt.estimated_coa_out_state', label:'Out-of-state estimated cost', render:s=>formatCurrency(s.cost_and_debt.estimated_coa_out_state || s.cost_and_debt.out_state_tuition_fees_insurance)},
+    {key:'derived.admissions_data_quality_band', label:'Data Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
+    {key:'dossier.application_decision_status', label:'Status', render:s=>statusSwitchActions(s)},
+    {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Score Card</a>${compareButton(s)}</div>`},
   ];
   if (ADMIN_ENABLED) {
     columns.push(
       {key:'derived.warning_count', label:'Warnings', render:s=>s.derived.warning_count ? badge(s.derived.warning_count, 'warn') : '0'},
       {key:'derived.excluded_from_rank', label:'Excluded', render:s=>s.derived.excluded_from_rank ? badge('Excluded', 'warn') : ''},
-      {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''},
-      {key:'derived.partner_input_status', label:'Partner', render:s=>s.derived.partner_input_status}
+      {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''}
     );
   }
-  const label = filters.rankings.visibility === 'hidden' ? 'hidden schools' : filters.rankings.visibility === 'all' ? 'schools' : 'visible schools';
-  $('rankTable').innerHTML = `<p>${visibleRows.length} ${label}</p>` + table(columns, visibleRows, 'rankings');
+  $('rankTable').innerHTML = `<div class="rankings-results-header">
+    <p style="margin:0">${selectorReady() ? `${visibleRows.length} MD schools match the selected intake lens.` : `${visibleRows.length} visible schools match the current selections.`}</p>
+    ${badge(`${hiddenSchools().length} hidden`, hiddenSchools().length ? 'warn' : 'good')}
+  </div>` + table(columns, visibleRows, 'rankings');
 }
 
 function renderLists() {
@@ -2881,6 +3758,31 @@ function renderListDetail() {
 }
 
 function compareDetailRows(item) {
+  const compareNode = getCompareCardNode(schoolId(item));
+  if (compareNode) {
+    return [
+      ['Decision rank', compareNode.rank_fit?.decision_rank],
+      ['Application decision', labelize(applicationStatusFor(item))],
+      ['Research status', labelize(researchStatusFor(item))],
+      ['Interest', labelize(dossierFor(item).interest_level)],
+      ['Admissions tier', compareNode.rank_fit?.admissions_fit_tier],
+      ['Rank band', compareNode.rank_fit?.rank_band],
+      ['Admissions score', compareNode.rank_fit?.admissions_score],
+      ['Attendance score', compareNode.rank_fit?.attendance_score],
+      ['MCAT average', compareNode.admissions_facts?.mcat_average],
+      ['GPA average', compareNode.admissions_facts?.gpa_average],
+      ['AAMC band', compareNode.admissions_facts?.aamc_rate_band],
+      ['In-state estimated cost', formatCurrency(compareNode.cost_facts?.in_state)],
+      ['Out-of-state estimated cost', formatCurrency(compareNode.cost_facts?.out_state)],
+      ['Cost used for selected score', formatCurrency(compareNode.cost_facts?.cost_basis)],
+      ['Policy rows', compareNode.requirements_summary?.policy_count],
+      ['Letter rows', compareNode.requirements_summary?.letter_requirement_count],
+      ['Missing sections', compareNode.missing_data_summary?.missing_fields?.join(', ') || 'Complete'],
+      ['Next action', applicationNextActionFor(item, applicationStatusFor(item))],
+      ['Notes', dossierFor(item).notes],
+    ];
+  }
+  // Defensive fallback for older payloads that do not yet include compare_card_nodes.
   return [
     ['Decision rank', item.ranking.decision_rank || item.ranking.overall_rank],
     ['Application decision', labelize(applicationStatusFor(item))],
@@ -2891,26 +3793,32 @@ function compareDetailRows(item) {
     ['Overall value', item.ranking.overall_school_value],
     ['Admissions score', item.ranking.admissions_score],
     ['Attendance score', item.ranking.attendance_score],
-    ['MCAT avg', item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average],
-    ['GPA avg', item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average],
+    ['MCAT average', item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average],
+    ['GPA average', item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average],
     ['AAMC band', item.ranking.profile_aamc_acceptance_rate_band || item.derived.aamc_acceptance_rate_band],
-    ['OOS COA', item.cost_and_debt.estimated_coa_out_state],
-    ['Cost basis', item.ranking.cost_basis],
+    ['In-state estimated cost', formatCurrency(item.cost_and_debt.estimated_coa_in_state || item.cost_and_debt.in_state_tuition_fees_insurance)],
+    ['Out-of-state estimated cost', formatCurrency(item.cost_and_debt.estimated_coa_out_state || item.cost_and_debt.out_state_tuition_fees_insurance)],
+    ['Cost used for selected score', formatCurrency(item.ranking.cost_basis)],
     ['Stats quality', item.derived.admissions_data_quality_band],
     ['Rank confidence', item.ranking.rank_confidence || item.derived.rank_confidence],
-    ['Missing sections', missingDossierSections(item).join(', ') || 'Complete'],
+      ['Missing score-card sections', missingDossierSections(item).join(', ') || 'Complete'],
     ['Next action', applicationNextActionFor(item, applicationStatusFor(item))],
     ['Notes', dossierFor(item).notes],
   ];
 }
 
 function renderCompareCard(item) {
+  const compareNode = getCompareCardNode(schoolId(item));
+  const identity = compareNode?.identity || {};
+  const degree = identity.degree_type || item.school.degree_type;
+  const city = identity.city || item.school.city;
+  const state = identity.state || item.school.state;
   return `<div class="compare-card">
     <div class="inline-actions" style="justify-content:space-between">
       <h3 style="margin:0">${linkSchool(item)}</h3>
       ${compareButton(item)}
     </div>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${visibilityBadge(item)}</p>
+    <p>${missing(degree)} · ${missing(city)}, ${missing(state)} · ${visibilityBadge(item)} ${compareNode ? nodeStatusChip(compareNode.missing_data_summary?.readiness) : ''}</p>
     ${compareDetailRows(item).map(([label, value]) => `<div class="compare-row"><strong>${label}</strong><span>${missing(value)}</span></div>`).join('')}
   </div>`;
 }
@@ -2920,7 +3828,7 @@ function renderCompare() {
   const candidates = sortRows(filteredSchools(), 'compareCandidates', 'ranking.overall_rank').slice(0, 50);
   const selectedMarkup = selected.length
     ? `<div class="compare-grid">${selected.map(renderCompareCard).join('')}</div>`
-    : '<div class="empty-state">Select 2-4 schools from the table below, Rankings, or Application List to compare them side by side.</div>';
+    : '<div class="empty-state">Select 2-4 schools from the table below, Rankings, Interested, or Applications to compare them side by side.</div>';
   const compareStatus = selected.length < 2
     ? 'Select at least 2 schools for a useful comparison.'
     : `${selected.length} schools selected for side-by-side review.`;
@@ -2934,7 +3842,8 @@ function renderCompare() {
     <div class="inline-actions" style="margin-bottom:12px">
       <button type="button" data-action="clear-compare">Clear Compare</button>
       <a href="#/rankings">Back to Rankings</a>
-      <a href="#/application-list">Application List</a>
+      <a href="#/interested">Interested</a>
+      <a href="#/applications">Applications</a>
       <span class="muted">${compareStatus}</span>
     </div>
     ${selectedMarkup}
@@ -2945,12 +3854,13 @@ function renderCompare() {
       {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
       {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
       {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
-      {key:'dossier.application_decision_status', label:'Application Decision', render:s=>applicationDecisionControl(s)},
+      {key:'dossier.application_decision_status', label:'Status', render:s=>statusSwitchActions(s)},
       {key:'dossier.interest_level', label:'Interest', render:s=>interestControl(s)},
       {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)},
-      {key:'ranking.published_mcat_average', label:'MCAT Avg', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
-      {key:'ranking.published_gpa_average', label:'GPA Avg', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
-      {key:'cost_and_debt.estimated_coa_out_state', label:'OOS COA', render:s=>missing(s.cost_and_debt.estimated_coa_out_state)},
+      {key:'ranking.published_mcat_average', label:'MCAT average', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
+      {key:'ranking.published_gpa_average', label:'GPA average', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
+      {key:'cost_and_debt.estimated_coa_in_state', label:'In-state estimated cost', render:s=>formatCurrency(s.cost_and_debt.estimated_coa_in_state || s.cost_and_debt.in_state_tuition_fees_insurance)},
+      {key:'cost_and_debt.estimated_coa_out_state', label:'Out-of-state estimated cost', render:s=>formatCurrency(s.cost_and_debt.estimated_coa_out_state || s.cost_and_debt.out_state_tuition_fees_insurance)},
       {key:'derived.admissions_data_quality_band', label:'Stats Quality', render:s=>badge(s.derived.admissions_data_quality_band)},
     ], candidates, 'compareCandidates')}`;
 }
@@ -2987,9 +3897,9 @@ function renderDossierForm(item) {
   const editCount = dossierExportRecords().length;
   return `<div class="panel" style="margin-top:12px">
     <div class="inline-actions">
-      <h3 style="margin:0">Local Dossier</h3>
+      <h3 style="margin:0">Local Score Card</h3>
       ${badge(`${editCount} edited`, editCount ? 'warn' : '')}
-      <button type="button" id="downloadDossierExport">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadDossierExport">Download Score Card Edits CSV</button>
       ${isSchoolHidden(item)
         ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
         : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(item))}">Hide School</button>`}
@@ -3004,8 +3914,8 @@ function renderDossierForm(item) {
       ${dossierSelect(item, 'regret_index', 'Regret index', null)}
       ${dossierSelect(item, 'hard_no_flag', 'Hard no', ['TRUE', 'FALSE'])}
       ${dossierInput(item, 'hard_no_reason', 'Hard no reason', 'Only if hard no')}
-      ${dossierSelect(item, 'application_decision_status', 'Application decision', DECISION_STATUSES)}
-      ${dossierTextarea(item, 'notes', 'Dossier notes', 'School-specific research, subjective fit, unanswered questions')}
+      <label>List status ${statusSwitchActions(item)}</label>
+      ${dossierTextarea(item, 'notes', 'Score card notes', 'School-specific research, subjective fit, unanswered questions')}
     </div>
   </div>`;
 }
@@ -3039,16 +3949,16 @@ function renderDossierFilters() {
 
 function renderDossiers() {
   const tableRows = sortRows(dossierRows(), 'dossiers', 'ranking.overall_rank');
-  $('dossiers').innerHTML = `<h2>School Dossiers</h2>
-    <div class="caveat">Dossiers combine source-backed fields with local reviewer notes. Local edits are exported separately and do not mutate the seed data.</div>
+  $('dossiers').innerHTML = `<h2>School Score Cards</h2>
+    <div class="caveat">Score cards combine source-backed fields with local reviewer notes. Local edits are exported separately and do not mutate the seed data.</div>
     <div class="grid">
       ${metric('Visible schools', rows('schools').filter(item => !isSchoolHidden(item)).length)}
       ${metric('Hidden schools', hiddenSchools().length)}
-      ${metric('Edited dossiers', dossierExportRecords().length)}
+      ${metric('Edited score cards', dossierExportRecords().length)}
       ${metric('Rows in view', tableRows.length)}
     </div>
     <div class="inline-actions" style="margin-bottom:12px">
-      <button type="button" id="downloadDossierIndexExport">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadDossierIndexExport">Download Score Card Edits CSV</button>
       <button type="button" id="downloadDossierVisibilityExport">Download Visibility CSV</button>
     </div>
     ${renderDossierFilters()}
@@ -3061,7 +3971,7 @@ function renderDossiers() {
       {key:'ranking.rank_confidence', label:'Confidence', render:s=>badge(s.ranking.rank_confidence || s.derived.rank_confidence)},
       {key:'dossier.research_status', label:'Research Status', render:s=>labelize(researchStatusFor(s))},
       {key:'visibility.visibility_state', label:'Visibility', render:s=>visibilityBadge(s)},
-      {key:'dossier.missing', label:'Missing Sections', render:s=>missingDossierSections(s).join(', ') || 'Complete'},
+      {key:'dossier.missing', label:'Missing Score-Card Sections', render:s=>missingDossierSections(s).join(', ') || 'Complete'},
       {key:'research.next', label:'Next Action', render:s=>nextResearchAction(s)},
       {key:'actions', label:'Actions', render:s=>`<div class="inline-actions"><a href="${s.profile_route || `#/schools/${s.school_slug}`}">Open</a>${isSchoolHidden(s) ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(s))}">Hide</button>`}</div>`},
     ], tableRows, 'dossiers')}`;
@@ -3083,7 +3993,7 @@ function renderDossiers() {
 function researchQueueRows() {
   const f = filters.research;
   const actions = {
-    start: 'Start dossier',
+    start: 'Start score card',
     score: 'Score four-year fit',
     interest: 'Set interest level',
     fill: 'Fill',
@@ -3121,7 +4031,7 @@ function renderResearchFilters() {
   return `<div class="filters">
     <label>Visibility <select id="researchVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
     <label>Research Status <select id="researchStatus">${labeledOptions(RESEARCH_STATUSES, f.status)}</select></label>
-    <label>Next Action <select id="researchAction"><option value="" ${f.action === '' ? 'selected' : ''}>All</option><option value="start" ${f.action === 'start' ? 'selected' : ''}>Start dossier</option><option value="score" ${f.action === 'score' ? 'selected' : ''}>Score four-year fit</option><option value="interest" ${f.action === 'interest' ? 'selected' : ''}>Set interest level</option><option value="fill" ${f.action === 'fill' ? 'selected' : ''}>Fill source gap</option><option value="decision" ${f.action === 'decision' ? 'selected' : ''}>Set decision status</option><option value="ready" ${f.action === 'ready' ? 'selected' : ''}>Ready</option><option value="hidden" ${f.action === 'hidden' ? 'selected' : ''}>Hidden review</option></select></label>
+    <label>Next Action <select id="researchAction"><option value="" ${f.action === '' ? 'selected' : ''}>All</option><option value="start" ${f.action === 'start' ? 'selected' : ''}>Start score card</option><option value="score" ${f.action === 'score' ? 'selected' : ''}>Score four-year fit</option><option value="interest" ${f.action === 'interest' ? 'selected' : ''}>Set interest level</option><option value="fill" ${f.action === 'fill' ? 'selected' : ''}>Fill source gap</option><option value="decision" ${f.action === 'decision' ? 'selected' : ''}>Set decision status</option><option value="ready" ${f.action === 'ready' ? 'selected' : ''}>Ready</option><option value="hidden" ${f.action === 'hidden' ? 'selected' : ''}>Hidden review</option></select></label>
     <label>Admissions Tier <select id="researchTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
     <label>Rank Band <select id="researchRankBand"><option value="" ${f.rankBand === '' ? 'selected' : ''}>All</option>${optionTags(rankBands, f.rankBand)}</select></label>
   </div>`;
@@ -3132,15 +4042,15 @@ function renderResearch() {
   const visibleRows = rows('schools').filter(item => !isSchoolHidden(item));
   const readyCount = visibleRows.filter(item => nextResearchAction(item) === 'Ready for shortlist review').length;
   $('research').innerHTML = `<h2>Research Queue</h2>
-    <div class="caveat">The queue is deterministic: hidden status, missing source sections, and local dossier fields drive the next action.</div>
+    <div class="caveat">The queue is deterministic: hidden status, missing source sections, and local score-card fields drive the next action.</div>
     <div class="grid">
       ${metric('Rows in queue', queueRows.length)}
       ${metric('Visible schools', visibleRows.length)}
       ${metric('Ready for shortlist review', readyCount)}
-      ${metric('Edited dossiers', dossierExportRecords().length)}
+      ${metric('Edited score cards', dossierExportRecords().length)}
     </div>
     <div class="inline-actions" style="margin-bottom:12px">
-      <button type="button" id="downloadResearchDossiers">Download Dossier Edits CSV</button>
+      <button type="button" id="downloadResearchDossiers">Download Score Card Edits CSV</button>
       <button type="button" id="downloadResearchVisibility">Download Visibility CSV</button>
     </div>
     ${renderResearchFilters()}
@@ -3184,6 +4094,15 @@ function applicationStatusFor(item) {
   return dossierFor(item).application_decision_status || 'unselected';
 }
 
+function applicationStatusCounts() {
+  return rows('schools').reduce((counts, item) => {
+    const status = applicationStatusFor(item);
+    if (APPLICATION_INTERESTED_STATUSES.includes(status)) counts.interested += 1;
+    if (APPLICATION_APPLYING_STATUSES.includes(status)) counts.applying += 1;
+    return counts;
+  }, {interested: 0, applying: 0});
+}
+
 function applicationBucketFor(item) {
   return item.ranking.application_bucket || item.ranking.suggested_funnel_bucket || item.derived.application_bucket || '';
 }
@@ -3214,11 +4133,11 @@ function applicationNextActionFor(item, status) {
   if (status === 'applying') return 'Submit primary and secondary materials';
   if (['researched', 'ready_to_decide'].includes(researchStatus)) return 'Decide whether to submit application';
   if (status === 'unselected') return nextResearchAction(item);
-  return 'Research dossier and decide whether to apply';
+  return 'Research score card and decide whether to apply';
 }
 
 function applicationWhyKept(item, status) {
-  const parts = [`Marked ${status === 'unselected' ? 'unselected' : status} in school dossier`];
+  const parts = [`Marked ${status === 'unselected' ? 'unselected' : status} in school score card`];
   const rank = item.ranking.decision_rank || item.ranking.overall_rank;
   if (rank) parts.push(`Decision Rank ${rank}`);
   const rankBand = item.ranking.rank_band || item.derived.rank_band;
@@ -3237,13 +4156,12 @@ function applicationWhyCut(item, status) {
     const reason = visibilityFor(item).visibility_reason;
     return reason ? `Hidden: ${reason}` : 'Hidden from current review view.';
   }
-  if (APPLICATION_EXCLUDED_STATUSES.includes(status)) return `Marked ${status} in school dossier.`;
-  if (truthy(dossierFor(item).hard_no_flag)) return dossierFor(item).hard_no_reason || 'Marked hard no in school dossier.';
+  if (APPLICATION_EXCLUDED_STATUSES.includes(status)) return `Marked ${status} in school score card.`;
+  if (truthy(dossierFor(item).hard_no_flag)) return dossierFor(item).hard_no_reason || 'Marked hard no in school score card.';
   return '';
 }
 
-function applicationListRows() {
-  const f = filters.applicationList;
+function applicationWorkflowRows() {
   return filteredSchools().map(item => {
     const status = applicationStatusFor(item);
     const priority = applicationPriorityFor(item, status);
@@ -3260,30 +4178,50 @@ function applicationListRows() {
       whyKept: applicationWhyKept(item, status),
       whyCut: applicationWhyCut(item, status),
     };
-  }).filter(row => {
-    const item = row.item;
-    const active = isActiveApplicationStatus(row.status);
-    const excluded = APPLICATION_EXCLUDED_STATUSES.includes(row.status) || row.hidden || truthy(row.dossier.hard_no_flag);
-    if (f.visibility === 'visible' && row.hidden) return false;
-    if (f.visibility === 'hidden' && !row.hidden) return false;
-    if (f.degree && item.school.degree_type !== f.degree) return false;
-    if (f.status === 'active' && !active) return false;
-    if (f.status === 'excluded' && !excluded) return false;
-    if (f.status === 'unselected' && row.status !== 'unselected') return false;
-    if (!['', 'all', 'active', 'excluded', 'unselected'].includes(f.status) && row.status !== f.status) return false;
-    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
-    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
-    if (f.interest && row.dossier.interest_level !== f.interest) return false;
-    if (f.priority && row.priority !== f.priority) return false;
-    if (f.maxRank && row.rank > Number(f.maxRank)) return false;
-    return true;
-  }).sort((a, b) => {
+  });
+}
+
+function sortApplicationWorkflowRows(rowList) {
+  return rowList.sort((a, b) => {
     const priorityOrder = {highest: 0, high: 1, medium: 2, low: 3};
     const priorityDelta = (priorityOrder[a.priority] ?? 9) - (priorityOrder[b.priority] ?? 9);
     if (priorityDelta) return priorityDelta;
     if (a.rank !== b.rank) return a.rank - b.rank;
     return String(a.item.school.school_name).localeCompare(String(b.item.school.school_name));
   });
+}
+
+function consideringListRows() {
+  const f = filters.consideringList;
+  return sortApplicationWorkflowRows(applicationWorkflowRows().filter(row => {
+    const item = row.item;
+    if (!APPLICATION_INTERESTED_STATUSES.includes(row.status)) return false;
+    if (f.visibility === 'visible' && row.hidden) return false;
+    if (f.visibility === 'hidden' && !row.hidden) return false;
+    if (f.degree && item.school.degree_type !== f.degree) return false;
+    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
+    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
+    if (f.interest && row.dossier.interest_level !== f.interest) return false;
+    if (f.maxRank && row.rank > Number(f.maxRank)) return false;
+    return true;
+  }));
+}
+
+function applicationListRows() {
+  const f = filters.applicationList;
+  return sortApplicationWorkflowRows(applicationWorkflowRows().filter(row => {
+    const item = row.item;
+    if (!APPLICATION_APPLYING_STATUSES.includes(row.status)) return false;
+    if (f.visibility === 'visible' && row.hidden) return false;
+    if (f.visibility === 'hidden' && !row.hidden) return false;
+    if (f.degree && item.school.degree_type !== f.degree) return false;
+    if (f.tier && (item.ranking.admissions_fit_tier || item.ranking.dynamic_tier || item.derived.admissions_fit_tier) !== f.tier) return false;
+    if (f.rankBand && (item.ranking.rank_band || item.derived.rank_band) !== f.rankBand) return false;
+    if (f.interest && row.dossier.interest_level !== f.interest) return false;
+    if (f.priority && row.priority !== f.priority) return false;
+    if (f.maxRank && row.rank > Number(f.maxRank)) return false;
+    return true;
+  }));
 }
 
 function finalApplicationRecords() {
@@ -3316,18 +4254,79 @@ function downloadFinalApplicationList() {
   downloadCsv('final_application_list_export.csv', APPLICATION_EXPORT_HEADERS, finalApplicationRecords());
 }
 
+function listLimitWarning(kind, count, limit) {
+  if (count < limit) return '';
+  return `<div class="caveat">${safeText(kind)} is at the hard limit of ${limit}. Remove a school from this list before adding another.</div>`;
+}
+
+function renderConsideringListFilters() {
+  const degrees = unique(rows('schools').map(s => s.school.degree_type)).sort();
+  const tiers = unique(rows('schools').map(s => s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)).sort();
+  const rankBands = unique(rows('schools').map(s => s.ranking.rank_band || s.derived.rank_band)).sort();
+  const f = filters.consideringList;
+  return `<div class="filters">
+    <label>Visibility <select id="consideringVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
+    <label>Degree <select id="consideringDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
+    <label>Interest <select id="consideringInterest">${labeledOptions(INTEREST_LEVELS, f.interest)}</select></label>
+    <label>Admissions Tier <select id="consideringTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
+    <label>Rank Band <select id="consideringRankBand"><option value="" ${f.rankBand === '' ? 'selected' : ''}>All</option>${optionTags(rankBands, f.rankBand)}</select></label>
+    <label>Max Rank <select id="consideringMaxRank"><option value="" ${f.maxRank === '' ? 'selected' : ''}>All</option><option value="25" ${f.maxRank === '25' ? 'selected' : ''}>Top 25</option><option value="35" ${f.maxRank === '35' ? 'selected' : ''}>Top 35</option><option value="50" ${f.maxRank === '50' ? 'selected' : ''}>Top 50</option><option value="75" ${f.maxRank === '75' ? 'selected' : ''}>Top 75</option></select></label>
+  </div>`;
+}
+
+function renderConsideringList() {
+  const tableRows = consideringListRows();
+  const counts = applicationStatusCounts();
+  const emptyMessage = tableRows.length ? '' : '<div class="empty-state" style="margin-bottom:12px">No schools are marked Interested yet. Add schools from Rankings, guided cards, or a school score card.</div>';
+  $('consideringList').innerHTML = `<h2>Interested</h2>
+    <div class="caveat">Interested is the working review list. Keep it under ${INTERESTED_LIMIT}, then promote only true applications to Applying.</div>
+    ${listLimitWarning('Interested', counts.interested, INTERESTED_LIMIT)}
+    <div class="grid">
+      ${metric('Interested', `${counts.interested}/${INTERESTED_LIMIT}`)}
+      ${metric('Applying', `${counts.applying}/${APPLYING_LIMIT}`)}
+      ${metric('Rows in view', tableRows.length)}
+    </div>
+    <div class="inline-actions" style="margin-bottom:12px">
+      <button type="button" id="downloadConsideringDossiers">Download Score Card Edits CSV</button>
+      <a href="#/rankings">Open Rankings</a>
+      <a href="#/applications">Open Applications</a>
+      <a href="#/compare">Open Compare</a>
+    </div>
+    ${renderConsideringListFilters()}
+    ${emptyMessage}
+    ${table([
+      {key:'rank', label:'Decision Rank', render:r=>r.rank === 9999 ? 'Missing' : r.rank},
+      {key:'item.school.school_name', label:'School', render:r=>linkSchool(r.item)},
+      {key:'item.school.city', label:'Location', render:r=>`${missing(r.item.school.city)}, ${missing(r.item.school.state)}`},
+      {key:'tier', label:'Admissions Tier', render:r=>missing(r.item.ranking.admissions_fit_tier || r.item.ranking.dynamic_tier || r.item.derived.admissions_fit_tier)},
+      {key:'status', label:'Status', render:r=>statusSwitchActions(r.item)},
+      {key:'interest', label:'Interest', render:r=>interestControl(r.item)},
+      {key:'nextAction', label:'Next Action', render:r=>r.nextAction},
+      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Score Card</a>${compareButton(r.item)}</div>`},
+    ], tableRows, 'consideringList')}`;
+  const bindings = {
+    consideringVisibility: 'visibility',
+    consideringDegree: 'degree',
+    consideringInterest: 'interest',
+    consideringTier: 'tier',
+    consideringRankBand: 'rankBand',
+    consideringMaxRank: 'maxRank',
+  };
+  Object.entries(bindings).forEach(([id, key]) => $(id)?.addEventListener('change', event => {
+    filters.consideringList[key] = event.target.value;
+    renderConsideringList();
+  }));
+  $('downloadConsideringDossiers')?.addEventListener('click', downloadDossierExport);
+}
+
 function renderApplicationListFilters() {
   const degrees = unique(rows('schools').map(s => s.school.degree_type)).sort();
   const tiers = unique(rows('schools').map(s => s.ranking.admissions_fit_tier || s.ranking.dynamic_tier || s.derived.admissions_fit_tier)).sort();
   const rankBands = unique(rows('schools').map(s => s.ranking.rank_band || s.derived.rank_band)).sort();
   const f = filters.applicationList;
-  const decisionStatusOptions = DECISION_STATUSES
-    .map(value => `<option value="${value}" ${String(f.status || '') === value ? 'selected' : ''}>${labelize(value)}</option>`)
-    .join('');
   return `<div class="filters">
     <label>Visibility <select id="applicationVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
     <label>Degree <select id="applicationDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
-    <label>Application Status <select id="applicationStatus"><option value="active" ${f.status === 'active' ? 'selected' : ''}>Active shortlist</option><option value="all" ${f.status === 'all' ? 'selected' : ''}>All</option><option value="unselected" ${f.status === 'unselected' ? 'selected' : ''}>Unselected</option><option value="excluded" ${f.status === 'excluded' ? 'selected' : ''}>Excluded/cut</option>${decisionStatusOptions}</select></label>
     <label>Interest <select id="applicationInterest">${labeledOptions(INTEREST_LEVELS, f.interest)}</select></label>
     <label>Priority <select id="applicationPriority"><option value="" ${f.priority === '' ? 'selected' : ''}>All</option><option value="highest" ${f.priority === 'highest' ? 'selected' : ''}>Highest</option><option value="high" ${f.priority === 'high' ? 'selected' : ''}>High</option><option value="medium" ${f.priority === 'medium' ? 'selected' : ''}>Medium</option><option value="low" ${f.priority === 'low' ? 'selected' : ''}>Low</option></select></label>
     <label>Admissions Tier <select id="applicationTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
@@ -3338,23 +4337,20 @@ function renderApplicationListFilters() {
 
 function renderApplicationList() {
   const tableRows = applicationListRows();
-  const activeCandidates = rows('schools').filter(item => !isSchoolHidden(item) && isActiveApplicationStatus(applicationStatusFor(item)));
-  const submittedCandidates = activeCandidates.filter(item => ['applying', 'applied', 'interview', 'accepted', 'waitlisted'].includes(applicationStatusFor(item)));
-  const excludedCandidates = rows('schools').filter(item => isSchoolHidden(item) || APPLICATION_EXCLUDED_STATUSES.includes(applicationStatusFor(item)));
-  const emptyMessage = tableRows.length ? '' : '<div class="empty-state" style="margin-bottom:12px">No schools match this Application List view yet. Switch Application Status to All or Unselected, then set schools to Considering/Applying to build the active shortlist.</div>';
-  $('applicationList').innerHTML = `<h2>Final Application List</h2>
-    <div class="caveat">This view is driven by persisted visibility and dossier state. Use dossier status to move schools into the active shortlist, then export the current view or run <code>uv run med-school-build-final-list</code> to write the repo CSV.</div>
+  const counts = applicationStatusCounts();
+  const emptyMessage = tableRows.length ? '' : '<div class="empty-state" style="margin-bottom:12px">No schools are marked Applying yet. Promote schools from Interested or a school score card.</div>';
+  $('applicationList').innerHTML = `<h2>Applications</h2>
+    <div class="caveat">Applications is the active submission list. Keep it under ${APPLYING_LIMIT}; remove a school before adding another once the cap is reached.</div>
+    ${listLimitWarning('Applications', counts.applying, APPLYING_LIMIT)}
     <div class="grid">
-      ${metric('Active candidates', activeCandidates.length)}
-      ${metric('Target range', '25-35')}
-      ${metric('Submitted/applying', submittedCandidates.length)}
-      ${metric('Excluded/cut', excludedCandidates.length)}
+      ${metric('Interested', `${counts.interested}/${INTERESTED_LIMIT}`)}
+      ${metric('Applying', `${counts.applying}/${APPLYING_LIMIT}`)}
       ${metric('Rows in view', tableRows.length)}
     </div>
     <div class="inline-actions" style="margin-bottom:12px">
       <button type="button" id="downloadFinalApplicationList">Download Current View CSV</button>
-      <button type="button" id="downloadApplicationDossiers">Download Dossier Edits CSV</button>
-      <button type="button" id="downloadApplicationVisibility">Download Visibility CSV</button>
+      <button type="button" id="downloadApplicationDossiers">Download Score Card Edits CSV</button>
+      <a href="#/interested">Open Interested</a>
       <a href="#/compare">Open Compare</a>
     </div>
     ${renderApplicationListFilters()}
@@ -3362,25 +4358,19 @@ function renderApplicationList() {
     ${table([
       {key:'rank', label:'Decision Rank', render:r=>r.rank === 9999 ? 'Missing' : r.rank},
       {key:'item.school.school_name', label:'School', render:r=>linkSchool(r.item)},
-      {key:'item.school.degree_type', label:'Degree', render:r=>badge(r.item.school.degree_type)},
       {key:'item.school.city', label:'Location', render:r=>`${missing(r.item.school.city)}, ${missing(r.item.school.state)}`},
       {key:'priority', label:'Priority', render:r=>badge(labelize(r.priority), r.priority === 'highest' || r.priority === 'high' ? 'good' : '')},
-      {key:'status', label:'Application Status', render:r=>applicationDecisionControl(r.item)},
+      {key:'status', label:'Status', render:r=>statusSwitchActions(r.item)},
       {key:'research', label:'Research Status', render:r=>researchStatusControl(r.item)},
       {key:'interest', label:'Interest', render:r=>interestControl(r.item)},
       {key:'tier', label:'Admissions Tier', render:r=>missing(r.item.ranking.admissions_fit_tier || r.item.ranking.dynamic_tier || r.item.derived.admissions_fit_tier)},
-      {key:'rankBand', label:'Rank Band', render:r=>missing(r.item.ranking.rank_band || r.item.derived.rank_band)},
-      {key:'bucket', label:'Bucket', render:r=>missing(r.bucket)},
       {key:'service', label:'Service', render:r=>missing(r.service)},
       {key:'nextAction', label:'Next Action', render:r=>r.nextAction},
-      {key:'why', label:'Rationale', render:r=>isActiveApplicationStatus(r.status) ? r.whyKept : r.whyCut || 'No cut rationale'},
-      {key:'visibility', label:'Visibility', render:r=>visibilityBadge(r.item)},
-      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Open</a>${compareButton(r.item)}${r.hidden ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(r.item))}">Restore</button>` : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(r.item))}">Hide</button>`}</div>`},
+      {key:'actions', label:'Actions', render:r=>`<div class="inline-actions"><a href="${r.item.profile_route || `#/schools/${r.item.school_slug}`}">Score Card</a>${compareButton(r.item)}</div>`},
     ], tableRows, 'applicationList')}`;
   const bindings = {
     applicationVisibility: 'visibility',
     applicationDegree: 'degree',
-    applicationStatus: 'status',
     applicationInterest: 'interest',
     applicationPriority: 'priority',
     applicationTier: 'tier',
@@ -3393,20 +4383,32 @@ function renderApplicationList() {
   }));
   $('downloadFinalApplicationList')?.addEventListener('click', downloadFinalApplicationList);
   $('downloadApplicationDossiers')?.addEventListener('click', downloadDossierExport);
-  $('downloadApplicationVisibility')?.addEventListener('click', downloadVisibilityExport);
 }
 
 function renderProfile() {
-  const item = rows('schools').find(s => s.school_slug === currentRoute.slug) || rows('schools')[0];
-  if (!item) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
-  const sourceUrl = item.school.source_url ? `<a href="${item.school.source_url}" target="_blank">Source</a>` : 'Missing';
-  const localDossier = dossierFor(item);
-  const contributionRows = rows('score_contributions').filter(row => (
+  const profileNode = getSchoolProfileNode(currentRoute.slug);
+  const routeItem = rows('schools').find(s => s.school_slug === currentRoute.slug);
+  const item = (profileNode ? schoolById(profileNode.school_id) : routeItem) || routeItem || rows('schools')[0];
+  const node = profileNode || (item ? getSchoolProfileNode(schoolId(item)) : null);
+  if (!item && !node) { $('profile').innerHTML = '<p>No school selected.</p>'; return; }
+
+  const header = node?.header || {};
+  const schoolIdValue = node?.school_id || (item ? schoolId(item) : '');
+  const rankingCard = getRankingCardNode(schoolIdValue);
+  const schoolName = header.display_name || item?.school?.school_name || 'School profile';
+  const degreeType = header.degree_type || item?.school?.degree_type || '';
+  const city = header.city || item?.school?.city || '';
+  const state = header.state || item?.school?.state || '';
+  const officialUrl = header.official_url || item?.school?.source_url || item?.school?.official_url || '';
+  const sourceUrl = officialUrl ? `<a href="${attr(officialUrl)}" target="_blank">Source</a>` : 'Missing';
+  const decisionRank = rankingCard?.decision_rank || item?.ranking?.decision_rank || item?.ranking?.overall_rank;
+  const contributionRows = item ? rows('score_contributions').filter(row => (
     row.school_id === item.school.school_id
     && row.applicant_profile_id === item.ranking.applicant_profile_id
     && row.score_model === 'Decision Rank'
-  ));
-  const adminPanels = ADMIN_ENABLED ? `
+  )) : [];
+  const localDossier = item ? dossierFor(item) : {};
+  const adminPanels = ADMIN_ENABLED && item ? `
       ${detailPanel('Partner Review', [
         ['Could live here', item.partner_input?.could_live_here_4_years_score],
         ['Location fit', item.partner_input?.location_fit_score],
@@ -3424,7 +4426,7 @@ function renderProfile() {
         ['Errors', item.derived.error_count],
         ['Next action', item.derived.suggested_next_action],
       ])}` : '';
-  const issuesPanel = ADMIN_ENABLED ? `<div class="panel" style="margin-top:12px">
+  const issuesPanel = ADMIN_ENABLED && item ? `<div class="panel" style="margin-top:12px">
       <h3>Issues</h3>
       ${table([
         {key:'severity', label:'Severity', render:i=>badge(i.severity, i.severity)},
@@ -3434,101 +4436,55 @@ function renderProfile() {
         {key:'suggested_fix', label:'Suggested Fix', render:i=>i.suggested_fix},
       ], item.data_quality || [], 'detailIssues')}
     </div>` : '';
-  const profileActionPanel = `<div class="panel" style="margin-bottom:12px">
+  const profileActionPanel = item ? `<div class="panel" style="margin-bottom:12px">
       <div class="inline-actions">
         <h3 style="margin:0">Review Actions</h3>
         ${visibilityBadge(item)}
-        ${badge(labelize(applicationStatusFor(item)), isActiveApplicationStatus(applicationStatusFor(item)) ? 'good' : APPLICATION_EXCLUDED_STATUSES.includes(applicationStatusFor(item)) ? 'warn' : '')}
+        ${applicationStatusBadge(item)}
         ${compareButton(item)}
         ${isSchoolHidden(item)
           ? `<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(item))}">Restore School</button>`
           : `<button type="button" data-action="hide-school" data-school-id="${attr(schoolId(item))}">Hide School</button>`}
-        <button type="button" id="downloadProfileDossierState">Download Dossier Edits CSV</button>
+        <button type="button" id="downloadProfileDossierState">Download Score Card Edits CSV</button>
       </div>
       <div class="field-grid" style="margin-top:10px">
-        <label>Application decision ${applicationDecisionControl(item)}</label>
+        <label>List status ${statusSwitchActions(item)}</label>
         <label>Interest ${interestControl(item)}</label>
         <label>Research status ${researchStatusControl(item)}</label>
         <label>Four-year happiness ${dossierInlineScoreSelect(item, 'four_year_happiness', 'Four-year happiness')}</label>
       </div>
       <p><strong>Next action:</strong> ${applicationNextActionFor(item, applicationStatusFor(item))}</p>
-      <p><strong>Missing dossier sections:</strong> ${missingDossierSections(item).join(', ') || 'Complete'}</p>
-    </div>`;
-  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Dossiers</a><a href="#/research">Research Queue</a><a href="#/application-list">Application List</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
-    <h2>${item.school.school_name}</h2>
-    <p>${item.school.degree_type} · ${missing(item.school.city)}, ${missing(item.school.state)} · ${sourceUrl} · Decision Rank ${missing(item.ranking.decision_rank || item.ranking.overall_rank)}</p>
+      <p><strong>Missing score-card sections:</strong> ${missingDossierSections(item).join(', ') || 'Complete'}</p>
+    </div>` : '';
+  const snapshotCards = Array.isArray(node?.snapshot_cards) ? node.snapshot_cards : [];
+  const snapshotMarkup = snapshotCards.length
+    ? `<div class="node-metric-grid">${snapshotCards.map(renderMetricCard).join('')}</div>`
+    : '';
+  const nodeSectionMarkup = node
+    ? `<div class="detail-grid">${(node.sections || []).map(renderProfileSectionBlock).join('')}</div>${renderSchoolCardNodePreview(node.school_id)}`
+    : `<div class="empty-state">Profile data is unavailable for this route; local controls are still available.</div>`;
+  const legacyLocalStatus = item ? detailPanel('Local Score Card Status', [
+    ['Visibility', visibilityFor(item).visibility_state],
+    ['Research status', labelize(researchStatusFor(item))],
+    ['Interest level', labelize(localDossier.interest_level)],
+    ['Application decision', labelize(localDossier.application_decision_status)],
+    ['Missing score-card sections', missingDossierSections(item).join(', ') || 'Complete'],
+    ['Next research action', nextResearchAction(item)],
+  ]) : '';
+
+  // Primary profile path: route slug -> school_profile_node -> section blocks.
+  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Score Cards</a><a href="#/interested">Interested</a><a href="#/applications">Applications</a><a href="#/rankings">Rankings</a></div>
+    <h2>${safeText(schoolName)}</h2>
+    <p>${missing(degreeType)} · ${missing(city)}, ${missing(state)} · ${sourceUrl} · Decision Rank ${missing(decisionRank)}</p>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
     ${profileActionPanel}
-    <div class="detail-grid">
-      ${detailPanel('Identity', [
-        ['School ID', item.school.school_id],
-        ['Parent', item.school.parent_school_name],
-        ['Campus', item.school.campus_name],
-        ['Accreditation', item.school.accreditation_status],
-      ])}
-      ${detailPanel('Ranking', [
-        ['Profile', item.ranking.profile_name],
-        ['Decision rank', item.ranking.decision_rank || item.ranking.overall_rank],
-        ['Rank band', item.ranking.rank_band],
-        ['Rank confidence', item.ranking.rank_confidence],
-        ['Admissions tier', item.ranking.admissions_fit_tier || item.ranking.dynamic_tier],
-        ['Bucket', item.ranking.application_bucket || item.ranking.suggested_funnel_bucket],
-        ['Admissions', item.ranking.admissions_score],
-        ['Attendance', item.ranking.attendance_score],
-        ['MCAT fit', item.ranking.admissions_mcat_fit_score],
-        ['GPA fit', item.ranking.admissions_gpa_fit_score],
-        ['OOS fit', item.ranking.admissions_oos_friendliness_score],
-        ['Cost fit', item.ranking.attendance_cost_score],
-        ['Data completeness', item.ranking.data_completeness_score],
-        ['Missing score inputs', item.ranking.missing_score_inputs],
-        ['Score warnings', item.ranking.score_warnings],
-        ['Positive contributors', item.ranking.top_positive_contributors || item.ranking.top_positive_drivers],
-        ['Negative contributors', item.ranking.top_negative_contributors || item.ranking.top_negative_drivers],
-        ['Low-confidence drivers', item.ranking.missing_or_low_confidence_drivers],
-        ['Rank summary', item.ranking.rank_summary],
-      ])}
-      ${detailPanel('Local Dossier Status', [
-        ['Visibility', visibilityFor(item).visibility_state],
-        ['Research status', labelize(researchStatusFor(item))],
-        ['Interest level', labelize(localDossier.interest_level)],
-        ['Application decision', labelize(localDossier.application_decision_status)],
-        ['Missing dossier sections', missingDossierSections(item).join(', ') || 'Complete'],
-        ['Next research action', nextResearchAction(item)],
-      ])}
-      ${detailPanel('Admissions Facts', [
-        ['Stats present', item.derived.admissions_stats_present],
-        ['Published source count', item.admissions_stats.published_source_count],
-        ['Published MCAT average', item.ranking.published_mcat_average || item.admissions_stats.published_mcat_average],
-        ['Published GPA average', item.ranking.published_gpa_average || item.admissions_stats.published_gpa_average],
-        ['School MCAT used for fit', item.ranking.school_mcat_for_fit],
-        ['School GPA used for fit', item.ranking.school_gpa_for_fit],
-        ['Profile MCAT band', item.ranking.profile_aamc_mcat_band],
-        ['Profile GPA band', item.ranking.profile_aamc_gpa_band],
-        ['Profile AAMC national rate', item.ranking.profile_aamc_acceptance_rate],
-        ['Profile AAMC national rate band', item.ranking.profile_aamc_acceptance_rate_band],
-        ['MCAT band', item.ranking.published_mcat_band || item.admissions_stats.published_mcat_band],
-        ['GPA band', item.ranking.published_gpa_band || item.admissions_stats.published_gpa_band],
-        ['AAMC grid rate', item.admissions_stats.aamc_acceptance_rate],
-        ['AAMC rate band', item.admissions_stats.aamc_acceptance_rate_band],
-        ['Confidence', item.admissions_stats.data_confidence],
-      ])}
-      ${detailPanel('Cost and Debt', [
-        ['Cost data present', item.derived.cost_data_present],
-        ['In-state tuition+fees+insurance', item.cost_and_debt.in_state_tuition_fees_insurance],
-        ['Out-state tuition+fees+insurance', item.cost_and_debt.out_state_tuition_fees_insurance],
-        ['Estimated COA in-state', item.cost_and_debt.estimated_coa_in_state],
-        ['Estimated COA out-state', item.cost_and_debt.estimated_coa_out_state],
-        ['Applicant cost basis', item.ranking.cost_basis],
-        ['Adjusted cost basis', item.ranking.cost_basis_adjusted],
-        ['Confidence', item.cost_and_debt.data_confidence],
-      ])}
-      ${detailPanel('Public Source Coverage', [
-        ['Admissions policy rows', item.derived.admissions_policy_count],
-        ['Letter requirement rows', item.derived.letter_requirement_count],
-      ])}
+    ${snapshotMarkup}
+    ${nodeSectionMarkup}
+    <div class="detail-grid" style="margin-top:12px">
+      ${legacyLocalStatus}
       ${adminPanels}
     </div>
-    ${renderDossierForm(item)}
+    ${item ? renderDossierForm(item) : ''}
     <div class="panel" style="margin-top:12px">
       <h3>Why This Rank?</h3>
       ${table([
@@ -3556,8 +4512,22 @@ function detailPanel(title, panelRows) {
 function renderMethodology() {
   const readinessRows = Object.entries(payload.copy.curated_list_readiness || {}).map(([label, text]) => ({label, text}));
   const methodologyRows = rows('scoring_methodology');
+  const strategyRows = STRATEGY_OPTIONS.map(value => ({
+    strategy: STRATEGY_DETAILS[value].label,
+    summary: STRATEGY_DETAILS[value].summary,
+    changes: STRATEGY_DETAILS[value].changes,
+  }));
   $('methodology').innerHTML = `<h2>Methodology</h2>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    <div class="panel" style="margin-bottom:12px">
+      <h3>Review Strategy Options</h3>
+      <p>The review strategy changes how the guided intake narrows schools for first-pass review. It does not change source data, and it is not a school-specific acceptance prediction.</p>
+      ${table([
+        {key:'strategy', label:'Strategy', render:r=>missing(r.strategy)},
+        {key:'summary', label:'What it means', render:r=>missing(r.summary)},
+        {key:'changes', label:'What changes in the site', render:r=>missing(r.changes)},
+      ], strategyRows, 'strategyMethodology')}
+    </div>
     <div class="panel" style="margin-bottom:12px">
       <h3>Scoring Methodology</h3>
       ${table([
@@ -3775,9 +4745,11 @@ function renderAdmin() {
   return renderAdminOverview();
 }
 
-function render() {
+function render(options={}) {
   if (ensureDefaultRoute()) return;
   currentRoute = parseRoute();
+  const pathChanged = currentRoute.path !== lastRenderedPath;
+  const scrollSnapshot = options.preserveScroll && !pathChanged ? captureScrollSnapshot() : null;
   if (routeHash(currentRoute.path) !== window.location.hash && window.location.hash) {
     window.location.replace(routeHash(currentRoute.path));
     return;
@@ -3785,7 +4757,9 @@ function render() {
   $('summaryText').textContent = `${payload.meta.active_school_count} active schools · ${payload.meta.site_mode} mode`;
   setActiveNav(currentRoute.path);
   setActiveSection(currentRoute.view);
+  if (currentRoute.view === 'intake') renderIntake();
   if (currentRoute.view === 'rankings') renderRankings();
+  if (currentRoute.view === 'consideringList') renderConsideringList();
   if (currentRoute.view === 'dossiers') renderDossiers();
   if (currentRoute.view === 'research') renderResearch();
   if (currentRoute.view === 'applicationList') renderApplicationList();
@@ -3796,9 +4770,27 @@ function render() {
   if (currentRoute.view === 'methodology') renderMethodology();
   if (currentRoute.view === 'sources') renderSources();
   if (currentRoute.view === 'admin') renderAdmin();
+  if (pathChanged) {
+    lastRenderedPath = currentRoute.path;
+    requestAnimationFrame(() => {
+      window.scrollTo({top: 0, left: 0});
+      document.querySelectorAll('.view.active, .intake-form, .intake-results, .rankings-menu, .rankings-results, .table-wrap').forEach(element => {
+        element.scrollTop = 0;
+        element.scrollLeft = 0;
+      });
+      if (currentRoute.view === 'intake') updateIntakePaneHeight();
+      if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
+    });
+  } else if (scrollSnapshot) {
+    restoreScrollSnapshot(scrollSnapshot);
+  }
 }
 
 window.addEventListener('hashchange', render);
+window.addEventListener('resize', () => {
+  if (currentRoute.view === 'intake') updateIntakePaneHeight();
+  if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
+});
 $('globalSearch').addEventListener('input', render);
 document.addEventListener('click', event => {
   const actionButton = event.target.closest('[data-action]');
@@ -3806,12 +4798,35 @@ document.addEventListener('click', event => {
   const action = actionButton.dataset.action;
   const id = actionButton.dataset.schoolId;
   event.preventDefault();
+  if (action === 'download-intake-json') {
+    downloadJson('guided_intake_export.json', intakeExportRecord());
+    return;
+  }
+  if (action === 'reset-intake') {
+    resetIntakeState();
+    render({preserveScroll: true});
+    return;
+  }
+  if (action === 'toggle-guided-group') {
+    const groupId = actionButton.dataset.groupId;
+    if (groupId) {
+      guidedGroupOpenState[groupId] = !guidedGroupOpenState[groupId];
+      persistGuidedGroupOpenState();
+      render({preserveScroll: true});
+    }
+    return;
+  }
   if (action === 'clear-compare') {
     compareState.selectedIds = [];
     render();
     return;
   }
   if (!id) return;
+  if (action === 'set-application-status') {
+    setApplicationStatus(id, actionButton.dataset.applicationStatus || '');
+    render();
+    return;
+  }
   if (action === 'hide-school') {
     const reason = window.prompt('Reason for hiding this school?', 'Not a current fit');
     setSchoolVisibility(id, 'hidden', reason === null ? 'Not a current fit' : reason);
@@ -3842,10 +4857,22 @@ document.addEventListener('input', event => {
   }
 });
 document.addEventListener('change', event => {
+  const intakeField = event.target.closest('[data-intake-field]');
+  if (intakeField) {
+    setIntakeField(intakeField.dataset.intakeField, intakeField.value);
+    render({preserveScroll: true});
+    return;
+  }
+  const intakeMulti = event.target.closest('[data-intake-multi]');
+  if (intakeMulti) {
+    toggleIntakeArrayField(intakeMulti.dataset.intakeMulti, intakeMulti.value, intakeMulti.checked);
+    render({preserveScroll: true});
+    return;
+  }
   const dossierField = event.target.closest('[data-dossier-field]');
   if (!dossierField) return;
   updateDossierField(dossierField.dataset.dossierSchool, dossierField.dataset.dossierField, dossierField.value);
-  if (['rankings', 'dossiers', 'research', 'applicationList', 'compare', 'profile'].includes(currentRoute.view)) render();
+  if (['intake', 'rankings', 'consideringList', 'dossiers', 'research', 'applicationList', 'compare', 'profile'].includes(currentRoute.view)) render();
 });
 document.addEventListener('click', event => {
   const th = event.target.closest('th[data-key]');

@@ -274,16 +274,16 @@ Rules:
 
 - Preserve all comparable rows in candidate output with source key, source URL, metric context, GPA, MCAT, and notes.
 - Map candidate rows to `school_id` when high-confidence name matching is possible.
-- Treat CycleTrack values as `crowdsourced_context`.
+- Treat CycleTrack values as approved context only when the source row is safely matched.
 - Treat published third-party values as provisional.
-- For `close_agreement`, create a selected normalized row using the median of available comparable published values and `data_confidence=third_party_close_agreement`.
-- For `single_source`, create a selected normalized row only with `data_confidence=third_party_single_source` and a warning.
-- For `minor_conflict` and `major_conflict`, do not create a selected fit-driving value; create conflict and review queue rows.
+- Create selected normalized rows for safely matched candidate values, including `close_agreement`, `single_source`, `minor_conflict`, and `major_conflict`.
+- Keep conflict and review queue rows visible even when safely matched values are selected for scoring.
+- Keep `data_confidence` and `data_quality_band` explicit so approved conflict/single-source values are not mistaken for official school data.
 - Never mix accepted, matriculated, mean, median, and crowdsourced rows without encoding that distinction in `metric_population` and `metric_type`.
 
 Default current expectation:
 
-- Many GPA/MCAT rows will remain provisional or review-needed.
+- Some GPA/MCAT rows will remain review-needed because they lack a safely matched source value.
 - It is acceptable for the integration report to show that rankings should still be treated as low confidence.
 
 ### 7. Source Registry Update
@@ -318,7 +318,7 @@ Do not make `school_master.csv` the source of truth for imported values. Instead
 If patching `school_master.csv` is necessary in Phase 2A:
 
 - Patch only safe AAMC tuition rows and selected GPA/MCAT rows that meet policy.
-- Never patch conflict rows.
+- Do not patch unsafe or unmatched conflict rows.
 - Preserve blanks for missing data.
 - Keep `source_url` and domain-specific source URL fields populated.
 
@@ -394,7 +394,7 @@ Extend validation to cover:
 - source match overrides must reference existing `school_id` when `override_action=accept_match`
 - no private paths copied into site or upload bundle
 - Puerto Rico remains excluded from active school universe and site payload
-- conflicting GPA/MCAT rows create warnings, not silent selected values
+- conflicting GPA/MCAT rows create warnings and explicit confidence labels when selected
 
 ### 13. Tests
 
@@ -403,8 +403,8 @@ Add tests for:
 - source integration command creates required normalized outputs
 - safe AAMC tuition candidates become cost rows
 - review/no-match tuition rows become source review queue entries
-- major GPA/MCAT conflicts do not become selected fit-driving rows
-- close agreement GPA/MCAT rows can become selected provisional rows
+- safely matched major GPA/MCAT conflicts become selected rows with conflict confidence labels
+- close agreement GPA/MCAT rows become selected provisional rows
 - source registry additions are deduped
 - workbook includes new source tabs
 - site payload includes new source metrics
@@ -459,7 +459,7 @@ Verify:
 
 - Do not download new data.
 - Do not bypass source permissions.
-- Do not infer GPA/MCAT where conflicts exist.
+- Do not infer GPA/MCAT for unsafe or unmatched conflict rows.
 - Do not populate DO tuition from AAMC MD tuition data.
 - Do not turn policy text into unsupported booleans.
 - Do not add real applicant values.

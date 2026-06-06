@@ -39,6 +39,7 @@ FINAL_APPLICATION_LIST_COLUMNS = [
 ]
 
 INCLUDED_DECISION_STATUSES = {
+    "interested",
     "considering",
     "applying",
     "applied",
@@ -129,7 +130,7 @@ def next_action_for(status: str, research_status: str) -> str:
         return "submit primary and secondary materials"
     if normalized(research_status) in {"researched", "ready_to_decide"}:
         return "decide whether to submit application"
-    return "research dossier and decide whether to apply"
+    return "research score card and decide whether to apply"
 
 
 def priority_for(status: str, ranking: dict[str, str]) -> str:
@@ -147,7 +148,7 @@ def priority_for(status: str, ranking: dict[str, str]) -> str:
 
 
 def generated_why_kept(status: str, ranking: dict[str, str], dossier: dict[str, str]) -> str:
-    parts = [f"Marked {status or 'considering'} in school dossier"]
+    parts = [f"Marked {status or 'interested'} in school score card"]
     rank = ranking.get("decision_rank") or ranking.get("overall_rank")
     if rank:
         parts.append(f"Decision Rank {rank}")
@@ -179,7 +180,7 @@ def build_row(
     dossier: dict[str, str],
     existing: dict[str, str],
 ) -> dict[str, str]:
-    status = normalized(dossier.get("application_decision_status")) or "considering"
+    status = normalized(dossier.get("application_decision_status")) or "interested"
     bucket = ranking.get("application_bucket") or ranking.get("suggested_funnel_bucket") or ""
     row = {column: "" for column in FINAL_APPLICATION_LIST_COLUMNS}
     row.update(

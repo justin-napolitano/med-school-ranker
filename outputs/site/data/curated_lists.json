@@ -225,15 +225,15 @@
     "coverage_by_field": {
       "aamc_acceptance_rate_band": {
         "active_school_count": 233,
-        "populated_school_count": 101
+        "populated_school_count": 155
       },
       "published_gpa_average": {
         "active_school_count": 233,
-        "populated_school_count": 101
+        "populated_school_count": 155
       },
       "published_mcat_average": {
         "active_school_count": 233,
-        "populated_school_count": 102
+        "populated_school_count": 155
       }
     },
     "default_apply_mode": "scoring_boost",

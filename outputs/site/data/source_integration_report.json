@@ -17,18 +17,18 @@
   },
   {
     "category": "admissions_stats",
-    "count": "102",
+    "count": "155",
     "item": "canonical_rows",
-    "message": "Third-party GPA/MCAT rows promoted only when agreement policy allows it.",
-    "next_action": "Treat as provisional until official school/MSAR data is reviewed.",
+    "message": "Candidate GPA/MCAT rows promoted for safely matched schools, including conflicts and single-source values.",
+    "next_action": "Use data_confidence and data_quality_band before relying on a school average.",
     "severity": "info"
   },
   {
     "category": "admissions_stats",
     "count": "87",
     "item": "conflicts",
-    "message": "GPA/MCAT comparison clusters have source disagreement.",
-    "next_action": "Review outputs/admissions_stats_conflicts.csv before promoting values.",
+    "message": "GPA/MCAT comparison clusters have source disagreement but safely matched values are now approved for scoring.",
+    "next_action": "Review outputs/admissions_stats_conflicts.csv before treating conflicted averages as settled facts.",
     "severity": "warning"
   },
   {
@@ -41,7 +41,7 @@
   },
   {
     "category": "admissions_stats_quality",
-    "count": "42",
+    "count": "62",
     "item": "high",
     "message": "Canonical GPA/MCAT rows by published-source data quality band.",
     "next_action": "Use data_quality_band filters before relying on the average.",
@@ -49,7 +49,7 @@
   },
   {
     "category": "admissions_stats_quality",
-    "count": "43",
+    "count": "56",
     "item": "low",
     "message": "Canonical GPA/MCAT rows by published-source data quality band.",
     "next_action": "Use data_quality_band filters before relying on the average.",
@@ -57,8 +57,16 @@
   },
   {
     "category": "admissions_stats_quality",
-    "count": "17",
+    "count": "33",
     "item": "medium",
+    "message": "Canonical GPA/MCAT rows by published-source data quality band.",
+    "next_action": "Use data_quality_band filters before relying on the average.",
+    "severity": "info"
+  },
+  {
+    "category": "admissions_stats_quality",
+    "count": "4",
+    "item": "review",
     "message": "Canonical GPA/MCAT rows by published-source data quality band.",
     "next_action": "Use data_quality_band filters before relying on the average.",
     "severity": "info"
