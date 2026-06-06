@@ -202,6 +202,10 @@ select:focus-visible {
 .builder-panel {
   position: sticky;
   top: 84px;
+  max-height: calc(100svh - 108px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
@@ -841,6 +845,9 @@ body[data-surface="admin"] .page-header h1 {
 
   .builder-panel {
     position: static;
+    max-height: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
   }
 
   .metric-strip {
