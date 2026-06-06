@@ -40,6 +40,15 @@ The site works, but too much of it still feels like generated data:
 - admin/data-quality/source views should be visually secondary;
 - mobile needs polish around scrolling, card density, and action placement.
 
+## Current Product Decisions
+
+These are locked unless the user reverses them:
+
+- Product cards should not expose a manual `Hide` button. Hidden-school state can still exist for filters, state/dealbreaker rules, and restore/review workflows, but routine card actions should be `Interested`, `Applying`, `None`, `Compare`, and `Open Score Card`.
+- Add a score-based admissions-fit signal, but do not present it as true acceptance probability.
+- Use labels like `Highly likely score fit`, `Likely score fit`, `Possible score fit`, `Reach on scores`, and `Unlikely score fit`.
+- Every score-fit label must carry the caveat that it is based on MCAT/GPA fit signals only and is not an admit chance.
+
 ## Product Direction
 
 The public product should feel:
@@ -132,8 +141,10 @@ Use:
 - Do not add a backend, auth, database, React, Next, or Vercel migration.
 - Do not commit private applicant answers.
 - Do not invent new workflow states beyond None, Interested, and Applying.
+- Do not reintroduce product-card Hide buttons.
 - Do not remove advanced/admin views; make them secondary.
 - Do not hide missing data, low confidence, or assumed-match labels.
+- Do not label score fit as school-specific acceptance probability.
 - Keep `publish_safe` deploy working after every slice.
 
 ## Done Criteria
@@ -148,4 +159,3 @@ The polish phase is done when:
 - mobile and desktop views have no incoherent overflow or scroll traps;
 - methodology is clear, compact, and transparent;
 - publish-safe GitHub Pages build/deploy remains green.
-

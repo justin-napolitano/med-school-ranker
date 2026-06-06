@@ -12,12 +12,15 @@ Cards should show:
 - degree and location;
 - decision rank/status;
 - academic fit summary;
+- score-based admissions-fit signal with caveat;
 - cost/location summary;
 - reasons, risks, and missing data;
 - local status;
 - actions: Interested, Applying, None, Compare, Open Score Card.
 
 Cards should not show raw source dumps unless expanded.
+
+Cards should not show a manual `Hide` action. Hidden schools may show `Restore` in hidden review contexts, but visible cards should not invite routine hiding.
 
 ## Score Card Polish
 
@@ -38,12 +41,13 @@ The school page should read like a report:
 - Use `Score Card`, not `Dossier`.
 - Use `Out-of-state cost`, `In-state cost`, and `Total cost of attendance`.
 - Explain missing MCAT/GPA as missing, assumed-match, low-confidence, or conflicting evidence.
+- Explain score-fit labels as MCAT/GPA-based only, not as admit probability.
 - Avoid raw field names in visible labels.
 
 ## Done Criteria
 
 - Opening a school feels like a polished school report.
 - Score-card first viewport has useful summary and actions.
+- Product cards do not show a manual Hide button.
 - Raw details are collapsed or secondary.
 - Mobile cards do not overflow.
-

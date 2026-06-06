@@ -26,6 +26,8 @@ Confirm:
 - private paths are not present;
 - real applicant answers are not committed;
 - methodology and source confidence remain visible.
+- score-fit labels include the non-probability caveat.
+- product cards do not expose a manual Hide button.
 
 ## Screenshot QA
 
@@ -50,6 +52,7 @@ Check:
 - button text fit;
 - non-color status meaning;
 - no unsupported recommendation claims.
+- no score-fit language is presented as a guaranteed or school-specific admit chance.
 
 ## Done Criteria
 
@@ -57,4 +60,3 @@ Check:
 - Public-safe smoke check passes.
 - Visual QA covers changed routes.
 - Handoff names residual risks and next slice.
-

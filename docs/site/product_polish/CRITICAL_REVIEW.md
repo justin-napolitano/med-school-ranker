@@ -18,6 +18,18 @@ Risk: adding more statuses would make the product harder to use after the user e
 
 Resolution: keep the existing status model. Polish it; do not expand it.
 
+## High: Score Fit Can Be Misread As Acceptance Probability
+
+Risk: labels like likely or unlikely can sound like admissions prediction if the UI does not constrain them.
+
+Resolution: use score-fit wording and caveats. The signal can summarize MCAT/GPA alignment, but it must not claim school-specific acceptance probability or true admittance likelihood.
+
+## Medium: Hide Buttons Add Noise
+
+Risk: visible Hide actions make card review feel like triage/admin cleanup instead of application-list building.
+
+Resolution: remove manual Hide buttons from product cards. Keep restore/review support for schools hidden by filters, state/dealbreaker rules, or existing local state.
+
 ## Medium: Keep Admin Available But Secondary
 
 Risk: hiding admin/source views too aggressively would make the project less auditable.
@@ -45,4 +57,3 @@ The plan is ready when:
 - branch names are concrete;
 - verification includes publish-safe checks;
 - the runbook points to this plan as the next headless phase.
-

@@ -22,6 +22,7 @@ Rankings should feel like a review queue:
 - high-signal school identity;
 - decision rank/status;
 - academic fit context;
+- score-based admissions-fit signal;
 - cost/location context;
 - concise reason/risk chips;
 - obvious status actions;
@@ -35,10 +36,22 @@ Rankings should feel like a review queue:
 - Prefer `Review group`, `Fit signal`, `Source confidence`, and `Next action`.
 - Use full labels for user-facing stats and cost fields.
 
+## Score-Based Fit Labels
+
+Add score-fit labels based on MCAT/GPA fit scores only:
+
+- `Highly likely score fit`
+- `Likely score fit`
+- `Possible score fit`
+- `Reach on scores`
+- `Unlikely score fit`
+
+These labels must not be called admittance likelihood or acceptance probability. The UI should explain that they are score-screen fit signals and do not include mission fit, activities, essays, timing, residency policy, interview performance, or committee behavior.
+
 ## Done Criteria
 
 - Intake and Rankings feel connected.
 - Default Rankings view is understandable without reading docs.
+- Score-fit labels are visible and caveated.
 - Advanced table remains accessible.
 - Status actions do not cause layout jump or text overflow.
-
