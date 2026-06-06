@@ -7,15 +7,15 @@ This runbook tells a headless worker how to continue the project without relying
 The next selected headless execution phase is:
 
 ```text
-Profile Node UI Adoption
-docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md
+Frontend Product Refresh: Slice 0 Route Shell
+docs/HEADLESS_FRONTEND_PRODUCT_REFRESH_PLAN.md
 ```
 
 The most recently executed phase is:
 
 ```text
-Site Data Modeling Node Slice
-docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md
+Publish-Safe GitHub Pages Deploy Flow
+docs/site/build_and_deploy.md
 ```
 
 Do not rerun that slice unless the user explicitly asks.
@@ -49,22 +49,18 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 ## Document Read Order
 
-For the selected profile-node UI adoption phase, read in this order first:
+For the selected frontend product refresh phase, read in this order first:
 
-1. `docs/SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md`
-2. `docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md`
-3. `docs/SITE_DATA_MODELING_EXEC_PLAN.md`
-4. `docs/site/data_modeling/02_json_node_contracts.md`
-5. `docs/site/data_modeling/03_card_surfaces_and_profile_sections.md`
-6. `docs/site/profile_node_ui/01_node_contract_audit.md`
-7. `docs/site/profile_node_ui/02_shared_card_components.md`
-8. `docs/site/profile_node_ui/03_profile_route_node_consumption.md`
-9. `docs/site/profile_node_ui/04_rankings_and_compare_preview.md`
-10. `docs/site/profile_node_ui/05_admin_payload_compatibility.md`
-11. `docs/site/profile_node_ui/06_visual_qa_and_validation.md`
-12. `docs/site/profile_node_ui/CRITICAL_REVIEW.md`
-13. `docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md`
-14. `docs/EXEC_PLAN.md`
+1. `docs/FRONTEND_PRODUCT_REFRESH_EXEC_PLAN.md`
+2. `docs/HEADLESS_FRONTEND_PRODUCT_REFRESH_PLAN.md`
+3. `docs/site/frontend_refresh/CRITICAL_REVIEW.md`
+4. `docs/site/frontend_refresh/01_product_navigation_and_state.md`
+5. `docs/SITE_VISUAL_DIRECTION_PLAN.md`
+6. `docs/SITE_GUIDED_INTAKE_EXEC_PLAN.md`
+7. `docs/SITE_TEXT_AND_FRONTEND_FORMATTING_EXEC_PLAN.md`
+8. `docs/site/data_modeling/02_json_node_contracts.md`
+9. `docs/site/data_modeling/03_card_surfaces_and_profile_sections.md`
+10. `docs/EXEC_PLAN.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -103,18 +99,18 @@ Use this prompt for the next `codex exec` run:
 ```text
 You are working in /Users/justin/repos/med-school-ranker.
 
-Execute docs/HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md end to end.
+Execute docs/site/frontend_refresh/01_product_navigation_and_state.md as the first frontend product refresh slice.
 
-Follow docs/HEADLESS_WORKER_RUNBOOK.md first. Start from a clean status check and create branch impl-profile-node-ui-adoption from main if needed.
+Follow docs/HEADLESS_WORKER_RUNBOOK.md and docs/HEADLESS_FRONTEND_PRODUCT_REFRESH_PLAN.md first. Start from main, pull latest, inspect status, and create branch impl-frontend-route-shell if needed.
 
-This is a UI-consumption slice for generated JSON nodes. Make the existing static site render school profile main sections from school_profile_nodes and add a limited visible card preview from generated card/ranking/compare nodes. Preserve current admin tables, workbook/CSV outputs, rankings table behavior, shortlist/application-list controls, compare controls, visibility controls, browser-local dossier edits, and publish-safe mode.
+Clean up the public route shell and navigation so the applicant workflow is primary: intake/start, rankings, schools, applications, methodology, and admin routes under local/admin surfaces. Preserve existing guided intake, rankings, school profile, application-list, compare, local state, advanced tables, publish-safe mode, and GitHub Pages deployment.
 
-Do not perform a visual redesign. Do not migrate frameworks. Do not migrate to Postgres or Vercel. Do not change scoring formulas. Do not implement predictive admissions probability. Do not scrape or download data. Do not commit private data or private-derived outputs.
+Do not change scoring formulas. Do not scrape/download data. Do not implement predictive admissions probability. Do not migrate frameworks or persistence. Do not commit private applicant answers or private-derived outputs.
 
-Prefer adding missing UI fields to the Python node builders with tests rather than rebuilding joins in JavaScript. Regenerate workbook, site, upload zip, and data quality outputs. Run uv run pytest, uv run med-school-validate, uv run med-school-build-all, git diff --check, the upload-bundle privacy check, and available screenshot QA if dependencies are already present. Commit only public-safe code/docs/data/generated outputs.
+Regenerate required site outputs. Run uv run med-school-build-site --site-mode publish_safe, uv run med-school-validate, uv run pytest, git diff --check, the publish-safe privacy smoke check from docs/HEADLESS_FRONTEND_PRODUCT_REFRESH_PLAN.md, and screenshot QA if dependencies are already available. Commit only intended public-safe code/docs/generated outputs.
 ```
 
-The executed data-modeling prompt is preserved in `docs/HEADLESS_SITE_DATA_MODELING_EXECUTION_PLAN.md` for history.
+The executed data-modeling and profile-node prompts are preserved in their respective headless plans for history.
 
 ## Required Final Verification
 

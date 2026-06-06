@@ -16,6 +16,8 @@ Start here before expanding the seed data model:
 - [Static Review Site Executive Plan](docs/SITE_EXEC_PLAN.md)
 - [Product Site Rebuild Executive Plan](docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
 - [Headless Product Site Rebuild Execution Plan](docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
+- [Frontend Product Refresh Executive Plan](docs/FRONTEND_PRODUCT_REFRESH_EXEC_PLAN.md)
+- [Headless Frontend Product Refresh Plan](docs/HEADLESS_FRONTEND_PRODUCT_REFRESH_PLAN.md)
 - [Headless Site Execution Plan: Phase 1.5A](docs/HEADLESS_SITE_EXECUTION_PLAN.md)
 - [Data Architecture](docs/plans/data_architecture.md)
 - [School Universe](docs/plans/school_universe.md)
@@ -53,6 +55,16 @@ Product site rebuild plans:
 - [Admin Separation and Publish-Safe Mode](docs/site/product_rebuild/05_admin_publish_safe.md)
 - [Visual Design and Reporting Quality](docs/site/product_rebuild/06_visual_reporting_quality.md)
 - [Product Site Critical Review](docs/site/product_rebuild/CRITICAL_REVIEW.md)
+
+Frontend product refresh plans:
+
+- [Product Navigation and State](docs/site/frontend_refresh/01_product_navigation_and_state.md)
+- [School Card System](docs/site/frontend_refresh/02_school_card_system.md)
+- [Guided Intake Results](docs/site/frontend_refresh/03_guided_intake_results.md)
+- [Rankings and List Builder](docs/site/frontend_refresh/04_rankings_and_list_builder.md)
+- [School Score Card Profile](docs/site/frontend_refresh/05_school_score_card_profile.md)
+- [Frontend Refresh QA and Branching](docs/site/frontend_refresh/06_visual_qa_and_branching.md)
+- [Frontend Refresh Critical Review](docs/site/frontend_refresh/CRITICAL_REVIEW.md)
 
 ## Files
 
