@@ -40,6 +40,7 @@ const index = read("index.html");
 const admin = read("admin/index.html");
 const methodology = read("methodology/index.html");
 const notInterested = read("not-interested/index.html");
+const deploymentBase = normalizeDeploymentBase(process.env.ASTRO_BASE_PATH);
 
 if (!existsSync(dist)) {
   fail("Astro build output directory does not exist.");
@@ -93,6 +94,8 @@ const unsupportedQualityClaims = [/public schools? (are|is) better/i, /private s
 
 for (const file of htmlFiles) {
   const text = readFileSync(file, "utf8").toLowerCase();
+  assertDeploymentBase(text, file, deploymentBase);
+
   for (const term of unsupportedZeroTolerance) {
     if (text.includes(term)) {
       fail(`Unsupported claim term "${term}" found in ${file}`);
@@ -133,4 +136,23 @@ function assertCaveated(text, file, phrase, caveatPattern) {
       break;
     }
   }
+}
+
+function normalizeDeploymentBase(value) {
+  if (!value || value === "/") return "";
+  const trimmed = value.trim().replace(/\/+$/, "");
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+}
+
+function assertDeploymentBase(text, file, basePath) {
+  if (!basePath) return;
+  const baseSegment = escapeRegExp(basePath.slice(1));
+  const unprefixedRootPath = new RegExp(`(?:href|src|component-url|renderer-url)="/(?!${baseSegment}(?:/|"))`, "i");
+  if (unprefixedRootPath.test(text)) {
+    fail(`Unprefixed root-relative link or asset found in ${file} for ASTRO_BASE_PATH=${basePath}`);
+  }
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

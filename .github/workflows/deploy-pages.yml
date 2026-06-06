@@ -4,12 +4,17 @@ on:
   push:
     branches:
       - main
-      - master
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+env:
+  ASTRO_BASE_PATH: /${{ github.event.repository.name }}
+  ASTRO_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -17,7 +22,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build publish-safe site
+    name: Build publish-safe Astro site
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,6 +53,25 @@ jobs:
       - name: Test
         run: uv run pytest
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Astro frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Smoke test Astro output
+        working-directory: frontend
+        run: npm run smoke
+
       - name: Configure Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
@@ -56,16 +80,13 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: outputs/site
+          path: frontend/dist
 
   deploy:
     name: Deploy to GitHub Pages
     if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

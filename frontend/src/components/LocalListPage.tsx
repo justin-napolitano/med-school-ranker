@@ -1,6 +1,7 @@
 import { Download } from "lucide-react";
 import { scoreSchools } from "../lib/live-scoring";
 import type { ProductSchool } from "../lib/school-utils";
+import { withBase } from "../lib/site-url";
 import { SchoolCard } from "./SchoolCard";
 import { useLocalSchoolState } from "./useLocalSchoolState";
 
@@ -46,7 +47,7 @@ export function LocalListPage({ schools, caveat, listType }: Props) {
         <div className="empty-state">
           <h2>No schools selected yet</h2>
           <p>Use Build My List to add schools to this local list.</p>
-          <a className="action-link" href="/">
+          <a className="action-link" href={withBase("/")}>
             Open Build My List
           </a>
         </div>

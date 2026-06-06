@@ -4,7 +4,7 @@
 
 Define how the static review site is generated, verified, and deployed to GitHub Pages.
 
-The site remains usable locally from `outputs/site/index.html`, and the public deployment path always builds the `publish_safe` payload before uploading the Pages artifact.
+The legacy generated site remains usable locally from `outputs/site/index.html`, and the public deployment path always builds the `publish_safe` payload before compiling the Astro frontend and uploading the Pages artifact.
 
 ## Inputs
 
@@ -15,9 +15,10 @@ The site remains usable locally from `outputs/site/index.html`, and the public d
 ## Outputs
 
 ```text
-outputs/site/index.html
-outputs/site/assets/
-outputs/site/data/*.json
+outputs/site/data/site_payload.json
+frontend/dist/index.html
+frontend/dist/_astro/
+frontend/dist/schools/*/index.html
 ```
 
 Local rule:
@@ -71,7 +72,7 @@ Workflow file:
 .github/workflows/deploy-pages.yml
 ```
 
-The workflow runs on pull requests, pushes to `main`/`master`, and manual dispatch.
+The workflow runs on pull requests, pushes to `main`, and manual dispatch.
 
 Build steps:
 
@@ -82,10 +83,13 @@ Build steps:
 - run `uv run med-school-build-site --site-mode publish_safe`
 - run `uv run med-school-validate`
 - run `uv run pytest`
-- upload `outputs/site` as Pages artifact
+- install Node dependencies in `frontend/`
+- run `npm run build`
+- run `npm run smoke`
+- upload `frontend/dist` as Pages artifact
 - deploy Pages, except on pull requests
 
-Repository settings must use GitHub Actions as the Pages source. The workflow publishes only the generated `outputs/site` directory.
+Repository settings must use GitHub Actions as the Pages source. The workflow publishes only the generated Astro `frontend/dist` directory. The workflow sets `ASTRO_BASE_PATH` from the repository name so project-page links resolve under `/<repo>/` after deployment.
 
 ## Validation Rules
 
@@ -98,6 +102,7 @@ Repository settings must use GitHub Actions as the Pages source. The workflow pu
 ## Definition of Done
 
 - `uv run med-school-build-site` generates a usable static site.
-- The site can be opened locally without a dev server.
+- The legacy site can be opened locally without a dev server.
+- The Astro product frontend builds to `frontend/dist` and passes smoke checks.
 - GitHub Pages deployment is available through the `Deploy Public Site` workflow.
 - Tests verify required output files and JSON validity.

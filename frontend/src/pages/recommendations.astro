@@ -1,6 +1,7 @@
 ---
 import ProductLayout from "../layouts/ProductLayout.astro";
 import { loadProductPayload } from "../lib/payload";
+import { withBase } from "../lib/site-url";
 
 const payload = loadProductPayload();
 const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
@@ -18,6 +19,6 @@ const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only;
       The previous recommendations view duplicated Build My List. Use Build My List for ranked cards, filters,
       score-screen context, and Interested/Applying actions.
     </p>
-    <a class="action-link" href="/">Open Build My List</a>
+    <a class="action-link" href={withBase("/")}>Open Build My List</a>
   </section>
 </ProductLayout>

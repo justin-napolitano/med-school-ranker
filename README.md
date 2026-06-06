@@ -206,13 +206,13 @@ uv run python scripts/build_all.py
 
 The public static site is deployed by `.github/workflows/deploy-pages.yml`.
 
-The workflow rebuilds source-derived outputs, generates `outputs/site` with:
+The workflow rebuilds source-derived outputs, generates the publish-safe payload with:
 
 ```bash
 uv run med-school-build-site --site-mode publish_safe
 ```
 
-Then it validates, runs tests, uploads `outputs/site`, and deploys to GitHub Pages. Pull requests run the same build/test path without deploying.
+Then it validates, runs tests, builds the Astro React frontend from `frontend/`, uploads `frontend/dist`, and deploys to GitHub Pages on pushes to `main`. Pull requests run the same build/test path without deploying.
 
 ## Score Meanings
 

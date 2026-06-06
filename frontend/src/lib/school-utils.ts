@@ -1,3 +1,5 @@
+import { withBase } from "./site-url";
+
 export type RawSchoolNode = Record<string, any>;
 
 export type OwnershipFilter = "all" | "public" | "private" | "unknown";
@@ -233,7 +235,7 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
     state: ranking.state || school.state || "",
     stateAbbrev: ranking.state_abbrev || school.state_abbrev || "",
     degree: ranking.degree_type || school.degree_type || stats.degree_type || "",
-    profilePath: `/schools/${slug}/`,
+    profilePath: withBase(`/schools/${slug}/`),
     decisionRank: toNumberOrNull(ranking.decision_rank),
     overallRank: toNumberOrNull(ranking.overall_rank),
     rankLabel: ranking.decision_rank_label || derived.application_bucket || "Unranked",

@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { withBase } from "../lib/site-url";
 
 type NavItem = {
   href: string;
@@ -36,14 +37,14 @@ const navItems: NavItem[] = [
   <body data-surface={surface}>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label="Applicant List home">
+        <a class="brand" href={withBase("/")} aria-label="Applicant List home">
           <span class="brand-mark" aria-hidden="true">AL</span>
           <span>Applicant List</span>
         </a>
         <nav class="primary-nav" aria-label="Primary">
           {
             navItems.map((item) => (
-              <a class:list={["nav-link", item.admin && "admin-link", active === item.href && "active"]} href={item.href}>
+              <a class:list={["nav-link", item.admin && "admin-link", active === item.href && "active"]} href={withBase(item.href)}>
                 {item.label}
               </a>
             ))
