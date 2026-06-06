@@ -4,7 +4,7 @@ import type { ProductSchool } from "../lib/school-utils";
 import { filterSchools } from "../lib/school-utils";
 import { PreferenceControls } from "./PreferenceControls";
 import { SchoolCard } from "./SchoolCard";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
@@ -13,10 +13,20 @@ type Props = {
   intro?: string;
   limit?: number;
   showControls?: boolean;
+  local?: LocalSchoolState;
 };
 
-export function RecommendationFeed({ schools, caveat, title = "Recommendation Feed", intro, limit = 50, showControls = true }: Props) {
+export function RecommendationFeed(props: Props) {
+  if (props.local) return <RecommendationFeedContent {...props} local={props.local} />;
+  return <StandaloneRecommendationFeed {...props} />;
+}
+
+function StandaloneRecommendationFeed(props: Props) {
   const local = useLocalSchoolState();
+  return <RecommendationFeedContent {...props} local={local} />;
+}
+
+function RecommendationFeedContent({ schools, caveat, title = "Recommendation Feed", intro, limit = 50, showControls = true, local }: Props & { local: LocalSchoolState }) {
   const [visibleLimit, setVisibleLimit] = useState(limit);
   const filteredSchools = useMemo(
     () => filterSchools(schools, local.preferences).filter((school) => !local.notInterested.includes(school.slug)),

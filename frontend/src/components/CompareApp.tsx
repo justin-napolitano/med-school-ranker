@@ -1,19 +1,32 @@
 import { X } from "lucide-react";
+import { useMemo } from "react";
 import type { ProductSchool } from "../lib/school-utils";
 import { buildWhyBullets, formatCurrency, getScoreScreenFit, metricValue } from "../lib/school-utils";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
   caveat: string;
+  local?: LocalSchoolState;
 };
 
-export function CompareApp({ schools, caveat }: Props) {
+export function CompareApp(props: Props) {
+  if (props.local) return <CompareAppContent {...props} local={props.local} />;
+  return <StandaloneCompareApp {...props} />;
+}
+
+function StandaloneCompareApp(props: Props) {
   const local = useLocalSchoolState();
-  const selectedSchools = local.compare
-    .map((slug) => schools.find((school) => school.slug === slug))
-    .filter((school): school is ProductSchool => Boolean(school));
-  const availableSchools = schools.filter((school) => !local.compare.includes(school.slug)).slice(0, 120);
+  return <CompareAppContent {...props} local={local} />;
+}
+
+function CompareAppContent({ schools, caveat, local }: Props & { local: LocalSchoolState }) {
+  const schoolBySlug = useMemo(() => new Map(schools.map((school) => [school.slug, school])), [schools]);
+  const selectedSchools = useMemo(
+    () => local.compare.map((slug) => schoolBySlug.get(slug)).filter((school): school is ProductSchool => Boolean(school)),
+    [local.compare, schoolBySlug],
+  );
+  const availableSchools = useMemo(() => schools.filter((school) => !local.compare.includes(school.slug)).slice(0, 120), [schools, local.compare]);
 
   return (
     <section className="compare-surface">

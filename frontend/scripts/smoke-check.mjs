@@ -38,13 +38,22 @@ function walkHtml(dir) {
 
 const index = read("index.html");
 const admin = read("admin/index.html");
+const applying = read("applying/index.html");
+const compare = read("compare/index.html");
+const interested = read("interested/index.html");
 const methodology = read("methodology/index.html");
 const notInterested = read("not-interested/index.html");
+const recommendations = read("recommendations/index.html");
 const scoring = read("scoring/index.html");
+const schoolProfile = read("schools/nyu-grossman-long-island-school-of-medicine/index.html");
 const deploymentBase = normalizeDeploymentBase(process.env.ASTRO_BASE_PATH);
 
 if (!existsSync(dist)) {
   fail("Astro build output directory does not exist.");
+}
+
+if (!index.includes('data-app-shell="true"')) {
+  fail("Index output does not include the React app shell.");
 }
 
 if (!/<h1[^>]*>\s*Build My List\s*<\/h1>/i.test(index)) {
@@ -67,8 +76,16 @@ if (!index.includes("shown /") || !index.includes("eligible /") || !index.includ
   fail("Build My List does not expose shown / eligible / total counts.");
 }
 
+assertShellRoute(interested, "Interested", "50 school cap");
+assertShellRoute(applying, "Applying", "25 school cap");
+assertShellRoute(notInterested, "Not Interested", "removed from Build My List");
+
 if (!notInterested.includes("<h1>Not Interested</h1>")) {
   fail("Not Interested route is missing.");
+}
+
+if (!compare.includes('data-app-route="compare"') || !compare.includes("<h1>Compare</h1>") || !compare.includes("Add school")) {
+  fail("Compare route does not include app-shell compare content.");
 }
 
 if (!methodology.includes("Live scoring formulas") || !methodology.includes("Missing values are never treated as zero")) {
@@ -103,8 +120,42 @@ if (index.includes("Data quality</span>") || index.includes("data-confidence fil
   fail("Data-confidence/source-confidence filter control appears in Build My List output.");
 }
 
+if (!schoolProfile.includes('data-app-route="school"') || !schoolProfile.includes("Score-screen Context") || !schoolProfile.includes("Why It Ranks Here")) {
+  fail("School profile output does not include app-shell profile content.");
+}
+
+for (const profileAction of ["Interested", "Applying", "Not Interested", "Compare"]) {
+  if (!schoolProfile.includes(profileAction)) {
+    fail(`School profile output is missing local action text: ${profileAction}`);
+  }
+}
+
+if (!schoolProfile.includes("Baseline Rank") || !schoolProfile.includes("Open source")) {
+  fail("School profile output is missing baseline rank or source link content.");
+}
+
 if (!/data-surface="admin"/i.test(admin) || !/Admin\/Data/i.test(admin)) {
   fail("Admin route does not expose a distinct admin/data surface.");
+}
+
+if (admin.includes('data-app-shell="true"')) {
+  fail("Admin route is rendering inside the applicant app shell.");
+}
+
+const applicantNav = extractShellNav(index);
+if (!applicantNav) {
+  fail("Applicant shell nav is missing from the product route.");
+} else {
+  if (applicantNav.includes("Admin/Data")) {
+    fail("Admin/Data appears as a normal applicant shell nav item.");
+  }
+  if (/Recommendations/i.test(applicantNav)) {
+    fail("Recommendations appears as a normal applicant shell nav item.");
+  }
+}
+
+if (!recommendations.includes("<h1>Build My List</h1>") || !recommendations.includes("previous Recommendations URL now opens Build My List")) {
+  fail("Recommendations compatibility route does not alias to Build My List with deprecation text.");
 }
 
 const htmlFiles = walkHtml(dist);
@@ -128,6 +179,7 @@ for (const file of htmlFiles) {
   }
 
   assertCaveated(text, file, "acceptance probability", /not\s+(a\s+|an\s+)?([\w-]+\s+){0,4}acceptance probability/);
+  assertCaveated(text, file, "admissions probability", /not\s+(a\s+|an\s+)?([\w-]+\s+){0,4}admissions probability/);
   assertCaveated(text, file, "admit chance", /not\s+([\w-]+\s+){0,10}admit chance/);
 
   if (/>\s*hide\s*</i.test(text) || /hide school/i.test(text)) {
@@ -161,6 +213,22 @@ function assertCaveated(text, file, phrase, caveatPattern) {
       break;
     }
   }
+}
+
+function assertShellRoute(html, heading, requiredText) {
+  if (!html.includes('data-app-shell="true"')) {
+    fail(`${heading} route does not include the React app shell.`);
+  }
+  if (!new RegExp(`<h1[^>]*>\\s*${escapeRegExp(heading)}\\s*<\\/h1>`, "i").test(html)) {
+    fail(`${heading} route is missing its shell heading.`);
+  }
+  if (!html.includes(requiredText)) {
+    fail(`${heading} route is missing required text: ${requiredText}`);
+  }
+}
+
+function extractShellNav(html) {
+  return html.match(/<nav class="app-shell-nav"[\s\S]*?<\/nav>/i)?.[0] || "";
 }
 
 function normalizeDeploymentBase(value) {

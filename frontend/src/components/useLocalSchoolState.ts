@@ -216,3 +216,5 @@ export function useLocalSchoolState() {
     [ready, interested, applying, notInterested, compare, preferences, notice],
   );
 }
+
+export type LocalSchoolState = ReturnType<typeof useLocalSchoolState>;

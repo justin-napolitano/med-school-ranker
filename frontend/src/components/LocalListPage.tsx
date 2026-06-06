@@ -1,24 +1,37 @@
 import { Download } from "lucide-react";
+import { useMemo } from "react";
 import { scoreSchools } from "../lib/live-scoring";
+import { appHref } from "../lib/app-routing";
 import type { ProductSchool } from "../lib/school-utils";
-import { withBase } from "../lib/site-url";
 import { PreferenceControls } from "./PreferenceControls";
 import { SchoolCard } from "./SchoolCard";
-import { useLocalSchoolState } from "./useLocalSchoolState";
+import { useLocalSchoolState, type LocalSchoolState } from "./useLocalSchoolState";
 
 type Props = {
   schools: ProductSchool[];
   caveat: string;
   listType: "interested" | "applying" | "notInterested";
+  local?: LocalSchoolState;
 };
 
-export function LocalListPage({ schools, caveat, listType }: Props) {
+export function LocalListPage(props: Props) {
+  if (props.local) return <LocalListPageContent {...props} local={props.local} />;
+  return <StandaloneLocalListPage {...props} />;
+}
+
+function StandaloneLocalListPage(props: Props) {
   const local = useLocalSchoolState();
+  return <LocalListPageContent {...props} local={local} />;
+}
+
+function LocalListPageContent({ schools, caveat, listType, local }: Props & { local: LocalSchoolState }) {
   const slugs = listType === "interested" ? local.interested : listType === "applying" ? local.applying : local.notInterested;
-  const selectedSchools = slugs
-    .map((slug) => schools.find((school) => school.slug === slug))
-    .filter((school): school is ProductSchool => Boolean(school));
-  const scoredSchools = scoreSchools(selectedSchools, local.preferences);
+  const schoolBySlug = useMemo(() => new Map(schools.map((school) => [school.slug, school])), [schools]);
+  const selectedSchools = useMemo(
+    () => slugs.map((slug) => schoolBySlug.get(slug)).filter((school): school is ProductSchool => Boolean(school)),
+    [schoolBySlug, slugs],
+  );
+  const scoredSchools = useMemo(() => scoreSchools(selectedSchools, local.preferences), [selectedSchools, local.preferences]);
   const title = listType === "interested" ? "Interested" : listType === "applying" ? "Applying" : "Not Interested";
   const cap = listType === "interested" ? 50 : listType === "applying" ? 25 : null;
   const showRankingControls = listType === "interested" || listType === "applying";
@@ -73,7 +86,7 @@ export function LocalListPage({ schools, caveat, listType }: Props) {
           <div className="empty-state">
             <h2>No schools selected yet</h2>
             <p>Use Build My List to add schools to this local list.</p>
-            <a className="action-link" href={withBase("/")}>
+            <a className="action-link" href={appHref("/")}>
               Open Build My List
             </a>
           </div>
