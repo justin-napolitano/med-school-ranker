@@ -1,7 +1,7 @@
 {
   "canonical_counts": {
     "admissions_policy_rows": 5038,
-    "admissions_stats_rows": 102,
+    "admissions_stats_rows": 155,
     "cost_and_debt_rows": 151,
     "letter_requirement_rows": 28,
     "open_source_review_rows": 1034,
@@ -14,7 +14,7 @@
     "school_master_rows": 233,
     "source_review_queue_rows": 1034
   },
-  "generated_at": "2026-06-06T02:27:06+00:00",
+  "generated_at": "2026-06-06T03:20:44+00:00",
   "manual_override_count": 0,
   "mcat_gpa": {
     "agreement_counts": {
@@ -27,9 +27,10 @@
     "comparison_clusters": 316,
     "conflict_rows": 87,
     "quality_counts": {
-      "high": 42,
-      "low": 43,
-      "medium": 17
+      "high": 62,
+      "low": 56,
+      "medium": 33,
+      "review": 4
     },
     "rows_with_gpa": 667,
     "rows_with_mcat": 662,

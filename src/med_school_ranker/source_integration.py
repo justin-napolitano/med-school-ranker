@@ -1311,6 +1311,69 @@ def data_quality_for_stats(source_count: int, gpa_spread: float | None, mcat_spr
     return "4", "review"
 
 
+def normalized_admissions_stats_row(
+    school: SchoolRecord,
+    *,
+    mcat_average: float | None,
+    gpa_average: float | None,
+    published_source_count: int,
+    mcat_spread: float | None,
+    gpa_spread: float | None,
+    source_names: list[str],
+    urls: list[str],
+    metric_type: str,
+    data_confidence: str,
+    notes: str,
+) -> dict[str, str]:
+    quality_rank, quality_band = data_quality_for_stats(published_source_count, gpa_spread, mcat_spread)
+    aamc_rate = aamc_acceptance_rate_for(gpa_average, mcat_average)
+    return {
+        "school_id": school.school_id,
+        "school_name": school.school_name,
+        "degree_type": school.degree_type,
+        "stats_cohort_year": "",
+        "metric_population": "published school average",
+        "metric_type": metric_type,
+        "mcat_median_accepted": "",
+        "mcat_median_matriculated": "",
+        "mcat_mean_enrolled": fmt_decimal(mcat_average, 1),
+        "mcat_10th_percentile": "",
+        "mcat_25th_percentile": "",
+        "mcat_75th_percentile": "",
+        "mcat_90th_percentile": "",
+        "overall_gpa_median_accepted": "",
+        "overall_gpa_median_matriculated": "",
+        "overall_gpa_mean_enrolled": fmt_decimal(gpa_average, 2),
+        "science_gpa_mean_enrolled": "",
+        "published_source_count": str(published_source_count),
+        "published_mcat_average": fmt_decimal(mcat_average, 1),
+        "published_gpa_average": fmt_decimal(gpa_average, 2),
+        "published_mcat_spread": fmt_decimal(mcat_spread, 1),
+        "published_gpa_spread": fmt_decimal(gpa_spread, 2),
+        "published_mcat_band": mcat_band(mcat_average),
+        "published_gpa_band": gpa_band(gpa_average),
+        "aamc_acceptance_rate": fmt_optional_float(aamc_rate, 1),
+        "aamc_acceptance_rate_band": acceptance_rate_band(aamc_rate),
+        "data_quality_rank": quality_rank,
+        "data_quality_band": quality_band,
+        "source_name": "; ".join(sorted(set(filter(None, source_names)))),
+        "source_url": "; ".join(sorted(set(filter(None, urls)))),
+        "source_snapshot_path": "",
+        "source_publication_date": "",
+        "source_last_checked": SOURCE_LAST_CHECKED_DEFAULT,
+        "data_confidence": data_confidence,
+        "notes": notes,
+    }
+
+
+def stats_quality_score(row: dict[str, str]) -> tuple[int, int, int, float, str]:
+    quality_score = {"high": 3, "medium": 2, "low": 1, "review": 0}.get(clean(row.get("data_quality_band")), 0)
+    source_count = int(parse_float(row.get("published_source_count")) or 0)
+    has_both = int(bool(clean(row.get("published_mcat_average"))) and bool(clean(row.get("published_gpa_average"))))
+    source_kind = 0 if "cycletrack" in clean(row.get("data_confidence")).lower() and source_count == 0 else 1
+    return (has_both, source_kind, source_count, quality_score, clean(row.get("school_name")))
+
+
 def build_admissions_stats_outputs(
     schools_by_id: dict[str, SchoolRecord],
     overrides: list[dict[str, str]],
@@ -1325,6 +1388,7 @@ def build_admissions_stats_outputs(
     conflicts_out: list[dict[str, str]] = []
     review_rows: list[dict[str, str]] = []
     match_review_rows: list[dict[str, str]] = []
+    candidate_normalized_rows: dict[str, dict[str, str]] = {}
 
     cluster_matches: dict[str, MatchResult] = {}
     for row in comparison_rows:
@@ -1374,49 +1438,24 @@ def build_admissions_stats_outputs(
             continue
         assert match.school is not None
         quality_rank, quality_band = data_quality_for_stats(source_count, gpa_spread, mcat_spread)
-        aamc_rate = aamc_acceptance_rate_for(gpa_average, mcat_average)
         confidence = f"third_party_published_average_{quality_band}_quality"
         normalized_stats.append(
-            {
-                "school_id": match.school.school_id,
-                "school_name": match.school.school_name,
-                "degree_type": match.school.degree_type,
-                "stats_cohort_year": "",
-                "metric_population": "published school average",
-                "metric_type": "third_party_published_source_average",
-                "mcat_median_accepted": "",
-                "mcat_median_matriculated": "",
-                "mcat_mean_enrolled": fmt_decimal(mcat_average, 1),
-                "mcat_10th_percentile": "",
-                "mcat_25th_percentile": "",
-                "mcat_75th_percentile": "",
-                "mcat_90th_percentile": "",
-                "overall_gpa_median_accepted": "",
-                "overall_gpa_median_matriculated": "",
-                "overall_gpa_mean_enrolled": fmt_decimal(gpa_average, 2),
-                "science_gpa_mean_enrolled": "",
-                "published_source_count": str(source_count),
-                "published_mcat_average": fmt_decimal(mcat_average, 1),
-                "published_gpa_average": fmt_decimal(gpa_average, 2),
-                "published_mcat_spread": fmt_decimal(mcat_spread, 1),
-                "published_gpa_spread": fmt_decimal(gpa_spread, 2),
-                "published_mcat_band": mcat_band(mcat_average),
-                "published_gpa_band": gpa_band(gpa_average),
-                "aamc_acceptance_rate": fmt_optional_float(aamc_rate, 1),
-                "aamc_acceptance_rate_band": acceptance_rate_band(aamc_rate),
-                "data_quality_rank": quality_rank,
-                "data_quality_band": quality_band,
-                "source_name": "; ".join(summary["source_names"]),
-                "source_url": "; ".join(summary["urls"]),
-                "source_snapshot_path": "",
-                "source_publication_date": "",
-                "source_last_checked": SOURCE_LAST_CHECKED_DEFAULT,
-                "data_confidence": confidence,
-                "notes": (
+            normalized_admissions_stats_row(
+                match.school,
+                mcat_average=mcat_average,
+                gpa_average=gpa_average,
+                published_source_count=source_count,
+                mcat_spread=mcat_spread,
+                gpa_spread=gpa_spread,
+                source_names=summary["source_names"],
+                urls=summary["urls"],
+                metric_type="third_party_published_source_average",
+                data_confidence=confidence,
+                notes=(
                     "Average of available source-level published third-party GPA/MCAT values; "
                     "CycleTrack excluded from the average; not official MSAR entering-class data."
                 ),
-            }
+            )
         )
 
     for physical_row_number, row in enumerate(comparable_rows, start=1):
@@ -1447,34 +1486,88 @@ def build_admissions_stats_outputs(
             summary["gpa_spread"],
             summary["mcat_spread"],
         )
-        candidates.append(
-            {
-                "candidate_id": f"{source_key}:{physical_row_number}",
-                "school_id": match.school.school_id if match.school else "",
-                "school_name": match.school.school_name if match.school else "",
-                "degree_type": match.school.degree_type if match.school else "",
-                "source_key": source_key,
-                "source_name": clean(row.get("source_name")),
-                "source_url": clean(row.get("source_url")),
-                "value_url": clean(row.get("value_url")),
-                "source_row_number": str(physical_row_number),
-                "source_school_name": source_school_name,
-                "metric_context": clean(row.get("metric_context")),
-                "gpa": clean(row.get("gpa")),
-                "mcat": clean(row.get("mcat")),
-                "published_source_count": str(summary["source_count"] or ""),
-                "published_mcat_average": fmt_decimal(summary["mcat_average"], 1),
-                "published_gpa_average": fmt_decimal(summary["gpa_average"], 2),
-                "published_mcat_spread": fmt_decimal(summary["mcat_spread"], 1),
-                "published_gpa_spread": fmt_decimal(summary["gpa_spread"], 2),
-                "data_quality_band": quality_band,
-                "agreement_label": clean(cluster.get("agreement_label")),
-                "data_confidence": data_confidence,
-                "match_score": fmt_decimal(match.score),
-                "match_label": match.label,
-                "notes": clean(row.get("notes")),
-            }
-        )
+        candidate_row = {
+            "candidate_id": f"{source_key}:{physical_row_number}",
+            "school_id": match.school.school_id if match.school else "",
+            "school_name": match.school.school_name if match.school else "",
+            "degree_type": match.school.degree_type if match.school else "",
+            "source_key": source_key,
+            "source_name": clean(row.get("source_name")),
+            "source_url": clean(row.get("source_url")),
+            "value_url": clean(row.get("value_url")),
+            "source_row_number": str(physical_row_number),
+            "source_school_name": source_school_name,
+            "metric_context": clean(row.get("metric_context")),
+            "gpa": clean(row.get("gpa")),
+            "mcat": clean(row.get("mcat")),
+            "published_source_count": str(summary["source_count"] or ""),
+            "published_mcat_average": fmt_decimal(summary["mcat_average"], 1),
+            "published_gpa_average": fmt_decimal(summary["gpa_average"], 2),
+            "published_mcat_spread": fmt_decimal(summary["mcat_spread"], 1),
+            "published_gpa_spread": fmt_decimal(summary["gpa_spread"], 2),
+            "data_quality_band": quality_band,
+            "agreement_label": clean(cluster.get("agreement_label")),
+            "data_confidence": data_confidence,
+            "match_score": fmt_decimal(match.score),
+            "match_label": match.label,
+            "notes": clean(row.get("notes")),
+        }
+        candidates.append(candidate_row)
+        if match.is_safe:
+            assert match.school is not None
+            candidate_mcat = summary["mcat_average"]
+            candidate_gpa = summary["gpa_average"]
+            source_count = int(summary["source_count"] or 0)
+            mcat_spread = summary["mcat_spread"]
+            gpa_spread = summary["gpa_spread"]
+            source_names = list(summary.get("source_names") or [])
+            urls = list(summary.get("urls") or [])
+            metric_type = "approved_candidate_published_source_average"
+            notes = (
+                "Approved candidate MCAT/GPA value. Average of safely matched source evidence; "
+                "not official MSAR entering-class data."
+            )
+            if candidate_mcat is None and candidate_gpa is None:
+                candidate_mcat = parse_float(row.get("mcat"))
+                candidate_gpa = parse_float(row.get("gpa"))
+                mcat_spread = 0.0 if candidate_mcat is not None else None
+                gpa_spread = 0.0 if candidate_gpa is not None else None
+                source_names = [clean(row.get("source_name"))]
+                urls = [clean(row.get("value_url")) or clean(row.get("source_url"))]
+                metric_type = "approved_candidate_single_source_value"
+                notes = (
+                    "Approved candidate MCAT/GPA value from a safely matched single source; "
+                    "not official MSAR entering-class data."
+                )
+                if source_key == "cycletrack_acceptance_median":
+                    metric_type = "approved_cycletrack_acceptance_median"
+                    notes = (
+                        "Approved CycleTrack context-only MCAT/GPA value from a safely matched source; "
+                        "crowdsourced context, not official MSAR entering-class data."
+                    )
+            if candidate_mcat is not None or candidate_gpa is not None:
+                approved_confidence = data_confidence
+                if source_count > 0:
+                    approved_confidence = "third_party_candidate"
+                    agreement_label = clean(cluster.get("agreement_label"))
+                    if agreement_label:
+                        approved_confidence = f"{approved_confidence}_{agreement_label}"
+                approved_row = normalized_admissions_stats_row(
+                    match.school,
+                    mcat_average=candidate_mcat,
+                    gpa_average=candidate_gpa,
+                    published_source_count=source_count,
+                    mcat_spread=mcat_spread,
+                    gpa_spread=gpa_spread,
+                    source_names=source_names,
+                    urls=urls,
+                    metric_type=metric_type,
+                    data_confidence=f"approved_{approved_confidence}",
+                    notes=notes,
+                )
+                existing_candidate = candidate_normalized_rows.get(match.school.school_id)
+                if existing_candidate is None or stats_quality_score(approved_row) > stats_quality_score(existing_candidate):
+                    candidate_normalized_rows[match.school.school_id] = approved_row
         if not match.is_safe and not match.ignored:
             match_review_rows.append(
                 match_review_row(
@@ -1530,6 +1623,12 @@ def build_admissions_stats_outputs(
             )
         )
 
+    normalized_by_school: dict[str, dict[str, str]] = {row["school_id"]: row for row in normalized_stats}
+    for school_id, candidate_row in candidate_normalized_rows.items():
+        existing = normalized_by_school.get(school_id)
+        if existing is None or stats_quality_score(candidate_row) > stats_quality_score(existing):
+            normalized_by_school[school_id] = candidate_row
+    normalized_stats = list(normalized_by_school.values())
     normalized_stats.sort(key=lambda row: (row["school_name"], row["school_id"]))
     candidates.sort(key=lambda row: (row["source_key"], row["source_row_number"]))
     conflicts_out.sort(key=lambda row: int(row["cluster_id"]) if row["cluster_id"].isdigit() else 999999)
@@ -1580,16 +1679,16 @@ def build_report(
             "admissions_stats",
             "canonical_rows",
             len(read_csv(ADMISSIONS_STATS_CSV)),
-            "Third-party GPA/MCAT rows promoted only when agreement policy allows it.",
-            "Treat as provisional until official school/MSAR data is reviewed.",
+            "Candidate GPA/MCAT rows promoted for safely matched schools, including conflicts and single-source values.",
+            "Use data_confidence and data_quality_band before relying on a school average.",
         ),
         report_row(
             "warning",
             "admissions_stats",
             "conflicts",
             len(read_csv(ADMISSIONS_STATS_CONFLICTS_CSV)),
-            "GPA/MCAT comparison clusters have source disagreement.",
-            "Review outputs/admissions_stats_conflicts.csv before promoting values.",
+            "GPA/MCAT comparison clusters have source disagreement but safely matched values are now approved for scoring.",
+            "Review outputs/admissions_stats_conflicts.csv before treating conflicted averages as settled facts.",
         ),
         report_row(
             "info",

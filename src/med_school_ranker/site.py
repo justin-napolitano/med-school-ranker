@@ -89,8 +89,6 @@ PUBLIC_ROUTES = [
     {"path": "#/interested", "label": "Interested", "route_type": "public"},
     {"path": "#/applications", "label": "Applications", "route_type": "public"},
     {"path": "#/dossiers", "label": "Score Cards", "route_type": "public"},
-    {"path": "#/research", "label": "Research Queue", "route_type": "public"},
-    {"path": "#/lists", "label": "Curated Lists", "route_type": "public"},
     {"path": "#/compare", "label": "Compare", "route_type": "public"},
     {"path": "#/methodology", "label": "Methodology", "route_type": "public"},
     {"path": "#/sources", "label": "Sources", "route_type": "public"},
@@ -1950,6 +1948,12 @@ main { padding: 18px; }
 .intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--intake-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
 .intake-form { display: grid; gap: 10px; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .intake-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.rankings-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: stretch; height: var(--rankings-layout-height, calc(100vh - 190px)); min-height: 420px; overflow: hidden; }
+.rankings-menu { display: grid; gap: 10px; align-content: start; height: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.rankings-results { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 2px; }
+.rankings-results-header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
+.hidden-schools-panel { margin-top: 14px; }
+.hidden-schools-panel summary { cursor: pointer; color: var(--header); font-weight: 700; }
 .intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 0; background: #fbfdff; }
 .intake-form legend { color: var(--header); font-weight: 700; font-size: 13px; padding: 0 4px; }
 .intake-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
@@ -2011,7 +2015,9 @@ a { color: var(--accent); }
   .search-label { min-width: 0; }
   main { padding: 12px; }
   .intake-layout { grid-template-columns: 1fr; height: auto; min-height: 0; overflow: visible; }
+  .rankings-layout { grid-template-columns: 1fr; height: auto; min-height: 0; overflow: visible; }
   .intake-form, .intake-results { height: auto; overflow: visible; }
+  .rankings-menu, .rankings-results { height: auto; overflow: visible; }
   .compare-row, .node-fact-row { grid-template-columns: 1fr; gap: 2px; }
 }
 """
@@ -2024,7 +2030,7 @@ const ADMIN_ENABLED = (payload.routes?.admin || []).length > 0;
 let currentRoute = {view: 'rankings', path: '/rankings'};
 let sortState = {};
 let filters = {
-  rankings: {degree: '', state: '', tier: '', bucket: '', visibility: 'visible', hardNo: '', excluded: '', warnings: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
+  rankings: {degree: '', state: '', tier: '', bucket: '', hardNo: '', excluded: '', warnings: '', quality: '', mcatBand: '', gpaBand: '', aamcRateBand: '', missingScore: '', scoreWarning: ''},
   consideringList: {visibility: 'visible', degree: 'MD', tier: '', rankBand: '', interest: '', maxRank: ''},
   dossiers: {visibility: 'visible', status: '', missing: '', tier: '', rankBand: ''},
   research: {visibility: 'visible', status: '', tier: '', rankBand: '', action: ''},
@@ -2058,6 +2064,24 @@ const GUIDED_GROUPS = [
   {id: 'need_more_data', label: 'Need More Data', defaultOpen: false},
   {id: 'lower_priority_or_hidden', label: 'Lower Priority Or Hidden', defaultOpen: false},
 ];
+const STRATEGY_OPTIONS = ['safer_list', 'balanced_list', 'reach_heavy_list'];
+const STRATEGY_DETAILS = {
+  safer_list: {
+    label: 'More Likely Schools',
+    summary: 'Prioritizes schools where the applicant profile appears more realistic before adding many reaches.',
+    changes: 'Smaller first review set, more conservative compare set, fewer reach schools in the early pass.',
+  },
+  balanced_list: {
+    label: 'Balanced Mix',
+    summary: 'Keeps a practical blend of likely, target, and reach schools for the first serious review.',
+    changes: 'Uses the target application count as the main review size and keeps a moderate reach buffer.',
+  },
+  reach_heavy_list: {
+    label: 'More Reach Schools',
+    summary: 'Keeps more high-upside schools visible for research before narrowing to the final list.',
+    changes: 'Larger first review set, larger reach buffer, and more schools promoted into compare/research.',
+  },
+};
 
 const VISIBILITY_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'visibility_state', 'visibility_reason', 'hidden_at', 'updated_at', 'source', 'notes'];
 const DOSSIER_EXPORT_HEADERS = ['export_schema_version', 'exported_at', 'school_id', 'school_name', 'research_status', 'interest_level', 'four_year_happiness', 'location_fit', 'culture_fit', 'regret_index', 'hard_no_flag', 'hard_no_reason', 'application_decision_status', 'notes'];
@@ -2284,6 +2308,7 @@ const FIELD_LABELS = {
 function labelize(value) {
   const text = String(value || '').trim();
   if (!text) return 'Unselected';
+  if (STRATEGY_DETAILS[text]) return STRATEGY_DETAILS[text].label;
   if (FIELD_LABELS[text]) return FIELD_LABELS[text];
   return text.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 }
@@ -2387,7 +2412,7 @@ function normalizeIntakeState(raw) {
   normalized.school_environment_preferences = arrayValue(parsed.school_environment_preferences);
   normalized.dealbreakers = arrayValue(parsed.dealbreakers);
   if (!['md_only'].includes(normalized.degree_goal)) normalized.degree_goal = defaults.degree_goal;
-  if (!['safer_list', 'balanced_list', 'reach_heavy_list'].includes(normalized.application_strategy)) normalized.application_strategy = defaults.application_strategy;
+  if (!STRATEGY_OPTIONS.includes(normalized.application_strategy)) normalized.application_strategy = defaults.application_strategy;
   if (!['15', '20', '25', '30', '35'].includes(String(normalized.target_application_count))) normalized.target_application_count = defaults.target_application_count;
   if (!['yes', 'no'].includes(normalized.include_reach_schools)) normalized.include_reach_schools = defaults.include_reach_schools;
   if (!['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'].includes(normalized.urbanicity_preference)) normalized.urbanicity_preference = defaults.urbanicity_preference;
@@ -3108,12 +3133,11 @@ function rankingFilters() {
       <label>Rankable <select id="rankExcluded"><option value="" ${f.excluded === '' ? 'selected' : ''}>All</option><option value="yes" ${f.excluded === 'yes' ? 'selected' : ''}>Excluded</option><option value="no" ${f.excluded === 'no' ? 'selected' : ''}>Rankable</option></select></label>
       <label>Warnings <select id="rankWarnings"><option value="" ${f.warnings === '' ? 'selected' : ''}>All</option><option value="yes" ${f.warnings === 'yes' ? 'selected' : ''}>Has warnings</option><option value="no" ${f.warnings === 'no' ? 'selected' : ''}>No warnings</option></select></label>` : '';
   return `
-    <div class="filters">
+    <div class="field-grid">
       <label>Degree <select id="rankDegree"><option value="" ${f.degree === '' ? 'selected' : ''}>All</option>${optionTags(degrees, f.degree)}</select></label>
       <label>State <select id="rankState"><option value="" ${f.state === '' ? 'selected' : ''}>All</option>${optionTags(states, f.state)}</select></label>
       <label>Tier <select id="rankTier"><option value="" ${f.tier === '' ? 'selected' : ''}>All</option>${optionTags(tiers, f.tier)}</select></label>
       <label>Bucket <select id="rankBucket"><option value="" ${f.bucket === '' ? 'selected' : ''}>All</option>${optionTags(buckets, f.bucket)}</select></label>
-      <label>Visibility <select id="rankVisibility"><option value="visible" ${f.visibility === 'visible' ? 'selected' : ''}>Visible</option><option value="all" ${f.visibility === 'all' ? 'selected' : ''}>All</option><option value="hidden" ${f.visibility === 'hidden' ? 'selected' : ''}>Hidden</option></select></label>
       ${adminFilters}
       <label>Stats Quality <select id="rankQuality"><option value="" ${f.quality === '' ? 'selected' : ''}>All</option>${optionTags(qualities, f.quality)}</select></label>
       <label>MCAT Band <select id="rankMcatBand"><option value="" ${f.mcatBand === '' ? 'selected' : ''}>All</option>${optionTags(mcatBands, f.mcatBand)}</select></label>
@@ -3125,14 +3149,13 @@ function rankingFilters() {
 }
 
 function rankingsRows() {
-  const {degree, state, tier, bucket, visibility, hardNo, excluded, warnings, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
+  const {degree, state, tier, bucket, hardNo, excluded, warnings, quality, mcatBand, gpaBand, aamcRateBand, missingScore, scoreWarning} = filters.rankings;
   return filteredSchools().filter(s => {
     if (degree && s.school.degree_type !== degree) return false;
     if (state && s.school.state !== state) return false;
     if (tier && s.derived.admissions_fit_tier !== tier) return false;
     if (bucket && s.derived.application_bucket !== bucket) return false;
-    if (visibility === 'visible' && isSchoolHidden(s)) return false;
-    if (visibility === 'hidden' && !isSchoolHidden(s)) return false;
+    if (isSchoolHidden(s)) return false;
     if (ADMIN_ENABLED && hardNo === 'yes' && !s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && hardNo === 'no' && s.derived.hard_no_flag) return false;
     if (ADMIN_ENABLED && excluded === 'yes' && !s.derived.excluded_from_rank) return false;
@@ -3157,10 +3180,10 @@ function mdSelectorControls() {
   const selectorStatus = ready
     ? `${selectorRankedRows().length} active MD schools in selector view`
     : 'Select MCAT band, GPA band, and applicant state to calculate the MD selector ranking.';
-  return `<div class="panel selector-panel">
-      <h3>MD Band Selector ${badge('local/private-derived', 'warn')}</h3>
+  return `<fieldset class="selector-panel">
+      <legend>MD Band Selector</legend>
       <div class="caveat">MD-only proof of concept. DO schools are excluded from this interactive reranking view. Selected-profile rankings stay in browser memory and are not written back.</div>
-      <div class="filters">
+      <div class="field-grid">
         <label>MCAT Band <select id="selectorMcatBand"><option value="" ${selectorState.mcatBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(mcatBands, selectorState.mcatBand)}</select></label>
         <label>GPA Band <select id="selectorGpaBand"><option value="" ${selectorState.gpaBand === '' ? 'selected' : ''}>Unselected</option>${optionTags(gpaBands, selectorState.gpaBand)}</select></label>
         <label>Applicant State <select id="selectorApplicantState"><option value="" ${selectorState.applicantState === '' ? 'selected' : ''}>Unselected</option>${optionTags(states, selectorState.applicantState)}</select></label>
@@ -3168,10 +3191,11 @@ function mdSelectorControls() {
       <div class="selector-actions">
         <button type="button" id="downloadSelectorAssumptions">Download Assumptions CSV</button>
         <button type="button" id="downloadSelectorRows" ${ready ? '' : 'disabled title="Select all assumptions first"'}>Download Current MD Ranking CSV</button>
+        ${badge('local/private-derived', 'warn')}
         <span class="muted">${selectorStatus}</span>
       </div>
       <div id="mdSelectorTable"></div>
-    </div>`;
+    </fieldset>`;
 }
 
 function renderMdSelectorTable() {
@@ -3231,7 +3255,7 @@ function selectedRankingRecords() {
   }));
 }
 
-function renderVisibilityPanel() {
+function renderHiddenSchoolsPanel() {
   const hidden = hiddenSchools();
   const hiddenTable = hidden.length ? table([
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
@@ -3241,15 +3265,14 @@ function renderVisibilityPanel() {
     {key:'visibility.hidden_at', label:'Hidden At', render:s=>missing(visibilityFor(s).hidden_at)},
     {key:'actions', label:'Actions', render:s=>`<button type="button" data-action="restore-school" data-school-id="${attr(schoolId(s))}">Restore</button>`},
   ], hidden, 'hiddenSchools') : '<div class="empty-state">No schools are hidden in this browser session.</div>';
-  return `<div class="panel selector-panel">
-    <div class="inline-actions">
-      <h3 style="margin:0">Visibility Controls</h3>
-      ${badge(`${hidden.length} hidden`, hidden.length ? 'warn' : 'good')}
+  return `<details class="panel hidden-schools-panel">
+    <summary>Hidden Schools ${badge(`${hidden.length} hidden`, hidden.length ? 'warn' : 'good')}</summary>
+    <div class="inline-actions" style="margin-top:10px">
       <button type="button" id="downloadVisibilityExport">Download Visibility CSV</button>
     </div>
     <p>Visibility is local to this browser session. Export the CSV before closing the page if you want to preserve hide/restore decisions.</p>
     <div style="margin-top:10px">${hiddenTable}</div>
-  </div>`;
+  </details>`;
 }
 
 function intakeSelect(field, label, values, selected=intakeState?.[field] || '') {
@@ -3286,6 +3309,59 @@ function intakeSummaryChips() {
   return `<div class="card-chip-row">${chips.map(text => badge(text)).join('')}</div>`;
 }
 
+function renderIntakeMenu() {
+  const states = schoolStateOptions();
+  const stateAvoidOptions = states.filter(state => state !== intakeState.applicant_state);
+  return `<div class="panel intake-form">
+    <div>
+      <h3>Build A Review List</h3>
+      <p>Answers stay in this browser and change the review lens, not the source CSVs.</p>
+    </div>
+    <fieldset>
+      <legend>Academic Context</legend>
+      <div class="field-grid">
+        ${intakeSelect('degree_goal', 'Degree Goal', ['md_only'])}
+        ${intakeSelect('applicant_state', 'Applicant State', states)}
+        ${intakeSelect('mcat_band', 'MCAT Band', mcatBandOptions())}
+        ${intakeSelect('gpa_band', 'GPA Band', gpaBandOptions())}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>List Strategy</legend>
+      <div class="field-grid">
+        ${intakeSelect('application_strategy', 'Review Strategy', STRATEGY_OPTIONS)}
+        ${intakeSelect('target_application_count', 'Target Count', ['15', '20', '25', '30', '35'])}
+        ${intakeSelect('include_reach_schools', 'Include Reaches', ['yes', 'no'])}
+        ${intakeSelect('cost_sensitivity', 'Cost Sensitivity', ['low', 'medium', 'high', 'debt_averse'])}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Location And Fit</legend>
+      <div class="field-grid">
+        ${intakeSelect('urbanicity_preference', 'Setting Preference', ['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'])}
+        ${intakeSelect('career_optionality', 'Career Optionality', ['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'])}
+      </div>
+      <p class="muted" style="margin-top:8px">States to avoid are reversible local hides.</p>
+      ${intakeCheckboxGroup('states_to_avoid', stateAvoidOptions, intakeState.states_to_avoid)}
+    </fieldset>
+    <fieldset>
+      <legend>Awareness Prompts</legend>
+      ${intakeDisclosureGroup('school_environment_preferences', ['true_pass_fail', 'low_mandatory_attendance', 'recorded_lectures', 'research_heavy', 'clinical_focus', 'large_academic_center', 'community_focus'], intakeState.school_environment_preferences)}
+    </fieldset>
+    <fieldset>
+      <legend>Dealbreakers</legend>
+      ${intakeDisclosureGroup('dealbreakers', ['hide_rural', 'hide_high_cost', 'hide_low_confidence', 'hide_state', 'hide_already_ruled_out'], intakeState.dealbreakers)}
+    </fieldset>
+    <div class="inline-actions">
+      <button type="button" data-action="download-intake-json">Download Intake JSON</button>
+      <button type="button" data-action="reset-intake">Reset Intake</button>
+      <a href="#/rankings">Open Rankings</a>
+      <a href="#/interested">Interested</a>
+      <a href="#/applications">Applications</a>
+    </div>
+  </div>`;
+}
+
 function guidedStrategySettings() {
   const target = Number(intakeState?.target_application_count || 25) || 25;
   const strategy = intakeState?.application_strategy || 'balanced_list';
@@ -3294,7 +3370,7 @@ function guidedStrategySettings() {
       startLimit: Math.max(6, Math.ceil(target * 0.32)),
       compareLimit: Math.max(10, Math.ceil(target * 0.8)),
       reachLimit: target + 4,
-      label: 'Safer list lens',
+      label: STRATEGY_DETAILS.safer_list.label,
     };
   }
   if (strategy === 'reach_heavy_list') {
@@ -3302,14 +3378,14 @@ function guidedStrategySettings() {
       startLimit: Math.max(10, Math.ceil(target * 0.48)),
       compareLimit: target,
       reachLimit: target + 20,
-      label: 'Reach-heavy list lens',
+      label: STRATEGY_DETAILS.reach_heavy_list.label,
     };
   }
   return {
     startLimit: Math.max(8, Math.ceil(target * 0.4)),
     compareLimit: target,
     reachLimit: target + 10,
-    label: 'Balanced list lens',
+    label: STRATEGY_DETAILS.balanced_list.label,
   };
 }
 
@@ -3479,16 +3555,24 @@ function renderGuidedResults() {
     ${GUIDED_GROUPS.map(group => renderGuidedGroup(group, grouped)).join('')}`;
 }
 
-function updateIntakePaneHeight() {
-  const layout = document.querySelector('.intake-layout');
+function updateSplitPaneHeight(selector, cssProperty) {
+  const layout = document.querySelector(selector);
   if (!layout || window.matchMedia('(max-width: 760px)').matches) return;
   const top = layout.getBoundingClientRect().top;
   const available = Math.max(420, window.innerHeight - top - 12);
-  layout.style.setProperty('--intake-layout-height', `${available}px`);
+  layout.style.setProperty(cssProperty, `${available}px`);
+}
+
+function updateIntakePaneHeight() {
+  updateSplitPaneHeight('.intake-layout', '--intake-layout-height');
+}
+
+function updateRankingsPaneHeight() {
+  updateSplitPaneHeight('.rankings-layout', '--rankings-layout-height');
 }
 
 function captureScrollSnapshot() {
-  const selectors = ['.view.active', '.intake-form', '.intake-results', '.table-wrap'];
+  const selectors = ['.view.active', '.intake-form', '.intake-results', '.rankings-menu', '.rankings-results', '.table-wrap'];
   return {
     windowX: window.scrollX,
     windowY: window.scrollY,
@@ -3511,62 +3595,14 @@ function restoreScrollSnapshot(snapshot) {
       }
     });
     if (currentRoute.view === 'intake') updateIntakePaneHeight();
+    if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
   });
 }
 
 function renderIntake() {
-  const states = schoolStateOptions();
-  const stateAvoidOptions = states.filter(state => state !== intakeState.applicant_state);
   $('intake').innerHTML = `<h2>Applicant Intake</h2>
     <div class="intake-layout">
-      <div class="panel intake-form">
-        <div>
-          <h3>Build A Review List</h3>
-          <p>Answers stay in this browser and change the review lens, not the source CSVs.</p>
-        </div>
-        <fieldset>
-          <legend>Academic Context</legend>
-          <div class="field-grid">
-            ${intakeSelect('degree_goal', 'Degree Goal', ['md_only'])}
-            ${intakeSelect('applicant_state', 'Applicant State', states)}
-            ${intakeSelect('mcat_band', 'MCAT Band', mcatBandOptions())}
-            ${intakeSelect('gpa_band', 'GPA Band', gpaBandOptions())}
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>List Strategy</legend>
-          <div class="field-grid">
-            ${intakeSelect('application_strategy', 'Strategy', ['safer_list', 'balanced_list', 'reach_heavy_list'])}
-            ${intakeSelect('target_application_count', 'Target Count', ['15', '20', '25', '30', '35'])}
-            ${intakeSelect('include_reach_schools', 'Include Reaches', ['yes', 'no'])}
-            ${intakeSelect('cost_sensitivity', 'Cost Sensitivity', ['low', 'medium', 'high', 'debt_averse'])}
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>Location And Fit</legend>
-          <div class="field-grid">
-            ${intakeSelect('urbanicity_preference', 'Setting Preference', ['urban_preferred', 'suburban_ok', 'rural_ok', 'no_preference'])}
-            ${intakeSelect('career_optionality', 'Career Optionality', ['undecided', 'em_leaning', 'competitive_optionality', 'academic_research'])}
-          </div>
-          <p class="muted" style="margin-top:8px">States to avoid are reversible local hides.</p>
-          ${intakeCheckboxGroup('states_to_avoid', stateAvoidOptions, intakeState.states_to_avoid)}
-        </fieldset>
-        <fieldset>
-          <legend>Awareness Prompts</legend>
-          ${intakeDisclosureGroup('school_environment_preferences', ['true_pass_fail', 'low_mandatory_attendance', 'recorded_lectures', 'research_heavy', 'clinical_focus', 'large_academic_center', 'community_focus'], intakeState.school_environment_preferences)}
-        </fieldset>
-        <fieldset>
-          <legend>Dealbreakers</legend>
-          ${intakeDisclosureGroup('dealbreakers', ['hide_rural', 'hide_high_cost', 'hide_low_confidence', 'hide_state', 'hide_already_ruled_out'], intakeState.dealbreakers)}
-        </fieldset>
-        <div class="inline-actions">
-          <button type="button" id="downloadIntakeJson">Download Intake JSON</button>
-          <button type="button" id="resetIntake">Reset Intake</button>
-          <a href="#/rankings">Open Rankings</a>
-          <a href="#/interested">Interested</a>
-          <a href="#/applications">Applications</a>
-        </div>
-      </div>
+      ${renderIntakeMenu()}
       <div class="intake-results">
         <div class="panel" style="margin-bottom:12px">
           <div class="inline-actions" style="justify-content:space-between">
@@ -3578,31 +3614,31 @@ function renderIntake() {
         ${renderGuidedResults()}
       </div>
     </div>`;
-  $('downloadIntakeJson')?.addEventListener('click', () => downloadJson('guided_intake_export.json', intakeExportRecord()));
-  $('resetIntake')?.addEventListener('click', () => {
-    resetIntakeState();
-    renderIntake();
-  });
   updateIntakePaneHeight();
 }
 
 function renderRankings() {
   $('rankings').innerHTML = `<h2>Rankings</h2>
-    <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
-    <div class="inline-actions" style="margin-bottom:12px">
-      <button type="button" id="downloadRankingDossiers">Download Score Card Edits CSV</button>
-      <button type="button" id="downloadRankingVisibility">Download Visibility CSV</button>
-      <a href="#/interested">Open Interested</a>
-      <a href="#/applications">Open Applications</a>
-      <a href="#/compare">Open Compare</a>
+    <div class="rankings-layout">
+      <div class="rankings-menu">${renderIntakeMenu()}</div>
+      <div class="rankings-results">
+        <div class="panel" style="margin-bottom:12px">
+          <div class="inline-actions" style="justify-content:space-between">
+            <h3 style="margin:0">Current Lens</h3>
+            ${badge(intakeReady() ? 'Ready' : 'Needs required bands', intakeReady() ? 'good' : 'warn')}
+          </div>
+          ${intakeSummaryChips()}
+        </div>
+        <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+        <div id="rankTable"></div>
+      </div>
     </div>
-    ${renderVisibilityPanel()}${mdSelectorControls()}${rankingFilters()}<div id="rankTable"></div>`;
+    ${renderHiddenSchoolsPanel()}`;
   const bindings = {
     rankDegree: 'degree',
     rankState: 'state',
     rankTier: 'tier',
     rankBucket: 'bucket',
-    rankVisibility: 'visibility',
     rankQuality: 'quality',
     rankMcatBand: 'mcatBand',
     rankGpaBand: 'gpaBand',
@@ -3628,30 +3664,28 @@ function renderRankings() {
     selectorState[key] = event.target.value;
     renderRankings();
   }));
-  $('downloadSelectorAssumptions')?.addEventListener('click', () => {
-    downloadCsv('selected-profile-assumptions.csv', Object.keys(selectedAssumptionRecords()[0]), selectedAssumptionRecords());
-  });
-  $('downloadSelectorRows')?.addEventListener('click', () => {
-    const records = selectedRankingRecords();
-    if (!records.length) return;
-    downloadCsv('selected-md-decision-rankings.csv', Object.keys(records[0]), records);
-  });
   $('downloadRankingDossiers')?.addEventListener('click', downloadDossierExport);
   $('downloadRankingVisibility')?.addEventListener('click', downloadVisibilityExport);
   $('downloadVisibilityExport')?.addEventListener('click', downloadVisibilityExport);
-  renderMdSelectorTable();
+  if ($('mdSelectorTable')) renderMdSelectorTable();
   renderRankingTable();
+  updateRankingsPaneHeight();
 }
 
 function renderRankingTable() {
-  const visibleRows = sortRows(rankingsRows(), 'rankings', 'ranking.overall_rank');
+  const selectedRows = selectorReady() ? selectorRankedRows() : [];
+  const selectedById = new Map(selectedRows.map(row => [schoolId(row.item), row]));
+  let visibleRows = selectorReady() ? selectedRows.map(row => row.item) : rankingsRows();
+  if (!selectorReady() || sortState.rankings?.key) {
+    visibleRows = sortRows(visibleRows, 'rankings', 'ranking.overall_rank');
+  }
   const columns = [
-    {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(s.ranking.decision_rank || s.ranking.overall_rank)},
+    {key:'ranking.overall_rank', label:'Decision Rank', render:s=>missing(selectedById.get(schoolId(s))?.decisionRank || s.ranking.decision_rank || s.ranking.overall_rank)},
     {key:'school.school_name', label:'School', render:s=>linkSchool(s)},
     {key:'school.degree_type', label:'Degree', render:s=>badge(s.school.degree_type)},
     {key:'school.city', label:'Location', render:s=>`${missing(s.school.city)}, ${missing(s.school.state)}`},
     {key:'ranking.admissions_fit_tier', label:'Admissions Tier', render:s=>missing(s.ranking.admissions_fit_tier || s.ranking.dynamic_tier)},
-    {key:'ranking.overall_school_value', label:'Overall', render:s=>missing(s.ranking.overall_school_value)},
+    {key:'ranking.overall_school_value', label:'Overall', render:s=>selectedById.get(schoolId(s))?.overall?.score?.toFixed(2) || missing(s.ranking.overall_school_value)},
     {key:'ranking.published_mcat_average', label:'MCAT average', render:s=>missing(s.ranking.published_mcat_average || s.admissions_stats.published_mcat_average)},
     {key:'ranking.published_gpa_average', label:'GPA average', render:s=>missing(s.ranking.published_gpa_average || s.admissions_stats.published_gpa_average)},
     {key:'derived.aamc_acceptance_rate_band', label:'AAMC Band', render:s=>missing(s.ranking.profile_aamc_acceptance_rate_band || s.derived.aamc_acceptance_rate_band)},
@@ -3668,8 +3702,10 @@ function renderRankingTable() {
       {key:'derived.hard_no_flag', label:'Hard No', render:s=>s.derived.hard_no_flag ? badge('Hard No', 'error') : ''}
     );
   }
-  const label = filters.rankings.visibility === 'hidden' ? 'hidden schools' : filters.rankings.visibility === 'all' ? 'schools' : 'visible schools';
-  $('rankTable').innerHTML = `<p>${visibleRows.length} ${label}</p>` + table(columns, visibleRows, 'rankings');
+  $('rankTable').innerHTML = `<div class="rankings-results-header">
+    <p style="margin:0">${selectorReady() ? `${visibleRows.length} MD schools match the selected intake lens.` : `${visibleRows.length} visible schools match the current selections.`}</p>
+    ${badge(`${hiddenSchools().length} hidden`, hiddenSchools().length ? 'warn' : 'good')}
+  </div>` + table(columns, visibleRows, 'rankings');
 }
 
 function renderLists() {
@@ -4437,7 +4473,7 @@ function renderProfile() {
   ]) : '';
 
   // Primary profile path: route slug -> school_profile_node -> section blocks.
-  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Score Cards</a><a href="#/research">Research Queue</a><a href="#/interested">Interested</a><a href="#/applications">Applications</a><a href="#/rankings">Rankings</a><a href="#/lists">Lists</a></div>
+  $('profile').innerHTML = `<div class="route-tools"><a href="#/dossiers">Score Cards</a><a href="#/interested">Interested</a><a href="#/applications">Applications</a><a href="#/rankings">Rankings</a></div>
     <h2>${safeText(schoolName)}</h2>
     <p>${missing(degreeType)} · ${missing(city)}, ${missing(state)} · ${sourceUrl} · Decision Rank ${missing(decisionRank)}</p>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
@@ -4476,8 +4512,22 @@ function detailPanel(title, panelRows) {
 function renderMethodology() {
   const readinessRows = Object.entries(payload.copy.curated_list_readiness || {}).map(([label, text]) => ({label, text}));
   const methodologyRows = rows('scoring_methodology');
+  const strategyRows = STRATEGY_OPTIONS.map(value => ({
+    strategy: STRATEGY_DETAILS[value].label,
+    summary: STRATEGY_DETAILS[value].summary,
+    changes: STRATEGY_DETAILS[value].changes,
+  }));
   $('methodology').innerHTML = `<h2>Methodology</h2>
     <div class="caveat">${payload.copy.aamc_grid_caveat}</div>
+    <div class="panel" style="margin-bottom:12px">
+      <h3>Review Strategy Options</h3>
+      <p>The review strategy changes how the guided intake narrows schools for first-pass review. It does not change source data, and it is not a school-specific acceptance prediction.</p>
+      ${table([
+        {key:'strategy', label:'Strategy', render:r=>missing(r.strategy)},
+        {key:'summary', label:'What it means', render:r=>missing(r.summary)},
+        {key:'changes', label:'What changes in the site', render:r=>missing(r.changes)},
+      ], strategyRows, 'strategyMethodology')}
+    </div>
     <div class="panel" style="margin-bottom:12px">
       <h3>Scoring Methodology</h3>
       ${table([
@@ -4724,11 +4774,12 @@ function render(options={}) {
     lastRenderedPath = currentRoute.path;
     requestAnimationFrame(() => {
       window.scrollTo({top: 0, left: 0});
-      document.querySelectorAll('.view.active, .intake-form, .intake-results, .table-wrap').forEach(element => {
+      document.querySelectorAll('.view.active, .intake-form, .intake-results, .rankings-menu, .rankings-results, .table-wrap').forEach(element => {
         element.scrollTop = 0;
         element.scrollLeft = 0;
       });
       if (currentRoute.view === 'intake') updateIntakePaneHeight();
+      if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
     });
   } else if (scrollSnapshot) {
     restoreScrollSnapshot(scrollSnapshot);
@@ -4738,6 +4789,7 @@ function render(options={}) {
 window.addEventListener('hashchange', render);
 window.addEventListener('resize', () => {
   if (currentRoute.view === 'intake') updateIntakePaneHeight();
+  if (currentRoute.view === 'rankings') updateRankingsPaneHeight();
 });
 $('globalSearch').addEventListener('input', render);
 document.addEventListener('click', event => {
@@ -4746,6 +4798,15 @@ document.addEventListener('click', event => {
   const action = actionButton.dataset.action;
   const id = actionButton.dataset.schoolId;
   event.preventDefault();
+  if (action === 'download-intake-json') {
+    downloadJson('guided_intake_export.json', intakeExportRecord());
+    return;
+  }
+  if (action === 'reset-intake') {
+    resetIntakeState();
+    render({preserveScroll: true});
+    return;
+  }
   if (action === 'toggle-guided-group') {
     const groupId = actionButton.dataset.groupId;
     if (groupId) {

@@ -814,7 +814,8 @@ def test_site_contains_guided_intake_and_local_review_workflows(tmp_path, monkey
 
     assert "#/intake" in public_routes
     assert "#/dossiers" in public_routes
-    assert "#/research" in public_routes
+    assert "#/research" not in public_routes
+    assert "#/lists" not in public_routes
     assert "#/interested" in public_routes
     assert "#/applications" in public_routes
     assert 'section id="intake"' in html_text

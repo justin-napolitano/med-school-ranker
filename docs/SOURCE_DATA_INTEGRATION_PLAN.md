@@ -186,7 +186,7 @@ Rules:
 - `source_name`, `source_url`, `source_last_checked`, and `data_confidence` are required when any metric value is present.
 - `metric_population` must distinguish accepted, matriculated, enrolled, applicant, crowdsourced_acceptance, or unknown.
 - `metric_type` must distinguish mean, median, percentile, range, or source_average.
-- Third-party rows should be retained with confidence labels, but conflicting values should not silently drive fit scoring.
+- Third-party rows should be retained with confidence labels. Conflicting values may drive fit scoring only when the source row is safely matched and the conflict/confidence label remains visible.
 
 ### Cost and Debt
 
@@ -252,20 +252,20 @@ Rules:
 
 ### GPA/MCAT Selection Policy
 
-Headless selection may populate normalized rows as follows:
+Headless selection may populate normalized rows as follows after the user-approved "approve all safely matched candidates" policy:
 
-- `close_agreement`: create a selected provisional normalized row using the median of available comparable third-party values, with `data_confidence=third_party_close_agreement`.
-- `single_source`: create a provisional normalized row with `data_confidence=third_party_single_source` and a data quality warning.
-- `minor_conflict`: create source rows and a conflict queue item; do not create a selected fit-driving value in Phase 2A.
-- `major_conflict`: create source rows and a conflict queue item; do not create a selected fit-driving value.
-- `cycletrack_acceptance_median`: keep as `crowdsourced_context` unless explicitly configured later.
+- Safely matched candidate rows are eligible for canonical `admissions_stats.csv`.
+- Published third-party sources are averaged by school/cluster and labeled with `data_confidence`.
+- `single_source`, `minor_conflict`, and `major_conflict` values can be selected for scoring, but the conflict table and confidence label remain visible.
+- `cycletrack_acceptance_median` can be selected only from safely matched source rows and should remain labeled as CycleTrack/crowdsourced context.
+- Unsafe matches, no-match rows, low confidence matches, Puerto Rico rows, and incompatible degree/state rows remain review-only.
 
 The rankings engine should prefer fit-driving values in this order when present:
 
 1. Official school or official report stats.
 2. Public school profile stats.
-3. Third-party close-agreement provisional values.
-4. Third-party single-source provisional values only if the active profile allows low-confidence provisional stats.
+3. Approved safely matched third-party candidate averages.
+4. Approved safely matched CycleTrack context values.
 
 Default profile behavior: allow display of provisional values, but do not overstate confidence.
 
