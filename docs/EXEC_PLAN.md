@@ -109,6 +109,8 @@ The project is divided into subplans:
 - [Site Profile Node UI Adoption Executive Plan](SITE_PROFILE_NODE_UI_ADOPTION_EXEC_PLAN.md)
 - [Headless Site Profile Node UI Adoption Plan](HEADLESS_SITE_PROFILE_NODE_UI_ADOPTION_PLAN.md)
 - [Site Visual Direction Plan](SITE_VISUAL_DIRECTION_PLAN.md)
+- [Site Guided Applicant Intake Executive Plan](SITE_GUIDED_INTAKE_EXEC_PLAN.md)
+- [Headless Guided Applicant Intake Plan](HEADLESS_SITE_GUIDED_INTAKE_PLAN.md)
 - [Site UX Review and School Research Workflow Plan](SITE_UX_REVIEW_AND_RESEARCH_WORKFLOW_PLAN.md)
 - [Headless Site UX Review Execution Plan](HEADLESS_SITE_UX_REVIEW_EXECUTION_PLAN.md)
 
@@ -202,6 +204,16 @@ Execution details live in [Site Profile Node UI Adoption Executive Plan](SITE_PR
 - Keep style implementation downstream of profile-node/card UI adoption.
 
 Execution details live in [Site Visual Direction Plan](SITE_VISUAL_DIRECTION_PLAN.md).
+
+### Milestone 7.9: Guided Applicant Intake
+
+- Add a normal-language intake flow so users do not need to understand weights, CSVs, or raw tables first.
+- Translate answers into deterministic ranking context, filters, result groups, explanation chips, and list targets.
+- Keep personal answers browser-local and explicitly exportable.
+- Show grouped school cards as the post-intake review surface while keeping advanced tables and methodology available.
+- Preserve reversible hide/restore, shortlist, compare, application-list, dossier, research, admin, and publish-safe workflows.
+
+Execution details live in [Site Guided Applicant Intake Executive Plan](SITE_GUIDED_INTAKE_EXEC_PLAN.md) and [Headless Guided Applicant Intake Plan](HEADLESS_SITE_GUIDED_INTAKE_PLAN.md).
 
 ### Milestone 8: Review-Ready Workbook
 
