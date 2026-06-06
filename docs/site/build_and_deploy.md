@@ -2,9 +2,9 @@
 
 ## Objective
 
-Define how the static review site is generated, verified, and prepared for GitHub Pages.
+Define how the static review site is generated, verified, and deployed to GitHub Pages.
 
-First implementation is local-only. GitHub Pages remains a later publishing step after the user confirms the local review site is useful.
+The site remains usable locally from `outputs/site/index.html`, and the public deployment path always builds the `publish_safe` payload before uploading the Pages artifact.
 
 ## Inputs
 
@@ -20,10 +20,10 @@ outputs/site/assets/
 outputs/site/data/*.json
 ```
 
-Phase 1.5A local rule:
+Local rule:
 
 - `index.html` must embed the data payload needed for the site to run from `file://`.
-- Adjacent JSON files are generated for inspection and future hosted use.
+- Adjacent JSON files are generated for inspection and hosted use.
 
 ## Commands
 
@@ -31,6 +31,12 @@ Required command:
 
 ```bash
 uv run med-school-build-site
+```
+
+Public-safe command:
+
+```bash
+uv run med-school-build-site --site-mode publish_safe
 ```
 
 Full build should eventually run:
@@ -57,20 +63,29 @@ uv run pytest
 8. Verify JSON parses.
 9. Verify active school count matches `data/school_master.csv`.
 
-## GitHub Pages Options
+## GitHub Pages Flow
 
-Option A: publish `outputs/site` manually.
+Workflow file:
 
-Option B: add GitHub Actions workflow later:
+```text
+.github/workflows/deploy-pages.yml
+```
+
+The workflow runs on pull requests, pushes to `main`/`master`, and manual dispatch.
+
+Build steps:
 
 - install `uv`
-- run `uv run med-school-build-all`
+- run `uv sync --locked --dev`
+- run `uv run med-school-integrate-sources`
+- run `uv run med-school-build-rankings`
+- run `uv run med-school-build-site --site-mode publish_safe`
+- run `uv run med-school-validate`
+- run `uv run pytest`
 - upload `outputs/site` as Pages artifact
-- deploy Pages
+- deploy Pages, except on pull requests
 
-Default first pass: local static generation only. Add GitHub Actions after the site shape is useful.
-
-Current decision: do not wire GitHub Pages deployment in Phase 1.5A.
+Repository settings must use GitHub Actions as the Pages source. The workflow publishes only the generated `outputs/site` directory.
 
 ## Validation Rules
 
@@ -84,5 +99,5 @@ Current decision: do not wire GitHub Pages deployment in Phase 1.5A.
 
 - `uv run med-school-build-site` generates a usable static site.
 - The site can be opened locally without a dev server.
-- Output is suitable for GitHub Pages later, but deployment is not required in the first pass.
+- GitHub Pages deployment is available through the `Deploy Public Site` workflow.
 - Tests verify required output files and JSON validity.

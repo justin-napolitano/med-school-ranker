@@ -56,7 +56,7 @@ Resolution: Phase 2B defines deterministic first-pass formulas. These are not pr
 
 Severity: low.
 
-The current source layer has 155 canonical averaged GPA/MCAT rows, AAMC acceptance-rate bands for filtering, 151 safe cost rows, and preserved conflict/review queues. This is enough for first-pass deterministic scoring, as long as low-confidence rows remain visible and filterable.
+The current source layer has 190 canonical averaged GPA/MCAT rows, including temporarily assumed review/no-match candidates, AAMC acceptance-rate bands for filtering, 151 safe cost rows, and preserved conflict/review queues. This is enough for first-pass deterministic scoring, as long as low-confidence and assumed-match rows remain visible and filterable.
 
 Resolution: do not collect more data before implementing first-pass scoring.
 
@@ -119,7 +119,7 @@ Product-site rebuild docs should be treated as downstream context, not the next 
 
 - No new web scraping.
 - No predictive probability model.
-- No GitHub Pages publishing.
+- No ad hoc GitHub Pages publishing outside the checked-in publish-safe workflow.
 - No committed private profile data.
 - No raw AAMC cache changes.
 - No subjective score invention for culture, curriculum, prestige, match, or happiness.

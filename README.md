@@ -143,6 +143,7 @@ From this folder:
 uv run med-school-build-rankings
 uv run med-school-build-workbook
 uv run med-school-build-site
+uv run med-school-build-site --site-mode publish_safe
 uv run med-school-build-all
 uv run med-school-build-final-list
 uv run med-school-import-reviewer-state --visibility-export school_visibility_export.csv --dossier-export school_dossier_edits_export.csv
@@ -159,6 +160,18 @@ uv run python scripts/build_site.py
 uv run python scripts/build_all.py
 ```
 
+## GitHub Pages
+
+The public static site is deployed by `.github/workflows/deploy-pages.yml`.
+
+The workflow rebuilds source-derived outputs, generates `outputs/site` with:
+
+```bash
+uv run med-school-build-site --site-mode publish_safe
+```
+
+Then it validates, runs tests, uploads `outputs/site`, and deploys to GitHub Pages. Pull requests run the same build/test path without deploying.
+
 ## Score Meanings
 
 Use a consistent 1-10 interpretation:
@@ -174,7 +187,7 @@ For cost/debt fields, higher should always mean better for the applicant:
 
 ## Source Discipline
 
-The seed verifies school identity, degree type, city/state, accreditation/source fields, and public school/site URLs where available. It does not claim to have verified MCAT, GPA, tuition, match, curriculum, or culture data yet.
+The seed verifies school identity, degree type, city/state, accreditation/source fields, and public school/site URLs where available. MCAT/GPA and cost fields are source-integrated where current public or third-party source tables provide them; some MCAT/GPA rows are explicitly marked as assumed matches pending better source review. The project still does not claim to have verified match, curriculum, culture, or other subjective data.
 
 For every researched school, fill:
 

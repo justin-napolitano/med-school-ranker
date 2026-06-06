@@ -1374,6 +1374,10 @@ def stats_quality_score(row: dict[str, str]) -> tuple[int, int, int, float, str]
     return (has_both, source_kind, source_count, quality_score, clean(row.get("school_name")))
 
 
+def has_complete_stats_pair(row: dict[str, str]) -> bool:
+    return bool(clean(row.get("published_mcat_average")) and clean(row.get("published_gpa_average")))
+
+
 def build_admissions_stats_outputs(
     schools_by_id: dict[str, SchoolRecord],
     overrides: list[dict[str, str]],
@@ -1513,8 +1517,9 @@ def build_admissions_stats_outputs(
             "notes": clean(row.get("notes")),
         }
         candidates.append(candidate_row)
-        if match.is_safe:
-            assert match.school is not None
+        if match.school and not match.ignored:
+            match_prefix = "approved" if match.is_safe else f"assumed_match_{match.label}"
+            match_description = "safely matched" if match.is_safe else f"assumed matched ({match.label})"
             candidate_mcat = summary["mcat_average"]
             candidate_gpa = summary["gpa_average"]
             source_count = int(summary["source_count"] or 0)
@@ -1524,7 +1529,7 @@ def build_admissions_stats_outputs(
             urls = list(summary.get("urls") or [])
             metric_type = "approved_candidate_published_source_average"
             notes = (
-                "Approved candidate MCAT/GPA value. Average of safely matched source evidence; "
+                f"Approved candidate MCAT/GPA value. Average of {match_description} source evidence; "
                 "not official MSAR entering-class data."
             )
             if candidate_mcat is None and candidate_gpa is None:
@@ -1536,13 +1541,13 @@ def build_admissions_stats_outputs(
                 urls = [clean(row.get("value_url")) or clean(row.get("source_url"))]
                 metric_type = "approved_candidate_single_source_value"
                 notes = (
-                    "Approved candidate MCAT/GPA value from a safely matched single source; "
+                    f"Approved candidate MCAT/GPA value from an {match_description} single source; "
                     "not official MSAR entering-class data."
                 )
                 if source_key == "cycletrack_acceptance_median":
                     metric_type = "approved_cycletrack_acceptance_median"
                     notes = (
-                        "Approved CycleTrack context-only MCAT/GPA value from a safely matched source; "
+                        f"Approved CycleTrack context-only MCAT/GPA value from an {match_description} source; "
                         "crowdsourced context, not official MSAR entering-class data."
                     )
             if candidate_mcat is not None or candidate_gpa is not None:
@@ -1562,7 +1567,7 @@ def build_admissions_stats_outputs(
                     source_names=source_names,
                     urls=urls,
                     metric_type=metric_type,
-                    data_confidence=f"approved_{approved_confidence}",
+                    data_confidence=f"{match_prefix}_{approved_confidence}",
                     notes=notes,
                 )
                 existing_candidate = candidate_normalized_rows.get(match.school.school_id)
@@ -1626,7 +1631,7 @@ def build_admissions_stats_outputs(
     normalized_by_school: dict[str, dict[str, str]] = {row["school_id"]: row for row in normalized_stats}
     for school_id, candidate_row in candidate_normalized_rows.items():
         existing = normalized_by_school.get(school_id)
-        if existing is None or stats_quality_score(candidate_row) > stats_quality_score(existing):
+        if existing is None or (not has_complete_stats_pair(existing) and stats_quality_score(candidate_row) > stats_quality_score(existing)):
             normalized_by_school[school_id] = candidate_row
     normalized_stats = list(normalized_by_school.values())
     normalized_stats.sort(key=lambda row: (row["school_name"], row["school_id"]))
@@ -1679,7 +1684,7 @@ def build_report(
             "admissions_stats",
             "canonical_rows",
             len(read_csv(ADMISSIONS_STATS_CSV)),
-            "Candidate GPA/MCAT rows promoted for safely matched schools, including conflicts and single-source values.",
+            "Candidate GPA/MCAT rows promoted for matched and assumed-matched schools, including conflicts and single-source values.",
             "Use data_confidence and data_quality_band before relying on a school average.",
         ),
         report_row(
@@ -1687,7 +1692,7 @@ def build_report(
             "admissions_stats",
             "conflicts",
             len(read_csv(ADMISSIONS_STATS_CONFLICTS_CSV)),
-            "GPA/MCAT comparison clusters have source disagreement but safely matched values are now approved for scoring.",
+            "GPA/MCAT comparison clusters have source disagreement, but matched and assumed-matched values are now approved for scoring.",
             "Review outputs/admissions_stats_conflicts.csv before treating conflicted averages as settled facts.",
         ),
         report_row(

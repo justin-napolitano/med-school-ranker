@@ -1,13 +1,13 @@
 severity,category,item,count,message,next_action
 info,cost,canonical_rows,151,AAMC tuition rows promoted to canonical cost_and_debt.csv.,Use these for cost awareness; do not infer scholarships or debt without later sources.
 warning,cost,review_candidates,5,AAMC tuition candidates held for match or zero-cost review.,Resolve in Source Review Queue or source_match_overrides.csv.
-info,admissions_stats,canonical_rows,155,"Candidate GPA/MCAT rows promoted for safely matched schools, including conflicts and single-source values.",Use data_confidence and data_quality_band before relying on a school average.
-warning,admissions_stats,conflicts,87,GPA/MCAT comparison clusters have source disagreement but safely matched values are now approved for scoring.,Review outputs/admissions_stats_conflicts.csv before treating conflicted averages as settled facts.
+info,admissions_stats,canonical_rows,190,"Candidate GPA/MCAT rows promoted for matched and assumed-matched schools, including conflicts and single-source values.",Use data_confidence and data_quality_band before relying on a school average.
+warning,admissions_stats,conflicts,87,"GPA/MCAT comparison clusters have source disagreement, but matched and assumed-matched values are now approved for scoring.",Review outputs/admissions_stats_conflicts.csv before treating conflicted averages as settled facts.
 info,source_review,open_review_rows,1034,"Rows needing source matching, conflict, or coverage review.",Work data/manual/source_review_queue.csv and keep notes transparent.
-info,admissions_stats_quality,high,62,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
-info,admissions_stats_quality,low,56,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
-info,admissions_stats_quality,medium,33,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
-info,admissions_stats_quality,review,4,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
+info,admissions_stats_quality,high,69,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
+info,admissions_stats_quality,low,71,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
+info,admissions_stats_quality,medium,40,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
+info,admissions_stats_quality,review,10,Canonical GPA/MCAT rows by published-source data quality band.,Use data_quality_band filters before relying on the average.
 info,source_review_reason,all_zero_cost_row,3,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
 info,source_review_reason,ambiguous_high_confidence_cost_match,2,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.
 info,source_review_reason,ambiguous_match_gap,106,Open review row count by reason.,Prioritize high-value rows before relying on ranking outputs.

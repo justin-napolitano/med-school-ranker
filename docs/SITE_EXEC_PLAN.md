@@ -21,9 +21,9 @@ The site is for rapid review by the user. The workbook remains the partner-frien
 - Homepage opens to Dashboard.
 - Rankings is the highest-priority review table for Phase 1.5A usability.
 - School comparison is deferred to Phase 1.5B.
-- Site remains local-only until the user is ready to publish; GitHub Pages deployment is planned but not wired in the first implementation pass.
-- Phase 1.5A uses `site_privacy_mode=local_full`.
-- Future publishing should use `site_privacy_mode=publish_safe` before GitHub Pages.
+- Local review uses `site_privacy_mode=local_full`.
+- GitHub Pages deployment is wired through `.github/workflows/deploy-pages.yml`.
+- Public publishing must use `site_privacy_mode=publish_safe`.
 
 ## Non-Goals
 
@@ -123,13 +123,13 @@ Missing values:
 
 ## Privacy Modes
 
-Phase 1.5A default:
+Local review mode:
 
 - `local_full`: include applicant profile template, partner inputs, source queue, validation report, and rankings. This mode is for local machine review.
 
-Future publish mode:
+Public publish mode:
 
-- `publish_safe`: exclude private/local applicant data and optionally exclude partner inputs before GitHub Pages publishing.
+- `publish_safe`: exclude private/local applicant data, admin routes, reviewer state, and local-only review queues before GitHub Pages publishing.
 
 Private files:
 
@@ -203,10 +203,10 @@ Detailed page plans live in:
 
 ### Phase 1.5C: GitHub Pages Polish
 
-- Add deployment instructions.
-- Add optional GitHub Actions workflow.
+- Maintain deployment instructions.
+- Maintain GitHub Actions workflow.
 - Add static asset cache-safe filenames if needed.
-- Do not wire deployment until the local site has been reviewed.
+- Keep deployment pointed at `outputs/site` generated with `--site-mode publish_safe`.
 
 ## Validation Rules
 

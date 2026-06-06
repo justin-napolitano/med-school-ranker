@@ -12,7 +12,7 @@ Build the first-pass static local review site without human follow-up. The site 
 - Do not ask follow-up questions.
 - Do not scrape or populate GPA/MCAT values.
 - Do not add real applicant/private data.
-- Do not wire GitHub Pages deployment in this pass.
+- Treat GitHub Pages deployment as a separate publish flow; current workflow wiring lives in `.github/workflows/deploy-pages.yml`.
 - Preserve current CSV/XLSX outputs and existing build commands.
 
 ## Repository
@@ -87,7 +87,7 @@ Rules:
 - Include current partner input template.
 - Never include files from `data/manual/private` or `data/private`.
 - Do not add real applicant/private data.
-- No GitHub Pages deployment.
+- GitHub Pages deployment is outside this historical Phase 1.5A baseline; use the dedicated `Deploy Public Site` workflow for publishing.
 
 ### 5. Derived Payload
 
@@ -139,7 +139,7 @@ Deferred:
 - comparison drawer
 - in-browser editing
 - URL-saved presets
-- GitHub Pages workflow
+- GitHub Pages workflow maintenance
 
 ### 8. Build-All Integration
 
@@ -196,7 +196,7 @@ Verify:
 - Do not scrape admissions data.
 - Do not infer GPA/MCAT.
 - Do not add a dev server requirement.
-- Do not add GitHub Pages workflow.
+- Do not replace the dedicated GitHub Pages workflow from this historical baseline plan.
 - Do not implement comparison drawer.
 - Do not add real applicant data.
 
