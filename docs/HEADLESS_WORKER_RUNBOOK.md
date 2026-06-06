@@ -7,8 +7,8 @@ This runbook tells a headless worker how to continue the project without relying
 The next selected headless execution phase is:
 
 ```text
-Live Scoring And Filter Controls
-docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md
+Scoring Assumptions Workspace
+docs/SCORING_ASSUMPTIONS_WORKSPACE_EXEC_PLAN.md
 ```
 
 The most recently executed phase is:
@@ -49,16 +49,17 @@ If baseline build or tests fail, inspect and fix only if the failure is directly
 
 ## Document Read Order
 
-For the selected live scoring and filter-controls phase, read in this order first:
+For the selected scoring assumptions workspace phase, read in this order first:
 
-1. `docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md`
-2. `docs/site/live_scoring_filters/CRITICAL_REVIEW.md`
-3. `docs/site/live_scoring_filters/01_filter_controls.md`
-4. `docs/site/live_scoring_filters/02_live_score_engine.md`
-5. `docs/site/live_scoring_filters/03_weight_controls_and_ux.md`
-6. `docs/site/live_scoring_filters/04_card_copy_and_methodology.md`
-7. `docs/site/live_scoring_filters/05_headless_qa_and_critical_review.md`
-8. `docs/site/live_scoring_filters/HEADLESS_PROMPT.md`
+1. `docs/SCORING_ASSUMPTIONS_WORKSPACE_EXEC_PLAN.md`
+2. `docs/site/scoring_assumptions/CRITICAL_REVIEW.md`
+3. `docs/site/scoring_assumptions/01_scoring_terms_and_contracts.md`
+4. `docs/site/scoring_assumptions/02_assumptions_table_ux.md`
+5. `docs/site/scoring_assumptions/03_school_score_breakdown_table.md`
+6. `docs/site/scoring_assumptions/04_scenario_and_weight_experiments.md`
+7. `docs/site/scoring_assumptions/05_methodology_and_claim_safety.md`
+8. `docs/site/scoring_assumptions/06_headless_execution_and_qa.md`
+9. `docs/site/scoring_assumptions/HEADLESS_PROMPT.md`
 
 Do not read old conversational context as the source of truth when these docs and the repo disagree. The committed docs win.
 
@@ -97,9 +98,9 @@ Use this prompt for the next `codex exec` run:
 ```text
 You are working in /Users/justin/repos/med-school-ranker.
 
-Execute docs/LIVE_SCORING_FILTERS_EXEC_PLAN.md and follow docs/site/live_scoring_filters/HEADLESS_PROMPT.md.
+Execute docs/SCORING_ASSUMPTIONS_WORKSPACE_EXEC_PLAN.md and follow docs/site/scoring_assumptions/HEADLESS_PROMPT.md.
 
-Preserve current uncommitted product-app work. Do not stage untracked screenshot artifacts. Add browser-local live scoring, state/city/Texas exclusions, source-backed-or-disabled ownership filtering, Not Interested behavior, methodology updates, and smoke checks. Remove data-confidence/source-confidence filters for now; confidence/source-quality may remain transparency-only.
+Add an applicant-facing /scoring/ page that shows assumptions in use, weights and formulas, selected-school score breakdown, and rank movement using the same local state and live scoring engine as Build My List. Extend contribution display data without changing default formulas. Do not stage untracked screenshot artifacts.
 
 Do not scrape/download data. Do not implement predictive admissions probability. Do not migrate frameworks or persistence. Do not commit private applicant answers or private-derived outputs.
 

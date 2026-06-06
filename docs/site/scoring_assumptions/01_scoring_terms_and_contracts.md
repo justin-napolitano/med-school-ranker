@@ -1,0 +1,139 @@
+# Scoring Terms And Contracts
+
+## Objective
+
+Define the scoring vocabulary and data contracts before changing UI.
+
+The user problem is not only that the score is opaque. It is that score labels can imply more certainty than the model supports.
+
+## Required Terms
+
+Use these names consistently:
+
+```text
+Your Rank
+Your Score
+Baseline Rank
+Coverage
+Component Score
+Current Weight
+Weighted Points
+Assumption
+Missing From Score
+```
+
+## Definitions
+
+`Your Rank`
+
+Browser-local rank after current user assumptions, filters, exclusions, and weights.
+
+`Your Score`
+
+Weighted 1-10 score computed from available live components.
+
+`Baseline Rank`
+
+Generated rank from the Python pipeline payload. It is useful context, but it does not automatically reflect the current browser assumptions.
+
+`Coverage`
+
+How many configured components were available for a school. Coverage is not a probability.
+
+`Weighted Points`
+
+The component contribution after normalizing the denominator to present components only.
+
+Example:
+
+```text
+component_score = 8
+component_weight = 25
+present_weight_sum = 80
+weighted_points = 8 * 25 / 80 = 2.5
+```
+
+`Assumption`
+
+Any user-controlled or defaulted value used to compute `Your Rank`, such as applicant MCAT, applicant GPA, home state, excluded geography, cost basis, or scoring weights.
+
+## Live Components In Scope
+
+The first scoring assumptions workspace should expose only current live components:
+
+- MCAT fit;
+- GPA fit;
+- state/residency fit;
+- cost fit;
+- baseline attendance context.
+
+## Live Components Out Of Scope
+
+Do not add new ranking power yet for:
+
+- prestige;
+- research;
+- match outcomes;
+- curriculum;
+- culture;
+- four-year happiness;
+- specialty optionality;
+- hidden curriculum;
+- regret index.
+
+Those components can be listed as future assumptions, but they should not affect `Your Rank` until their data and methodology are source-backed or explicitly user-entered.
+
+## Data Contract
+
+Extend or adapt `LiveSchoolScore` to support display-ready contribution rows:
+
+```text
+component_key
+component_label
+component_group
+applicant_value_label
+school_value_label
+formula_label
+score_value
+weight
+present_weight_sum
+weighted_points
+included
+reason
+source_label
+confidence_label
+```
+
+Implementation should prefer deriving these from existing scoring internals instead of duplicating formula logic in components.
+
+## Missing Data Contract
+
+Missing data must:
+
+- set `included = false`;
+- display a reason;
+- not add zero points;
+- not increase denominator;
+- lower coverage;
+- appear in the school breakdown table.
+
+## Privacy Contract
+
+The page may show exact MCAT/GPA values typed into the browser by the user, but committed code and public payloads must not prefill private applicant values.
+
+No exact private profile values should be written to:
+
+- repo files;
+- generated public payloads;
+- GitHub Pages artifacts;
+- server logs, because there is no server in this slice.
+
+## Claim Safety
+
+Every page or table that shows personalized rank should preserve the caveat:
+
+```text
+MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.
+```
+
+Avoid claims that a school is safe, likely, guaranteed, best, or predictive.
