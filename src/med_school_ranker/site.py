@@ -1921,7 +1921,7 @@ main { padding: 18px; }
 .field-grid label { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
 .full-span { grid-column: 1 / -1; }
 .intake-layout { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 14px; align-items: start; }
-.intake-form { position: sticky; top: 12px; display: grid; gap: 10px; }
+.intake-form { position: sticky; top: 12px; display: grid; gap: 10px; max-height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 .intake-form fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 0; background: #fbfdff; }
 .intake-form legend { color: var(--header); font-weight: 700; font-size: 13px; padding: 0 4px; }
 .intake-check-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 6px; }
@@ -1981,7 +1981,7 @@ a { color: var(--accent); }
   .search-label { min-width: 0; }
   main { padding: 12px; }
   .intake-layout { grid-template-columns: 1fr; }
-  .intake-form { position: static; }
+  .intake-form { position: static; max-height: none; overflow: visible; }
 }
 """
 
