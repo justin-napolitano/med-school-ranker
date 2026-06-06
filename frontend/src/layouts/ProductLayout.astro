@@ -1,0 +1,58 @@
+---
+import "../styles/global.css";
+
+type NavItem = {
+  href: string;
+  label: string;
+  admin?: boolean;
+};
+
+const {
+  title = "Applicant List",
+  description = "Static applicant product frontend for generated medical school ranking data.",
+  active = "/",
+  surface = "product",
+} = Astro.props;
+
+const navItems: NavItem[] = [
+  { href: "/", label: "Build My List" },
+  { href: "/recommendations/", label: "Recommendations" },
+  { href: "/interested/", label: "Interested" },
+  { href: "/applying/", label: "Applying" },
+  { href: "/compare/", label: "Compare" },
+  { href: "/methodology/", label: "Methodology" },
+  { href: "/admin/", label: "Admin/Data", admin: true },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body data-surface={surface}>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Applicant List home">
+          <span class="brand-mark" aria-hidden="true">AL</span>
+          <span>Applicant List</span>
+        </a>
+        <nav class="primary-nav" aria-label="Primary">
+          {
+            navItems.map((item) => (
+              <a class:list={["nav-link", item.admin && "admin-link", active === item.href && "active"]} href={item.href}>
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </header>
+      <main class="page-frame">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>

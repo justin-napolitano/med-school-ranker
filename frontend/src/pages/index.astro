@@ -1,0 +1,17 @@
+---
+import { BuildMyListApp } from "../components/BuildMyListApp";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Build My List / Applicant List" active="/">
+  <section class="page-header product-first">
+    <p class="eyebrow">First pass</p>
+    <h1>Build My List</h1>
+    <p>{caveat}</p>
+  </section>
+  <BuildMyListApp client:load schools={payload.schools} caveat={caveat} />
+</ProductLayout>

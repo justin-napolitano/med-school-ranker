@@ -16,6 +16,8 @@ Start here before expanding the seed data model:
 - [Static Review Site Executive Plan](docs/SITE_EXEC_PLAN.md)
 - [Product Site Rebuild Executive Plan](docs/SITE_PRODUCT_REBUILD_EXEC_PLAN.md)
 - [Headless Product Site Rebuild Execution Plan](docs/HEADLESS_PRODUCT_SITE_REBUILD_EXECUTION_PLAN.md)
+- [Astro React Product Frontend Executive Plan](docs/SITE_ASTRO_REACT_PRODUCT_EXEC_PLAN.md)
+- [Headless Astro React Product Execution Plan](docs/HEADLESS_ASTRO_REACT_PRODUCT_EXECUTION_PLAN.md)
 - [Frontend Product Polish Executive Plan](docs/FRONTEND_PRODUCT_POLISH_EXEC_PLAN.md)
 - [Headless Frontend Product Polish Plan](docs/HEADLESS_FRONTEND_PRODUCT_POLISH_PLAN.md)
 - [Headless Site Execution Plan: Phase 1.5A](docs/HEADLESS_SITE_EXECUTION_PLAN.md)
@@ -55,6 +57,15 @@ Product site rebuild plans:
 - [Admin Separation and Publish-Safe Mode](docs/site/product_rebuild/05_admin_publish_safe.md)
 - [Visual Design and Reporting Quality](docs/site/product_rebuild/06_visual_reporting_quality.md)
 - [Product Site Critical Review](docs/site/product_rebuild/CRITICAL_REVIEW.md)
+
+Astro React product frontend plans:
+
+- [Architecture and Static Export](docs/site/astro_product/01_architecture_and_static_export.md)
+- [Applicant Routes and Flows](docs/site/astro_product/02_applicant_routes_and_flows.md)
+- [Card and Profile Components](docs/site/astro_product/03_card_and_profile_components.md)
+- [Admin Separation and Claim Safety](docs/site/astro_product/04_admin_separation_and_claim_safety.md)
+- [QA, Headless, and Deploy](docs/site/astro_product/05_qa_headless_and_deploy.md)
+- [Astro Product Critical Review](docs/site/astro_product/CRITICAL_REVIEW.md)
 
 Frontend product polish plans:
 
@@ -161,6 +172,15 @@ uv run med-school-build-final-list
 uv run med-school-import-reviewer-state --visibility-export school_visibility_export.csv --dossier-export school_dossier_edits_export.csv
 uv run med-school-validate
 uv run pytest
+```
+
+Astro React product frontend:
+
+```bash
+cd frontend
+npm install
+npm run build
+npm run smoke
 ```
 
 Compatibility wrappers are also available:

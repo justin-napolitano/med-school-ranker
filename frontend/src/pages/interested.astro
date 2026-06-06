@@ -1,0 +1,17 @@
+---
+import { LocalListPage } from "../components/LocalListPage";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Interested / Applicant List" active="/interested/">
+  <section class="page-header">
+    <p class="eyebrow">Shortlist</p>
+    <h1>Interested</h1>
+    <p>Browser-local list with a 50 school cap. {caveat}</p>
+  </section>
+  <LocalListPage client:load schools={payload.schools} caveat={caveat} listType="interested" />
+</ProductLayout>

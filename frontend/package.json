@@ -1,0 +1,25 @@
+{
+  "name": "med-school-ranker-product-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sync:data": "node scripts/sync-data.mjs",
+    "predev": "npm run sync:data",
+    "dev": "astro dev",
+    "prebuild": "npm run sync:data",
+    "build": "astro build",
+    "preview": "astro preview",
+    "smoke": "node scripts/smoke-check.mjs"
+  },
+  "dependencies": {
+    "@astrojs/react": "^5.0.7",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "astro": "^6.4.4",
+    "lucide-react": "^1.17.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "typescript": "^6.0.3"
+  }
+}

@@ -6,3 +6,7 @@ data/manual/private/
 data/private/
 data/raw/aamc/
 outputs/private/
+frontend/.astro/
+frontend/dist/
+frontend/node_modules/
+frontend/public/data/site_payload.json

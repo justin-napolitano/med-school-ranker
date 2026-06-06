@@ -1,0 +1,24 @@
+---
+import { RecommendationFeed } from "../components/RecommendationFeed";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Recommendations / Applicant List" active="/recommendations/">
+  <section class="page-header">
+    <p class="eyebrow">Card feed</p>
+    <h1>Recommendations</h1>
+    <p>{caveat}</p>
+  </section>
+  <RecommendationFeed
+    client:load
+    schools={payload.schools}
+    caveat={caveat}
+    title="Recommendation card feed"
+    intro="Filtered from generated ranking, MCAT/GPA, cost, and source-confidence data."
+    limit={36}
+  />
+</ProductLayout>

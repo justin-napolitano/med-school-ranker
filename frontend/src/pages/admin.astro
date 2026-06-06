@@ -1,0 +1,60 @@
+---
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const generatedAt = payload.meta.generated_at || "Unknown";
+const siteMode = payload.meta.site_mode || payload.meta.site_privacy_mode || "Unknown";
+---
+
+<ProductLayout title="Admin/Data / Applicant List" active="/admin/" surface="admin">
+  <section class="page-header admin-header">
+    <p class="eyebrow">Separated route</p>
+    <h1>Admin/Data</h1>
+    <p>This route summarizes generated payload status and keeps data-builder context away from the applicant-first list flow.</p>
+  </section>
+
+  <section class="admin-status-grid" data-surface="admin">
+    <article class="admin-status">
+      <h2>Payload</h2>
+      <dl>
+        <div>
+          <dt>Generated</dt>
+          <dd>{generatedAt}</dd>
+        </div>
+        <div>
+          <dt>Mode</dt>
+          <dd>{siteMode}</dd>
+        </div>
+        <div>
+          <dt>Schools</dt>
+          <dd>{payload.schools.length}</dd>
+        </div>
+      </dl>
+    </article>
+    <article class="admin-status">
+      <h2>Source Coverage</h2>
+      <dl>
+        <div>
+          <dt>Public source rows</dt>
+          <dd>{payload.sourceCount}</dd>
+        </div>
+        <div>
+          <dt>Methodology rows</dt>
+          <dd>{payload.methodology.length}</dd>
+        </div>
+        <div>
+          <dt>Curated list definitions</dt>
+          <dd>{payload.curatedLists.length}</dd>
+        </div>
+      </dl>
+    </article>
+    <article class="admin-status">
+      <h2>Builder Commands</h2>
+      <pre><code>uv run med-school-build-site --site-mode publish_safe
+cd frontend
+npm run build
+npm run smoke</code></pre>
+    </article>
+  </section>
+</ProductLayout>

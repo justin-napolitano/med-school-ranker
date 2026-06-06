@@ -1,0 +1,17 @@
+---
+import { CompareApp } from "../components/CompareApp";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Compare / Applicant List" active="/compare/">
+  <section class="page-header">
+    <p class="eyebrow">Selected schools</p>
+    <h1>Compare</h1>
+    <p>{caveat}</p>
+  </section>
+  <CompareApp client:load schools={payload.schools} caveat={caveat} />
+</ProductLayout>
