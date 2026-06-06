@@ -112,7 +112,7 @@ export function useLocalSchoolState() {
   }
 
   function updatePreference<K extends keyof PreferenceState>(key: K, value: PreferenceState[K]) {
-    setPreferencesState((current) => ({ ...current, [key]: value }));
+    setPreferencesState((current) => normalizePreferences({ ...current, [key]: value }));
   }
 
   function addInterested(slug: string) {

@@ -1,0 +1,17 @@
+---
+import { ScoringAssumptionsApp } from "../components/ScoringAssumptionsApp";
+import ProductLayout from "../layouts/ProductLayout.astro";
+import { loadProductPayload } from "../lib/payload";
+
+const payload = loadProductPayload();
+const caveat = payload.copy.score_fit_caveat || "MCAT/GPA score-screen fit only; not acceptance probability or a school-specific admit chance.";
+---
+
+<ProductLayout title="Scoring / Applicant List" active="/scoring/">
+  <section class="page-header product-first">
+    <p class="eyebrow">Score audit</p>
+    <h1>Scoring</h1>
+    <p>{caveat} This Scoring page covers MD schools only. DO schools need a separate scoring flow because the source context and applicant-pool assumptions differ.</p>
+  </section>
+  <ScoringAssumptionsApp client:load schools={payload.schools} caveat={caveat} />
+</ProductLayout>
