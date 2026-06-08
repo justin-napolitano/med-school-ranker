@@ -38,6 +38,15 @@ from med_school_ranker.paths import (
     SOURCE_REVIEW_QUEUE_CSV,
     SOURCE_TABLES,
 )
+from med_school_ranker.aacom_do_rules import (
+    AACOM_CONFLICT_COLUMNS,
+    AACOM_COVERAGE_COLUMNS,
+    AACOM_DATA_CONFIDENCE,
+    AACOM_EXTRACTED_STATS_COLUMNS,
+    AACOM_PROFILE_CANDIDATE_COLUMNS,
+    AACOM_REVIEW_QUEUE_COLUMNS,
+    is_aacom_profile_url,
+)
 from med_school_ranker.official_source_rules import (
     OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
     OFFICIAL_STATS_CONFLICT_COLUMNS,
@@ -224,6 +233,11 @@ OPTIONAL_REQUIRED_COLUMNS = {
     "outputs/official_mcat_gpa_review_queue.csv": OFFICIAL_STATS_REVIEW_QUEUE_COLUMNS,
     "outputs/official_mcat_gpa_coverage.csv": OFFICIAL_STATS_COVERAGE_COLUMNS,
     "outputs/official_mcat_gpa_conflicts.csv": OFFICIAL_STATS_CONFLICT_COLUMNS,
+    "data/source_tables/aacom_do_profile_candidates.csv": AACOM_PROFILE_CANDIDATE_COLUMNS,
+    "data/source_tables/aacom_do_extracted_stats.csv": AACOM_EXTRACTED_STATS_COLUMNS,
+    "outputs/aacom_do_profile_coverage.csv": AACOM_COVERAGE_COLUMNS,
+    "outputs/aacom_do_profile_review_queue.csv": AACOM_REVIEW_QUEUE_COLUMNS,
+    "outputs/aacom_do_profile_conflicts.csv": AACOM_CONFLICT_COLUMNS,
 }
 
 MCAT_COLUMNS = [
@@ -782,6 +796,127 @@ def validate_official_source_discovery_outputs(
             )
 
 
+def validate_aacom_do_outputs(
+    candidate_rows: Iterable[dict[str, str]],
+    extracted_rows: Iterable[dict[str, str]],
+    stats_rows: Iterable[dict[str, str]],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(candidate_rows, start=2):
+        url = row.get("aacom_profile_url", "").strip()
+        if url and not is_aacom_profile_url(url):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_profile_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "aacom_profile_url",
+                "AACOM DO profile candidate is not an AACOM /detail-pages/com/ URL.",
+                "Use only AACOM Choose D.O. Explorer COM profile URLs.",
+            )
+        degree = row.get("degree_type", "").strip().upper()
+        if row.get("school_id", "").strip() and degree != "DO":
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_profile_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "AACOM DO profile candidate is matched to a non-DO school.",
+                "Match AACOM COM profile candidates only to DO school_master rows.",
+            )
+
+    for row_number, row in enumerate(extracted_rows, start=2):
+        if row.get("extraction_status", "").strip() != "accepted":
+            continue
+        if row.get("degree_type", "").strip().upper() != "DO":
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "Accepted AACOM extraction must be a DO row.",
+                "Reject or manually review non-DO AACOM rows.",
+            )
+        if not is_aacom_profile_url(row.get("aacom_profile_url", "")):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "aacom_profile_url",
+                "Accepted AACOM extraction must use an AACOM profile URL.",
+                "Use only AACOM Choose D.O. Explorer COM profile URLs.",
+            )
+        if row.get("data_confidence", "").strip() != AACOM_DATA_CONFIDENCE:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "data_confidence",
+                "Accepted AACOM extraction has the wrong data_confidence.",
+                f"Set data_confidence to {AACOM_DATA_CONFIDENCE}.",
+            )
+        mcat = parse_number(row.get("mcat_mean"))
+        gpa = parse_number(row.get("overall_gpa_mean"))
+        if mcat is None or gpa is None:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "mcat_mean,overall_gpa_mean",
+                "Accepted AACOM extraction must include both MCAT and GPA.",
+                "Leave partial AACOM extractions in needs_review status.",
+            )
+        if mcat is not None and not 472 <= mcat <= 528:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "mcat_mean",
+                "Accepted AACOM MCAT is outside the valid MCAT range.",
+                "Verify the extraction pattern or source text before applying.",
+            )
+        if gpa is not None and not 0 <= gpa <= 4.0:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/aacom_do_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "overall_gpa_mean",
+                "Accepted AACOM GPA is outside the valid GPA range.",
+                "Verify the extraction pattern or source text before applying.",
+            )
+
+    for row_number, row in enumerate(stats_rows, start=2):
+        if row.get("data_confidence", "").strip() != AACOM_DATA_CONFIDENCE:
+            continue
+        if row.get("degree_type", "").strip().upper() != "DO":
+            add_issue(
+                issues,
+                "error",
+                "data/normalized/admissions_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "AACOM canonical stats row is not marked DO.",
+                "AACOM profile imports should only create DO admissions_stats rows.",
+            )
+        if not is_aacom_profile_url(row.get("source_url", "")):
+            add_issue(
+                issues,
+                "error",
+                "data/normalized/admissions_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "source_url",
+                "AACOM canonical stats row does not point to an AACOM profile URL.",
+                "Use the accepted AACOM profile URL as source_url.",
+            )
+
+
 def referenced_scoring_columns(
     master_headers: list[str],
     preference_rows: Iterable[dict[str, str]],
@@ -884,6 +1019,8 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     _, final_rows = loaded.get("data/final_application_list.csv", ([], []))
     _, official_candidate_rows = loaded.get("data/source_tables/official_mcat_gpa_source_candidates.csv", ([], []))
     _, official_extracted_rows = loaded.get("data/source_tables/official_mcat_gpa_extracted_values.csv", ([], []))
+    _, aacom_candidate_rows = loaded.get("data/source_tables/aacom_do_profile_candidates.csv", ([], []))
+    _, aacom_extracted_rows = loaded.get("data/source_tables/aacom_do_extracted_stats.csv", ([], []))
     known_school_ids = {row.get("school_id", "").strip() for row in master_rows if row.get("school_id", "").strip()}
 
     validate_duplicate_school_ids(master_rows, issues)
@@ -1011,6 +1148,7 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     validate_source_match_overrides(source_override_rows, known_school_ids, issues)
     validate_blank_source_queue_urls(source_queue_rows, issues)
     validate_official_source_discovery_outputs(official_candidate_rows, official_extracted_rows, issues)
+    validate_aacom_do_outputs(aacom_candidate_rows, aacom_extracted_rows, stats_rows, issues)
     validate_ranking_coverage(master_headers, master_rows, preference_rows, scenario_rows, issues)
     validate_final_application_rationale(final_rows, issues)
 

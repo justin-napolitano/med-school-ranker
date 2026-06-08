@@ -478,6 +478,7 @@ function normalizeOwnership(value: unknown): ProductSchool["ownershipType"] {
 function statsSourceTypeFor(confidence: string, sourceName: string, sourceUrl: string): string {
   const text = [confidence, sourceName, sourceUrl].join(" ").toLowerCase();
   if (!text.trim()) return "missing";
+  if (text.includes("aacom_com_submitted_profile") || text.includes("aacom")) return "COM-submitted AACOM profile";
   if (text.includes("official")) return "official public source";
   if (
     text.includes("third_party")

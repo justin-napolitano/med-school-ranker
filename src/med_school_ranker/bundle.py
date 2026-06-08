@@ -4,6 +4,7 @@ import zipfile
 from pathlib import Path
 
 from med_school_ranker.paths import DATA, OUT, ROOT, SITE_DIR, UPLOAD_ZIP, WORKBOOK_XLSX
+from med_school_ranker.aacom_do_apply import apply_aacom_do_stats
 from med_school_ranker.final_list import build_final_application_list
 from med_school_ranker.official_stats_apply import apply_official_stats
 from med_school_ranker.rankings import build_rankings
@@ -67,6 +68,7 @@ def main() -> None:
         raise SystemExit(1)
 
     official_rows = apply_official_stats()
+    aacom_rows = apply_aacom_do_stats()
     rankings = build_rankings()
     final_list = build_final_application_list()
     workbook = build_workbook()
@@ -74,6 +76,7 @@ def main() -> None:
     bundle = build_upload_zip()
     print(f"Wrote {len(source_outputs)} source integration file(s)")
     print(f"Applied {official_rows} official MCAT/GPA row(s)")
+    print(f"Applied {aacom_rows} AACOM DO MCAT/GPA row(s)")
     print(f"Wrote {rankings.relative_to(ROOT)}")
     print(f"Wrote {final_list.relative_to(ROOT)}")
     print(f"Wrote {workbook.relative_to(ROOT)}")

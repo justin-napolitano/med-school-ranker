@@ -45,6 +45,7 @@ jobs:
         run: |
           uv run med-school-integrate-sources
           uv run med-school-apply-official-stats
+          uv run med-school-apply-aacom-do-stats
           uv run med-school-build-rankings
           uv run med-school-build-site --site-mode publish_safe
 

@@ -14,6 +14,11 @@ from typing import Iterable
 
 from med_school_ranker.paths import (
     AAMC_MCAT_GPA_GRID_CSV,
+    AACOM_DO_EXTRACTED_STATS_CSV,
+    AACOM_DO_PROFILE_CANDIDATES_CSV,
+    AACOM_DO_PROFILE_CONFLICTS_CSV,
+    AACOM_DO_PROFILE_COVERAGE_CSV,
+    AACOM_DO_PROFILE_REVIEW_QUEUE_CSV,
     ADMISSIONS_POLICIES_CSV,
     ADMISSIONS_SOURCE_QUEUE_CSV,
     ADMISSIONS_STATS_CANDIDATES_CSV,
@@ -79,6 +84,11 @@ JSON_OUTPUTS = {
     "official_mcat_gpa_review_queue": OFFICIAL_STATS_REVIEW_QUEUE_CSV,
     "official_mcat_gpa_coverage": OFFICIAL_STATS_COVERAGE_CSV,
     "official_mcat_gpa_conflicts": OFFICIAL_STATS_CONFLICTS_CSV,
+    "aacom_do_profile_candidates": AACOM_DO_PROFILE_CANDIDATES_CSV,
+    "aacom_do_extracted_stats": AACOM_DO_EXTRACTED_STATS_CSV,
+    "aacom_do_profile_coverage": AACOM_DO_PROFILE_COVERAGE_CSV,
+    "aacom_do_profile_review_queue": AACOM_DO_PROFILE_REVIEW_QUEUE_CSV,
+    "aacom_do_profile_conflicts": AACOM_DO_PROFILE_CONFLICTS_CSV,
     "cost_and_debt_candidates": COST_AND_DEBT_CANDIDATES_CSV,
     "cost_and_debt_review": COST_AND_DEBT_REVIEW_CSV,
     "project_subplans": ROOT / "data/project_subplans.csv",
@@ -156,6 +166,11 @@ ADMIN_LOCAL_KEYS = {
     "official_mcat_gpa_review_queue",
     "official_mcat_gpa_coverage",
     "official_mcat_gpa_conflicts",
+    "aacom_do_profile_candidates",
+    "aacom_do_extracted_stats",
+    "aacom_do_profile_coverage",
+    "aacom_do_profile_review_queue",
+    "aacom_do_profile_conflicts",
     "cost_and_debt_candidates",
     "cost_and_debt_review",
     "project_subplans",
@@ -1558,6 +1573,11 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     official_review_queue = read_csv(OFFICIAL_STATS_REVIEW_QUEUE_CSV)
     official_coverage = read_csv(OFFICIAL_STATS_COVERAGE_CSV)
     official_conflicts = read_csv(OFFICIAL_STATS_CONFLICTS_CSV)
+    aacom_profile_candidates = read_csv(AACOM_DO_PROFILE_CANDIDATES_CSV)
+    aacom_extracted_stats = read_csv(AACOM_DO_EXTRACTED_STATS_CSV)
+    aacom_coverage = read_csv(AACOM_DO_PROFILE_COVERAGE_CSV)
+    aacom_review_queue = read_csv(AACOM_DO_PROFILE_REVIEW_QUEUE_CSV)
+    aacom_conflicts = read_csv(AACOM_DO_PROFILE_CONFLICTS_CSV)
     data_quality = read_csv(DATA_QUALITY_REPORT_CSV)
     project_subplans = read_csv(ROOT / "data/project_subplans.csv")
 
@@ -1814,6 +1834,11 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
                 "official_mcat_gpa_review_queue": official_review_queue,
                 "official_mcat_gpa_coverage": official_coverage,
                 "official_mcat_gpa_conflicts": official_conflicts,
+                "aacom_do_profile_candidates": aacom_profile_candidates,
+                "aacom_do_extracted_stats": aacom_extracted_stats,
+                "aacom_do_profile_coverage": aacom_coverage,
+                "aacom_do_profile_review_queue": aacom_review_queue,
+                "aacom_do_profile_conflicts": aacom_conflicts,
                 "data_quality_report": data_quality,
                 "project_subplans": project_subplans,
             }
