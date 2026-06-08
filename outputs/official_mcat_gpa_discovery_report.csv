@@ -1,0 +1,8 @@
+metric,count,notes
+active_schools,233,"Active, non-excluded school rows scanned."
+candidate_urls,72,Unique candidate URLs generated from school_master and manual queue.
+official_domain_urls,72,Candidate URLs that pass the strict official-domain classifier.
+fetch_ready_official_source_urls,0,Official URLs that look like stats/profile/report sources and can be fetched automatically.
+schools_with_any_candidate,72,Schools with at least one candidate URL.
+schools_with_official_domain_seed,72,Schools with at least one known official-domain URL.
+schools_with_fetch_ready_official_source,0,Schools with at least one official stats-like URL accepted for fetch.

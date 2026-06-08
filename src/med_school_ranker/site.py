@@ -26,6 +26,12 @@ from med_school_ranker.paths import (
     DATA_QUALITY_REPORT_CSV,
     LETTER_REQUIREMENTS_CSV,
     MASTER_CSV,
+    OFFICIAL_STATS_CONFLICTS_CSV,
+    OFFICIAL_STATS_COVERAGE_CSV,
+    OFFICIAL_STATS_DISCOVERY_REPORT_CSV,
+    OFFICIAL_STATS_EXTRACTED_VALUES_CSV,
+    OFFICIAL_STATS_REVIEW_QUEUE_CSV,
+    OFFICIAL_STATS_SOURCE_CANDIDATES_CSV,
     OUT,
     PARTNER_INPUTS_CSV,
     PREFERENCES_CSV,
@@ -67,6 +73,12 @@ JSON_OUTPUTS = {
     "source_match_review": SOURCE_MATCH_REVIEW_CSV,
     "admissions_stats_candidates": ADMISSIONS_STATS_CANDIDATES_CSV,
     "admissions_stats_conflicts": ADMISSIONS_STATS_CONFLICTS_CSV,
+    "official_mcat_gpa_source_candidates": OFFICIAL_STATS_SOURCE_CANDIDATES_CSV,
+    "official_mcat_gpa_extracted_values": OFFICIAL_STATS_EXTRACTED_VALUES_CSV,
+    "official_mcat_gpa_discovery_report": OFFICIAL_STATS_DISCOVERY_REPORT_CSV,
+    "official_mcat_gpa_review_queue": OFFICIAL_STATS_REVIEW_QUEUE_CSV,
+    "official_mcat_gpa_coverage": OFFICIAL_STATS_COVERAGE_CSV,
+    "official_mcat_gpa_conflicts": OFFICIAL_STATS_CONFLICTS_CSV,
     "cost_and_debt_candidates": COST_AND_DEBT_CANDIDATES_CSV,
     "cost_and_debt_review": COST_AND_DEBT_REVIEW_CSV,
     "project_subplans": ROOT / "data/project_subplans.csv",
@@ -138,6 +150,12 @@ ADMIN_LOCAL_KEYS = {
     "source_match_review",
     "admissions_stats_candidates",
     "admissions_stats_conflicts",
+    "official_mcat_gpa_source_candidates",
+    "official_mcat_gpa_extracted_values",
+    "official_mcat_gpa_discovery_report",
+    "official_mcat_gpa_review_queue",
+    "official_mcat_gpa_coverage",
+    "official_mcat_gpa_conflicts",
     "cost_and_debt_candidates",
     "cost_and_debt_review",
     "project_subplans",
@@ -1534,6 +1552,12 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
     source_match_overrides = read_csv(SOURCE_MATCH_OVERRIDES_CSV)
     source_review_queue = read_csv(SOURCE_REVIEW_QUEUE_CSV)
     source_queue = read_csv(ADMISSIONS_SOURCE_QUEUE_CSV)
+    official_source_candidates = read_csv(OFFICIAL_STATS_SOURCE_CANDIDATES_CSV)
+    official_extracted_values = read_csv(OFFICIAL_STATS_EXTRACTED_VALUES_CSV)
+    official_discovery_report = read_csv(OFFICIAL_STATS_DISCOVERY_REPORT_CSV)
+    official_review_queue = read_csv(OFFICIAL_STATS_REVIEW_QUEUE_CSV)
+    official_coverage = read_csv(OFFICIAL_STATS_COVERAGE_CSV)
+    official_conflicts = read_csv(OFFICIAL_STATS_CONFLICTS_CSV)
     data_quality = read_csv(DATA_QUALITY_REPORT_CSV)
     project_subplans = read_csv(ROOT / "data/project_subplans.csv")
 
@@ -1784,6 +1808,12 @@ def build_site_payload(site_mode: str = SITE_MODE_LOCAL_FULL) -> dict[str, objec
                 "source_match_overrides": source_match_overrides,
                 "source_review_queue": source_review_queue,
                 "admissions_source_queue": source_queue,
+                "official_mcat_gpa_source_candidates": official_source_candidates,
+                "official_mcat_gpa_extracted_values": official_extracted_values,
+                "official_mcat_gpa_discovery_report": official_discovery_report,
+                "official_mcat_gpa_review_queue": official_review_queue,
+                "official_mcat_gpa_coverage": official_coverage,
+                "official_mcat_gpa_conflicts": official_conflicts,
                 "data_quality_report": data_quality,
                 "project_subplans": project_subplans,
             }

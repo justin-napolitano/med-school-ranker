@@ -84,6 +84,16 @@ Phase 2A generates candidate rows and conflict reports; current policy allows ma
 8. Add `outputs/admissions_stats_candidates.csv` and `outputs/admissions_stats_conflicts.csv`.
 9. Add source confidence labels to ranking, workbook, and site outputs.
 
+## Official Public Source Upgrade
+
+The concrete implementation plan for school-published MCAT/GPA discovery is now defined in:
+
+- `docs/OFFICIAL_MCAT_GPA_SOURCE_DISCOVERY_EXEC_PLAN.md`
+- `docs/HEADLESS_OFFICIAL_MCAT_GPA_SOURCE_DISCOVERY_PLAN.md`
+- `docs/source_discovery/`
+
+This upgrade treats search and AI-assisted discovery as candidate generation only. No MCAT/GPA value should be promoted to official unless it is extracted from a fetched public school, university, health-system, annual-report, fact-book, or class-profile source and has source URL, source title, checked date, metric population, metric type, and evidence context.
+
 ## Validation Rules
 
 - MCAT total must be blank or between 472 and 528.

@@ -140,7 +140,12 @@ for (const profileAction of ["Interested", "Applying", "Not Interested", "Compar
   }
 }
 
-if (!schoolProfile.includes("Baseline Rank") || !schoolProfile.includes("Open source")) {
+const profileHasSourceLink =
+  schoolProfile.includes("Open source")
+  || schoolProfile.includes("Open MCAT/GPA source")
+  || schoolProfile.includes("Open identity source")
+  || schoolProfile.includes("Open school website");
+if (!schoolProfile.includes("Baseline Rank") || !profileHasSourceLink) {
   fail("School profile output is missing baseline rank or source link content.");
 }
 

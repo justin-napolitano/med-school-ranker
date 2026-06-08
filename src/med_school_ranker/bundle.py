@@ -5,6 +5,7 @@ from pathlib import Path
 
 from med_school_ranker.paths import DATA, OUT, ROOT, SITE_DIR, UPLOAD_ZIP, WORKBOOK_XLSX
 from med_school_ranker.final_list import build_final_application_list
+from med_school_ranker.official_stats_apply import apply_official_stats
 from med_school_ranker.rankings import build_rankings
 from med_school_ranker.site import build_site
 from med_school_ranker.source_integration import build_source_integration
@@ -65,12 +66,14 @@ def main() -> None:
         print(f"Validation failed with {error_count} error(s); see outputs/data_quality_report.csv")
         raise SystemExit(1)
 
+    official_rows = apply_official_stats()
     rankings = build_rankings()
     final_list = build_final_application_list()
     workbook = build_workbook()
     site = build_site()
     bundle = build_upload_zip()
     print(f"Wrote {len(source_outputs)} source integration file(s)")
+    print(f"Applied {official_rows} official MCAT/GPA row(s)")
     print(f"Wrote {rankings.relative_to(ROOT)}")
     print(f"Wrote {final_list.relative_to(ROOT)}")
     print(f"Wrote {workbook.relative_to(ROOT)}")

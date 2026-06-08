@@ -44,6 +44,9 @@ export function AppSchoolProfileView({ schools, slug, caveat, local }: Props) {
   const notInterested = local.isNotInterested(school.slug);
   const compared = local.isCompared(school.slug);
   const override = local.getSchoolWeightOverride(school.slug);
+  const schoolWebsiteUrls = splitSourceUrls(school.websiteUrl);
+  const statsSourceUrls = splitSourceUrls(school.statsSourceUrl);
+  const identitySourceUrls = splitSourceUrls(school.sourceUrl).filter((url) => !statsSourceUrls.includes(url));
 
   return (
     <>
@@ -233,19 +236,52 @@ export function AppSchoolProfileView({ schools, slug, caveat, local }: Props) {
               <dt>Stats source quality</dt>
               <dd>{school.statsQuality || "Not available"}</dd>
             </div>
+            <div>
+              <dt>Stats source type</dt>
+              <dd>{school.statsSourceType || "missing"}</dd>
+            </div>
+            <div>
+              <dt>Stats cohort</dt>
+              <dd>{school.statsCohortYear || "Not available"}</dd>
+            </div>
+            <div>
+              <dt>Stats population</dt>
+              <dd>{school.statsMetricPopulation || "Not available"}</dd>
+            </div>
           </dl>
         </article>
 
         <article className="profile-section">
           <h2>Source</h2>
-          <p>{school.sourceName || "Source name not available in payload."}</p>
-          {school.sourceUrl ? (
-            <a className="action-link" href={school.sourceUrl}>
-              Open source
+          <p>{school.statsSource || school.sourceName || "Source name not available in payload."}</p>
+          {schoolWebsiteUrls.map((url) => (
+            <a className="action-link" href={url} target="_blank" rel="noreferrer" key={`website-${url}`}>
+              Open school website
             </a>
-          ) : null}
+          ))}
+          {statsSourceUrls.map((url, index) => (
+            <a className="action-link" href={url} target="_blank" rel="noreferrer" key={`stats-${url}`}>
+              {statsSourceUrls.length > 1 ? `Open MCAT/GPA source ${index + 1}` : "Open MCAT/GPA source"}
+            </a>
+          ))}
+          {identitySourceUrls.map((url, index) => (
+            <a className="action-link" href={url} target="_blank" rel="noreferrer" key={`identity-${url}`}>
+              {identitySourceUrls.length > 1 ? `Open identity source ${index + 1}` : "Open identity source"}
+            </a>
+          ))}
         </article>
       </section>
     </>
+  );
+}
+
+function splitSourceUrls(value: string): string[] {
+  return Array.from(
+    new Set(
+      value
+        .split(";")
+        .map((url) => url.trim())
+        .filter((url) => /^https?:\/\//i.test(url)),
+    ),
   );
 }

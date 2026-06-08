@@ -49,6 +49,13 @@ export type ProductSchool = {
   publishedGpaBand: string;
   statsQuality: string;
   statsSource: string;
+  statsSourceUrl: string;
+  statsSourceConfidence: string;
+  statsSourceType: string;
+  statsCohortYear: string;
+  statsMetricPopulation: string;
+  statsMetricType: string;
+  websiteUrl: string;
   sourceName: string;
   sourceUrl: string;
   dataConfidence: string;
@@ -231,6 +238,9 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
   const costOutState = firstPositiveValue(cost.estimated_coa_out_state, ranking.estimated_coa_out_state, school.estimated_coa_out_state);
   const tuitionInState = firstPositiveValue(cost.in_state_tuition_fees_insurance, school.in_state_tuition_fees_insurance);
   const tuitionOutState = firstPositiveValue(cost.out_state_tuition_fees_insurance, school.out_state_tuition_fees_insurance);
+  const statsSource = ranking.stats_source_name || stats.source_name || "";
+  const statsSourceUrl = ranking.stats_source_url || stats.source_url || "";
+  const statsSourceConfidence = ranking.stats_data_confidence || stats.data_confidence || "";
   return {
     id: ranking.school_id || school.school_id || slug,
     slug,
@@ -256,10 +266,17 @@ export function normalizeSchool(node: RawSchoolNode): ProductSchool {
     publishedMcatBand: ranking.published_mcat_band || stats.published_mcat_band || derived.published_mcat_band || "",
     publishedGpaBand: ranking.published_gpa_band || stats.published_gpa_band || derived.published_gpa_band || "",
     statsQuality: ranking.stats_data_quality_band || stats.data_quality_band || derived.admissions_data_quality_band || "",
-    statsSource: ranking.stats_source_name || stats.source_name || "",
+    statsSource,
+    statsSourceUrl,
+    statsSourceConfidence,
+    statsSourceType: statsSourceTypeFor(statsSourceConfidence, statsSource, statsSourceUrl),
+    statsCohortYear: stats.stats_cohort_year || "",
+    statsMetricPopulation: stats.metric_population || "",
+    statsMetricType: stats.metric_type || "",
+    websiteUrl: school.website || school.official_url || "",
     sourceName: ranking.source_name || school.source_name || "",
     sourceUrl: ranking.source_url || school.source_url || "",
-    dataConfidence: ranking.data_confidence || school.data_confidence || "",
+    dataConfidence: ranking.data_confidence || statsSourceConfidence || school.data_confidence || "",
     costInState: costInState || costOutState,
     costOutState: costOutState || costInState,
     tuitionInState: tuitionInState || tuitionOutState,
@@ -456,6 +473,23 @@ function normalizeOwnership(value: unknown): ProductSchool["ownershipType"] {
   if (normalized === "public" || normalized.includes("public")) return "public";
   if (normalized === "private" || normalized.includes("private")) return "private";
   return "unknown";
+}
+
+function statsSourceTypeFor(confidence: string, sourceName: string, sourceUrl: string): string {
+  const text = [confidence, sourceName, sourceUrl].join(" ").toLowerCase();
+  if (!text.trim()) return "missing";
+  if (text.includes("official")) return "official public source";
+  if (
+    text.includes("third_party")
+    || text.includes("third-party")
+    || text.includes("shemmassian")
+    || text.includes("prospectivedoctor")
+    || text.includes("match guy")
+  ) {
+    return "provisional third-party source";
+  }
+  if (text.includes("cycletrack")) return "crowdsourced context";
+  return "source-backed";
 }
 
 function addBullet(bullets: string[], value: string) {

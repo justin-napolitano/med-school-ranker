@@ -19,6 +19,12 @@ from med_school_ranker.paths import (
     MANUAL_DATA,
     MASTER_CSV,
     NORMALIZED_DATA,
+    OFFICIAL_STATS_CONFLICTS_CSV,
+    OFFICIAL_STATS_COVERAGE_CSV,
+    OFFICIAL_STATS_DISCOVERY_REPORT_CSV,
+    OFFICIAL_STATS_EXTRACTED_VALUES_CSV,
+    OFFICIAL_STATS_REVIEW_QUEUE_CSV,
+    OFFICIAL_STATS_SOURCE_CANDIDATES_CSV,
     OUT,
     PARTNER_INPUTS_CSV,
     PREFERENCES_CSV,
@@ -30,6 +36,16 @@ from med_school_ranker.paths import (
     SCHOOL_VISIBILITY_CSV,
     SOURCE_MATCH_OVERRIDES_CSV,
     SOURCE_REVIEW_QUEUE_CSV,
+    SOURCE_TABLES,
+)
+from med_school_ranker.official_source_rules import (
+    OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+    OFFICIAL_STATS_CONFLICT_COLUMNS,
+    OFFICIAL_STATS_COVERAGE_COLUMNS,
+    OFFICIAL_STATS_DISCOVERY_REPORT_COLUMNS,
+    OFFICIAL_STATS_EXTRACTED_COLUMNS,
+    OFFICIAL_STATS_REVIEW_QUEUE_COLUMNS,
+    is_unsafe_discovery_url,
 )
 from med_school_ranker.source_integration import (
     ADMISSIONS_POLICIES_COLUMNS,
@@ -201,6 +217,15 @@ REQUIRED_COLUMNS = {
     "data/final_application_list.csv": ["school_id", "school_name", "why_kept", "why_cut"],
 }
 
+OPTIONAL_REQUIRED_COLUMNS = {
+    "data/source_tables/official_mcat_gpa_source_candidates.csv": OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+    "data/source_tables/official_mcat_gpa_extracted_values.csv": OFFICIAL_STATS_EXTRACTED_COLUMNS,
+    "outputs/official_mcat_gpa_discovery_report.csv": OFFICIAL_STATS_DISCOVERY_REPORT_COLUMNS,
+    "outputs/official_mcat_gpa_review_queue.csv": OFFICIAL_STATS_REVIEW_QUEUE_COLUMNS,
+    "outputs/official_mcat_gpa_coverage.csv": OFFICIAL_STATS_COVERAGE_COLUMNS,
+    "outputs/official_mcat_gpa_conflicts.csv": OFFICIAL_STATS_CONFLICT_COLUMNS,
+}
+
 MCAT_COLUMNS = [
     "mcat_total",
     "mcat_median_accepted",
@@ -307,6 +332,7 @@ def ensure_data_layer_dirs(root: Path = ROOT) -> None:
         root / REFERENCE_DATA.relative_to(ROOT),
         root / NORMALIZED_DATA.relative_to(ROOT),
         root / MANUAL_DATA.relative_to(ROOT),
+        root / SOURCE_TABLES.relative_to(ROOT),
         root / "data/manual/private",
         root / OUT.relative_to(ROOT),
     ]:
@@ -394,6 +420,23 @@ def missing_required_columns(
                 ",".join(missing),
                 f"Missing required column(s): {', '.join(missing)}.",
                 "Add the missing column(s) without changing existing columns.",
+            )
+    for label, columns in OPTIONAL_REQUIRED_COLUMNS.items():
+        path = root / label
+        if not path.exists():
+            continue
+        headers, rows = read_csv(path)
+        loaded[label] = (headers, rows)
+        missing = [column for column in columns if column not in headers]
+        if missing:
+            add_issue(
+                issues,
+                "error",
+                label,
+                "",
+                ",".join(missing),
+                f"Missing required column(s): {', '.join(missing)}.",
+                "Regenerate the official MCAT/GPA source discovery outputs.",
             )
 
 
@@ -682,6 +725,63 @@ def validate_blank_source_queue_urls(
             )
 
 
+def validate_official_source_discovery_outputs(
+    candidate_rows: Iterable[dict[str, str]],
+    extracted_rows: Iterable[dict[str, str]],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(candidate_rows, start=2):
+        url = row.get("candidate_source_url", "").strip()
+        if not url:
+            continue
+        if is_unsafe_discovery_url(url):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/official_mcat_gpa_source_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "candidate_source_url",
+                "Official source candidate points to a search, AI, forum, or advising source.",
+                "Use only school, university, health-system, or public report URLs for official source candidates.",
+            )
+        score = parse_number(row.get("official_domain_score"))
+        if row.get("review_status", "").strip() == "accepted_for_fetch" and (score is None or score < 0.9):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/official_mcat_gpa_source_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "official_domain_score",
+                "Candidate marked accepted_for_fetch below the official-domain threshold.",
+                "Keep review_status as needs_review unless official_domain_score is at least 0.90.",
+            )
+
+    for row_number, row in enumerate(extracted_rows, start=2):
+        if row.get("extraction_status", "").strip() != "accepted":
+            continue
+        score = parse_number(row.get("official_domain_score"))
+        if score is None or score < 0.9:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/official_mcat_gpa_extracted_values.csv",
+                row_label(row, f"row {row_number}"),
+                "official_domain_score",
+                "Accepted official extraction is below the official-domain threshold.",
+                "Reject or manually review the row before applying it to admissions_stats.csv.",
+            )
+        if parse_number(row.get("mcat_value")) is None or parse_number(row.get("gpa_value")) is None:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/official_mcat_gpa_extracted_values.csv",
+                row_label(row, f"row {row_number}"),
+                "mcat_value,gpa_value",
+                "Accepted official extraction must include both MCAT and GPA.",
+                "Leave partial extractions in needs_review status.",
+            )
+
+
 def referenced_scoring_columns(
     master_headers: list[str],
     preference_rows: Iterable[dict[str, str]],
@@ -782,6 +882,8 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     _, source_override_rows = loaded.get("data/manual/source_match_overrides.csv", ([], []))
     _, source_review_rows = loaded.get("data/manual/source_review_queue.csv", ([], []))
     _, final_rows = loaded.get("data/final_application_list.csv", ([], []))
+    _, official_candidate_rows = loaded.get("data/source_tables/official_mcat_gpa_source_candidates.csv", ([], []))
+    _, official_extracted_rows = loaded.get("data/source_tables/official_mcat_gpa_extracted_values.csv", ([], []))
     known_school_ids = {row.get("school_id", "").strip() for row in master_rows if row.get("school_id", "").strip()}
 
     validate_duplicate_school_ids(master_rows, issues)
@@ -908,6 +1010,7 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
         validate_school_references(label, rows, known_school_ids, issues)
     validate_source_match_overrides(source_override_rows, known_school_ids, issues)
     validate_blank_source_queue_urls(source_queue_rows, issues)
+    validate_official_source_discovery_outputs(official_candidate_rows, official_extracted_rows, issues)
     validate_ranking_coverage(master_headers, master_rows, preference_rows, scenario_rows, issues)
     validate_final_application_rationale(final_rows, issues)
 
