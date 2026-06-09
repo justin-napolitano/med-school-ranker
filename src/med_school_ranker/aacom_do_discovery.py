@@ -8,15 +8,15 @@ from pathlib import Path
 
 from med_school_ranker.aacom_do_rules import (
     AACOM_COVERAGE_COLUMNS,
-    AACOM_PROFILE_BASE,
     AACOM_PROFILE_CANDIDATE_COLUMNS,
+    AacomProfileCard,
     AacomProfileMatch,
     best_profile_match,
     clean,
     compact_text,
     is_aacom_profile_url,
     is_truthy,
-    parse_aacom_profile_urls,
+    parse_aacom_profile_cards,
     read_csv,
     today_iso,
     write_csv,
@@ -34,7 +34,14 @@ AACOM_DISCOVERY_SEED_URLS = [
     "https://www.aacom.org/sitemap.xml",
     "https://www.aacom.org/sitemap_index.xml",
     "https://www.aacom.org/wp-sitemap.xml",
-    "https://www.aacom.org/choose-do/explorer",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=0&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=12&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=24&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=36&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=48&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=60&rowsPerPage=12",
+    "https://www.aacom.org/explore-med-schools/choose-do-explorer?startRow=72&rowsPerPage=12",
     "https://www.aacom.org/searches/reports/report/US-osteopathic-medical-schools-dashboard",
 ]
 
@@ -81,38 +88,53 @@ def fetch_text(url: str, timeout_seconds: int) -> tuple[str, str]:
     return body.decode("utf-8", errors="replace"), "fetched"
 
 
-def urls_from_url_list(path: Path) -> list[str]:
-    urls = []
+def profiles_from_url_list(path: Path) -> list[AacomProfileCard]:
+    profiles = []
     for line in path.read_text().splitlines():
         text = clean(line)
         if not text or text.startswith("#"):
             continue
         if is_aacom_profile_url(text):
-            urls.append(text)
-    return sorted(set(urls))
+            profiles.append(AacomProfileCard(url=text))
+    return sorted({profile.url: profile for profile in profiles}.values(), key=lambda profile: profile.url)
 
 
-def discover_urls(fetch: bool, timeout_seconds: int, url_list: Path | None = None) -> tuple[list[str], list[str]]:
-    urls = set()
+def merge_profile(profiles: dict[str, AacomProfileCard], profile: AacomProfileCard) -> None:
+    existing = profiles.get(profile.url)
+    if not existing:
+        profiles[profile.url] = profile
+        return
+    if profile.title and profile.city and profile.state_abbrev:
+        profiles[profile.url] = profile
+
+
+def discover_profiles(
+    fetch: bool,
+    timeout_seconds: int,
+    url_list: Path | None = None,
+) -> tuple[list[AacomProfileCard], list[str]]:
+    profiles: dict[str, AacomProfileCard] = {}
     notes = []
     if url_list:
-        list_urls = urls_from_url_list(url_list)
-        urls.update(list_urls)
-        notes.append(f"url_list:{len(list_urls)}")
+        list_profiles = profiles_from_url_list(url_list)
+        for profile in list_profiles:
+            merge_profile(profiles, profile)
+        notes.append(f"url_list:{len(list_profiles)}")
     if not fetch:
-        return sorted(urls), notes
+        return sorted(profiles.values(), key=lambda profile: profile.url), notes
     for seed_url in AACOM_DISCOVERY_SEED_URLS:
         text, status = fetch_text(seed_url, timeout_seconds)
         notes.append(f"{seed_url}:{status}")
         if status != "fetched":
             continue
-        urls.update(parse_aacom_profile_urls(text, seed_url))
-    return sorted(urls), notes
+        for profile in parse_aacom_profile_cards(text, seed_url):
+            merge_profile(profiles, profile)
+    return sorted(profiles.values(), key=lambda profile: profile.url), notes
 
 
-def candidate_row(url: str, match: AacomProfileMatch, discovery_method: str) -> dict[str, str]:
+def candidate_row(profile: AacomProfileCard, match: AacomProfileMatch, discovery_method: str) -> dict[str, str]:
     school = match.school or {}
-    title = compact_text(url.rsplit("/", 1)[-1].replace("-", " ").title())
+    title = compact_text(profile.title or profile.url.rsplit("/", 1)[-1].replace("-", " ").title())
     fetch_status = "not_fetched" if match.status in {"safe_match", "review_match"} else "not_applicable"
     review_status = "accepted_for_fetch" if match.status == "safe_match" else "needs_review"
     return {
@@ -122,9 +144,11 @@ def candidate_row(url: str, match: AacomProfileMatch, discovery_method: str) -> 
         "campus_name": clean(school.get("campus_name")),
         "state_abbrev": clean(school.get("state_abbrev")),
         "school_website": clean(school.get("website")),
-        "aacom_profile_url": url,
+        "aacom_profile_url": profile.url,
         "aacom_profile_title": title,
-        "aacom_slug": url.rstrip("/").rsplit("/", 1)[-1],
+        "aacom_city": clean(profile.city),
+        "aacom_state_abbrev": clean(profile.state_abbrev),
+        "aacom_slug": profile.url.rstrip("/").rsplit("/", 1)[-1],
         "match_status": match.status,
         "match_score": f"{match.score:.2f}",
         "match_reason": match.reason,
@@ -191,10 +215,14 @@ def build_aacom_do_discovery(
     url_list: Path | None = None,
 ) -> list[dict[str, str]]:
     schools = active_do_schools()
-    urls, discovery_notes = discover_urls(fetch, timeout_seconds, url_list)
+    profiles, discovery_notes = discover_profiles(fetch, timeout_seconds, url_list)
     rows = [
-        candidate_row(url, best_profile_match(url, "", schools), "; ".join(["aacom_profile_url_list" if url_list else "", "aacom_seed_fetch" if fetch else "no_network"]).strip("; "))
-        for url in urls
+        candidate_row(
+            profile,
+            best_profile_match(profile.url, profile.title, schools, profile.city, profile.state_abbrev),
+            "; ".join(["aacom_profile_url_list" if url_list else "", "aacom_seed_fetch" if fetch else "no_network"]).strip("; "),
+        )
+        for profile in profiles
     ]
     rows = sorted(rows, key=lambda row: (row["school_name"], row["aacom_profile_url"]))
     if discovery_notes and rows:

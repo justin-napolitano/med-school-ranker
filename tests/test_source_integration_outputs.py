@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 
+from med_school_ranker.aacom_do_rules import AACOM_DATA_CONFIDENCE
 from med_school_ranker.paths import (
     AAMC_MCAT_GPA_GRID_CSV,
     ADMISSIONS_STATS_CONFLICTS_CSV,
@@ -22,7 +23,9 @@ def test_phase2a_source_outputs_have_expected_counts():
     assert len(read_rows(COST_AND_DEBT_CSV)) == 151
     assert len(read_rows(COST_AND_DEBT_CANDIDATES_CSV)) == 156
     assert len(read_rows(AAMC_MCAT_GPA_GRID_CSV)) == 110
-    assert len(read_rows(ADMISSIONS_STATS_CSV)) == 190
+    admissions_stats_rows = read_rows(ADMISSIONS_STATS_CSV)
+    aacom_rows = [row for row in admissions_stats_rows if row["data_confidence"] == AACOM_DATA_CONFIDENCE]
+    assert len(admissions_stats_rows) == 190 + len(aacom_rows)
     assert len(read_rows(ADMISSIONS_STATS_CONFLICTS_CSV)) == 87
 
     report = {(row["category"], row["item"]): row for row in read_rows(SOURCE_INTEGRATION_REPORT_CSV)}

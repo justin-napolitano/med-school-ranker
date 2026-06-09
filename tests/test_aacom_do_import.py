@@ -11,6 +11,7 @@ from med_school_ranker.aacom_do_rules import (
     AACOM_EXTRACTED_STATS_COLUMNS,
     AACOM_PROFILE_CANDIDATE_COLUMNS,
     best_profile_match,
+    parse_aacom_profile_cards,
     parse_aacom_profile_urls,
     read_csv,
     write_csv,
@@ -24,14 +25,33 @@ def test_parse_aacom_profile_urls_normalizes_absolute_and_relative_links() -> No
     <a href="https://www.aacom.org/detail-pages/com/kansas-city-university-college-of-osteopathic-medicine/">
     Kansas City
     </a>
+    <a data-srch-target="aHR0cHM6Ly9hYWNvbS5vcmcvZGV0YWlsLXBhZ2VzL2NvbS9hbGFiYW1hLWNvbGxlZ2Utb2Ytb3N0ZW9wYXRoaWMtbWVkaWNpbmU=">Alabama</a>
     """
 
     urls = parse_aacom_profile_urls(document)
 
     assert urls == [
+        "https://www.aacom.org/detail-pages/com/alabama-college-of-osteopathic-medicine",
         "https://www.aacom.org/detail-pages/com/arizona-college-of-osteopathic-medicine",
         "https://www.aacom.org/detail-pages/com/kansas-city-university-college-of-osteopathic-medicine",
     ]
+
+
+def test_parse_aacom_profile_cards_keeps_location_metadata() -> None:
+    document = """
+    <a data-srch-target="aHR0cHM6Ly9hYWNvbS5vcmcvZGV0YWlsLXBhZ2VzL2NvbS9hbGFiYW1hLWNvbGxlZ2Utb2Ytb3N0ZW9wYXRoaWMtbWVkaWNpbmU=" class="item-list__link">
+      <span class="item-list__title">Alabama College of Osteopathic Medicine</span>
+      <div class="item-list__location"><i></i><span> Dothan, AL</span></div>
+    </a>
+    """
+
+    cards = parse_aacom_profile_cards(document)
+
+    assert len(cards) == 1
+    assert cards[0].url == "https://www.aacom.org/detail-pages/com/alabama-college-of-osteopathic-medicine"
+    assert cards[0].title == "Alabama College of Osteopathic Medicine"
+    assert cards[0].city == "Dothan"
+    assert cards[0].state_abbrev == "AL"
 
 
 def test_best_profile_match_safely_matches_do_school_slug() -> None:
@@ -47,6 +67,36 @@ def test_best_profile_match_safely_matches_do_school_slug() -> None:
         "https://www.aacom.org/detail-pages/com/arizona-college-of-osteopathic-medicine",
         "",
         schools,
+    )
+
+    assert match.status == "safe_match"
+    assert match.school and match.school["school_id"] == "do_azcom"
+
+
+def test_best_profile_match_uses_city_for_same_state_campus_match() -> None:
+    schools = [
+        {
+            "school_id": "do_atsu_soma",
+            "school_name": "A.T. Still University, School of Osteopathic Medicine in Arizona",
+            "degree_type": "DO",
+            "city": "Mesa",
+            "state_abbrev": "AZ",
+        },
+        {
+            "school_id": "do_azcom",
+            "school_name": "Midwestern University Arizona College of Osteopathic Medicine",
+            "degree_type": "DO",
+            "city": "Glendale",
+            "state_abbrev": "AZ",
+        },
+    ]
+
+    match = best_profile_match(
+        "https://www.aacom.org/detail-pages/com/arizona-college-of-osteopathic-medicine",
+        "Arizona College of Osteopathic Medicine",
+        schools,
+        city="Glendale",
+        state_abbrev="AZ",
     )
 
     assert match.status == "safe_match"

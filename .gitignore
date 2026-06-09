@@ -10,3 +10,5 @@ frontend/.astro/
 frontend/dist/
 frontend/node_modules/
 frontend/public/data/site_payload.json
+outputs/site_qa/screenshots/*_guided_intake_scroll.png
+outputs/site_qa/screenshots/*_ranking_menu_shared.png
