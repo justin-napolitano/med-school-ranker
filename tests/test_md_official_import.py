@@ -660,6 +660,210 @@ def test_md_extractor_prefers_median_when_mean_and_median_are_available() -> Non
     assert row["gpa_metric"] == "median"
 
 
+def test_md_extractor_accepts_explicit_entering_class_average_near_threshold_language() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/apply/",
+        "candidate_source_title": "How to Apply",
+        "candidate_source_type": "admissions_page",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Applicants must have at least the average MCAT/GPA threshold as the last year's entering class. "
+        "The 2025 entering class average MCAT composite was 507 and the average cumulative GPA was 3.75."
+    )
+
+    row = md_extracted_row(candidate, text, "How to Apply")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2025"
+    assert row["mcat_value"] == "507"
+    assert row["gpa_value"] == "3.75"
+
+
+def test_md_extractor_prefers_entering_class_average_over_interview_range() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions-requirements",
+        "candidate_source_title": "Admission Requirements",
+        "candidate_source_type": "admissions_statistics",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "The ranges of the academic metrics for those that were invited to interview were: "
+        "Cumulative GPA: 2.56-4.00 Science GPA: 2.38-4.00 MCAT: 502-528. "
+        "The average GPA and MCAT for the entering class of 2025 was: "
+        "3.90 Cumulative GPA with a range of 3.12-4.00 "
+        "3.87 Science GPA with a range of 3.03-4.00 "
+        "517 MCAT with a range of 505-528."
+    )
+
+    row = md_extracted_row(candidate, text, "Admission Requirements")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2025"
+    assert row["metric_type"] == "official_published_mean"
+    assert row["mcat_value"] == "517"
+    assert row["mcat_metric"] == "average"
+    assert row["gpa_value"] == "3.9"
+    assert row["gpa_metric"] == "average"
+
+
+def test_md_extractor_prefers_median_from_range_median_rows() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/mcat",
+        "candidate_source_title": "MCAT",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Class profile: MCAT and GPA data for the 2025 accepted applicants. "
+        "Type 10th-90th percentile Median National median Overall GPA 3.56-4.00 3.88 3.87 "
+        "Science GPA 3.40-4.00 3.84 3.83 MCAT total score 503-519 512 512"
+    )
+
+    row = md_extracted_row(candidate, text, "MCAT")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_median"
+    assert row["mcat_value"] == "512"
+    assert row["mcat_metric"] == "median"
+    assert row["gpa_value"] == "3.88"
+    assert row["gpa_metric"] == "median"
+
+
+def test_md_extractor_uses_midpoint_for_trailing_label_ranges() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions",
+        "candidate_source_title": "Admissions",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Facts and Figures 2025 Entering Class at a Glance 3.25-4.00 GPA Range 513-528 MCAT Range"
+
+    row = md_extracted_row(candidate, text, "Admissions")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_range_midpoint"
+    assert row["mcat_value"] == "520.5"
+    assert row["mcat_metric"] == "range_midpoint"
+    assert row["gpa_value"] == "3.62"
+    assert row["gpa_metric"] == "range_midpoint"
+
+
+def test_md_extractor_accepts_undergrad_gpa_label() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/fact-sheet.pdf",
+        "candidate_source_title": "Fact Sheet",
+        "candidate_source_type": "pdf_report",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Medical School Class of 2028 7,345 applicants 106 entrants 518 median MCAT 3.90 median undergrad GPA"
+
+    row = md_extracted_row(candidate, text, "Fact Sheet")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "518"
+    assert row["mcat_metric"] == "median"
+    assert row["gpa_value"] == "3.9"
+    assert row["gpa_metric"] == "median"
+
+
+def test_md_extractor_accepts_compact_academics_sci_ao_gpa_mcat_table() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/entering-class-profile",
+        "candidate_source_title": "Entering Class Profile",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Academics SCI AO GPA MCAT CARS CPBS PSBB BBFL "
+        "Median 3.96 3.99 3.97 521 130 131 131 131 "
+        "Mean 3.93 3.96 3.94 521.7 129.3 130.7 131 130.7 "
+        "GPA Range: 3.25 - 4.00 MCAT Range: 513 - 528"
+    )
+
+    row = md_extracted_row(candidate, text, "Entering Class Profile")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_median"
+    assert row["mcat_value"] == "521"
+    assert row["gpa_value"] == "3.97"
+    assert row["science_gpa_value"] == "3.96"
+
+
+def test_md_extractor_accepts_mcat_score_suffix_after_percentile() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/about",
+        "candidate_source_title": "About",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Entering class of 2023 Median total GPA: 3.89. Average total MCAT: 90 percentile, 515 score."
+
+    row = md_extracted_row(candidate, text, "About")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "515"
+    assert row["mcat_metric"] == "average"
+    assert row["gpa_value"] == "3.89"
+
+
+def test_md_extractor_accepts_mcat15_composite_label() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/about-college",
+        "candidate_source_title": "About the College",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2025 Number of matriculants 144 Average cumulative GPA, four-point scale 3.72 Average MCAT15 composite 510"
+
+    row = md_extracted_row(candidate, text, "About the College")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "510"
+    assert row["mcat_metric"] == "average"
+    assert row["gpa_value"] == "3.72"
+
+
 def test_md_extractor_rejects_requirement_ranges_as_admissions_stats() -> None:
     candidate = {
         "school_id": "md_test",
@@ -703,6 +907,7 @@ def test_md_extractor_prefers_cumulative_gpa_over_science_gpa() -> None:
     assert row["extraction_status"] == "accepted"
     assert row["mcat_value"] == "508"
     assert row["gpa_value"] == "3.69"
+    assert row["science_gpa_value"] == "3.59"
 
 
 def test_md_extractor_prefers_total_gpa_over_science_and_graduate_gpa() -> None:
@@ -727,9 +932,10 @@ def test_md_extractor_prefers_total_gpa_over_science_and_graduate_gpa() -> None:
     assert row["extraction_status"] == "accepted"
     assert row["mcat_value"] == "510"
     assert row["gpa_value"] == "3.78"
+    assert row["science_gpa_value"] == "3.71"
 
 
-def test_md_extractor_does_not_accept_bcpm_as_overall_gpa() -> None:
+def test_md_extractor_captures_bcpm_as_science_gpa_without_overall_gpa_substitution() -> None:
     candidate = {
         "school_id": "md_test",
         "school_name": "Test College of Medicine",
@@ -745,9 +951,65 @@ def test_md_extractor_does_not_accept_bcpm_as_overall_gpa() -> None:
 
     row = md_extracted_row(candidate, text, "Class Profile")
 
-    assert row["extraction_status"] == "needs_review_partial_stats"
+    assert row["extraction_status"] == "accepted"
     assert row["mcat_value"] == "511"
     assert row["gpa_value"] == ""
+    assert row["science_gpa_value"] == "3.8"
+    assert "cumulative GPA was not found" in row["notes"]
+
+
+def test_md_extractor_keeps_science_gpa_in_selected_profile_year() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://advising.example.edu/pre-medicine/guide",
+        "candidate_source_title": "Pre-Medicine Guide",
+        "candidate_source_type": "class_profile",
+        "source_host": "advising.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "The mean cumulative GPA for the current entering class was 3.79 and the mean science GPA was 3.74. "
+        "Admissions Profile 2024 Mean cumulative GPA: 3.81 Mean MCAT PSBB: 130 "
+        "Mean science GPA: 3.76 Total MCAT 515"
+    )
+
+    row = md_extracted_row(candidate, text, "Pre-Medicine Guide")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2024"
+    assert row["mcat_value"] == "515"
+    assert row["gpa_value"] == "3.81"
+    assert row["science_gpa_value"] == "3.76"
+
+
+def test_md_extractor_accepts_academic_stats_block_with_later_threshold_footnote() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/md/apply/demographics/class-of-2029/",
+        "candidate_source_title": "Class of 2029",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Academic Stats 3.69 (Range: 2.64-4.00) Mean Overall GPA "
+        "3.56 (Range: 2.21-4.00) Mean BCPM GPA "
+        "506.4 (Range: 493-520) Mean MCAT "
+        "Applicants with OGPAs below 2.6 met a combination threshold with graduate GPA."
+    )
+
+    row = md_extracted_row(candidate, text, "Class of 2029")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "506.4"
+    assert row["gpa_value"] == "3.69"
+    assert row["science_gpa_value"] == "3.56"
 
 
 def test_md_extractor_rejects_non_md_program_profile_values() -> None:
@@ -791,6 +1053,56 @@ def test_md_extractor_rejects_minimum_requirement_values() -> None:
     assert row["data_confidence"] == ""
     assert row["mcat_value"] == ""
     assert row["gpa_value"] == ""
+
+
+def test_md_extractor_does_not_accept_bcpm_gpa_range_as_overall_gpa() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/prospective-students",
+        "candidate_source_title": "Prospective Students",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Over the last four admissions cycles, successful applicants typically had an average undergraduate "
+        "BCPM GPA of 3.7 to 3.8 and an average MCAT score between 506 and 508."
+    )
+
+    row = md_extracted_row(candidate, text, "Prospective Students")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "507"
+    assert row["gpa_value"] == ""
+    assert row["science_gpa_value"] == "3.75"
+
+
+def test_md_extractor_does_not_accept_acceptance_rate_percent_as_gpa() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/about/numbers",
+        "candidate_source_title": "By the Numbers",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Incoming 2025 MD Class 3.83 Median BCPM 2 GPA "
+        "516 Median MCAT Score 3.6% Acceptance Rate First-Year Class Profile"
+    )
+
+    row = md_extracted_row(candidate, text, "By the Numbers")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "516"
+    assert row["gpa_value"] == ""
+    assert row["science_gpa_value"] == "3.83"
 
 
 def test_md_extraction_can_fetch_official_domain_seed_when_requested(tmp_path: Path, monkeypatch) -> None:

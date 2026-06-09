@@ -49,6 +49,20 @@ MCAT_RANGE_RE = re.compile(
     r"(?P<high>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
+MCAT_TRAILING_LABEL_RANGE_RE = re.compile(
+    r"(?P<low>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"\s*(?:-|–|—|to)\s*"
+    r"(?P<high>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"[^a-z0-9]{0,20}(?:m\s*cat)(?:\s+score)?\s+range",
+    re.IGNORECASE,
+)
+MCAT_BETWEEN_RANGE_RE = re.compile(
+    r"(?:m\s*cat)(?:\s+score)?\s+between\s+"
+    r"(?P<low>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"\s+and\s+"
+    r"(?P<high>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
 MCAT_CLASS_VALUE_RE = re.compile(
     r"(?:m\s*cat)[^.]{0,220}?"
     r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
@@ -65,9 +79,26 @@ MCAT_SECTION_TOTAL_RE = re.compile(
     r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
+MCAT_SCORE_SUFFIX_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)\s+(?:total\s+)?)?(?:m\s*cat).{0,160}?"
+    r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)\s+score",
+    re.IGNORECASE,
+)
+MCAT_VALUE_RANGE_TRAILING_MEAN_RE = re.compile(
+    r"(?P<before>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)\s+"
+    r"\(range:\s*\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?\s*(?:-|–|—|to)\s*"
+    r"\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?\)\s+"
+    r"(?:mean|average|median)\s+m\s*cat",
+    re.IGNORECASE,
+)
+MCAT15_COMPOSITE_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)\s+)?m\s*cat15\s+composite\s+"
+    r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
 GPA_RE = re.compile(
-    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative|undergraduate))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
-    r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa"
+    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergrad|undergraduate)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative|undergrad|undergraduate))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
+    r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergrad|undergraduate)\s+)?gpa"
     r"|(?:gpa)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b[2345]\.\d{1,3})",
     re.IGNORECASE,
 )
@@ -76,7 +107,7 @@ GPA_CLASS_VALUE_RE = re.compile(
     r"(?P<after>\b[234]\.\d{1,3})"
     r"[^.]{0,180}?(?:matriculating|entering|class))"
     r"|(?:(?P<before>\b[234]\.\d{1,3})"
-    r"[^.]{0,180}?(?:average|mean|median)[^.]{0,100}?(?:overall|cumulative|undergraduate|total)?\s*g\s*pa"
+    r"[^.]{0,180}?(?:average|mean|median)[^.]{0,100}?(?:overall|cumulative|undergrad|undergraduate|total)?\s*g\s*pa"
     r"[^.]{0,180}?(?:matriculating|entering|class))",
     re.IGNORECASE,
 )
@@ -85,8 +116,42 @@ GPA_TRAILING_LABEL_RE = re.compile(
     r"(?:(?:overall|cumulative|undergraduate|total|bcpm|science)\s+)?g\s*pa",
     re.IGNORECASE,
 )
+GPA_VALUE_RANGE_TRAILING_MEAN_RE = re.compile(
+    r"(?P<before>\b[234]\.\d{1,3})\s+"
+    r"\(range:\s*\b[234]\.\d{1,3}\s*(?:-|–|—|to)\s*\b[234]\.\d{1,3}\)\s+"
+    r"(?:mean|average|median)\s+(?:overall|cumulative|undergrad|undergraduate|total)\s+g\s*pa",
+    re.IGNORECASE,
+)
+SCIENCE_GPA_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall\s+)?(?:science|bcpm)(?:\s+\d+)?\s+g\s*pa)[^0-9]{0,60}"
+    r"(?P<after>\b[234]\.\d{1,3})"
+    r"|(?:(?:median|mean|average|avg)\s+)(?:science|bcpm)[^0-9]{0,60}(?P<after_short>\b[234]\.\d{1,3})"
+    r"|g\s*pa\s*(?:-|–|—|:)?\s*(?:science|bcpm)[^0-9]{0,60}(?P<after_label>\b[234]\.\d{1,3})"
+    r"|(?P<before>\b[234]\.\d{1,3})[^a-z0-9]{0,40}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall\s+)?(?:science|bcpm)(?:\s+\d+)?\s+g\s*pa)",
+    re.IGNORECASE,
+)
+SCIENCE_GPA_VALUE_RANGE_TRAILING_MEAN_RE = re.compile(
+    r"(?P<before>\b[234]\.\d{1,3})\s+"
+    r"\(range:\s*\b[234]\.\d{1,3}\s*(?:-|–|—|to)\s*\b[234]\.\d{1,3}\)\s+"
+    r"(?:mean|average|median)\s+(?:science|bcpm)\s+g\s*pa",
+    re.IGNORECASE,
+)
 GPA_RANGE_RE = re.compile(
-    r"(?:(?:median|mean|average|avg)?\s*(?:(?:overall|cumulative|undergraduate)\s+)?gpa(?:\s+range)?|gpa\s+range)[^0-9]{0,60}"
+    r"(?:(?:median|mean|average|avg)?\s*(?:(?:overall|cumulative|undergrad|undergraduate)\s+)?gpa(?:\s+range)?|gpa\s+range)[^0-9]{0,60}"
+    r"(?P<low>\b[234]\.\d{1,3})"
+    r"\s*(?:-|–|—|to)\s*"
+    r"(?P<high>\b[234]\.\d{1,3})",
+    re.IGNORECASE,
+)
+GPA_TRAILING_LABEL_RANGE_RE = re.compile(
+    r"(?P<low>\b[234]\.\d{1,3})"
+    r"\s*(?:-|–|—|to)\s*"
+    r"(?P<high>\b[234]\.\d{1,3})"
+    r"[^a-z0-9]{0,20}(?:(?:overall|cumulative|undergrad|undergraduate)\s+)?g\s*pa\s+range",
+    re.IGNORECASE,
+)
+SCIENCE_GPA_RANGE_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)?\s*(?:overall\s+)?(?:science|bcpm)(?:\s+\d+)?\s+gpa(?:\s+range)?|(?:science|bcpm)(?:\s+\d+)?\s+gpa\s+range)[^0-9]{0,60}"
     r"(?P<low>\b[234]\.\d{1,3})"
     r"\s*(?:-|–|—|to)\s*"
     r"(?P<high>\b[234]\.\d{1,3})",
@@ -125,6 +190,43 @@ AVERAGE_GPA_TOTAL_MCAT_RE = re.compile(
     r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
+ACADEMICS_SCI_AO_GPA_MCAT_MEDIAN_RE = re.compile(
+    r"academics\s+sci\s+ao\s+g\s*pa\s+m\s*cat.{0,220}?"
+    r"median\s+"
+    r"(?P<science_gpa>\b[234]\.\d{1,3})\s+"
+    r"\b[234]\.\d{1,3}\s+"
+    r"(?P<gpa>\b[234]\.\d{1,3})\s+"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
+ENTERING_CLASS_AVERAGE_VALUE_FIRST_RE = re.compile(
+    r"average\s+g\s*pa\s+and\s+m\s*cat.{0,180}?entering\s+class\s+of\s+"
+    r"(?P<year>20\d{2})\s+was:?\s+"
+    r"(?P<gpa>\b[234]\.\d{1,3})\s+(?:overall\s+|cumulative\s+|undergraduate\s+)?g\s*pa"
+    r".{0,160}?"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)\s+m\s*cat",
+    re.IGNORECASE,
+)
+ENTERING_CLASS_AVERAGE_MCAT_GPA_RE = re.compile(
+    r"(?P<year>20\d{2})\s+entering\s+class\s+average\s+m\s*cat(?:\s+composite)?\s+was\s+"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"\s+and\s+the\s+average\s+(?:cumulative\s+)?g\s*pa\s+was\s+"
+    r"(?P<gpa>\b[234]\.\d{1,3})",
+    re.IGNORECASE,
+)
+GPA_RANGE_MEDIAN_ROW_RE = re.compile(
+    r"(?:overall|cumulative|undergraduate|total)?\s*g\s*pa\s+"
+    r"\b[234]\.\d{1,3}\s*(?:-|–|—|to)\s*\b[234]\.\d{1,3}\s+"
+    r"(?P<median>\b[234]\.\d{1,3})",
+    re.IGNORECASE,
+)
+MCAT_RANGE_MEDIAN_ROW_RE = re.compile(
+    r"m\s*cat(?:\s+total\s+score)?\s+"
+    r"\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?\s*(?:-|–|—|to)\s*"
+    r"\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?\s+"
+    r"(?P<median>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
 MINIMUM_TERMS = {
     "minimum",
     "required",
@@ -158,6 +260,7 @@ COHORT_YEAR_PATTERNS = (
     r"class\s+of\s+(20\d{2})",
     r"(20\d{2})\s+(?:entering|matriculating|incoming)\s+class",
     r"(20\d{2})\s+class\s+profile",
+    r"admissions\s+profile\s+(20\d{2})",
 )
 
 
@@ -291,6 +394,8 @@ def context_score(context: str) -> tuple[int, bool, str]:
     lower = context.lower()
     for term in MINIMUM_TERMS:
         if term in lower:
+            if term == "threshold" and "academic stats" in lower and any(profile_term in lower for profile_term in ["average", "mean", "median"]):
+                continue
             if ("no minimum" in lower or "do not have a minimum" in lower) and any(average_term in lower for average_term in ["average", "mean", "median"]):
                 continue
             return 0, True, f"minimum_requirement_context:{term}"
@@ -342,9 +447,20 @@ def last_gpa_qualifier_position(window: str, terms: list[str], word_boundary: bo
     return max(positions)
 
 
-def is_explicit_range_component(text: str, start: int, end: int) -> bool:
+def is_explicit_range_component(text: str, start: int, end: int, kind: str, value: float) -> bool:
     following = text[end : end + 16]
-    return bool(re.match(r"\s*(?:-|–|—|to)\s*\d", following))
+    preceding = text[max(0, start - 16) : start]
+    if re.match(r"\s*(?:-|–|—|to)\s*\d", following):
+        return True
+    preceding_match = re.search(r"(?P<low>\d+(?:\.\d+)?)\s*(?:-|–|—|to)\s*$", preceding)
+    if not preceding_match:
+        return False
+    low = float(preceding_match.group("low"))
+    if kind == "mcat":
+        return 472 <= low <= 528 and 472 <= value <= 528
+    if kind in {"gpa", "science_gpa"}:
+        return 0 <= low <= 4.0 and 0 <= value <= 4.0
+    return False
 
 
 def find_metric_candidates(
@@ -358,19 +474,24 @@ def find_metric_candidates(
     anchors = anchors if anchors is not None else cohort_year_anchors(text)
     for match in pattern.finditer(text):
         groups = match.groupdict()
-        raw_group = next((name for name in ("after", "before", "after_ocr", "before_ocr") if groups.get(name)), "")
+        raw_group = next(
+            (name for name in ("after", "before", "after_short", "after_label", "after_ocr", "before_ocr") if groups.get(name)),
+            "",
+        )
         raw_value = groups.get(raw_group, "") if raw_group else ""
         if not raw_value:
+            continue
+        if text[match.end(raw_group) : match.end(raw_group) + 3].lstrip().startswith("%"):
             continue
         try:
             value = float(raw_value)
         except ValueError:
             continue
-        if is_explicit_range_component(text, match.start(raw_group), match.end(raw_group)):
+        if is_explicit_range_component(text, match.start(raw_group), match.end(raw_group), kind, value):
             continue
         context = candidate_context(text, match.start(), match.end())
         corrected = False
-        if kind == "gpa" and not 0 <= value <= 4.0:
+        if kind in {"gpa", "science_gpa"} and not 0 <= value <= 4.0:
             if allow_ocr_gpa_correction and 5 <= value < 6 and "gpa" in context.lower():
                 value = round(value - 2, 3)
                 corrected = True
@@ -387,7 +508,7 @@ def find_metric_candidates(
             )
             allowed_position = last_gpa_qualifier_position(
                 qualifier_window,
-                ["overall", "cumulative", "undergraduate", "total gpa", "total", "class gpa", "class"],
+                ["overall", "cumulative", "undergrad", "undergraduate", "total gpa", "total", "class gpa", "class"],
             )
             disallowed_position = max(
                 last_gpa_qualifier_position(qualifier_window, ["science", "bcpm", "postbac", "post-bac"]),
@@ -440,11 +561,25 @@ def find_range_metric_candidates(
             continue
         if low > high:
             low, high = high, low
-        if kind == "gpa" and not (0 <= low <= 4.0 and 0 <= high <= 4.0):
+        if kind in {"gpa", "science_gpa"} and not (0 <= low <= 4.0 and 0 <= high <= 4.0):
             continue
         if kind == "mcat" and not (472 <= low <= 528 and 472 <= high <= 528):
             continue
         context = candidate_context(text, match.start(), match.end())
+        gpa_label_context = text[max(0, match.start() - 45) : match.end()].lower()
+        if kind == "gpa" and any(term in gpa_label_context for term in ["science", "bcpm", "postbac", "post-bac"]):
+            candidates.append(
+                MetricCandidate(
+                    value=round((low + high) / 2, 3),
+                    metric="science_or_bcpm",
+                    context=context,
+                    score=0,
+                    rejected=True,
+                    reject_reason="science_or_bcpm_gpa_context",
+                    cohort_year=cohort_year_for_position(anchors, match.start()),
+                )
+            )
+            continue
         score, rejected, reject_reason = context_score(context)
         if rejected:
             candidates.append(
@@ -616,6 +751,152 @@ def find_average_total_gpa_mcat_candidates(text: str, anchors: list[tuple[int, s
     return mcat_candidates, gpa_candidates
 
 
+def find_academics_sci_ao_gpa_mcat_candidates(
+    text: str,
+    anchors: list[tuple[int, str]],
+) -> tuple[list[MetricCandidate], list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    science_gpa_candidates: list[MetricCandidate] = []
+    for match in ACADEMICS_SCI_AO_GPA_MCAT_MEDIAN_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, _reject_reason = context_score(context)
+        if rejected:
+            continue
+        cohort_year = cohort_year_for_position(anchors, match.start())
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("gpa")),
+                metric="median",
+                context=context,
+                score=score + 6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+        science_gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("science_gpa")),
+                metric="median",
+                context=context,
+                score=score + 6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("mcat")),
+                metric="median",
+                context=context,
+                score=score + 6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+    return mcat_candidates, gpa_candidates, science_gpa_candidates
+
+
+def find_entering_class_average_candidates(text: str) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for match in ENTERING_CLASS_AVERAGE_VALUE_FIRST_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        year = match.group("year")
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("gpa")),
+                metric="average",
+                context=context,
+                score=8,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("mcat")),
+                metric="average",
+                context=context,
+                score=8,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+    for match in ENTERING_CLASS_AVERAGE_MCAT_GPA_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        year = match.group("year")
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("gpa")),
+                metric="average",
+                context=context,
+                score=6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("mcat")),
+                metric="average",
+                context=context,
+                score=6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+    return mcat_candidates, gpa_candidates
+
+
+def find_range_median_row_candidates(text: str, anchors: list[tuple[int, str]]) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for match in GPA_RANGE_MEDIAN_ROW_RE.finditer(text):
+        label_context = text[max(0, match.start() - 45) : match.end()].lower()
+        if any(term in label_context for term in ["science", "bcpm", "postbac", "post-bac"]):
+            continue
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, _reject_reason = context_score(context)
+        if rejected or score <= 0:
+            continue
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("median")),
+                metric="median",
+                context=context,
+                score=score + 4,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year_for_position(anchors, match.start()),
+            )
+        )
+    for match in MCAT_RANGE_MEDIAN_ROW_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, _reject_reason = context_score(context)
+        if rejected or score <= 0:
+            continue
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("median")),
+                metric="median",
+                context=context,
+                score=score + 4,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year_for_position(anchors, match.start()),
+            )
+        )
+    return mcat_candidates, gpa_candidates
+
+
 def best_metric_candidate(candidates: list[MetricCandidate]) -> MetricCandidate | None:
     accepted = [candidate for candidate in candidates if not candidate.rejected and candidate.score > 0]
     if not accepted:
@@ -687,13 +968,31 @@ def extract_stats_from_text(
     anchors = cohort_year_anchors(visible_text)
     mcat_candidates = find_metric_candidates(visible_text, MCAT_RE, "mcat", anchors=anchors)
     gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa", allow_ocr_gpa_correction=allow_ocr_gpa_correction, anchors=anchors)
+    science_gpa_candidates = find_metric_candidates(
+        visible_text,
+        SCIENCE_GPA_RE,
+        "science_gpa",
+        allow_ocr_gpa_correction=allow_ocr_gpa_correction,
+        anchors=anchors,
+    )
     mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_CLASS_VALUE_RE, "mcat", anchors=anchors))
     mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_2015_RE, "mcat", anchors=anchors))
     mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_SECTION_TOTAL_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_SCORE_SUFFIX_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_VALUE_RANGE_TRAILING_MEAN_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT15_COMPOSITE_RE, "mcat", anchors=anchors))
     gpa_candidates.extend(find_metric_candidates(visible_text, GPA_CLASS_VALUE_RE, "gpa", anchors=anchors))
     gpa_candidates.extend(find_metric_candidates(visible_text, GPA_TRAILING_LABEL_RE, "gpa", anchors=anchors))
+    gpa_candidates.extend(find_metric_candidates(visible_text, GPA_VALUE_RANGE_TRAILING_MEAN_RE, "gpa", anchors=anchors))
+    science_gpa_candidates.extend(
+        find_metric_candidates(visible_text, SCIENCE_GPA_VALUE_RANGE_TRAILING_MEAN_RE, "science_gpa", anchors=anchors)
+    )
     mcat_candidates.extend(find_range_metric_candidates(visible_text, MCAT_RANGE_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_range_metric_candidates(visible_text, MCAT_BETWEEN_RANGE_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_range_metric_candidates(visible_text, MCAT_TRAILING_LABEL_RANGE_RE, "mcat", anchors=anchors))
     gpa_candidates.extend(find_range_metric_candidates(visible_text, GPA_RANGE_RE, "gpa", anchors=anchors))
+    gpa_candidates.extend(find_range_metric_candidates(visible_text, GPA_TRAILING_LABEL_RANGE_RE, "gpa", anchors=anchors))
+    science_gpa_candidates.extend(find_range_metric_candidates(visible_text, SCIENCE_GPA_RANGE_RE, "science_gpa", anchors=anchors))
     respective_mcats, respective_gpas = find_respective_gpa_mcat_candidates(visible_text, anchors)
     mcat_candidates.extend(respective_mcats)
     gpa_candidates.extend(respective_gpas)
@@ -706,27 +1005,49 @@ def extract_stats_from_text(
     total_gpa_mcats, total_gpa_gpas = find_average_total_gpa_mcat_candidates(visible_text, anchors)
     mcat_candidates.extend(total_gpa_mcats)
     gpa_candidates.extend(total_gpa_gpas)
+    academic_table_mcats, academic_table_gpas, academic_table_science_gpas = find_academics_sci_ao_gpa_mcat_candidates(
+        visible_text,
+        anchors,
+    )
+    mcat_candidates.extend(academic_table_mcats)
+    gpa_candidates.extend(academic_table_gpas)
+    science_gpa_candidates.extend(academic_table_science_gpas)
+    entering_avg_mcats, entering_avg_gpas = find_entering_class_average_candidates(visible_text)
+    mcat_candidates.extend(entering_avg_mcats)
+    gpa_candidates.extend(entering_avg_gpas)
+    range_median_mcats, range_median_gpas = find_range_median_row_candidates(visible_text, anchors)
+    mcat_candidates.extend(range_median_mcats)
+    gpa_candidates.extend(range_median_gpas)
     best_mcat, best_gpa, selected_cohort_year = best_metric_pair(mcat_candidates, gpa_candidates)
-    evidence_parts = [candidate.context for candidate in [best_mcat, best_gpa] if candidate]
+    best_science_gpa = best_metric_candidate(science_gpa_candidates)
+    if selected_cohort_year:
+        same_year_science_gpa = best_metric_candidate(
+            [candidate for candidate in science_gpa_candidates if candidate.cohort_year == selected_cohort_year]
+        )
+        if same_year_science_gpa:
+            best_science_gpa = same_year_science_gpa
+    evidence_parts = [candidate.context for candidate in [best_mcat, best_gpa, best_science_gpa] if candidate]
     evidence = compact_text(" ".join(evidence_parts))[:700]
     official_score = float(clean(candidate.get("official_domain_score")) or 0)
 
-    if best_mcat and best_gpa and official_score >= 0.9:
+    if best_mcat and (best_gpa or best_science_gpa) and official_score >= 0.9:
         extraction_status = "accepted"
         review_status = "approved_official_extraction"
         notes = "Official-domain MCAT/GPA values found in class-profile context."
         if selected_cohort_year:
             notes += f" Selected latest shared cohort year {selected_cohort_year}."
-        if "range_midpoint" in {best_mcat.metric, best_gpa.metric}:
+        if "range_midpoint" in {candidate.metric for candidate in [best_mcat, best_gpa, best_science_gpa] if candidate}:
             notes += " One or more values were range-derived; midpoint used for scoring."
-        if best_gpa.corrected:
+        if best_science_gpa and not best_gpa:
+            notes += " Science/BCPM GPA captured separately; cumulative GPA was not found."
+        if best_gpa and best_gpa.corrected:
             notes += " GPA value used OCR correction from impossible 5.xx reading to 3.xx on an official image source."
-    elif best_mcat or best_gpa:
+    elif best_mcat or best_gpa or best_science_gpa:
         extraction_status = "needs_review_partial_stats"
         review_status = "needs_review"
         notes = "Only one MCAT/GPA value was extracted or source is below official-domain threshold."
     else:
-        rejected_reason = rejected_only_reason(mcat_candidates + gpa_candidates)
+        rejected_reason = rejected_only_reason(mcat_candidates + gpa_candidates + science_gpa_candidates)
         if rejected_reason:
             extraction_status = "rejected_minimum_requirement"
             notes = f"Only rejected minimum/eligibility contexts found: {rejected_reason}."
@@ -750,12 +1071,12 @@ def extract_stats_from_text(
         "review_status": review_status,
         "stats_cohort_year": selected_cohort_year or cohort_year_from_text(visible_text),
         "metric_population": population_from_context(combined_context),
-        "metric_type": metric_type_from_candidates(best_mcat, best_gpa),
+        "metric_type": metric_type_from_candidates(best_mcat, best_gpa or best_science_gpa),
         "mcat_value": format_float(best_mcat.value if best_mcat else None, 1),
         "mcat_metric": best_mcat.metric if best_mcat else "",
         "gpa_value": format_float(best_gpa.value if best_gpa else None, 2),
         "gpa_metric": best_gpa.metric if best_gpa else "",
-        "science_gpa_value": "",
+        "science_gpa_value": format_float(best_science_gpa.value if best_science_gpa else None, 2),
         "source_publication_date": "",
         "source_last_checked": today_iso(),
         "evidence_text": evidence,

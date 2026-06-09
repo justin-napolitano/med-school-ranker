@@ -2,12 +2,12 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-09T04:45:23+00:00",
+  "generated_at": "2026-06-09T06:01:46+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "school_profile",
   "nodes": [
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "ATSU-KCOM",
         "city": "Kirksville",
@@ -241,7 +241,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "ATSU-SOMA",
         "city": "Mesa",
@@ -475,7 +475,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "ACOM",
         "city": "Dothan",
@@ -726,7 +726,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albany",
@@ -1016,7 +1016,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -1307,7 +1307,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bentonville",
@@ -1596,7 +1596,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Worth",
@@ -1832,7 +1832,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -2055,7 +2055,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "ARCOM",
         "city": "Fort Smith",
@@ -2306,7 +2306,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "BUCOM",
         "city": "Memphis",
@@ -2540,7 +2540,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -2786,7 +2786,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dayton",
@@ -3062,7 +3062,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -3339,7 +3339,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -3613,7 +3613,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "BCSOM",
         "city": "Las Cruces",
@@ -3847,7 +3847,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "BCSOM-FL",
         "city": "Melbourne",
@@ -4081,7 +4081,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -4355,7 +4355,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "CHSU-COM",
         "city": "Clovis",
@@ -4589,7 +4589,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Elk Grove",
@@ -4865,7 +4865,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Colton",
@@ -5140,7 +5140,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "CUSOM",
         "city": "Buies Creek",
@@ -5374,7 +5374,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Urbana-Champaign",
@@ -5650,7 +5650,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cleveland",
@@ -5715,8 +5715,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://case.edu/medicine/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://case.edu/medicine/admissions-requirements"
             }
           ],
           "title": "Overview"
@@ -5738,10 +5738,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.89",
+            "gpa_average": "3.9",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "517.7",
-            "mcat_band": "Greater than 517"
+            "mcat_average": "517",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -5760,8 +5760,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://case.edu/medicine/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://case.edu/medicine/admissions-requirements"
             }
           ],
           "title": "Admissions Stats"
@@ -5791,8 +5791,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://case.edu/medicine/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://case.edu/medicine/admissions-requirements"
             }
           ],
           "title": "Cost and Debt"
@@ -5835,8 +5835,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://case.edu/medicine/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://case.edu/medicine/admissions-requirements"
             }
           ],
           "title": "Requirements and Policies"
@@ -5866,8 +5866,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://case.edu/medicine/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://case.edu/medicine/admissions-requirements"
             }
           ],
           "title": "Source Confidence"
@@ -5894,15 +5894,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "Greater than 517",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "517.7"
+          "value": "517"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.89"
+          "value": "3.9"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -5926,7 +5926,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boca Raton",
@@ -6202,7 +6202,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -6478,7 +6478,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Chicago",
@@ -6756,7 +6756,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -6821,8 +6821,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://ps.columbia.edu/education/admissions; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.vagelos.columbia.edu/about-us/facts-and-statistics"
             }
           ],
           "title": "Overview"
@@ -6844,9 +6844,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.88",
-            "gpa_band": "Greater than 3.79",
-            "mcat_average": "521.5",
+            "gpa_average": "3.69",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "518",
             "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
@@ -6866,8 +6866,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://ps.columbia.edu/education/admissions; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.vagelos.columbia.edu/about-us/facts-and-statistics"
             }
           ],
           "title": "Admissions Stats"
@@ -6897,8 +6897,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://ps.columbia.edu/education/admissions; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.vagelos.columbia.edu/about-us/facts-and-statistics"
             }
           ],
           "title": "Cost and Debt"
@@ -6941,8 +6941,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://ps.columbia.edu/education/admissions; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.vagelos.columbia.edu/about-us/facts-and-statistics"
             }
           ],
           "title": "Requirements and Policies"
@@ -6972,8 +6972,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://ps.columbia.edu/education/admissions; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.vagelos.columbia.edu/about-us/facts-and-statistics"
             }
           ],
           "title": "Source Confidence"
@@ -7002,13 +7002,13 @@
           "card_id": "mcat_average",
           "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "521.5"
+          "value": "518"
         },
         {
           "card_id": "gpa_average",
-          "context": "Greater than 3.79",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.88"
+          "value": "3.69"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -7032,7 +7032,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Camden",
@@ -7309,7 +7309,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mount Pleasant",
@@ -7555,7 +7555,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -7831,7 +7831,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -8067,7 +8067,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Austin",
@@ -8342,7 +8342,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "DMU-COM",
         "city": "West Des Moines",
@@ -8576,7 +8576,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hempstead",
@@ -8853,7 +8853,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -9130,7 +9130,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Durham",
@@ -9406,7 +9406,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "DUQCOM",
         "city": "Pittsburgh",
@@ -9640,7 +9640,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "DYU-COM",
         "city": "Buffalo",
@@ -9863,7 +9863,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Johnson City",
@@ -10137,7 +10137,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Norfolk",
@@ -10159,14 +10159,12 @@
         "methodology_aamc_context"
       ],
       "missing_fields": [
-        "mcat_average",
-        "gpa_average",
         "letter_requirements"
       ],
       "node_schema_version": "site_nodes_v1",
       "node_type": "school_profile",
       "publish_safe": true,
-      "readiness": "provisional",
+      "readiness": "partial",
       "route": "#/schools/eastern-virginia-medical-school-at-old-dominion-university",
       "school_id": "md_eastern_virginia_medical_school_at_old_dominion_university_norfolk_virginia",
       "school_slug": "eastern-virginia-medical-school-at-old-dominion-university",
@@ -10202,6 +10200,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://www.odu.edu/eastern-virginia-medical-school/admissions-criteria"
             }
           ],
           "title": "Overview"
@@ -10214,28 +10216,22 @@
             "attendance_score": "4.90",
             "decision_rank": "30"
           },
-          "missing_fields": [
-            "mcat_average",
-            "gpa_average"
-          ],
-          "readiness": "provisional",
+          "missing_fields": [],
+          "readiness": "ready",
           "section_id": "applicant_fit",
           "source_refs": [],
           "title": "Applicant Fit"
         },
         {
           "facts": {
-            "data_quality_band": "missing",
-            "gpa_average": "",
-            "gpa_band": "",
-            "mcat_average": "",
-            "mcat_band": ""
+            "data_quality_band": "high",
+            "gpa_average": "3.7",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "513",
+            "mcat_band": "510-513"
           },
-          "missing_fields": [
-            "mcat_average",
-            "gpa_average"
-          ],
-          "readiness": "missing",
+          "missing_fields": [],
+          "readiness": "ready",
           "section_id": "admissions_stats",
           "source_refs": [
             {
@@ -10249,6 +10245,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://www.odu.edu/eastern-virginia-medical-school/admissions-criteria"
             }
           ],
           "title": "Admissions Stats"
@@ -10276,6 +10276,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://www.odu.edu/eastern-virginia-medical-school/admissions-criteria"
             }
           ],
           "title": "Cost and Debt"
@@ -10305,19 +10309,21 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://www.odu.edu/eastern-virginia-medical-school/admissions-criteria"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "missing",
-            "missing_fields": "mcat_average, gpa_average, letter_requirements",
+            "admissions_data_quality_band": "high",
+            "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
           "missing_fields": [
-            "mcat_average",
-            "gpa_average",
             "letter_requirements"
           ],
           "readiness": "partial",
@@ -10334,6 +10340,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://www.odu.edu/eastern-virginia-medical-school/admissions-criteria"
             }
           ],
           "title": "Source Confidence"
@@ -10360,15 +10370,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "",
+          "context": "510-513",
           "label": "MCAT average",
-          "value": "Missing"
+          "value": "513"
         },
         {
           "card_id": "gpa_average",
-          "context": "",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "Missing"
+          "value": "3.7"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -10386,13 +10396,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "missing"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "VCOM-Auburn Campus",
         "city": "Auburn",
@@ -10626,7 +10636,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "VCOM-Carolinas",
         "city": "Spartanburg",
@@ -10860,7 +10870,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "VCOM-Virginia",
         "city": "Blacksburg",
@@ -11094,7 +11104,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "VCOM-Louisiana",
         "city": "Monroe",
@@ -11345,7 +11355,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -11622,7 +11632,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -11898,7 +11908,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tallahassee",
@@ -12174,7 +12184,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Haven",
@@ -12239,8 +12249,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.qu.edu/schools/medicine/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.qu.edu/apply-for-admission/class-profile/"
             }
           ],
           "title": "Overview"
@@ -12262,9 +12272,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.69",
+            "gpa_average": "3.7",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "511.3",
+            "mcat_average": "511",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -12284,8 +12294,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.qu.edu/schools/medicine/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.qu.edu/apply-for-admission/class-profile/"
             }
           ],
           "title": "Admissions Stats"
@@ -12315,8 +12325,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.qu.edu/schools/medicine/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.qu.edu/apply-for-admission/class-profile/"
             }
           ],
           "title": "Cost and Debt"
@@ -12360,8 +12370,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.qu.edu/schools/medicine/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.qu.edu/apply-for-admission/class-profile/"
             }
           ],
           "title": "Requirements and Policies"
@@ -12391,8 +12401,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.qu.edu/schools/medicine/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.qu.edu/apply-for-admission/class-profile/"
             }
           ],
           "title": "Source Confidence"
@@ -12421,13 +12431,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "511.3"
+          "value": "511"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.69"
+          "value": "3.7"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -12451,7 +12461,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mobile",
@@ -12718,7 +12728,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hanover",
@@ -12993,7 +13003,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Scranton",
@@ -13284,7 +13294,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13560,7 +13570,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13837,7 +13847,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nutley",
@@ -14126,7 +14136,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -14415,7 +14425,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -14692,7 +14702,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -14968,7 +14978,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "ICOM",
         "city": "Meridian",
@@ -15219,7 +15229,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "IllinoisCOM",
         "city": "Chicago",
@@ -15453,7 +15463,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Indianapolis",
@@ -15726,7 +15736,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "IUPCOM",
         "city": "Indiana",
@@ -15949,7 +15959,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Buffalo",
@@ -16226,7 +16236,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Honolulu",
@@ -16291,8 +16301,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://jabsom.hawaii.edu/ed-programs/md-program/admissions-program/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://admissions.jabsom.hawaii.edu/application-process/archived-class-profile/2023-class-profile.html"
             }
           ],
           "title": "Overview"
@@ -16314,9 +16324,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.81",
-            "gpa_band": "Greater than 3.79",
-            "mcat_average": "512.3",
+            "gpa_average": "3.77",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "512",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -16336,8 +16346,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://jabsom.hawaii.edu/ed-programs/md-program/admissions-program/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://admissions.jabsom.hawaii.edu/application-process/archived-class-profile/2023-class-profile.html"
             }
           ],
           "title": "Admissions Stats"
@@ -16367,8 +16377,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://jabsom.hawaii.edu/ed-programs/md-program/admissions-program/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://admissions.jabsom.hawaii.edu/application-process/archived-class-profile/2023-class-profile.html"
             }
           ],
           "title": "Cost and Debt"
@@ -16412,8 +16422,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://jabsom.hawaii.edu/ed-programs/md-program/admissions-program/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://admissions.jabsom.hawaii.edu/application-process/archived-class-profile/2023-class-profile.html"
             }
           ],
           "title": "Requirements and Policies"
@@ -16443,8 +16453,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://jabsom.hawaii.edu/ed-programs/md-program/admissions-program/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://admissions.jabsom.hawaii.edu/application-process/archived-class-profile/2023-class-profile.html"
             }
           ],
           "title": "Source Confidence"
@@ -16473,13 +16483,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "512.3"
+          "value": "512"
         },
         {
           "card_id": "gpa_average",
-          "context": "Greater than 3.79",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.81"
+          "value": "3.77"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -16503,7 +16513,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -16779,7 +16789,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pasadena",
@@ -17056,7 +17066,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "KCU-COM-Joplin",
         "city": "Joplin",
@@ -17290,7 +17300,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "KCU-COM",
         "city": "Kansas City",
@@ -17524,7 +17534,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "KansasCOM",
         "city": "Wichita",
@@ -17758,7 +17768,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -18033,7 +18043,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -18308,7 +18318,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -18544,7 +18554,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LECOM-Bradenton",
         "city": "Bradenton",
@@ -18795,7 +18805,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LECOM-Elmira",
         "city": "Elmira",
@@ -19029,7 +19039,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LECOM",
         "city": "Erie",
@@ -19280,7 +19290,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LECOM-Jacksonville",
         "city": "Jacksonville",
@@ -19514,7 +19524,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LECOM-Seton Hill",
         "city": "Greensburg",
@@ -19748,7 +19758,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -20025,7 +20035,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LUCOM",
         "city": "Lynchburg",
@@ -20259,7 +20269,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LMU-DCOM",
         "city": "Harrogate",
@@ -20493,7 +20503,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LMU-DCOM Knoxville",
         "city": "Knoxville",
@@ -20727,7 +20737,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "LMU-DCOM \u2013 Orange Park",
         "city": "Orange Park",
@@ -20961,7 +20971,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Loma Linda",
@@ -21237,7 +21247,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Shreveport",
@@ -21302,8 +21312,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://schoolofmedicine.lsuhs.edu/prospective-students/admissions/at-a-glance"
             }
           ],
           "title": "Overview"
@@ -21324,8 +21334,8 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3.7",
+            "data_quality_band": "high",
+            "gpa_average": "3.77",
             "gpa_band": "3.60-3.79",
             "mcat_average": "507",
             "mcat_band": "506-509"
@@ -21347,8 +21357,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://schoolofmedicine.lsuhs.edu/prospective-students/admissions/at-a-glance"
             }
           ],
           "title": "Admissions Stats"
@@ -21378,8 +21388,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://schoolofmedicine.lsuhs.edu/prospective-students/admissions/at-a-glance"
             }
           ],
           "title": "Cost and Debt"
@@ -21422,15 +21432,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://schoolofmedicine.lsuhs.edu/prospective-students/admissions/at-a-glance"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -21453,8 +21463,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://schoolofmedicine.lsuhs.edu/prospective-students/admissions/at-a-glance"
             }
           ],
           "title": "Source Confidence"
@@ -21489,7 +21499,7 @@
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.7"
+          "value": "3.77"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -21507,13 +21517,13 @@
           "card_id": "data_quality",
           "context": "Research seriously",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Maywood",
@@ -21790,7 +21800,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MU-WCOM",
         "city": "Indianapolis",
@@ -22024,7 +22034,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Huntington",
@@ -22300,7 +22310,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -22575,7 +22585,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -22597,15 +22607,13 @@
         "methodology_aamc_context"
       ],
       "missing_fields": [
-        "mcat_average",
-        "gpa_average",
         "admissions_policy",
         "letter_requirements"
       ],
       "node_schema_version": "site_nodes_v1",
       "node_type": "school_profile",
       "publish_safe": true,
-      "readiness": "provisional",
+      "readiness": "partial",
       "route": "#/schools/mcgovern-medical-school-at-uthealth-houston",
       "school_id": "md_mcgovern_medical_school_at_uthealth_houston_houston_texas",
       "school_slug": "mcgovern-medical-school-at-uthealth-houston",
@@ -22637,6 +22645,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://med.uth.edu/blog/2025/08/13/meet-the-newest-faces-of-the-class-of-2029/"
             }
           ],
           "title": "Overview"
@@ -22649,28 +22661,22 @@
             "attendance_score": "6.70",
             "decision_rank": "7"
           },
-          "missing_fields": [
-            "mcat_average",
-            "gpa_average"
-          ],
-          "readiness": "provisional",
+          "missing_fields": [],
+          "readiness": "ready",
           "section_id": "applicant_fit",
           "source_refs": [],
           "title": "Applicant Fit"
         },
         {
           "facts": {
-            "data_quality_band": "missing",
-            "gpa_average": "",
-            "gpa_band": "",
-            "mcat_average": "",
-            "mcat_band": ""
+            "data_quality_band": "high",
+            "gpa_average": "3.84",
+            "gpa_band": "Greater than 3.79",
+            "mcat_average": "512",
+            "mcat_band": "510-513"
           },
-          "missing_fields": [
-            "mcat_average",
-            "gpa_average"
-          ],
-          "readiness": "missing",
+          "missing_fields": [],
+          "readiness": "ready",
           "section_id": "admissions_stats",
           "source_refs": [
             {
@@ -22680,6 +22686,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://med.uth.edu/blog/2025/08/13/meet-the-newest-faces-of-the-class-of-2029/"
             }
           ],
           "title": "Admissions Stats"
@@ -22703,6 +22713,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://med.uth.edu/blog/2025/08/13/meet-the-newest-faces-of-the-class-of-2029/"
             }
           ],
           "title": "Cost and Debt"
@@ -22727,19 +22741,21 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://med.uth.edu/blog/2025/08/13/meet-the-newest-faces-of-the-class-of-2029/"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "missing",
-            "missing_fields": "mcat_average, gpa_average, admissions_policy, letter_requirements",
+            "admissions_data_quality_band": "high",
+            "missing_fields": "admissions_policy, letter_requirements",
             "rank_confidence": "partial"
           },
           "missing_fields": [
-            "mcat_average",
-            "gpa_average",
             "admissions_policy",
             "letter_requirements"
           ],
@@ -22753,6 +22769,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://med.uth.edu/blog/2025/08/13/meet-the-newest-faces-of-the-class-of-2029/"
             }
           ],
           "title": "Source Confidence"
@@ -22779,15 +22799,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "",
+          "context": "510-513",
           "label": "MCAT average",
-          "value": "Missing"
+          "value": "512"
         },
         {
           "card_id": "gpa_average",
-          "context": "",
+          "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "Missing"
+          "value": "3.84"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -22805,13 +22825,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "missing"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Augusta",
@@ -23087,7 +23107,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Milwaukee",
@@ -23379,7 +23399,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charleston",
@@ -23657,7 +23677,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -23903,7 +23923,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Macon",
@@ -24179,7 +24199,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MSOM",
         "city": "Hagerstown",
@@ -24430,7 +24450,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fayetteville",
@@ -24681,7 +24701,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "East Lansing",
@@ -24958,7 +24978,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MSUCOM-DMC",
         "city": "Detroit",
@@ -25192,7 +25212,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MSUCOM",
         "city": "East Lansing",
@@ -25426,7 +25446,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MSUCOM-MUC",
         "city": "Macomb",
@@ -25649,7 +25669,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MWU/AZCOM",
         "city": "Glendale",
@@ -25883,7 +25903,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "MWU/CCOM",
         "city": "Downers Grove",
@@ -26117,7 +26137,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -26408,7 +26428,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mineola",
@@ -26674,7 +26694,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -26948,7 +26968,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "NYITCOM",
         "city": "Old Westbury",
@@ -27182,7 +27202,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "NYITCOM-Jonesboro",
         "city": "Jonesboro",
@@ -27416,7 +27436,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Valhalla",
@@ -27483,8 +27503,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.nymc.edu/future-students/admission-offices/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.nymc.edu/som/about/index.php"
             }
           ],
           "title": "Overview"
@@ -27505,10 +27525,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.68",
+            "data_quality_band": "high",
+            "gpa_average": "3.77",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "514.7",
+            "mcat_average": "516",
             "mcat_band": "514-517"
           },
           "missing_fields": [],
@@ -27532,8 +27552,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.nymc.edu/future-students/admission-offices/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.nymc.edu/som/about/index.php"
             }
           ],
           "title": "Admissions Stats"
@@ -27567,8 +27587,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.nymc.edu/future-students/admission-offices/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.nymc.edu/som/about/index.php"
             }
           ],
           "title": "Cost and Debt"
@@ -27614,15 +27634,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.nymc.edu/future-students/admission-offices/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.nymc.edu/som/about/index.php"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "",
             "rank_confidence": "partial"
           },
@@ -27647,8 +27667,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.nymc.edu/future-students/admission-offices/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.nymc.edu/som/about/index.php"
             }
           ],
           "title": "Source Confidence"
@@ -27677,13 +27697,13 @@
           "card_id": "mcat_average",
           "context": "514-517",
           "label": "MCAT average",
-          "value": "514.7"
+          "value": "516"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.68"
+          "value": "3.77"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -27701,13 +27721,13 @@
           "card_id": "data_quality",
           "context": "Research seriously",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "NoordaCOM",
         "city": "Provo",
@@ -27958,7 +27978,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rootstown",
@@ -28020,8 +28040,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.neomed.edu/medicine/admissions/paths/traditional-admission/"
             }
           ],
           "title": "Overview"
@@ -28042,10 +28062,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.75",
+            "data_quality_band": "high",
+            "gpa_average": "3.77",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "509.7",
+            "mcat_average": "513",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -28061,8 +28081,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.neomed.edu/medicine/admissions/paths/traditional-admission/"
             }
           ],
           "title": "Admissions Stats"
@@ -28088,8 +28108,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.neomed.edu/medicine/admissions/paths/traditional-admission/"
             }
           ],
           "title": "Cost and Debt"
@@ -28116,15 +28136,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.neomed.edu/medicine/admissions/paths/traditional-admission/"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "admissions_policy, letter_requirements",
             "rank_confidence": "partial"
           },
@@ -28144,8 +28164,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.neomed.edu/medicine/admissions/paths/traditional-admission/"
             }
           ],
           "title": "Source Confidence"
@@ -28174,13 +28194,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "509.7"
+          "value": "513"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.75"
+          "value": "3.77"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -28198,13 +28218,13 @@
           "card_id": "data_quality",
           "context": "Low priority",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -28269,8 +28289,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.feinberg.northwestern.edu/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.feinberg.northwestern.edu/admissions/about/entering-class-profile.html"
             }
           ],
           "title": "Overview"
@@ -28292,9 +28312,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.92",
+            "gpa_average": "3.93",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "520.7",
+            "mcat_average": "521",
             "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
@@ -28314,8 +28334,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.feinberg.northwestern.edu/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.feinberg.northwestern.edu/admissions/about/entering-class-profile.html"
             }
           ],
           "title": "Admissions Stats"
@@ -28345,8 +28365,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.feinberg.northwestern.edu/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.feinberg.northwestern.edu/admissions/about/entering-class-profile.html"
             }
           ],
           "title": "Cost and Debt"
@@ -28390,8 +28410,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.feinberg.northwestern.edu/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.feinberg.northwestern.edu/admissions/about/entering-class-profile.html"
             }
           ],
           "title": "Requirements and Policies"
@@ -28421,8 +28441,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.feinberg.northwestern.edu/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.feinberg.northwestern.edu/admissions/about/entering-class-profile.html"
             }
           ],
           "title": "Source Confidence"
@@ -28451,13 +28471,13 @@
           "card_id": "mcat_average",
           "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "520.7"
+          "value": "521"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.92"
+          "value": "3.93"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -28481,7 +28501,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Lauderdale",
@@ -28756,7 +28776,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "NSU-KPCOM-Clearwater",
         "city": "Clearwater",
@@ -28990,7 +29010,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "NSU-KPCOM",
         "city": "Fort Lauderdale",
@@ -29224,7 +29244,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -29501,7 +29521,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OU-HCOM-Cleveland",
         "city": "Cleveland",
@@ -29735,7 +29755,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OU-HCOM",
         "city": "Athens",
@@ -29969,7 +29989,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OU-HCOM-Dublin",
         "city": "Dublin",
@@ -30203,7 +30223,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OSU-COM",
         "city": "Tulsa",
@@ -30437,7 +30457,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OSU-COM Tahlequah",
         "city": "Tahlequah",
@@ -30660,7 +30680,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Portland",
@@ -30936,7 +30956,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "OCOM",
         "city": "Celebration",
@@ -31187,7 +31207,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "PNWU-COM",
         "city": "Yakima",
@@ -31421,7 +31441,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "El Paso",
@@ -31684,7 +31704,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hershey",
@@ -31930,7 +31950,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "PCOM",
         "city": "Philadelphia",
@@ -32181,7 +32201,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "PCOM Georgia",
         "city": "Suwanee",
@@ -32432,7 +32452,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "PCOM South Georgia",
         "city": "Moultrie",
@@ -32683,7 +32703,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -32745,8 +32765,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.med.upenn.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.upenn.edu/admissions"
             }
           ],
           "title": "Overview"
@@ -32768,9 +32788,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.95",
-            "gpa_band": "Greater than 3.79",
-            "mcat_average": "521.6",
+            "gpa_average": "3.62",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "520.5",
             "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
@@ -32786,8 +32806,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.med.upenn.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.upenn.edu/admissions"
             }
           ],
           "title": "Admissions Stats"
@@ -32813,8 +32833,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.med.upenn.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.upenn.edu/admissions"
             }
           ],
           "title": "Cost and Debt"
@@ -32841,8 +32861,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.med.upenn.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.upenn.edu/admissions"
             }
           ],
           "title": "Requirements and Policies"
@@ -32869,8 +32889,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.med.upenn.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.upenn.edu/admissions"
             }
           ],
           "title": "Source Confidence"
@@ -32899,13 +32919,13 @@
           "card_id": "mcat_average",
           "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "521.6"
+          "value": "520.5"
         },
         {
           "card_id": "gpa_average",
-          "context": "Greater than 3.79",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.95"
+          "value": "3.62"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -32929,7 +32949,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Stony Brook",
@@ -32994,8 +33014,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://renaissance.stonybrookmedicine.edu/about-rsom"
             }
           ],
           "title": "Overview"
@@ -33016,11 +33036,11 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.8",
+            "data_quality_band": "high",
+            "gpa_average": "3.89",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "512.6",
-            "mcat_band": "510-513"
+            "mcat_average": "515",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -33039,8 +33059,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://renaissance.stonybrookmedicine.edu/about-rsom"
             }
           ],
           "title": "Admissions Stats"
@@ -33070,8 +33090,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://renaissance.stonybrookmedicine.edu/about-rsom"
             }
           ],
           "title": "Cost and Debt"
@@ -33115,15 +33135,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://renaissance.stonybrookmedicine.edu/about-rsom"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -33146,8 +33166,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://renaissance.stonybrookmedicine.edu/about-rsom"
             }
           ],
           "title": "Source Confidence"
@@ -33174,15 +33194,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "510-513",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "512.6"
+          "value": "515"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.8"
+          "value": "3.89"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -33200,13 +33220,13 @@
           "card_id": "data_quality",
           "context": "Watchlist",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Burlington",
@@ -33482,7 +33502,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "RVUCOM",
         "city": "Parker",
@@ -33716,7 +33736,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "RVUCOM-SU Campus",
         "city": "Ivins",
@@ -33950,7 +33970,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "RVU-MCOM",
         "city": "Billings",
@@ -34184,7 +34204,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -34459,7 +34479,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM",
         "city": "Stratford",
@@ -34693,7 +34713,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM-Sewell",
         "city": "Sewell",
@@ -34927,7 +34947,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -34992,8 +35012,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.rushu.rush.edu/rush-medical-college/about-rush-medical-college"
             }
           ],
           "title": "Overview"
@@ -35014,7 +35034,7 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
+            "data_quality_band": "high",
             "gpa_average": "3.72",
             "gpa_band": "3.60-3.79",
             "mcat_average": "510",
@@ -35037,8 +35057,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.rushu.rush.edu/rush-medical-college/about-rush-medical-college"
             }
           ],
           "title": "Admissions Stats"
@@ -35068,8 +35088,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.rushu.rush.edu/rush-medical-college/about-rush-medical-college"
             }
           ],
           "title": "Cost and Debt"
@@ -35113,15 +35133,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.rushu.rush.edu/rush-medical-college/about-rush-medical-college"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -35144,8 +35164,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.rushu.rush.edu/rush-medical-college/about-rush-medical-college"
             }
           ],
           "title": "Source Confidence"
@@ -35198,13 +35218,13 @@
           "card_id": "data_quality",
           "context": "Watchlist",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Newark",
@@ -35269,8 +35289,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://njms.rutgers.edu/admissions/prospective/index.cfm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://njms.rutgers.edu/about_njms/index.php"
             }
           ],
           "title": "Overview"
@@ -35291,11 +35311,11 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.76",
+            "data_quality_band": "high",
+            "gpa_average": "3.7",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "515",
-            "mcat_band": "514-517"
+            "mcat_average": "513",
+            "mcat_band": "510-513"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -35314,8 +35334,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://njms.rutgers.edu/admissions/prospective/index.cfm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://njms.rutgers.edu/about_njms/index.php"
             }
           ],
           "title": "Admissions Stats"
@@ -35345,8 +35365,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://njms.rutgers.edu/admissions/prospective/index.cfm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://njms.rutgers.edu/about_njms/index.php"
             }
           ],
           "title": "Cost and Debt"
@@ -35389,15 +35409,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://njms.rutgers.edu/admissions/prospective/index.cfm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://njms.rutgers.edu/about_njms/index.php"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -35420,8 +35440,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://njms.rutgers.edu/admissions/prospective/index.cfm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://njms.rutgers.edu/about_njms/index.php"
             }
           ],
           "title": "Source Confidence"
@@ -35448,15 +35468,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "514-517",
+          "context": "510-513",
           "label": "MCAT average",
-          "value": "515"
+          "value": "513"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.76"
+          "value": "3.7"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -35474,13 +35494,13 @@
           "card_id": "data_quality",
           "context": "Low priority",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Piscataway",
@@ -35754,7 +35774,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Brooklyn",
@@ -36032,7 +36052,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -36308,7 +36328,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "SHSU-COM",
         "city": "Huntsville",
@@ -36542,7 +36562,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -36820,7 +36840,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Springfield",
@@ -37098,7 +37118,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Salt Lake City",
@@ -37365,7 +37385,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Palo Alto",
@@ -37640,7 +37660,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Syracuse",
@@ -37918,7 +37938,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "College Station",
@@ -38154,7 +38174,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lubbock",
@@ -38431,7 +38451,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbus",
@@ -38708,7 +38728,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Antonio",
@@ -38770,8 +38790,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://som.uthscsa.edu/sites/medicine/files/2022-11/class_profile_ey2022_handout_graphics_updated.pdf"
             }
           ],
           "title": "Overview"
@@ -38792,8 +38812,8 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3.87",
+            "data_quality_band": "high",
+            "gpa_average": "3.86",
             "gpa_band": "Greater than 3.79",
             "mcat_average": "517.6",
             "mcat_band": "Greater than 517"
@@ -38811,8 +38831,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://som.uthscsa.edu/sites/medicine/files/2022-11/class_profile_ey2022_handout_graphics_updated.pdf"
             }
           ],
           "title": "Admissions Stats"
@@ -38838,8 +38858,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://som.uthscsa.edu/sites/medicine/files/2022-11/class_profile_ey2022_handout_graphics_updated.pdf"
             }
           ],
           "title": "Cost and Debt"
@@ -38866,15 +38886,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://som.uthscsa.edu/sites/medicine/files/2022-11/class_profile_ey2022_handout_graphics_updated.pdf"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "admissions_policy, letter_requirements",
             "rank_confidence": "partial"
           },
@@ -38894,8 +38914,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://som.uthscsa.edu/sites/medicine/files/2022-11/class_profile_ey2022_handout_graphics_updated.pdf"
             }
           ],
           "title": "Source Confidence"
@@ -38930,7 +38950,7 @@
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.87"
+          "value": "3.86"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -38948,13 +38968,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tyler",
@@ -39229,7 +39249,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TVCOM",
         "city": "Phoenix",
@@ -39452,7 +39472,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Providence",
@@ -39729,7 +39749,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -39994,7 +40014,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TouroCOM-Harlem",
         "city": "New York",
@@ -40228,7 +40248,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TouroCOM-Middletown",
         "city": "Middletown",
@@ -40462,7 +40482,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TouroCOM-Great Falls",
         "city": "Great Falls",
@@ -40696,7 +40716,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TUCOM",
         "city": "Vallejo",
@@ -40930,7 +40950,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "TUNCOM",
         "city": "Henderson",
@@ -41164,7 +41184,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -41441,7 +41461,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -41506,8 +41526,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.tulane.edu/education/undergraduate-medical-education-md-program/admissions/class-profile"
             }
           ],
           "title": "Overview"
@@ -41529,10 +41549,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.83",
-            "gpa_band": "Greater than 3.79",
-            "mcat_average": "513.7",
-            "mcat_band": "514-517"
+            "gpa_average": "3.7",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "510",
+            "mcat_band": "510-513"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -41551,8 +41571,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.tulane.edu/education/undergraduate-medical-education-md-program/admissions/class-profile"
             }
           ],
           "title": "Admissions Stats"
@@ -41582,8 +41602,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.tulane.edu/education/undergraduate-medical-education-md-program/admissions/class-profile"
             }
           ],
           "title": "Cost and Debt"
@@ -41627,8 +41647,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.tulane.edu/education/undergraduate-medical-education-md-program/admissions/class-profile"
             }
           ],
           "title": "Requirements and Policies"
@@ -41658,8 +41678,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.tulane.edu/education/undergraduate-medical-education-md-program/admissions/class-profile"
             }
           ],
           "title": "Source Confidence"
@@ -41686,15 +41706,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "514-517",
+          "context": "510-513",
           "label": "MCAT average",
-          "value": "513.7"
+          "value": "510"
         },
         {
           "card_id": "gpa_average",
-          "context": "Greater than 3.79",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.83"
+          "value": "3.7"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -41718,7 +41738,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tampa",
@@ -41995,7 +42015,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bethesda",
@@ -42258,7 +42278,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Birmingham",
@@ -42534,7 +42554,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -42599,8 +42619,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.arizona.edu/admissions; http://phoenixmed.arizona.edu/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://phoenixmed.arizona.edu/newsroom/news/college-medicine-phoenix-welcomes-its-largest-class-students"
             }
           ],
           "title": "Overview"
@@ -42621,11 +42641,11 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3.78",
+            "data_quality_band": "high",
+            "gpa_average": "3.72",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "512.2",
-            "mcat_band": "510-513"
+            "mcat_average": "514",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -42644,8 +42664,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.arizona.edu/admissions; http://phoenixmed.arizona.edu/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://phoenixmed.arizona.edu/newsroom/news/college-medicine-phoenix-welcomes-its-largest-class-students"
             }
           ],
           "title": "Admissions Stats"
@@ -42675,8 +42695,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.arizona.edu/admissions; http://phoenixmed.arizona.edu/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://phoenixmed.arizona.edu/newsroom/news/college-medicine-phoenix-welcomes-its-largest-class-students"
             }
           ],
           "title": "Cost and Debt"
@@ -42718,15 +42738,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.arizona.edu/admissions; http://phoenixmed.arizona.edu/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://phoenixmed.arizona.edu/newsroom/news/college-medicine-phoenix-welcomes-its-largest-class-students"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -42749,8 +42769,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.arizona.edu/admissions; http://phoenixmed.arizona.edu/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://phoenixmed.arizona.edu/newsroom/news/college-medicine-phoenix-welcomes-its-largest-class-students"
             }
           ],
           "title": "Source Confidence"
@@ -42777,15 +42797,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "510-513",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "512.2"
+          "value": "514"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.78"
+          "value": "3.72"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -42803,13 +42823,13 @@
           "card_id": "data_quality",
           "context": "Research seriously",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tucson",
@@ -43062,7 +43082,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Little Rock",
@@ -43337,7 +43357,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Davis",
@@ -43613,7 +43633,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Irvine",
@@ -43890,7 +43910,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Riverside",
@@ -44166,7 +44186,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Diego",
@@ -44231,8 +44251,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.meded.uci.edu/admissions/index.asp; http://medschool.ucr.edu/admissions/; http://meded.ucsd.edu/asa/admissions/; http://meded.ucsf.edu/admissions; http://keck.usc.edu/education/md-program/admissions/; http://louisville.edu/medicine/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medschool.ucsd.edu/education/md-combined/admissions/by-the-numbers.html"
             }
           ],
           "title": "Overview"
@@ -44254,10 +44274,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.77",
-            "gpa_band": "3.60-3.79",
-            "mcat_average": "513.2",
-            "mcat_band": "510-513"
+            "gpa_average": "3.83",
+            "gpa_band": "Greater than 3.79",
+            "mcat_average": "514.4",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -44276,8 +44296,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.meded.uci.edu/admissions/index.asp; http://medschool.ucr.edu/admissions/; http://meded.ucsd.edu/asa/admissions/; http://meded.ucsf.edu/admissions; http://keck.usc.edu/education/md-program/admissions/; http://louisville.edu/medicine/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medschool.ucsd.edu/education/md-combined/admissions/by-the-numbers.html"
             }
           ],
           "title": "Admissions Stats"
@@ -44307,8 +44327,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.meded.uci.edu/admissions/index.asp; http://medschool.ucr.edu/admissions/; http://meded.ucsd.edu/asa/admissions/; http://meded.ucsf.edu/admissions; http://keck.usc.edu/education/md-program/admissions/; http://louisville.edu/medicine/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medschool.ucsd.edu/education/md-combined/admissions/by-the-numbers.html"
             }
           ],
           "title": "Cost and Debt"
@@ -44351,8 +44371,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.meded.uci.edu/admissions/index.asp; http://medschool.ucr.edu/admissions/; http://meded.ucsd.edu/asa/admissions/; http://meded.ucsf.edu/admissions; http://keck.usc.edu/education/md-program/admissions/; http://louisville.edu/medicine/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medschool.ucsd.edu/education/md-combined/admissions/by-the-numbers.html"
             }
           ],
           "title": "Requirements and Policies"
@@ -44382,8 +44402,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.meded.uci.edu/admissions/index.asp; http://medschool.ucr.edu/admissions/; http://meded.ucsd.edu/asa/admissions/; http://meded.ucsf.edu/admissions; http://keck.usc.edu/education/md-program/admissions/; http://louisville.edu/medicine/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medschool.ucsd.edu/education/md-combined/admissions/by-the-numbers.html"
             }
           ],
           "title": "Source Confidence"
@@ -44410,15 +44430,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "510-513",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "513.2"
+          "value": "514.4"
         },
         {
           "card_id": "gpa_average",
-          "context": "3.60-3.79",
+          "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.77"
+          "value": "3.83"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -44442,7 +44462,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Francisco",
@@ -44718,7 +44738,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Orlando",
@@ -44993,7 +45013,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -45269,7 +45289,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cincinnati",
@@ -45545,7 +45565,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Denver",
@@ -45821,7 +45841,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Farmington",
@@ -46099,7 +46119,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Gainesville",
@@ -46374,7 +46394,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Athens",
@@ -46634,7 +46654,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -46909,7 +46929,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -46974,8 +46994,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medicine.uic.edu/education/m_d_admissions; https://med.uc.edu/admissions/medical-student-admissions/home; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.uic.edu/admissions/"
             }
           ],
           "title": "Overview"
@@ -46996,10 +47016,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
+            "data_quality_band": "high",
             "gpa_average": "3.82",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "513.2",
+            "mcat_average": "511",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -47019,8 +47039,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medicine.uic.edu/education/m_d_admissions; https://med.uc.edu/admissions/medical-student-admissions/home; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.uic.edu/admissions/"
             }
           ],
           "title": "Admissions Stats"
@@ -47050,8 +47070,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medicine.uic.edu/education/m_d_admissions; https://med.uc.edu/admissions/medical-student-admissions/home; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.uic.edu/admissions/"
             }
           ],
           "title": "Cost and Debt"
@@ -47094,15 +47114,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medicine.uic.edu/education/m_d_admissions; https://med.uc.edu/admissions/medical-student-admissions/home; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.uic.edu/admissions/"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -47125,8 +47145,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medicine.uic.edu/education/m_d_admissions; https://med.uc.edu/admissions/medical-student-admissions/home; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.uic.edu/admissions/"
             }
           ],
           "title": "Source Confidence"
@@ -47155,7 +47175,7 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "513.2"
+          "value": "511"
         },
         {
           "card_id": "gpa_average",
@@ -47179,13 +47199,13 @@
           "card_id": "data_quality",
           "context": "Low priority",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Iowa City",
@@ -47250,8 +47270,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://advisingcenter.uiowa.edu/pre-health/pre-medicine/guide"
             }
           ],
           "title": "Overview"
@@ -47272,10 +47292,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3",
-            "gpa_band": "3.00-3.19",
-            "mcat_average": "514",
+            "data_quality_band": "high",
+            "gpa_average": "3.81",
+            "gpa_band": "Greater than 3.79",
+            "mcat_average": "515",
             "mcat_band": "514-517"
           },
           "missing_fields": [],
@@ -47295,8 +47315,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://advisingcenter.uiowa.edu/pre-health/pre-medicine/guide"
             }
           ],
           "title": "Admissions Stats"
@@ -47326,8 +47346,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://advisingcenter.uiowa.edu/pre-health/pre-medicine/guide"
             }
           ],
           "title": "Cost and Debt"
@@ -47369,15 +47389,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://advisingcenter.uiowa.edu/pre-health/pre-medicine/guide"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -47400,8 +47420,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://advisingcenter.uiowa.edu/pre-health/pre-medicine/guide"
             }
           ],
           "title": "Source Confidence"
@@ -47430,13 +47450,13 @@
           "card_id": "mcat_average",
           "context": "514-517",
           "label": "MCAT average",
-          "value": "514"
+          "value": "515"
         },
         {
           "card_id": "gpa_average",
-          "context": "3.00-3.19",
+          "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3"
+          "value": "3.81"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -47454,13 +47474,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -47736,7 +47756,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lexington",
@@ -48013,7 +48033,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Louisville",
@@ -48290,7 +48310,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -48567,7 +48587,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Worcester",
@@ -48844,7 +48864,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -49121,7 +49141,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Ann Arbor",
@@ -49398,7 +49418,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Minneapolis",
@@ -49673,7 +49693,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Jackson",
@@ -49947,7 +49967,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -50224,7 +50244,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -50498,7 +50518,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -50772,7 +50792,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Reno",
@@ -51049,7 +51069,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "UNECOM",
         "city": "Biddeford",
@@ -51283,7 +51303,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albuquerque",
@@ -51348,8 +51368,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.uconn.edu/admissions/applying-to-the-md-or-md-mba-programs/; http://som.unm.edu/education/md/ume/; https://md.rcm.upr.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://hsc.unm.edu/medicine/education/md/admissions/apply/index.html"
             }
           ],
           "title": "Overview"
@@ -51370,10 +51390,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.78",
+            "data_quality_band": "high",
+            "gpa_average": "3.75",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "508.1",
+            "mcat_average": "507",
             "mcat_band": "506-509"
           },
           "missing_fields": [],
@@ -51393,8 +51413,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.uconn.edu/admissions/applying-to-the-md-or-md-mba-programs/; http://som.unm.edu/education/md/ume/; https://md.rcm.upr.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://hsc.unm.edu/medicine/education/md/admissions/apply/index.html"
             }
           ],
           "title": "Admissions Stats"
@@ -51424,8 +51444,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.uconn.edu/admissions/applying-to-the-md-or-md-mba-programs/; http://som.unm.edu/education/md/ume/; https://md.rcm.upr.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://hsc.unm.edu/medicine/education/md/admissions/apply/index.html"
             }
           ],
           "title": "Cost and Debt"
@@ -51470,15 +51490,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.uconn.edu/admissions/applying-to-the-md-or-md-mba-programs/; http://som.unm.edu/education/md/ume/; https://md.rcm.upr.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://hsc.unm.edu/medicine/education/md/admissions/apply/index.html"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -51501,8 +51521,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.uconn.edu/admissions/applying-to-the-md-or-md-mba-programs/; http://som.unm.edu/education/md/ume/; https://md.rcm.upr.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://hsc.unm.edu/medicine/education/md/admissions/apply/index.html"
             }
           ],
           "title": "Source Confidence"
@@ -51531,13 +51551,13 @@
           "card_id": "mcat_average",
           "context": "506-509",
           "label": "MCAT average",
-          "value": "508.1"
+          "value": "507"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.78"
+          "value": "3.75"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -51555,13 +51575,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chapel Hill",
@@ -51795,7 +51815,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Grand Forks",
@@ -52070,7 +52090,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "UNTHSC/TCOM",
         "city": "Fort Worth",
@@ -52304,7 +52324,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "UNC-COM",
         "city": "Greely",
@@ -52527,7 +52547,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Oklahoma City",
@@ -52804,7 +52824,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "UP-KYCOM",
         "city": "Pikeville",
@@ -53038,7 +53058,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pittsburgh",
@@ -53314,7 +53334,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -53589,7 +53609,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -53612,8 +53632,6 @@
       ],
       "missing_fields": [
         "decision_rank",
-        "mcat_average",
-        "gpa_average",
         "cost",
         "admissions_policy",
         "letter_requirements"
@@ -53649,6 +53667,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://sc.edu/study/colleges_schools/medicine/education/md_program/admission_and_application/index.php"
             }
           ],
           "title": "Overview"
@@ -53662,9 +53684,7 @@
             "decision_rank": ""
           },
           "missing_fields": [
-            "decision_rank",
-            "mcat_average",
-            "gpa_average"
+            "decision_rank"
           ],
           "readiness": "provisional",
           "section_id": "applicant_fit",
@@ -53673,22 +53693,23 @@
         },
         {
           "facts": {
-            "data_quality_band": "missing",
-            "gpa_average": "",
-            "gpa_band": "",
-            "mcat_average": "",
-            "mcat_band": ""
+            "data_quality_band": "high",
+            "gpa_average": "3.77",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "508",
+            "mcat_band": "506-509"
           },
-          "missing_fields": [
-            "mcat_average",
-            "gpa_average"
-          ],
-          "readiness": "missing",
+          "missing_fields": [],
+          "readiness": "ready",
           "section_id": "admissions_stats",
           "source_refs": [
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://sc.edu/study/colleges_schools/medicine/education/md_program/admission_and_application/index.php"
             }
           ],
           "title": "Admissions Stats"
@@ -53710,6 +53731,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://sc.edu/study/colleges_schools/medicine/education/md_program/admission_and_application/index.php"
             }
           ],
           "title": "Cost and Debt"
@@ -53730,20 +53755,22 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://sc.edu/study/colleges_schools/medicine/education/md_program/admission_and_application/index.php"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "missing",
-            "missing_fields": "decision_rank, mcat_average, gpa_average, cost, admissions_policy, letter_requirements",
+            "admissions_data_quality_band": "high",
+            "missing_fields": "decision_rank, cost, admissions_policy, letter_requirements",
             "rank_confidence": "provisional"
           },
           "missing_fields": [
             "decision_rank",
-            "mcat_average",
-            "gpa_average",
             "cost",
             "admissions_policy",
             "letter_requirements"
@@ -53754,6 +53781,10 @@
             {
               "source_name": "LCME Accredited Programs",
               "source_url": "https://lcme.org/directory/accredited-programs/"
+            },
+            {
+              "source_name": "Official MD school source",
+              "source_url": "https://sc.edu/study/colleges_schools/medicine/education/md_program/admission_and_application/index.php"
             }
           ],
           "title": "Source Confidence"
@@ -53780,15 +53811,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "",
+          "context": "506-509",
           "label": "MCAT average",
-          "value": "Missing"
+          "value": "508"
         },
         {
           "card_id": "gpa_average",
-          "context": "",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "Missing"
+          "value": "3.77"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -53806,13 +53837,13 @@
           "card_id": "data_quality",
           "context": "Incomplete data",
           "label": "Data Quality",
-          "value": "missing"
+          "value": "high"
         }
       ],
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -54088,7 +54119,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Vermillion",
@@ -54364,7 +54395,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Memphis",
@@ -54640,7 +54671,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Galveston",
@@ -54705,8 +54736,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school; https://www.utmb.edu/enrollmentservices/resources/admissions"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.utmb.edu/som/admissions-information/ready-to-apply-info/admission-policies-faqs"
             }
           ],
           "title": "Overview"
@@ -54727,10 +54758,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.82",
-            "gpa_band": "Greater than 3.79",
-            "mcat_average": "511.3",
+            "data_quality_band": "high",
+            "gpa_average": "3.78",
+            "gpa_band": "3.60-3.79",
+            "mcat_average": "513",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -54750,8 +54781,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school; https://www.utmb.edu/enrollmentservices/resources/admissions"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.utmb.edu/som/admissions-information/ready-to-apply-info/admission-policies-faqs"
             }
           ],
           "title": "Admissions Stats"
@@ -54781,8 +54812,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school; https://www.utmb.edu/enrollmentservices/resources/admissions"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.utmb.edu/som/admissions-information/ready-to-apply-info/admission-policies-faqs"
             }
           ],
           "title": "Cost and Debt"
@@ -54823,15 +54854,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school; https://www.utmb.edu/enrollmentservices/resources/admissions"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.utmb.edu/som/admissions-information/ready-to-apply-info/admission-policies-faqs"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -54854,8 +54885,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school; https://www.utmb.edu/enrollmentservices/resources/admissions"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.utmb.edu/som/admissions-information/ready-to-apply-info/admission-policies-faqs"
             }
           ],
           "title": "Source Confidence"
@@ -54884,13 +54915,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "511.3"
+          "value": "513"
         },
         {
           "card_id": "gpa_average",
-          "context": "Greater than 3.79",
+          "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.82"
+          "value": "3.78"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -54908,13 +54939,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Edinburg",
@@ -55188,7 +55219,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dallas",
@@ -55462,7 +55493,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Toledo",
@@ -55738,7 +55769,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charlottesville",
@@ -55803,8 +55834,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medschool.vcu.edu/admissions/md/; https://med.virginia.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.virginia.edu/md-program/admissions/about-uva-school-of-medicine/statistics-overview/"
             }
           ],
           "title": "Overview"
@@ -55826,10 +55857,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.82",
+            "gpa_average": "3.85",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "515.5",
-            "mcat_band": "514-517"
+            "mcat_average": "518",
+            "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -55848,8 +55879,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medschool.vcu.edu/admissions/md/; https://med.virginia.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.virginia.edu/md-program/admissions/about-uva-school-of-medicine/statistics-overview/"
             }
           ],
           "title": "Admissions Stats"
@@ -55879,8 +55910,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medschool.vcu.edu/admissions/md/; https://med.virginia.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.virginia.edu/md-program/admissions/about-uva-school-of-medicine/statistics-overview/"
             }
           ],
           "title": "Cost and Debt"
@@ -55924,8 +55955,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medschool.vcu.edu/admissions/md/; https://med.virginia.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.virginia.edu/md-program/admissions/about-uva-school-of-medicine/statistics-overview/"
             }
           ],
           "title": "Requirements and Policies"
@@ -55955,8 +55986,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.medschool.vcu.edu/admissions/md/; https://med.virginia.edu/admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.virginia.edu/md-program/admissions/about-uva-school-of-medicine/statistics-overview/"
             }
           ],
           "title": "Source Confidence"
@@ -55983,15 +56014,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "514-517",
+          "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "515.5"
+          "value": "518"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.82"
+          "value": "3.85"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -56015,7 +56046,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Seattle",
@@ -56291,7 +56322,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Madison",
@@ -56567,7 +56598,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "UIWSOM",
         "city": "San Antonio",
@@ -56801,7 +56832,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -57077,7 +57108,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Richmond",
@@ -57353,7 +57384,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Roanoke",
@@ -57628,7 +57659,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Winston-Salem",
@@ -57900,7 +57931,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Spokane",
@@ -57965,8 +57996,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.wsu.edu/md/apply/demographics/class-of-2029/"
             }
           ],
           "title": "Overview"
@@ -57988,9 +58019,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.64",
+            "gpa_average": "3.69",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "507.9",
+            "mcat_average": "506.4",
             "mcat_band": "506-509"
           },
           "missing_fields": [],
@@ -58010,8 +58041,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.wsu.edu/md/apply/demographics/class-of-2029/"
             }
           ],
           "title": "Admissions Stats"
@@ -58041,8 +58072,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.wsu.edu/md/apply/demographics/class-of-2029/"
             }
           ],
           "title": "Cost and Debt"
@@ -58084,8 +58115,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.wsu.edu/md/apply/demographics/class-of-2029/"
             }
           ],
           "title": "Requirements and Policies"
@@ -58115,8 +58146,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.wsu.edu/md/apply/demographics/class-of-2029/"
             }
           ],
           "title": "Source Confidence"
@@ -58145,13 +58176,13 @@
           "card_id": "mcat_average",
           "context": "506-509",
           "label": "MCAT average",
-          "value": "507.9"
+          "value": "506.4"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.64"
+          "value": "3.69"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -58175,7 +58206,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -58240,8 +58271,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://mdadmissions.wustl.edu/how-to-apply/who-chooses-wu/"
             }
           ],
           "title": "Overview"
@@ -58262,10 +58293,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3.92",
+            "data_quality_band": "high",
+            "gpa_average": "3.88",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "519.2",
+            "mcat_average": "520",
             "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
@@ -58285,8 +58316,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://mdadmissions.wustl.edu/how-to-apply/who-chooses-wu/"
             }
           ],
           "title": "Admissions Stats"
@@ -58316,8 +58347,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://mdadmissions.wustl.edu/how-to-apply/who-chooses-wu/"
             }
           ],
           "title": "Cost and Debt"
@@ -58359,15 +58390,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://mdadmissions.wustl.edu/how-to-apply/who-chooses-wu/"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -58390,8 +58421,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://mdadmissions.wustl.edu/how-to-apply/who-chooses-wu/"
             }
           ],
           "title": "Source Confidence"
@@ -58420,13 +58451,13 @@
           "card_id": "mcat_average",
           "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "519.2"
+          "value": "520"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.92"
+          "value": "3.88"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -58444,13 +58475,13 @@
           "card_id": "data_quality",
           "context": "Research seriously",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Detroit",
@@ -58515,8 +58546,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.wayne.edu/admissions/becoming-an-md/mcat"
             }
           ],
           "title": "Overview"
@@ -58538,10 +58569,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.83",
+            "gpa_average": "3.88",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "513.7",
-            "mcat_band": "514-517"
+            "mcat_average": "512",
+            "mcat_band": "510-513"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -58560,8 +58591,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.wayne.edu/admissions/becoming-an-md/mcat"
             }
           ],
           "title": "Admissions Stats"
@@ -58591,8 +58622,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.wayne.edu/admissions/becoming-an-md/mcat"
             }
           ],
           "title": "Cost and Debt"
@@ -58634,8 +58665,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.wayne.edu/admissions/becoming-an-md/mcat"
             }
           ],
           "title": "Requirements and Policies"
@@ -58665,8 +58696,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://medicine.llu.edu/admissions; http://med.stanford.edu/md-admissions.html; https://medicine.iu.edu/education/md/admissions/; http://www2.tulane.edu/som/admissions/index.cfm; http://www.hopkinsmedicine.org/som/admissions/md/; http://admissions.med.wayne.edu/; http://www.slu.edu/medicine/admissions; https://medschool.duke.edu/education/student-services/office-admissions; https://medschool.vanderbilt.edu/md-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.med.wayne.edu/admissions/becoming-an-md/mcat"
             }
           ],
           "title": "Source Confidence"
@@ -58693,15 +58724,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "514-517",
+          "context": "510-513",
           "label": "MCAT average",
-          "value": "513.7"
+          "value": "512"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.83"
+          "value": "3.88"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -58725,7 +58756,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -58790,8 +58821,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://weill.cornell.edu/education/admissions/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://weill.cornell.edu/sites/default/files/wcm_fact_sheet_2024-final.pdf"
             }
           ],
           "title": "Overview"
@@ -58813,9 +58844,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.91",
+            "gpa_average": "3.9",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "518.5",
+            "mcat_average": "518",
             "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
@@ -58835,8 +58866,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://weill.cornell.edu/education/admissions/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://weill.cornell.edu/sites/default/files/wcm_fact_sheet_2024-final.pdf"
             }
           ],
           "title": "Admissions Stats"
@@ -58866,8 +58897,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://weill.cornell.edu/education/admissions/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://weill.cornell.edu/sites/default/files/wcm_fact_sheet_2024-final.pdf"
             }
           ],
           "title": "Cost and Debt"
@@ -58909,8 +58940,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://weill.cornell.edu/education/admissions/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://weill.cornell.edu/sites/default/files/wcm_fact_sheet_2024-final.pdf"
             }
           ],
           "title": "Requirements and Policies"
@@ -58940,8 +58971,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://weill.cornell.edu/education/admissions/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://weill.cornell.edu/sites/default/files/wcm_fact_sheet_2024-final.pdf"
             }
           ],
           "title": "Source Confidence"
@@ -58970,13 +59001,13 @@
           "card_id": "mcat_average",
           "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "518.5"
+          "value": "518"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.91"
+          "value": "3.9"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -59000,7 +59031,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "WVSOM",
         "city": "Lewisburg",
@@ -59251,7 +59282,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Morgantown",
@@ -59528,7 +59559,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kalamazoo",
@@ -59803,7 +59834,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "WesternU/COMP",
         "city": "Pomona",
@@ -60037,7 +60068,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "WesternU/COMP-Northwest",
         "city": "Lebanon",
@@ -60271,7 +60302,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "WCUCOM",
         "city": "Hattiesburg",
@@ -60505,7 +60536,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T04:45:23+00:00",
+      "generated_at": "2026-06-09T06:01:46+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Haven",

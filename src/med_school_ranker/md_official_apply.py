@@ -74,7 +74,7 @@ def accepted_extractions() -> list[dict[str, str]]:
         and clean(row.get("review_status")) == "approved_official_extraction"
         and clean(row.get("data_confidence")) == MD_DATA_CONFIDENCE
         and parse_float(row.get("mcat_value")) is not None
-        and parse_float(row.get("gpa_value")) is not None
+        and (parse_float(row.get("gpa_value")) is not None or parse_float(row.get("science_gpa_value")) is not None)
     ]
     return sorted(
         rows,
@@ -98,7 +98,8 @@ def best_accepted_by_school(rows: list[dict[str, str]]) -> dict[str, dict[str, s
 def md_official_stats_row(extracted: dict[str, str], school: dict[str, str]) -> dict[str, str]:
     mcat_value = parse_float(extracted.get("mcat_value"))
     gpa_value = parse_float(extracted.get("gpa_value"))
-    rate = aamc_acceptance_rate_for(gpa_value, mcat_value)
+    science_gpa_value = parse_float(extracted.get("science_gpa_value"))
+    rate = aamc_acceptance_rate_for(gpa_value, mcat_value) if gpa_value is not None else None
     metric_type = clean(extracted.get("metric_type")) or "md_official_published_value"
     if not metric_type.startswith("md_"):
         metric_type = f"md_{metric_type}"
@@ -138,6 +139,7 @@ def md_official_stats_row(extracted: dict[str, str], school: dict[str, str]) -> 
     else:
         row["mcat_mean_enrolled"] = format_float(mcat_value, 1)
         row["overall_gpa_mean_enrolled"] = format_float(gpa_value, 2)
+    row["science_gpa_mean_enrolled"] = format_float(science_gpa_value, 2)
     return row
 
 

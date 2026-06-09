@@ -808,15 +808,17 @@ def validate_official_source_discovery_outputs(
                 "Accepted official extraction is below the official-domain threshold.",
                 "Reject or manually review the row before applying it to admissions_stats.csv.",
             )
-        if parse_number(row.get("mcat_value")) is None or parse_number(row.get("gpa_value")) is None:
+        if parse_number(row.get("mcat_value")) is None or (
+            parse_number(row.get("gpa_value")) is None and parse_number(row.get("science_gpa_value")) is None
+        ):
             add_issue(
                 issues,
                 "error",
                 "data/source_tables/official_mcat_gpa_extracted_values.csv",
                 row_label(row, f"row {row_number}"),
-                "mcat_value,gpa_value",
-                "Accepted official extraction must include both MCAT and GPA.",
-                "Leave partial extractions in needs_review status.",
+                "mcat_value,gpa_value,science_gpa_value",
+                "Accepted official extraction must include MCAT and at least one GPA field.",
+                "Leave partial extractions in needs_review status unless cumulative or science GPA was captured.",
             )
 
 
@@ -894,15 +896,17 @@ def validate_md_official_outputs(
                 "Accepted MD official extraction is below the official-domain threshold.",
                 "Reject or manually review the row before applying it to admissions_stats.csv.",
             )
-        if parse_number(row.get("mcat_value")) is None or parse_number(row.get("gpa_value")) is None:
+        if parse_number(row.get("mcat_value")) is None or (
+            parse_number(row.get("gpa_value")) is None and parse_number(row.get("science_gpa_value")) is None
+        ):
             add_issue(
                 issues,
                 "error",
                 "data/source_tables/md_official_extracted_stats.csv",
                 row_label(row, f"row {row_number}"),
-                "mcat_value,gpa_value",
-                "Accepted MD official extraction must include both MCAT and GPA.",
-                "Leave partial MD extractions in needs_review status.",
+                "mcat_value,gpa_value,science_gpa_value",
+                "Accepted MD official extraction must include MCAT and at least one GPA field.",
+                "Leave partial MD extractions in needs_review status unless cumulative or science GPA was captured.",
             )
         if not row.get("evidence_text", "").strip():
             add_issue(
