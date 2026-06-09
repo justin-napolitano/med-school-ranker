@@ -253,7 +253,7 @@ def classify_official_source(
     school_host = normalized_host(school.get("website", ""))
     candidate_domain = registrable_domain(candidate_host)
     school_domain = registrable_domain(school_host)
-    context = " ".join([candidate_title, candidate_text, school.get("school_name", ""), school.get("campus_name", "")])
+    context = " ".join([candidate_title, candidate_text, url, candidate_host])
 
     if school_host and candidate_host == school_host:
         return OfficialSourceClassification("official_school_domain", 1.0, "Candidate host exactly matches school website host")

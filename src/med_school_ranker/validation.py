@@ -18,6 +18,12 @@ from med_school_ranker.paths import (
     LETTER_REQUIREMENTS_CSV,
     MANUAL_DATA,
     MASTER_CSV,
+    MD_OFFICIAL_CONFLICTS_CSV,
+    MD_OFFICIAL_COVERAGE_CSV,
+    MD_OFFICIAL_DISCOVERY_REPORT_CSV,
+    MD_OFFICIAL_EXTRACTED_STATS_CSV,
+    MD_OFFICIAL_REVIEW_QUEUE_CSV,
+    MD_OFFICIAL_SOURCE_CANDIDATES_CSV,
     NORMALIZED_DATA,
     OFFICIAL_STATS_CONFLICTS_CSV,
     OFFICIAL_STATS_COVERAGE_CSV,
@@ -55,6 +61,15 @@ from med_school_ranker.official_source_rules import (
     OFFICIAL_STATS_EXTRACTED_COLUMNS,
     OFFICIAL_STATS_REVIEW_QUEUE_COLUMNS,
     is_unsafe_discovery_url,
+)
+from med_school_ranker.md_official_rules import (
+    MD_DATA_CONFIDENCE,
+    MD_OFFICIAL_CONFLICT_COLUMNS,
+    MD_OFFICIAL_COVERAGE_COLUMNS,
+    MD_OFFICIAL_DISCOVERY_REPORT_COLUMNS,
+    MD_OFFICIAL_EXTRACTED_STATS_COLUMNS,
+    MD_OFFICIAL_REVIEW_QUEUE_COLUMNS,
+    MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
 )
 from med_school_ranker.source_integration import (
     ADMISSIONS_POLICIES_COLUMNS,
@@ -233,6 +248,12 @@ OPTIONAL_REQUIRED_COLUMNS = {
     "outputs/official_mcat_gpa_review_queue.csv": OFFICIAL_STATS_REVIEW_QUEUE_COLUMNS,
     "outputs/official_mcat_gpa_coverage.csv": OFFICIAL_STATS_COVERAGE_COLUMNS,
     "outputs/official_mcat_gpa_conflicts.csv": OFFICIAL_STATS_CONFLICT_COLUMNS,
+    "data/source_tables/md_official_source_candidates.csv": MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+    "data/source_tables/md_official_extracted_stats.csv": MD_OFFICIAL_EXTRACTED_STATS_COLUMNS,
+    "outputs/md_official_discovery_report.csv": MD_OFFICIAL_DISCOVERY_REPORT_COLUMNS,
+    "outputs/md_official_review_queue.csv": MD_OFFICIAL_REVIEW_QUEUE_COLUMNS,
+    "outputs/md_official_coverage.csv": MD_OFFICIAL_COVERAGE_COLUMNS,
+    "outputs/md_official_conflicts.csv": MD_OFFICIAL_CONFLICT_COLUMNS,
     "data/source_tables/aacom_do_profile_candidates.csv": AACOM_PROFILE_CANDIDATE_COLUMNS,
     "data/source_tables/aacom_do_extracted_stats.csv": AACOM_EXTRACTED_STATS_COLUMNS,
     "outputs/aacom_do_profile_coverage.csv": AACOM_COVERAGE_COLUMNS,
@@ -796,6 +817,126 @@ def validate_official_source_discovery_outputs(
             )
 
 
+def validate_md_official_outputs(
+    candidate_rows: Iterable[dict[str, str]],
+    extracted_rows: Iterable[dict[str, str]],
+    stats_rows: Iterable[dict[str, str]],
+    issues: list[DataIssue],
+) -> None:
+    for row_number, row in enumerate(candidate_rows, start=2):
+        if row.get("school_id", "").strip() and row.get("degree_type", "").strip().upper() != "MD":
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_source_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "MD official source candidate is matched to a non-MD school.",
+                "Run the MD official pipeline only against MD school_master rows.",
+            )
+        url = row.get("candidate_source_url", "").strip()
+        if url and is_unsafe_discovery_url(url):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_source_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "candidate_source_url",
+                "MD official source candidate points to a search, AI, forum, or advising source.",
+                "Use only public school, university, health-system, or public report URLs as MD candidate URLs.",
+            )
+        score = parse_number(row.get("official_domain_score"))
+        if row.get("review_status", "").strip() == "accepted_for_fetch" and (score is None or score < 0.9):
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_source_candidates.csv",
+                row_label(row, f"row {row_number}"),
+                "official_domain_score",
+                "MD candidate marked accepted_for_fetch below the official-domain threshold.",
+                "Keep review_status as needs_review unless official_domain_score is at least 0.90.",
+            )
+
+    for row_number, row in enumerate(extracted_rows, start=2):
+        if row.get("extraction_status", "").strip() != "accepted":
+            continue
+        if row.get("degree_type", "").strip().upper() != "MD":
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "Accepted MD official extraction must be an MD row.",
+                "Reject non-MD official rows or send them through a separate DO flow.",
+            )
+        if row.get("data_confidence", "").strip() != MD_DATA_CONFIDENCE:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "data_confidence",
+                "Accepted MD official extraction has the wrong data_confidence.",
+                f"Set data_confidence to {MD_DATA_CONFIDENCE}.",
+            )
+        score = parse_number(row.get("official_domain_score"))
+        if score is None or score < 0.9:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "official_domain_score",
+                "Accepted MD official extraction is below the official-domain threshold.",
+                "Reject or manually review the row before applying it to admissions_stats.csv.",
+            )
+        if parse_number(row.get("mcat_value")) is None or parse_number(row.get("gpa_value")) is None:
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "mcat_value,gpa_value",
+                "Accepted MD official extraction must include both MCAT and GPA.",
+                "Leave partial MD extractions in needs_review status.",
+            )
+        if not row.get("evidence_text", "").strip():
+            add_issue(
+                issues,
+                "error",
+                "data/source_tables/md_official_extracted_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "evidence_text",
+                "Accepted MD official extraction must retain evidence text.",
+                "Keep the row in review until evidence is captured.",
+            )
+
+    for row_number, row in enumerate(stats_rows, start=2):
+        if row.get("data_confidence", "").strip() != MD_DATA_CONFIDENCE:
+            continue
+        if row.get("degree_type", "").strip().upper() != "MD":
+            add_issue(
+                issues,
+                "error",
+                "data/normalized/admissions_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "degree_type",
+                "MD official canonical stats row is not marked MD.",
+                "MD official imports should only create MD admissions_stats rows.",
+            )
+        if is_unsafe_discovery_url(row.get("source_url", "")):
+            add_issue(
+                issues,
+                "error",
+                "data/normalized/admissions_stats.csv",
+                row_label(row, f"row {row_number}"),
+                "source_url",
+                "MD official canonical stats row points to a search, AI, forum, or advising source.",
+                "Use only the accepted public official source URL as source_url.",
+            )
+
+
 def validate_aacom_do_outputs(
     candidate_rows: Iterable[dict[str, str]],
     extracted_rows: Iterable[dict[str, str]],
@@ -1019,6 +1160,8 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     _, final_rows = loaded.get("data/final_application_list.csv", ([], []))
     _, official_candidate_rows = loaded.get("data/source_tables/official_mcat_gpa_source_candidates.csv", ([], []))
     _, official_extracted_rows = loaded.get("data/source_tables/official_mcat_gpa_extracted_values.csv", ([], []))
+    _, md_official_candidate_rows = loaded.get("data/source_tables/md_official_source_candidates.csv", ([], []))
+    _, md_official_extracted_rows = loaded.get("data/source_tables/md_official_extracted_stats.csv", ([], []))
     _, aacom_candidate_rows = loaded.get("data/source_tables/aacom_do_profile_candidates.csv", ([], []))
     _, aacom_extracted_rows = loaded.get("data/source_tables/aacom_do_extracted_stats.csv", ([], []))
     known_school_ids = {row.get("school_id", "").strip() for row in master_rows if row.get("school_id", "").strip()}
@@ -1148,6 +1291,7 @@ def validate_project(root: Path = ROOT, report_path: Path | None = None) -> list
     validate_source_match_overrides(source_override_rows, known_school_ids, issues)
     validate_blank_source_queue_urls(source_queue_rows, issues)
     validate_official_source_discovery_outputs(official_candidate_rows, official_extracted_rows, issues)
+    validate_md_official_outputs(md_official_candidate_rows, md_official_extracted_rows, stats_rows, issues)
     validate_aacom_do_outputs(aacom_candidate_rows, aacom_extracted_rows, stats_rows, issues)
     validate_ranking_coverage(master_headers, master_rows, preference_rows, scenario_rows, issues)
     validate_final_application_rationale(final_rows, issues)

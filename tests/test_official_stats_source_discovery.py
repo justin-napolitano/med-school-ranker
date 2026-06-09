@@ -44,6 +44,18 @@ def test_official_source_classifier_rejects_search_and_third_party_urls() -> Non
     assert advising_result.status == "rejected_non_official_or_search"
 
 
+def test_official_source_classifier_does_not_accept_unrelated_edu_without_signal() -> None:
+    school = {
+        "school_name": "University of Florida College of Medicine",
+        "website": "",
+    }
+
+    result = classify_official_source(school, "https://medicine.yale.edu/md-program/admissions/")
+
+    assert result.status == "needs_review_edu_domain"
+    assert not result.accepted_for_auto_extraction
+
+
 def test_extractor_accepts_class_profile_mcat_and_gpa_values() -> None:
     school = {
         "school_id": "md_test",

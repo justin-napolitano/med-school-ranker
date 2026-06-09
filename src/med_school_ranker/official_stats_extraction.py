@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import http.client
 import re
 import urllib.error
 import urllib.request
@@ -33,8 +34,8 @@ MCAT_RE = re.compile(
     re.IGNORECASE,
 )
 GPA_RE = re.compile(
-    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|science|bcpm)\s+)?gpa[^0-9]{0,60}(?P<after>\b[234]\.\d{1,3})"
-    r"|(?P<before>\b[234]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|science|bcpm)\s+)?gpa",
+    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative))?[^0-9]{0,60}(?P<after>\b[234]\.\d{1,3})"
+    r"|(?P<before>\b[234]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa",
     re.IGNORECASE,
 )
 MINIMUM_TERMS = {
@@ -170,6 +171,32 @@ def find_metric_candidates(text: str, pattern: re.Pattern[str], kind: str) -> li
             continue
         context = candidate_context(text, match.start(), match.end())
         score, rejected, reject_reason = context_score(context)
+        if kind == "gpa":
+            qualifier_window = text[max(0, match.start() - 45) : min(len(text), match.end() + 12)].lower()
+            allowed_positions = [
+                qualifier_window.rfind(term)
+                for term in ["overall", "cumulative", "total gpa", "total", "class gpa", "class"]
+            ]
+            disallowed_positions = [
+                qualifier_window.rfind(term)
+                for term in ["science", "bcpm", "postbac", "post-bac", "graduate", "masters", "master's"]
+            ]
+            allowed_position = max(allowed_positions)
+            disallowed_position = max(disallowed_positions)
+            if disallowed_position > allowed_position:
+                candidates.append(
+                    MetricCandidate(
+                        value=value,
+                        metric="science_or_bcpm",
+                        context=context,
+                        score=0,
+                        rejected=True,
+                        reject_reason="science_or_bcpm_gpa_context",
+                    )
+                )
+                continue
+            if allowed_position >= 0:
+                score += 2
         candidates.append(
             MetricCandidate(
                 value=value,
@@ -307,6 +334,10 @@ def fetch_candidate_text(url: str, timeout_seconds: int) -> tuple[str, str, str,
         return f"fetch_failed_http_{exc.code}", "", "", str(exc)
     except urllib.error.URLError as exc:
         return "fetch_failed_url_error", "", "", str(exc.reason)
+    except http.client.HTTPException as exc:
+        return "fetch_failed_http_exception", "", "", str(exc)
+    except OSError as exc:
+        return "fetch_failed_os_error", "", "", str(exc)
     except TimeoutError:
         return "fetch_failed_timeout", "", "", "Request timed out."
 
