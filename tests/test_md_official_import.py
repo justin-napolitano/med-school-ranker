@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from med_school_ranker import md_official_apply, md_official_discovery
+from med_school_ranker import md_official_apply, md_official_discovery, md_official_extraction, official_stats_extraction
 from med_school_ranker.md_official_rules import (
     MD_DATA_CONFIDENCE,
     MD_OFFICIAL_COVERAGE_COLUMNS,
@@ -47,6 +47,38 @@ def test_md_sitemap_discovery_keeps_only_stats_like_urls(monkeypatch) -> None:
     assert "https://med.ufl.edu/admissions/tuition/" not in urls
     assert "https://www.ufl.edu/law/admissions/class-profile/" not in urls
     assert all(row["review_status"] == "accepted_for_fetch" for row in rows)
+
+
+def test_md_known_path_probe_discovers_live_class_profile(monkeypatch) -> None:
+    school = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "state_abbrev": "FL",
+        "website": "https://medicine.example.edu/",
+    }
+
+    def fake_fetch(url: str, timeout: int) -> tuple[str, str]:
+        if url == "https://medicine.example.edu/admissions/class-profile/":
+            return (
+                "<html><title>MD Class Profile</title><body>Entering class profile median MCAT 512 and median GPA 3.84.</body></html>",
+                "text/html",
+            )
+        return "", ""
+
+    monkeypatch.setattr(md_official_discovery, "fetch_raw_url", fake_fetch)
+
+    rows = md_official_discovery.discover_known_path_candidates(
+        school,
+        "https://medicine.example.edu/admissions/",
+        timeout_seconds=1,
+        max_probe_urls=5,
+    )
+
+    assert [row["candidate_source_url"] for row in rows] == ["https://medicine.example.edu/admissions/class-profile/"]
+    assert rows[0]["candidate_source_type"] == "class_profile"
+    assert rows[0]["review_status"] == "accepted_for_fetch"
+    assert rows[0]["discovery_method"] == "official_known_path_probe"
 
 
 def test_md_extractor_accepts_class_profile_values() -> None:
@@ -142,6 +174,27 @@ def test_md_extractor_does_not_accept_bcpm_as_overall_gpa() -> None:
     assert row["gpa_value"] == ""
 
 
+def test_md_extractor_rejects_non_md_program_profile_values() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/pa/admissions/statistics/",
+        "candidate_source_title": "Physician Assistant Program Statistics",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "PA program class profile. Matriculants had a median MCAT score of 514 and median GPA of 3.82."
+
+    row = md_extracted_row(candidate, text, "Physician Assistant Program Statistics")
+
+    assert row["extraction_status"] == "rejected_non_md_program_context"
+    assert row["data_confidence"] == ""
+    assert row["review_status"] == "needs_review"
+
+
 def test_md_extractor_rejects_minimum_requirement_values() -> None:
     candidate = {
         "school_id": "md_test",
@@ -162,6 +215,195 @@ def test_md_extractor_rejects_minimum_requirement_values() -> None:
     assert row["data_confidence"] == ""
     assert row["mcat_value"] == ""
     assert row["gpa_value"] == ""
+
+
+def test_md_extraction_can_fetch_official_domain_seed_when_requested(tmp_path: Path, monkeypatch) -> None:
+    extracted_csv = tmp_path / "data/source_tables/md_official_extracted_stats.csv"
+    candidates_csv = tmp_path / "data/source_tables/md_official_source_candidates.csv"
+    review_csv = tmp_path / "outputs/md_official_review_queue.csv"
+
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_EXTRACTED_STATS_CSV", extracted_csv)
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_SOURCE_CANDIDATES_CSV", candidates_csv)
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_REVIEW_QUEUE_CSV", review_csv)
+    monkeypatch.setattr(
+        md_official_extraction,
+        "fetch_candidate_text",
+        lambda url, timeout: (
+            "fetched",
+            "MD Admissions",
+            "MD admissions entering class profile. Matriculants had a median MCAT score of 512 and median cumulative GPA of 3.84.",
+            "",
+        ),
+    )
+    write_csv(
+        candidates_csv,
+        MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+        [
+            {
+                "school_id": "md_test",
+                "school_name": "Test College of Medicine",
+                "degree_type": "MD",
+                "candidate_source_url": "https://medicine.example.edu/md-admissions/",
+                "candidate_source_title": "MD Admissions",
+                "candidate_source_type": "admissions_page",
+                "source_host": "medicine.example.edu",
+                "official_domain_status": "official_school_domain",
+                "official_domain_score": "1.00",
+                "review_status": "official_domain_seed_needs_stats_path",
+            }
+        ],
+    )
+
+    default_rows = md_official_extraction.build_md_official_extraction(fetch=True)
+    relaxed_rows = md_official_extraction.build_md_official_extraction(fetch=True, fetch_domain_seeds=True)
+
+    assert default_rows[0]["extraction_status"] == "fetch_skipped_needs_stats_path"
+    assert relaxed_rows[0]["extraction_status"] == "accepted"
+    assert relaxed_rows[0]["mcat_value"] == "512"
+    assert relaxed_rows[0]["gpa_value"] == "3.84"
+    assert "less conservative mode" in relaxed_rows[0]["notes"]
+
+
+def test_fetch_candidate_text_extracts_pdf_text(monkeypatch) -> None:
+    class FakePage:
+        def extract_text(self) -> str:
+            return "Class profile median MCAT score of 512 and median GPA of 3.84."
+
+    class FakeReader:
+        def __init__(self, stream) -> None:
+            self.pages = [FakePage()]
+
+    class FakeResponse:
+        headers = {"content-type": "application/pdf"}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return b"%PDF fake"
+
+    monkeypatch.setattr(official_stats_extraction, "PdfReader", FakeReader)
+    monkeypatch.setattr(official_stats_extraction.urllib.request, "urlopen", lambda request, timeout: FakeResponse())
+
+    status, title, text, notes = official_stats_extraction.fetch_candidate_text("https://medicine.example.edu/class-profile.pdf", 1)
+
+    assert status == "fetched"
+    assert title == "class-profile.pdf"
+    assert "median MCAT score of 512" in text
+    assert notes == ""
+
+
+def test_fetch_candidate_text_extracts_image_ocr_text(monkeypatch) -> None:
+    class FakeResponse:
+        headers = {"content-type": "image/png"}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return b"fake image"
+
+    class FakeResult:
+        returncode = 0
+        stdout = "Class profile median MCAT score of 512 and median GPA of 3.84."
+        stderr = ""
+
+    monkeypatch.setattr(official_stats_extraction.urllib.request, "urlopen", lambda request, timeout: FakeResponse())
+    monkeypatch.setattr(official_stats_extraction.shutil, "which", lambda command: "/usr/local/bin/tesseract")
+    monkeypatch.setattr(official_stats_extraction.subprocess, "run", lambda *args, **kwargs: FakeResult())
+
+    status, title, text, notes = official_stats_extraction.fetch_candidate_text("https://medicine.example.edu/class-profile.png", 1)
+
+    assert status == "fetched"
+    assert title == "class-profile.png"
+    assert "median MCAT score of 512" in text
+    assert notes == ""
+
+
+def test_md_extractor_corrects_impossible_image_ocr_gpa() -> None:
+    candidate = {
+        "school_id": "md_ucf",
+        "school_name": "University of Central Florida College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://med.ucf.edu/media/2025/10/CL2029-Class-Profile-Corrected.png",
+        "candidate_source_title": "Class Profile Image",
+        "candidate_source_type": "class_profile",
+        "source_host": "med.ucf.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "CLASS OF 2029 PROFILE Verified Applications Average Total GPA 5,394 5.90 "
+        "Interviews Average Science GPA 512 5.87 Matriculated Average MCAT 120 514"
+    )
+
+    row = md_extracted_row(candidate, text, "Class Profile Image")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "514"
+    assert row["gpa_value"] == "3.9"
+    assert "OCR correction" in row["notes"]
+
+
+def test_md_extraction_refetches_existing_pdf_skips(tmp_path: Path, monkeypatch) -> None:
+    extracted_csv = tmp_path / "data/source_tables/md_official_extracted_stats.csv"
+    candidates_csv = tmp_path / "data/source_tables/md_official_source_candidates.csv"
+    review_csv = tmp_path / "outputs/md_official_review_queue.csv"
+
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_EXTRACTED_STATS_CSV", extracted_csv)
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_SOURCE_CANDIDATES_CSV", candidates_csv)
+    monkeypatch.setattr(md_official_extraction, "MD_OFFICIAL_REVIEW_QUEUE_CSV", review_csv)
+    monkeypatch.setattr(
+        md_official_extraction,
+        "fetch_candidate_text",
+        lambda url, timeout: (
+            "fetched",
+            "Class Profile PDF",
+            "MD entering class profile. Matriculants had a median MCAT score of 512 and median cumulative GPA of 3.84.",
+            "",
+        ),
+    )
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/class-profile.pdf",
+        "candidate_source_title": "Class Profile PDF",
+        "candidate_source_type": "pdf_report",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+        "review_status": "accepted_for_fetch",
+    }
+    write_csv(candidates_csv, MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS, [candidate])
+    skipped = {column: "" for column in MD_OFFICIAL_EXTRACTED_STATS_COLUMNS}
+    skipped.update(candidate)
+    skipped.update(
+        {
+            "fetch_status": "unsupported_pdf_without_parser",
+            "extraction_status": "unsupported_pdf_without_parser",
+            "review_status": "needs_review",
+        }
+    )
+    write_csv(extracted_csv, MD_OFFICIAL_EXTRACTED_STATS_COLUMNS, [skipped])
+
+    reused_rows = md_official_extraction.build_md_official_extraction(fetch=True, reuse_existing=True)
+    refetched_rows = md_official_extraction.build_md_official_extraction(
+        fetch=True,
+        reuse_existing=True,
+        refetch_statuses={"unsupported_pdf_without_parser"},
+    )
+
+    assert reused_rows[0]["extraction_status"] == "unsupported_pdf_without_parser"
+    assert refetched_rows[0]["extraction_status"] == "accepted"
+    assert refetched_rows[0]["mcat_value"] == "512"
+    assert refetched_rows[0]["gpa_value"] == "3.84"
 
 
 def test_md_apply_promotes_only_accepted_md_official_row(tmp_path: Path, monkeypatch) -> None:

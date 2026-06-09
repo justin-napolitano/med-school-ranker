@@ -47,6 +47,36 @@ PUBLISHED_STATS_SOURCE_CSV = SOURCE_TABLES / "all_published_mcat_gpa_sources.csv
 CYCLETRACK_LOR_REQUIREMENTS_CSV = SOURCE_TABLES / "cycletrack_lor_requirements.csv"
 SITEMAP_LOC_RE = re.compile(r"<loc>\s*(?P<url>[^<]+)\s*</loc>", re.IGNORECASE)
 
+MD_KNOWN_STATS_PATHS = (
+    "admissions/class-profile/",
+    "admissions/entering-class-profile/",
+    "admissions/entering-class-statistics/",
+    "admissions/class-statistics/",
+    "admissions/statistics/",
+    "admissions/admissions-statistics/",
+    "md-admissions/class-profile/",
+    "md-admissions/entering-class-profile/",
+    "md-program/admissions/class-profile/",
+    "md-program/admissions/entering-class-profile/",
+    "education/md/admissions/class-profile/",
+    "education/md/admissions/entering-class-profile/",
+    "education/md-program/admissions/class-profile/",
+    "education/md-program/admissions/entering-class-profile/",
+    "medical-student-admissions/md-admissions/class-profile/",
+    "medical-student-admissions/class-profile/",
+    "academics/medicine/class-profile/",
+    "academics/md-program/admissions/class-profile/",
+    "class-profile/",
+    "entering-class-profile/",
+    "entering-class-statistics/",
+    "class-statistics/",
+    "admissions-profile/",
+    "facts-and-figures/",
+    "about/facts-and-figures/",
+    "fast-facts/",
+    "facts/",
+)
+
 
 class LinkParser(HTMLParser):
     def __init__(self) -> None:
@@ -336,6 +366,47 @@ def origin_for_url(url: str) -> str:
     return urlunparse((parsed.scheme, parsed.netloc, "/", "", "", ""))
 
 
+def directory_url(url: str) -> str:
+    parsed = urlparse(clean(url))
+    if not parsed.scheme or not parsed.netloc:
+        return ""
+    path = parsed.path
+    if not path or path == "/":
+        return origin_for_url(url)
+    if not path.endswith("/"):
+        path = path.rsplit("/", 1)[0] + "/"
+    return urlunparse((parsed.scheme, parsed.netloc, path, "", "", ""))
+
+
+def parent_directory_url(url: str) -> str:
+    directory = directory_url(url)
+    parsed = urlparse(directory)
+    parts = [part for part in parsed.path.split("/") if part]
+    if len(parts) <= 1:
+        return origin_for_url(url)
+    parent_path = "/" + "/".join(parts[:-1]) + "/"
+    return urlunparse((parsed.scheme, parsed.netloc, parent_path, "", "", ""))
+
+
+def known_path_probe_urls(seed_url: str, max_probe_urls: int) -> list[str]:
+    bases = []
+    for base in [origin_for_url(seed_url), directory_url(seed_url), parent_directory_url(seed_url)]:
+        if base and base not in bases:
+            bases.append(base)
+    urls: list[str] = []
+    seen: set[str] = set()
+    for base in bases:
+        for suffix in MD_KNOWN_STATS_PATHS:
+            url = urljoin(base, suffix)
+            if url == clean(seed_url) or url in seen:
+                continue
+            seen.add(url)
+            urls.append(url)
+            if max_probe_urls and len(urls) >= max_probe_urls:
+                return urls
+    return urls
+
+
 def likely_sitemap_urls(origin: str) -> list[str]:
     return [
         urljoin(origin, "sitemap.xml"),
@@ -465,12 +536,50 @@ def discover_one_hop_candidates(school: dict[str, str], seed_url: str, timeout_s
     return rows
 
 
+def discover_known_path_candidates(
+    school: dict[str, str],
+    seed_url: str,
+    timeout_seconds: int,
+    max_probe_urls: int,
+) -> list[dict[str, str]]:
+    rows = []
+    for url in known_path_probe_urls(seed_url, max_probe_urls):
+        if not same_registrable_domain(seed_url, url):
+            continue
+        document, content_type = fetch_raw_url(url, timeout_seconds)
+        if not document:
+            continue
+        if "html" in content_type.lower() or "<html" in document.lower() or "<body" in document.lower():
+            title, text = html_to_text(document)
+        else:
+            title, text = "", clean(document)
+        if not is_md_stats_like(url, title, text):
+            continue
+        if not is_md_program_relevant_url(url, seed_url, title):
+            continue
+        rows.append(
+            candidate_row(
+                school,
+                url,
+                "official_known_path_probe",
+                title or "Known class-profile path",
+                f"Discovered by probing common public MD class-profile/statistics paths from {seed_url}.",
+                school_website=seed_url,
+                candidate_text=text,
+            )
+        )
+    return rows
+
+
 def expand_candidates_with_fetch(
     candidates: list[dict[str, str]],
     schools_by_id: dict[str, dict[str, str]],
     timeout_seconds: int,
     max_sitemap_urls_per_school: int,
     max_hosts: int,
+    probe_known_paths: bool = False,
+    max_probe_urls_per_host: int = 0,
+    skip_sitemap_and_links: bool = False,
 ) -> list[dict[str, str]]:
     expanded = list(candidates)
     seed_by_school_host: dict[tuple[str, str], dict[str, str]] = {}
@@ -488,9 +597,12 @@ def expand_candidates_with_fetch(
         seed_url = clean(seed.get("candidate_source_url"))
         if not school or not seed_url:
             continue
-        expanded.extend(discover_sitemap_candidates(school, seed_url, timeout_seconds, max_sitemap_urls_per_school))
-        if is_md_admissions_like(seed_url, seed.get("candidate_source_title", "")):
-            expanded.extend(discover_one_hop_candidates(school, seed_url, timeout_seconds))
+        if not skip_sitemap_and_links:
+            expanded.extend(discover_sitemap_candidates(school, seed_url, timeout_seconds, max_sitemap_urls_per_school))
+            if is_md_admissions_like(seed_url, seed.get("candidate_source_title", "")):
+                expanded.extend(discover_one_hop_candidates(school, seed_url, timeout_seconds))
+        if probe_known_paths:
+            expanded.extend(discover_known_path_candidates(school, seed_url, timeout_seconds, max_probe_urls_per_host))
     return merge_candidates(expanded)
 
 
@@ -561,7 +673,7 @@ def report_rows(schools: list[dict[str, str]], candidates: list[dict[str, str]],
         {"metric": "fetch_ready_official_source_urls", "count": str(sum(1 for row in candidates if clean(row.get("review_status")) == "accepted_for_fetch")), "notes": "Official URLs with class/profile/report-like paths."},
         {"metric": "schools_with_any_candidate", "count": str(len(schools_with_candidate)), "notes": "MD schools with at least one candidate URL."},
         {"metric": "schools_with_fetch_ready_candidate", "count": str(len(schools_with_ready)), "notes": "MD schools with at least one candidate ready for extraction."},
-        {"metric": "network_discovery_enabled", "count": "1" if fetch else "0", "notes": "When enabled, discovery expands via robots sitemaps and one-hop admissions links."},
+        {"metric": "network_discovery_enabled", "count": "1" if fetch else "0", "notes": "When enabled, discovery expands via robots sitemaps, one-hop admissions links, and optional known-path probing."},
     ]
 
 
@@ -570,6 +682,10 @@ def build_md_official_discovery(
     timeout_seconds: int = 10,
     max_sitemap_urls_per_school: int = 40,
     max_hosts: int = 0,
+    probe_known_paths: bool = False,
+    max_probe_urls_per_host: int = 0,
+    reuse_existing_candidates: bool = False,
+    skip_sitemap_and_links: bool = False,
 ) -> list[dict[str, str]]:
     schools = active_md_school_rows()
     schools_by_id = {clean(row.get("school_id")): row for row in schools}
@@ -580,8 +696,19 @@ def build_md_official_discovery(
         + rows_from_cycletrack_lor_requirements(schools_by_id)
         + rows_from_published_source_urls(schools_by_id)
     )
+    if reuse_existing_candidates:
+        candidates = merge_candidates(read_csv(MD_OFFICIAL_SOURCE_CANDIDATES_CSV) + candidates)
     if fetch:
-        candidates = expand_candidates_with_fetch(candidates, schools_by_id, timeout_seconds, max_sitemap_urls_per_school, max_hosts)
+        candidates = expand_candidates_with_fetch(
+            candidates,
+            schools_by_id,
+            timeout_seconds,
+            max_sitemap_urls_per_school,
+            max_hosts,
+            probe_known_paths=probe_known_paths,
+            max_probe_urls_per_host=max_probe_urls_per_host,
+            skip_sitemap_and_links=skip_sitemap_and_links,
+        )
     write_csv(MD_OFFICIAL_SOURCE_CANDIDATES_CSV, MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS, candidates)
     write_csv(MD_OFFICIAL_DISCOVERY_REPORT_CSV, MD_OFFICIAL_DISCOVERY_REPORT_COLUMNS, report_rows(schools, candidates, fetch))
     write_csv(MD_OFFICIAL_COVERAGE_CSV, MD_OFFICIAL_COVERAGE_COLUMNS, build_coverage_rows(schools, candidates))
@@ -594,12 +721,20 @@ def main() -> None:
     parser.add_argument("--timeout-seconds", type=int, default=10)
     parser.add_argument("--max-sitemap-urls-per-school", type=int, default=40)
     parser.add_argument("--max-hosts", type=int, default=0, help="Optional cap on unique school/host pairs visited during --fetch. 0 means no cap.")
+    parser.add_argument("--probe-known-paths", action="store_true", help="Probe common official class-profile/statistics paths under each official seed host.")
+    parser.add_argument("--max-probe-urls-per-host", type=int, default=0, help="Optional cap on known-path probes per school/host pair. 0 means all known paths.")
+    parser.add_argument("--reuse-existing-candidates", action="store_true", help="Merge the existing MD candidate CSV before network expansion.")
+    parser.add_argument("--skip-sitemap-and-links", action="store_true", help="During --fetch, skip sitemap and one-hop expansion and only run enabled probe modes.")
     args = parser.parse_args()
     rows = build_md_official_discovery(
         fetch=args.fetch,
         timeout_seconds=args.timeout_seconds,
         max_sitemap_urls_per_school=args.max_sitemap_urls_per_school,
         max_hosts=args.max_hosts,
+        probe_known_paths=args.probe_known_paths,
+        max_probe_urls_per_host=args.max_probe_urls_per_host,
+        reuse_existing_candidates=args.reuse_existing_candidates,
+        skip_sitemap_and_links=args.skip_sitemap_and_links,
     )
     print(f"Wrote {MD_OFFICIAL_SOURCE_CANDIDATES_CSV.relative_to(ROOT)} with {len(rows)} MD official candidate URL(s)")
 

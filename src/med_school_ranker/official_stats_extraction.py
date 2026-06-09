@@ -3,11 +3,18 @@ from __future__ import annotations
 import argparse
 import html
 import http.client
+import io
 import re
+import shutil
+import subprocess
+import tempfile
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from html.parser import HTMLParser
+from pathlib import Path
+
+from pypdf import PdfReader
 
 from med_school_ranker.official_source_rules import (
     OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
@@ -30,12 +37,14 @@ from med_school_ranker.paths import (
 
 MCAT_RE = re.compile(
     r"(?:(?:median|mean|average|avg)\s+)?(?:total\s+)?mcat(?:\s+score)?[^0-9]{0,60}(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
-    r"|(?P<before>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:total\s+)?mcat(?:\s+score)?",
+    r"|(?P<before>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:total\s+)?mcat(?:\s+score)?"
+    r"|(?:mcat)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
 GPA_RE = re.compile(
-    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative))?[^0-9]{0,60}(?P<after>\b[234]\.\d{1,3})"
-    r"|(?P<before>\b[234]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa",
+    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
+    r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa"
+    r"|(?:gpa)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b[2345]\.\d{1,3})",
     re.IGNORECASE,
 )
 MINIMUM_TERMS = {
@@ -65,6 +74,7 @@ PROFILE_TERMS = {
     "median",
     "profile",
 }
+IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp", ".tif", ".tiff")
 
 
 class VisibleTextParser(HTMLParser):
@@ -114,6 +124,7 @@ class MetricCandidate:
     score: int
     rejected: bool
     reject_reason: str
+    corrected: bool = False
 
 
 def compact_text(value: str) -> str:
@@ -124,6 +135,46 @@ def html_to_text(document: str) -> tuple[str, str]:
     parser = VisibleTextParser()
     parser.feed(document)
     return parser.title, parser.text
+
+
+def pdf_bytes_to_text(document: bytes) -> str:
+    reader = PdfReader(io.BytesIO(document))
+    page_text = [compact_text(page.extract_text() or "") for page in reader.pages]
+    return compact_text(" ".join(text for text in page_text if text))
+
+
+def image_bytes_to_text(document: bytes, suffix: str, timeout_seconds: int) -> tuple[str, str]:
+    if not shutil.which("tesseract"):
+        return "", "image_ocr_unavailable"
+    suffix = suffix if suffix.startswith(".") else f".{suffix}"
+    temp_path = ""
+    try:
+        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as temp:
+            temp.write(document)
+            temp_path = temp.name
+        result = subprocess.run(
+            ["tesseract", temp_path, "stdout", "--psm", "6"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=max(5, timeout_seconds),
+        )
+    except subprocess.TimeoutExpired:
+        return "", "image_ocr_timeout"
+    except OSError as exc:
+        return "", f"image_ocr_failed:{exc}"
+    finally:
+        if temp_path:
+            try:
+                Path(temp_path).unlink(missing_ok=True)
+            except OSError:
+                pass
+    text = compact_text(result.stdout)
+    if result.returncode != 0 and not text:
+        return "", f"image_ocr_failed:{compact_text(result.stderr)}"
+    if not text:
+        return "", "image_ocr_text_empty"
+    return text, ""
 
 
 def metric_name_from_context(context: str) -> str:
@@ -155,21 +206,32 @@ def candidate_context(text: str, start: int, end: int, window: int = 180) -> str
     return compact_text(text[max(0, start - window) : min(len(text), end + window)])
 
 
-def find_metric_candidates(text: str, pattern: re.Pattern[str], kind: str) -> list[MetricCandidate]:
+def find_metric_candidates(
+    text: str,
+    pattern: re.Pattern[str],
+    kind: str,
+    allow_ocr_gpa_correction: bool = False,
+) -> list[MetricCandidate]:
     candidates = []
     for match in pattern.finditer(text):
-        raw_value = match.group("after") or match.group("before")
+        groups = match.groupdict()
+        raw_value = next((groups.get(name) for name in ("after", "before", "after_ocr", "before_ocr") if groups.get(name)), "")
         if not raw_value:
             continue
         try:
             value = float(raw_value)
         except ValueError:
             continue
+        context = candidate_context(text, match.start(), match.end())
+        corrected = False
         if kind == "gpa" and not 0 <= value <= 4.0:
-            continue
+            if allow_ocr_gpa_correction and 5 <= value < 6 and "gpa" in context.lower():
+                value = round(value - 2, 3)
+                corrected = True
+            else:
+                continue
         if kind == "mcat" and not 472 <= value <= 528:
             continue
-        context = candidate_context(text, match.start(), match.end())
         score, rejected, reject_reason = context_score(context)
         if kind == "gpa":
             qualifier_window = text[max(0, match.start() - 45) : min(len(text), match.end() + 12)].lower()
@@ -192,6 +254,7 @@ def find_metric_candidates(text: str, pattern: re.Pattern[str], kind: str) -> li
                         score=0,
                         rejected=True,
                         reject_reason="science_or_bcpm_gpa_context",
+                        corrected=corrected,
                     )
                 )
                 continue
@@ -205,6 +268,7 @@ def find_metric_candidates(text: str, pattern: re.Pattern[str], kind: str) -> li
                 score=score,
                 rejected=rejected,
                 reject_reason=reject_reason,
+                corrected=corrected,
             )
         )
     return candidates
@@ -262,8 +326,10 @@ def extract_stats_from_text(
 ) -> dict[str, str]:
     visible_text = compact_text(text)
     title = compact_text(title or clean(candidate.get("candidate_source_title")))
+    lower_url = clean(candidate.get("candidate_source_url")).lower().split("?", 1)[0]
+    allow_ocr_gpa_correction = lower_url.endswith(IMAGE_EXTENSIONS)
     mcat_candidates = find_metric_candidates(visible_text, MCAT_RE, "mcat")
-    gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa")
+    gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa", allow_ocr_gpa_correction=allow_ocr_gpa_correction)
     best_mcat = best_metric_candidate(mcat_candidates)
     best_gpa = best_metric_candidate(gpa_candidates)
     evidence_parts = [candidate.context for candidate in [best_mcat, best_gpa] if candidate]
@@ -274,6 +340,8 @@ def extract_stats_from_text(
         extraction_status = "accepted"
         review_status = "approved_official_extraction"
         notes = "Official-domain MCAT/GPA values found in class-profile context."
+        if best_gpa.corrected:
+            notes += " GPA value used OCR correction from impossible 5.xx reading to 3.xx on an official image source."
     elif best_mcat or best_gpa:
         extraction_status = "needs_review_partial_stats"
         review_status = "needs_review"
@@ -317,13 +385,14 @@ def extract_stats_from_text(
 
 
 def fetch_candidate_text(url: str, timeout_seconds: int) -> tuple[str, str, str, str]:
-    if clean(url).lower().split("?", 1)[0].endswith(".pdf"):
-        return "unsupported_pdf_without_parser", "", "", "PDF candidate; first pass does not parse PDFs without adding a PDF dependency."
+    lower_url = clean(url).lower().split("?", 1)[0]
+    is_pdf_url = lower_url.endswith(".pdf")
+    image_suffix = next((suffix for suffix in IMAGE_EXTENSIONS if lower_url.endswith(suffix)), "")
     request = urllib.request.Request(
         url,
         headers={
             "User-Agent": "med-school-ranker-official-stats-scanner/0.1 (+local research workflow)",
-            "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
+            "Accept": "text/html,application/xhtml+xml,application/pdf,text/plain;q=0.9,*/*;q=0.1",
         },
     )
     try:
@@ -341,8 +410,22 @@ def fetch_candidate_text(url: str, timeout_seconds: int) -> tuple[str, str, str,
     except TimeoutError:
         return "fetch_failed_timeout", "", "", "Request timed out."
 
-    if "pdf" in content_type.lower():
-        return "unsupported_pdf_without_parser", "", "", "PDF content-type; first pass does not parse PDFs without adding a PDF dependency."
+    if is_pdf_url or "pdf" in content_type.lower():
+        try:
+            visible_text = pdf_bytes_to_text(body)
+        except Exception as exc:
+            return "pdf_parse_failed", "", "", str(exc)
+        if not visible_text:
+            return "pdf_text_empty", "", "", "PDF parsed but no extractable text was found."
+        title = clean(url).rsplit("/", 1)[-1]
+        return "fetched", title, visible_text, ""
+    if image_suffix or content_type.lower().startswith("image/"):
+        suffix = image_suffix or f".{content_type.lower().split('/', 1)[1].split(';', 1)[0]}"
+        visible_text, ocr_error = image_bytes_to_text(body, suffix, timeout_seconds)
+        if ocr_error:
+            return ocr_error.split(":", 1)[0], "", "", ocr_error
+        title = clean(url).rsplit("/", 1)[-1]
+        return "fetched", title, visible_text, ""
     text = body.decode("utf-8", errors="replace")
     if "<html" in text.lower() or "<body" in text.lower():
         title, visible_text = html_to_text(text)
@@ -396,6 +479,24 @@ def review_row(extracted: dict[str, str]) -> dict[str, str]:
     elif status == "unsupported_pdf_without_parser":
         recommended = "Extract manually or add a PDF parser in a later slice."
         reason = "pdf_not_parsed"
+    elif status == "pdf_parse_failed":
+        recommended = "Review source manually; PDF could not be parsed as text."
+        reason = "pdf_parse_failed"
+    elif status == "pdf_text_empty":
+        recommended = "Review source manually or add OCR; PDF appears image-based or has no extractable text."
+        reason = "pdf_text_empty"
+    elif status == "image_ocr_unavailable":
+        recommended = "Install tesseract or review image manually."
+        reason = "image_ocr_unavailable"
+    elif status == "image_ocr_failed":
+        recommended = "Review image manually; OCR failed."
+        reason = "image_ocr_failed"
+    elif status == "image_ocr_timeout":
+        recommended = "Review image manually or rerun OCR with a longer timeout."
+        reason = "image_ocr_timeout"
+    elif status == "image_ocr_text_empty":
+        recommended = "Review image manually; OCR produced no text."
+        reason = "image_ocr_text_empty"
     elif status == "rejected_minimum_requirement":
         recommended = "Do not apply unless a reviewer verifies these are class profile values."
         reason = "minimum_requirement_context"

@@ -197,6 +197,30 @@ MD_SCOPED_HOST_PREFIXES = (
     "som.",
 )
 
+NON_MD_PROGRAM_TERMS = (
+    "ba md",
+    "dental",
+    "dentistry",
+    "dmd",
+    "graduate program",
+    "master of",
+    "masters",
+    "md phd",
+    "md/phd",
+    "mph",
+    "mstp",
+    "nursing",
+    "occupational therapy",
+    "pa admissions",
+    "pa online",
+    "pa program",
+    "pharmacy",
+    "physical therapy",
+    "physician assistant",
+    "school of dentistry",
+    "veterinary",
+)
+
 
 def today_iso() -> str:
     return date.today().isoformat()
@@ -251,6 +275,11 @@ def is_md_program_relevant_url(candidate_url: str, seed_url: str = "", title: st
     return bool(seed_terms & candidate_terms)
 
 
+def is_non_md_program_context(candidate_url: str, title: str = "", text: str = "") -> bool:
+    haystack = " ".join([path_text(candidate_url), clean(title).lower()])
+    return any(term in haystack for term in NON_MD_PROGRAM_TERMS)
+
+
 def md_source_type_hint(url: str, title: str = "", text: str = "") -> str:
     lower_url = clean(url).lower().split("?", 1)[0]
     if lower_url.endswith(".pdf"):
@@ -293,6 +322,7 @@ __all__ = [
     "is_fetch_ready_source_type",
     "is_md_admissions_like",
     "is_md_program_relevant_url",
+    "is_non_md_program_context",
     "is_md_stats_like",
     "is_truthy",
     "md_source_classification",
