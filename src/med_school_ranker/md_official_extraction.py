@@ -175,9 +175,12 @@ def parse_score(value: object) -> float:
 def should_fetch_candidate(candidate: dict[str, str], fetch_domain_seeds: bool) -> tuple[bool, str, str]:
     review_status = clean(candidate.get("review_status"))
     source_type = clean(candidate.get("candidate_source_type"))
+    discovery_method = clean(candidate.get("discovery_method"))
     official_score = parse_score(candidate.get("official_domain_score"))
     if review_status == "accepted_for_fetch" and is_fetch_ready_source_type(source_type):
         return True, "", ""
+    if review_status == "accepted_for_fetch" and discovery_method == "assisted_search_official_url_seed" and official_score >= 0.9:
+        return True, "", "Fetched reviewed assisted-search official URL even though the path is not stats-shaped."
     if fetch_domain_seeds and review_status == "official_domain_seed_needs_stats_path" and official_score >= 0.9:
         return True, "", "Fetched official domain seed in less conservative mode."
     if review_status == "official_domain_seed_needs_stats_path":

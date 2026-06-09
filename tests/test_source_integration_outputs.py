@@ -25,7 +25,7 @@ def test_phase2a_source_outputs_have_expected_counts():
     assert len(read_rows(AAMC_MCAT_GPA_GRID_CSV)) == 110
     admissions_stats_rows = read_rows(ADMISSIONS_STATS_CSV)
     aacom_rows = [row for row in admissions_stats_rows if row["data_confidence"] == AACOM_DATA_CONFIDENCE]
-    assert len(admissions_stats_rows) == 190 + len(aacom_rows)
+    assert len(admissions_stats_rows) == 193 + len(aacom_rows)
     assert len(read_rows(ADMISSIONS_STATS_CONFLICTS_CSV)) == 87
 
     report = {(row["category"], row["item"]): row for row in read_rows(SOURCE_INTEGRATION_REPORT_CSV)}

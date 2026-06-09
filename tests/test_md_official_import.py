@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from med_school_ranker import md_official_apply, md_official_discovery, md_official_extraction, official_stats_extraction
+from med_school_ranker import (
+    md_official_apply,
+    md_official_discovery,
+    md_official_extraction,
+    md_official_source_hunt,
+    official_stats_extraction,
+)
 from med_school_ranker.md_official_rules import (
     MD_DATA_CONFIDENCE,
     MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS,
@@ -121,6 +127,43 @@ def test_md_discovery_imports_assisted_search_seed(tmp_path: Path, monkeypatch) 
     assert rows[0]["discovery_method"] == "assisted_search_official_url_seed"
 
 
+def test_md_discovery_marks_reviewed_assisted_generic_urls_fetch_ready(tmp_path: Path, monkeypatch) -> None:
+    seeds_csv = tmp_path / "data/source_tables/md_official_assisted_search_seeds.csv"
+    monkeypatch.setattr(md_official_discovery, "MD_OFFICIAL_ASSISTED_SEARCH_SEEDS_CSV", seeds_csv)
+    school = {
+        "school_id": "md_fiu",
+        "school_name": "Florida International University Herbert Wertheim College of Medicine",
+        "degree_type": "MD",
+        "state_abbrev": "FL",
+        "website": "https://medicine.fiu.edu/",
+    }
+    write_csv(
+        seeds_csv,
+        MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS,
+        [
+            {
+                "school_id": "md_fiu",
+                "school_name": "Florida International University Herbert Wertheim College of Medicine",
+                "degree_type": "MD",
+                "candidate_source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/",
+                "candidate_source_title": "Doctor of Medicine FAQs",
+                "search_query": "Florida International Herbert Wertheim College of Medicine class profile MCAT GPA official",
+                "search_provider": "google",
+                "result_rank": "3",
+                "discovered_date": "2026-06-08",
+                "review_status": "approved_for_discovery",
+            }
+        ],
+    )
+
+    rows = md_official_discovery.rows_from_assisted_search_seeds({"md_fiu": school})
+
+    assert len(rows) == 1
+    assert rows[0]["candidate_source_type"] == "admissions_page"
+    assert rows[0]["review_status"] == "accepted_for_fetch"
+    assert rows[0]["fetch_status"] == "not_fetched"
+
+
 def test_md_source_type_treats_fact_sheet_and_class_of_pages_as_fetch_ready() -> None:
     fact_sheet_type = md_source_type_hint(
         "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php",
@@ -133,6 +176,114 @@ def test_md_source_type_treats_fact_sheet_and_class_of_pages_as_fetch_ready() ->
 
     assert is_fetch_ready_source_type(fact_sheet_type)
     assert is_fetch_ready_source_type(class_news_type)
+
+
+def test_md_source_hunt_queue_prioritizes_pending_before_missing(tmp_path: Path, monkeypatch) -> None:
+    master_csv = tmp_path / "data/school_master.csv"
+    coverage_csv = tmp_path / "outputs/md_official_coverage.csv"
+    extracted_csv = tmp_path / "data/source_tables/md_official_extracted_stats.csv"
+    candidates_csv = tmp_path / "data/source_tables/md_official_source_candidates.csv"
+    review_csv = tmp_path / "outputs/md_official_review_queue.csv"
+    monkeypatch.setattr(md_official_source_hunt, "MASTER_CSV", master_csv)
+    monkeypatch.setattr(md_official_source_hunt, "MD_OFFICIAL_COVERAGE_CSV", coverage_csv)
+    monkeypatch.setattr(md_official_source_hunt, "MD_OFFICIAL_EXTRACTED_STATS_CSV", extracted_csv)
+    monkeypatch.setattr(md_official_source_hunt, "MD_OFFICIAL_SOURCE_CANDIDATES_CSV", candidates_csv)
+    monkeypatch.setattr(md_official_source_hunt, "MD_OFFICIAL_REVIEW_QUEUE_CSV", review_csv)
+    write_csv(
+        master_csv,
+        ["school_id", "school_name", "degree_type", "city", "state_abbrev", "website", "active_in_universe", "manual_exclusion_flag"],
+        [
+            {
+                "school_id": "md_pending",
+                "school_name": "Pending School of Medicine",
+                "degree_type": "MD",
+                "city": "Miami",
+                "state_abbrev": "FL",
+                "website": "https://medicine.example.edu/",
+                "active_in_universe": "TRUE",
+                "manual_exclusion_flag": "FALSE",
+            },
+            {
+                "school_id": "md_missing",
+                "school_name": "Missing School of Medicine",
+                "degree_type": "MD",
+                "city": "Boston",
+                "state_abbrev": "MA",
+                "website": "https://missing.example.edu/",
+                "active_in_universe": "TRUE",
+                "manual_exclusion_flag": "FALSE",
+            },
+        ],
+    )
+    write_csv(
+        coverage_csv,
+        MD_OFFICIAL_COVERAGE_COLUMNS,
+        [
+            {
+                "school_id": "md_missing",
+                "school_name": "Missing School of Medicine",
+                "degree_type": "MD",
+                "candidate_count": "0",
+                "official_candidate_count": "0",
+                "fetched_candidate_count": "0",
+                "accepted_extraction_count": "0",
+                "current_canonical_has_mcat": "no",
+                "current_canonical_has_gpa": "no",
+                "coverage_status": "missing_candidate",
+                "next_action": "Find source.",
+            },
+            {
+                "school_id": "md_pending",
+                "school_name": "Pending School of Medicine",
+                "degree_type": "MD",
+                "candidate_count": "1",
+                "official_candidate_count": "1",
+                "fetched_candidate_count": "1",
+                "accepted_extraction_count": "0",
+                "current_canonical_has_mcat": "yes",
+                "current_canonical_has_gpa": "yes",
+                "coverage_status": "md_official_candidate_pending_extraction",
+                "next_action": "Improve parser.",
+            },
+        ],
+    )
+    write_csv(extracted_csv, MD_OFFICIAL_EXTRACTED_STATS_COLUMNS, [])
+    write_csv(
+        candidates_csv,
+        MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+        [
+            {
+                "school_id": "md_pending",
+                "school_name": "Pending School of Medicine",
+                "candidate_source_url": "https://medicine.example.edu/admissions/class-profile/",
+                "candidate_source_type": "class_profile",
+                "official_domain_score": "1.00",
+                "review_status": "accepted_for_fetch",
+            }
+        ],
+    )
+    write_csv(review_csv, ["school_id", "extraction_status"], [{"school_id": "md_pending", "extraction_status": "no_relevant_stats_found"}])
+
+    rows = md_official_source_hunt.build_source_hunt_queue()
+
+    assert [row["school_id"] for row in rows] == ["md_pending", "md_missing"]
+    assert rows[0]["hunt_bucket"] == "parser_or_extraction_pending"
+    assert 'site:example.edu "Pending School of Medicine" "MCAT" "GPA"' == rows[0]["google_query_site_specific"]
+
+
+def test_md_extraction_fetches_reviewed_assisted_url_with_generic_path() -> None:
+    candidate = {
+        "review_status": "accepted_for_fetch",
+        "candidate_source_type": "admissions_page",
+        "discovery_method": "assisted_search_official_url_seed",
+        "official_domain_score": "1.00",
+    }
+
+    ready, skip_status, notes = md_official_extraction.should_fetch_candidate(candidate, fetch_domain_seeds=False)
+
+    assert ready is True
+    assert skip_status == ""
+    assert "assisted-search" in notes
 
 
 def test_md_extractor_accepts_class_profile_values() -> None:
@@ -247,6 +398,287 @@ def test_md_extractor_uses_latest_shared_cohort_year_on_multi_year_pages() -> No
     assert row["stats_cohort_year"] == "2024"
     assert row["mcat_value"] == "506"
     assert row["gpa_value"] == "3.45"
+
+
+def test_md_extractor_accepts_official_gpa_range_with_mcat_respectively() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/faq",
+        "candidate_source_title": "Admissions FAQ",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "What are your minimum GPA and MCAT requirements? We do not have a minimum GPA or MCAT score. "
+        "However, the average GPA and MCAT scores for matriculating students are typically 3.7-3.75 and 509, respectively."
+    )
+
+    row = md_extracted_row(candidate, text, "Admissions FAQ")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_range_midpoint"
+    assert row["mcat_value"] == "509"
+    assert row["gpa_value"] == "3.73"
+    assert "range-derived" in row["notes"]
+
+
+def test_md_extractor_accepts_official_class_profile_ranges_as_midpoints() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/class-profile/",
+        "candidate_source_title": "Class Profile",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Entering class profile for class of 2029. Matriculants had MCAT score range 508-514 and cumulative GPA range 3.70-3.90."
+
+    row = md_extracted_row(candidate, text, "Class Profile")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_range_midpoint"
+    assert row["mcat_value"] == "511"
+    assert row["mcat_metric"] == "range_midpoint"
+    assert row["gpa_value"] == "3.8"
+    assert row["gpa_metric"] == "range_midpoint"
+    assert "range-derived" in row["notes"]
+
+
+def test_md_extractor_accepts_noisy_pdf_class_average_values() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/preparedness-worksheet.pdf",
+        "candidate_source_title": "Preparedness Worksheet",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Academic Measurables. MCAT - The MCAT exam predicts performance on USMLE Step 1 - "
+        "511 College of Medicine average score for the 2024 matriculating class. "
+        "G PA - Predicts preparedness for medical school curriculum - "
+        "3.83 Average total GPA for the College of Medicine 2024 matriculating class."
+    )
+
+    row = md_extracted_row(candidate, text, "Preparedness Worksheet")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2024"
+    assert row["mcat_value"] == "511"
+    assert row["gpa_value"] == "3.83"
+
+
+def test_md_extractor_accepts_card_style_overall_gpa_after_value() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/doctor-of-medicine/",
+        "candidate_source_title": "Doctor of Medicine",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2029 Profile 503 Average MCAT 3.62 Average BCPM GPA 3.69 Average Overall GPA Admissions Process"
+
+    row = md_extracted_row(candidate, text, "Doctor of Medicine")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "503"
+    assert row["gpa_value"] == "3.69"
+
+
+def test_md_extractor_rejects_card_style_bcpm_when_mean_gpa_is_available() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/class-profiles",
+        "candidate_source_title": "Class Profiles",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2029 Class Profile 513 Median MCAT 3.89 Mean GPA 3.87 Mean BCPM GPA Class performance information"
+
+    row = md_extracted_row(candidate, text, "Class Profiles")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "513"
+    assert row["gpa_value"] == "3.89"
+    assert row["gpa_metric"] == "mean"
+
+
+def test_md_extractor_accepts_mcat_2015_score_label() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/md-class-profile",
+        "candidate_source_title": "Class Profile",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2029 Academics An average undergraduate GPA of 3.81. An average MCAT 2015 score of 513.06."
+
+    row = md_extracted_row(candidate, text, "Class Profile")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "513"
+    assert row["gpa_value"] == "3.81"
+
+
+def test_md_extractor_accepts_mcat_section_total() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions-at-a-glance",
+        "candidate_source_title": "Admissions at a Glance",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2029 Average MCAT BBFL 130.38 CARS 128.82 CPBS 130.28 PSBB 130.99 Total 520.48 Average GPA 3.9"
+
+    row = md_extracted_row(candidate, text, "Admissions at a Glance")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "520.4"
+    assert row["gpa_value"] == "3.9"
+
+
+def test_md_extractor_accepts_gpa_mcat_table_pairs() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/selection-factors/",
+        "candidate_source_title": "Selection Factors",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Entering Class of 2025. Summary of GPA and MCAT Scores for matriculated student data. "
+        "Category GPA MCAT Mean 3.76 517 Median 3.84 517"
+    )
+
+    row = md_extracted_row(candidate, text, "Selection Factors")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_median"
+    assert row["mcat_value"] == "517"
+    assert row["gpa_value"] == "3.84"
+
+
+def test_md_extractor_accepts_class_profile_year_grid() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/",
+        "candidate_source_title": "Admissions",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = (
+        "Class Profiles Get a snapshot of the classes entering over the past three years. "
+        "2025 2024 2023 Applied 4207 4320 4448 Enrolled 196 190 186 "
+        "MCAT Score 509.4 509 509.5 Average GPA 3.87 3.83 3.83 "
+        "Explore Admissions Selection Criteria Read the minimum requirements."
+    )
+
+    row = md_extracted_row(candidate, text, "Admissions")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2025"
+    assert row["mcat_value"] == "509.4"
+    assert row["gpa_value"] == "3.87"
+
+
+def test_md_extractor_accepts_average_total_gpa_with_mcat() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/statistics/",
+        "candidate_source_title": "Statistics of Entering Classes",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Current accepted students: 96 Academic Profile Average GPA BCPM: 3.76 All other: 3.89 Total: 3.82 Average MCAT 512"
+
+    row = md_extracted_row(candidate, text, "Statistics of Entering Classes")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "512"
+    assert row["gpa_value"] == "3.82"
+
+
+def test_md_extractor_prefers_median_when_mean_and_median_are_available() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/our-students",
+        "candidate_source_title": "Our Students",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Class of 2029 Profile Mean MCAT 514 Median MCAT 515 Mean GPA (total) 3.78 Median GPA (total) 3.84"
+
+    row = md_extracted_row(candidate, text, "Our Students")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["metric_type"] == "official_published_median"
+    assert row["mcat_value"] == "515"
+    assert row["mcat_metric"] == "median"
+    assert row["gpa_value"] == "3.84"
+    assert row["gpa_metric"] == "median"
+
+
+def test_md_extractor_rejects_requirement_ranges_as_admissions_stats() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/requirements/",
+        "candidate_source_title": "Requirements",
+        "candidate_source_type": "admissions_page",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Applicants are required to have MCAT score range 500-528 and cumulative GPA range 3.00-4.00."
+
+    row = md_extracted_row(candidate, text, "Requirements")
+
+    assert row["extraction_status"] == "rejected_minimum_requirement"
+    assert row["mcat_value"] == ""
+    assert row["gpa_value"] == ""
 
 
 def test_md_extractor_prefers_cumulative_gpa_over_science_gpa() -> None:

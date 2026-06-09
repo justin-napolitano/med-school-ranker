@@ -327,20 +327,23 @@ def rows_from_assisted_search_seeds(schools_by_id: dict[str, dict[str, str]]) ->
             continue
         if clean(source_row.get("review_status")) not in {"approved_for_discovery", "accepted_for_fetch", ""}:
             continue
-        rows.append(
-            candidate_row(
-                school,
-                url,
-                "assisted_search_official_url_seed",
-                clean(source_row.get("candidate_source_title")),
-                (
-                    "Official URL discovered via assisted web search; search result text is not evidence. "
-                    f"provider={clean(source_row.get('search_provider'))}; rank={clean(source_row.get('result_rank'))}; "
-                    f"query={clean(source_row.get('search_query'))}. {clean(source_row.get('notes'))}"
-                ),
-                school_website=url,
-            )
+        row = candidate_row(
+            school,
+            url,
+            "assisted_search_official_url_seed",
+            clean(source_row.get("candidate_source_title")),
+            (
+                "Official URL discovered via assisted web search; search result text is not evidence. "
+                f"provider={clean(source_row.get('search_provider'))}; rank={clean(source_row.get('result_rank'))}; "
+                f"query={clean(source_row.get('search_query'))}. {clean(source_row.get('notes'))}"
+            ),
+            school_website=url,
         )
+        if clean(source_row.get("review_status")) in {"approved_for_discovery", "accepted_for_fetch"} and float(row["official_domain_score"] or 0) >= 0.9:
+            row["review_status"] = "accepted_for_fetch"
+            row["fetch_status"] = "not_fetched"
+            row["notes"] = f"{row['notes']} Reviewed assisted-search official URL is fetch-ready; fetched page text remains the only stats evidence.".strip()
+        rows.append(row)
     return rows
 
 

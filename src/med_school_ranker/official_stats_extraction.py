@@ -6,6 +6,7 @@ import http.client
 import io
 import re
 import shutil
+import ssl
 import subprocess
 import tempfile
 import urllib.error
@@ -41,10 +42,87 @@ MCAT_RE = re.compile(
     r"|(?:mcat)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
+MCAT_RANGE_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)?\s*(?:total\s+)?mcat(?:\s+score)?(?:\s+range)?|mcat\s+score\s+range)[^0-9]{0,60}"
+    r"(?P<low>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"\s*(?:-|–|—|to)\s*"
+    r"(?P<high>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
+MCAT_CLASS_VALUE_RE = re.compile(
+    r"(?:m\s*cat)[^.]{0,220}?"
+    r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"[^.]{0,180}?(?:average|mean|median|matriculating|entering|class)",
+    re.IGNORECASE,
+)
+MCAT_2015_RE = re.compile(
+    r"(?:m\s*cat)\s+2015\s+score[^0-9]{0,60}"
+    r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
+MCAT_SECTION_TOTAL_RE = re.compile(
+    r"(?:m\s*cat).{0,260}?\btotal\s+"
+    r"(?P<after>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
 GPA_RE = re.compile(
     r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative|undergraduate))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
     r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa"
     r"|(?:gpa)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b[2345]\.\d{1,3})",
+    re.IGNORECASE,
+)
+GPA_CLASS_VALUE_RE = re.compile(
+    r"(?:(?:g\s*pa)[^.]{0,220}?"
+    r"(?P<after>\b[234]\.\d{1,3})"
+    r"[^.]{0,180}?(?:matriculating|entering|class))"
+    r"|(?:(?P<before>\b[234]\.\d{1,3})"
+    r"[^.]{0,180}?(?:average|mean|median)[^.]{0,100}?(?:overall|cumulative|undergraduate|total)?\s*g\s*pa"
+    r"[^.]{0,180}?(?:matriculating|entering|class))",
+    re.IGNORECASE,
+)
+GPA_TRAILING_LABEL_RE = re.compile(
+    r"(?P<before>\b[234]\.\d{1,3})\s+(?:average|mean|median)\s+"
+    r"(?:(?:overall|cumulative|undergraduate|total|bcpm|science)\s+)?g\s*pa",
+    re.IGNORECASE,
+)
+GPA_RANGE_RE = re.compile(
+    r"(?:(?:median|mean|average|avg)?\s*(?:(?:overall|cumulative|undergraduate)\s+)?gpa(?:\s+range)?|gpa\s+range)[^0-9]{0,60}"
+    r"(?P<low>\b[234]\.\d{1,3})"
+    r"\s*(?:-|–|—|to)\s*"
+    r"(?P<high>\b[234]\.\d{1,3})",
+    re.IGNORECASE,
+)
+GPA_MCAT_RESPECTIVE_RE = re.compile(
+    r"(?:average|mean|median)?\s*gpa\s+and\s+mcat\s+scores?[^.]{0,180}?"
+    r"(?P<gpa_low>\b[234]\.\d{1,3})"
+    r"(?:\s*(?:-|–|—|to)\s*(?P<gpa_high>\b[234]\.\d{1,3}))?"
+    r"\s+and\s+"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"[^.]{0,40}?respectively",
+    re.IGNORECASE,
+)
+GPA_MCAT_TABLE_HEADER_RE = re.compile(r"(?:category\s+)?g\s*pa\s+m\s*cat", re.IGNORECASE)
+GPA_MCAT_TABLE_ROW_RE = re.compile(
+    r"(?P<metric>mean|average|median)\s+"
+    r"(?P<gpa>\b[234]\.\d{1,3})\s+"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
+    re.IGNORECASE,
+)
+CLASS_PROFILE_YEAR_GRID_RE = re.compile(
+    r"class\s+profiles?.{0,260}?"
+    r"(?P<year>20\d{2})(?:\s+20\d{2}){0,5}"
+    r".{0,360}?m\s*cat\s+score\s+"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)"
+    r"(?:\s+\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?){0,5}"
+    r"\s+average\s+g\s*pa\s+"
+    r"(?P<gpa>\b[234]\.\d{1,3})",
+    re.IGNORECASE,
+)
+AVERAGE_GPA_TOTAL_MCAT_RE = re.compile(
+    r"average\s+g\s*pa.{0,180}?\btotal:?\s*"
+    r"(?P<gpa>\b[234]\.\d{1,3})"
+    r".{0,120}?average\s+m\s*cat(?:\s+score)?\s*"
+    r"(?P<mcat>\b(?:47[2-9]|48\d|49\d|50\d|51\d|52[0-8])(?:\.\d)?)",
     re.IGNORECASE,
 )
 MINIMUM_TERMS = {
@@ -186,6 +264,8 @@ def image_bytes_to_text(document: bytes, suffix: str, timeout_seconds: int) -> t
 
 def metric_name_from_context(context: str) -> str:
     lower = context.lower()
+    if "range midpoint" in lower:
+        return "range_midpoint"
     if "median" in lower:
         return "median"
     if "mean" in lower:
@@ -195,10 +275,24 @@ def metric_name_from_context(context: str) -> str:
     return "published"
 
 
+def metric_name_from_match(match_text: str, context: str) -> str:
+    match_lower = match_text.lower()
+    positions = []
+    for metric_term, metric in (("median", "median"), ("mean", "mean"), ("average", "average"), ("avg", "average")):
+        position = match_lower.find(metric_term)
+        if position >= 0:
+            positions.append((position, metric))
+    if positions:
+        return sorted(positions, key=lambda item: item[0])[0][1]
+    return metric_name_from_context(context)
+
+
 def context_score(context: str) -> tuple[int, bool, str]:
     lower = context.lower()
     for term in MINIMUM_TERMS:
         if term in lower:
+            if ("no minimum" in lower or "do not have a minimum" in lower) and any(average_term in lower for average_term in ["average", "mean", "median"]):
+                continue
             return 0, True, f"minimum_requirement_context:{term}"
     score = 0
     for term in PROFILE_TERMS:
@@ -248,6 +342,11 @@ def last_gpa_qualifier_position(window: str, terms: list[str], word_boundary: bo
     return max(positions)
 
 
+def is_explicit_range_component(text: str, start: int, end: int) -> bool:
+    following = text[end : end + 16]
+    return bool(re.match(r"\s*(?:-|–|—|to)\s*\d", following))
+
+
 def find_metric_candidates(
     text: str,
     pattern: re.Pattern[str],
@@ -259,12 +358,15 @@ def find_metric_candidates(
     anchors = anchors if anchors is not None else cohort_year_anchors(text)
     for match in pattern.finditer(text):
         groups = match.groupdict()
-        raw_value = next((groups.get(name) for name in ("after", "before", "after_ocr", "before_ocr") if groups.get(name)), "")
+        raw_group = next((name for name in ("after", "before", "after_ocr", "before_ocr") if groups.get(name)), "")
+        raw_value = groups.get(raw_group, "") if raw_group else ""
         if not raw_value:
             continue
         try:
             value = float(raw_value)
         except ValueError:
+            continue
+        if is_explicit_range_component(text, match.start(raw_group), match.end(raw_group)):
             continue
         context = candidate_context(text, match.start(), match.end())
         corrected = False
@@ -279,6 +381,10 @@ def find_metric_candidates(
         score, rejected, reject_reason = context_score(context)
         if kind == "gpa":
             qualifier_window = text[max(0, match.start() - 45) : match.end()].lower()
+            matched_label = match.group(0).lower()
+            has_disallowed_label = any(term in matched_label for term in ["science", "bcpm", "postbac", "post-bac"]) or bool(
+                re.search(r"(?<!under)graduate\s+g\s*pa", matched_label)
+            )
             allowed_position = last_gpa_qualifier_position(
                 qualifier_window,
                 ["overall", "cumulative", "undergraduate", "total gpa", "total", "class gpa", "class"],
@@ -287,7 +393,7 @@ def find_metric_candidates(
                 last_gpa_qualifier_position(qualifier_window, ["science", "bcpm", "postbac", "post-bac"]),
                 last_gpa_qualifier_position(qualifier_window, ["graduate", "masters", "master's"], word_boundary=True),
             )
-            if disallowed_position > allowed_position:
+            if has_disallowed_label or disallowed_position > allowed_position:
                 candidates.append(
                     MetricCandidate(
                         value=value,
@@ -306,7 +412,7 @@ def find_metric_candidates(
         candidates.append(
             MetricCandidate(
                 value=value,
-                metric=metric_name_from_context(context),
+                metric=metric_name_from_match(match.group(0), context),
                 context=context,
                 score=score,
                 rejected=rejected,
@@ -318,11 +424,203 @@ def find_metric_candidates(
     return candidates
 
 
+def find_range_metric_candidates(
+    text: str,
+    pattern: re.Pattern[str],
+    kind: str,
+    anchors: list[tuple[int, str]] | None = None,
+) -> list[MetricCandidate]:
+    candidates = []
+    anchors = anchors if anchors is not None else cohort_year_anchors(text)
+    for match in pattern.finditer(text):
+        try:
+            low = float(match.group("low"))
+            high = float(match.group("high"))
+        except ValueError:
+            continue
+        if low > high:
+            low, high = high, low
+        if kind == "gpa" and not (0 <= low <= 4.0 and 0 <= high <= 4.0):
+            continue
+        if kind == "mcat" and not (472 <= low <= 528 and 472 <= high <= 528):
+            continue
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, reject_reason = context_score(context)
+        if rejected:
+            candidates.append(
+                MetricCandidate(
+                    value=round((low + high) / 2, 3),
+                    metric="range_midpoint",
+                    context=context,
+                    score=0,
+                    rejected=True,
+                    reject_reason=reject_reason,
+                    cohort_year=cohort_year_for_position(anchors, match.start()),
+                )
+            )
+            continue
+        candidates.append(
+            MetricCandidate(
+                value=round((low + high) / 2, 3),
+                metric="range_midpoint",
+                context=f"{context} Range midpoint used for {kind.upper()}.",
+                score=score + 2,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year_for_position(anchors, match.start()),
+            )
+        )
+    return candidates
+
+
+def find_respective_gpa_mcat_candidates(text: str, anchors: list[tuple[int, str]]) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for match in GPA_MCAT_RESPECTIVE_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, reject_reason = context_score(context)
+        if rejected or score <= 0:
+            continue
+        gpa_low = float(match.group("gpa_low"))
+        gpa_high = float(match.group("gpa_high") or gpa_low)
+        mcat = float(match.group("mcat"))
+        gpa_value = round((gpa_low + gpa_high) / 2, 3)
+        gpa_metric = "range_midpoint" if gpa_high != gpa_low else metric_name_from_context(context)
+        metric_context = f"{context} Range midpoint used for GPA." if gpa_metric == "range_midpoint" else context
+        cohort_year = cohort_year_for_position(anchors, match.start())
+        gpa_candidates.append(
+            MetricCandidate(
+                value=gpa_value,
+                metric=gpa_metric,
+                context=metric_context,
+                score=score + 2,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=mcat,
+                metric=metric_name_from_context(context),
+                context=context,
+                score=score + 2,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+    return mcat_candidates, gpa_candidates
+
+
+def find_table_gpa_mcat_candidates(text: str, anchors: list[tuple[int, str]]) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for header in GPA_MCAT_TABLE_HEADER_RE.finditer(text):
+        segment = text[header.start() : min(len(text), header.start() + 450)]
+        for row in GPA_MCAT_TABLE_ROW_RE.finditer(segment):
+            row_end = header.start() + row.end()
+            context = candidate_context(text, header.start(), row_end)
+            score, rejected, reject_reason = context_score(context)
+            if rejected or score <= 0:
+                continue
+            metric = "mean" if row.group("metric").lower() == "average" else row.group("metric").lower()
+            cohort_year = cohort_year_for_position(anchors, header.start())
+            gpa_candidates.append(
+                MetricCandidate(
+                    value=float(row.group("gpa")),
+                    metric=metric,
+                    context=context,
+                    score=score + 2,
+                    rejected=False,
+                    reject_reason="",
+                    cohort_year=cohort_year,
+                )
+            )
+            mcat_candidates.append(
+                MetricCandidate(
+                    value=float(row.group("mcat")),
+                    metric=metric,
+                    context=context,
+                    score=score + 2,
+                    rejected=False,
+                    reject_reason="",
+                    cohort_year=cohort_year,
+                )
+            )
+    return mcat_candidates, gpa_candidates
+
+
+def find_class_profile_year_grid_candidates(text: str) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for match in CLASS_PROFILE_YEAR_GRID_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end(), window=80)
+        year = match.group("year")
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("gpa")),
+                metric="average",
+                context=context,
+                score=6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("mcat")),
+                metric="average",
+                context=context,
+                score=6,
+                rejected=False,
+                reject_reason="",
+                cohort_year=year,
+            )
+        )
+    return mcat_candidates, gpa_candidates
+
+
+def find_average_total_gpa_mcat_candidates(text: str, anchors: list[tuple[int, str]]) -> tuple[list[MetricCandidate], list[MetricCandidate]]:
+    mcat_candidates: list[MetricCandidate] = []
+    gpa_candidates: list[MetricCandidate] = []
+    for match in AVERAGE_GPA_TOTAL_MCAT_RE.finditer(text):
+        context = candidate_context(text, match.start(), match.end())
+        score, rejected, reject_reason = context_score(context)
+        if rejected or score <= 0:
+            continue
+        cohort_year = cohort_year_for_position(anchors, match.start())
+        gpa_candidates.append(
+            MetricCandidate(
+                value=float(match.group("gpa")),
+                metric="average",
+                context=context,
+                score=score + 2,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+        mcat_candidates.append(
+            MetricCandidate(
+                value=float(match.group("mcat")),
+                metric="average",
+                context=context,
+                score=score + 2,
+                rejected=False,
+                reject_reason="",
+                cohort_year=cohort_year,
+            )
+        )
+    return mcat_candidates, gpa_candidates
+
+
 def best_metric_candidate(candidates: list[MetricCandidate]) -> MetricCandidate | None:
     accepted = [candidate for candidate in candidates if not candidate.rejected and candidate.score > 0]
     if not accepted:
         return None
-    return sorted(accepted, key=lambda item: (-item.score, item.metric != "median", -int(item.cohort_year or 0), item.value))[0]
+    return sorted(accepted, key=lambda item: (-item.score, item.metric != "median", -int(item.cohort_year or 0), -item.value))[0]
 
 
 def best_metric_pair(
@@ -367,6 +665,8 @@ def population_from_context(context: str) -> str:
 
 def metric_type_from_candidates(mcat: MetricCandidate | None, gpa: MetricCandidate | None) -> str:
     metrics = {candidate.metric for candidate in [mcat, gpa] if candidate}
+    if "range_midpoint" in metrics:
+        return "official_published_range_midpoint"
     if "median" in metrics:
         return "official_published_median"
     if "mean" in metrics or "average" in metrics:
@@ -387,6 +687,25 @@ def extract_stats_from_text(
     anchors = cohort_year_anchors(visible_text)
     mcat_candidates = find_metric_candidates(visible_text, MCAT_RE, "mcat", anchors=anchors)
     gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa", allow_ocr_gpa_correction=allow_ocr_gpa_correction, anchors=anchors)
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_CLASS_VALUE_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_2015_RE, "mcat", anchors=anchors))
+    mcat_candidates.extend(find_metric_candidates(visible_text, MCAT_SECTION_TOTAL_RE, "mcat", anchors=anchors))
+    gpa_candidates.extend(find_metric_candidates(visible_text, GPA_CLASS_VALUE_RE, "gpa", anchors=anchors))
+    gpa_candidates.extend(find_metric_candidates(visible_text, GPA_TRAILING_LABEL_RE, "gpa", anchors=anchors))
+    mcat_candidates.extend(find_range_metric_candidates(visible_text, MCAT_RANGE_RE, "mcat", anchors=anchors))
+    gpa_candidates.extend(find_range_metric_candidates(visible_text, GPA_RANGE_RE, "gpa", anchors=anchors))
+    respective_mcats, respective_gpas = find_respective_gpa_mcat_candidates(visible_text, anchors)
+    mcat_candidates.extend(respective_mcats)
+    gpa_candidates.extend(respective_gpas)
+    table_mcats, table_gpas = find_table_gpa_mcat_candidates(visible_text, anchors)
+    mcat_candidates.extend(table_mcats)
+    gpa_candidates.extend(table_gpas)
+    grid_mcats, grid_gpas = find_class_profile_year_grid_candidates(visible_text)
+    mcat_candidates.extend(grid_mcats)
+    gpa_candidates.extend(grid_gpas)
+    total_gpa_mcats, total_gpa_gpas = find_average_total_gpa_mcat_candidates(visible_text, anchors)
+    mcat_candidates.extend(total_gpa_mcats)
+    gpa_candidates.extend(total_gpa_gpas)
     best_mcat, best_gpa, selected_cohort_year = best_metric_pair(mcat_candidates, gpa_candidates)
     evidence_parts = [candidate.context for candidate in [best_mcat, best_gpa] if candidate]
     evidence = compact_text(" ".join(evidence_parts))[:700]
@@ -398,6 +717,8 @@ def extract_stats_from_text(
         notes = "Official-domain MCAT/GPA values found in class-profile context."
         if selected_cohort_year:
             notes += f" Selected latest shared cohort year {selected_cohort_year}."
+        if "range_midpoint" in {best_mcat.metric, best_gpa.metric}:
+            notes += " One or more values were range-derived; midpoint used for scoring."
         if best_gpa.corrected:
             notes += " GPA value used OCR correction from impossible 5.xx reading to 3.xx on an official image source."
     elif best_mcat or best_gpa:
@@ -460,13 +781,30 @@ def fetch_candidate_text(url: str, timeout_seconds: int) -> tuple[str, str, str,
     except urllib.error.HTTPError as exc:
         return f"fetch_failed_http_{exc.code}", "", "", str(exc)
     except urllib.error.URLError as exc:
-        return "fetch_failed_url_error", "", "", str(exc.reason)
+        reason = str(exc.reason)
+        if not isinstance(exc.reason, ssl.SSLCertVerificationError) and "CERTIFICATE_VERIFY_FAILED" not in reason:
+            return "fetch_failed_url_error", "", "", reason
+        try:
+            with urllib.request.urlopen(request, timeout=timeout_seconds, context=ssl._create_unverified_context()) as response:
+                content_type = response.headers.get("content-type", "")
+                body = response.read()
+        except urllib.error.HTTPError as retry_exc:
+            return f"fetch_failed_http_{retry_exc.code}", "", "", f"Certificate verification failed; retry also failed: {retry_exc}"
+        except urllib.error.URLError as retry_exc:
+            return "fetch_failed_url_error", "", "", f"Certificate verification failed; retry also failed: {retry_exc.reason}"
+        except http.client.HTTPException as retry_exc:
+            return "fetch_failed_http_exception", "", "", f"Certificate verification failed; retry also failed: {retry_exc}"
+        except OSError as retry_exc:
+            return "fetch_failed_os_error", "", "", f"Certificate verification failed; retry also failed: {retry_exc}"
+        ssl_note = "Fetched with certificate verification disabled after certificate verification failed."
     except http.client.HTTPException as exc:
         return "fetch_failed_http_exception", "", "", str(exc)
     except OSError as exc:
         return "fetch_failed_os_error", "", "", str(exc)
     except TimeoutError:
         return "fetch_failed_timeout", "", "", "Request timed out."
+    else:
+        ssl_note = ""
 
     if is_pdf_url or "pdf" in content_type.lower():
         try:
@@ -476,20 +814,20 @@ def fetch_candidate_text(url: str, timeout_seconds: int) -> tuple[str, str, str,
         if not visible_text:
             return "pdf_text_empty", "", "", "PDF parsed but no extractable text was found."
         title = clean(url).rsplit("/", 1)[-1]
-        return "fetched", title, visible_text, ""
+        return "fetched", title, visible_text, ssl_note
     if image_suffix or content_type.lower().startswith("image/"):
         suffix = image_suffix or f".{content_type.lower().split('/', 1)[1].split(';', 1)[0]}"
         visible_text, ocr_error = image_bytes_to_text(body, suffix, timeout_seconds)
         if ocr_error:
             return ocr_error.split(":", 1)[0], "", "", ocr_error
         title = clean(url).rsplit("/", 1)[-1]
-        return "fetched", title, visible_text, ""
+        return "fetched", title, visible_text, ssl_note
     text = body.decode("utf-8", errors="replace")
     if "<html" in text.lower() or "<body" in text.lower():
         title, visible_text = html_to_text(text)
     else:
         title, visible_text = "", compact_text(text)
-    return "fetched", title, visible_text, ""
+    return "fetched", title, visible_text, ssl_note
 
 
 def skipped_row(candidate: dict[str, str], status: str, notes: str) -> dict[str, str]:
