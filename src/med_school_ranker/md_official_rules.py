@@ -40,6 +40,20 @@ MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS = [
     "notes",
 ]
 
+MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS = [
+    "school_id",
+    "school_name",
+    "degree_type",
+    "candidate_source_url",
+    "candidate_source_title",
+    "search_query",
+    "search_provider",
+    "result_rank",
+    "discovered_date",
+    "review_status",
+    "notes",
+]
+
 MD_OFFICIAL_EXTRACTED_STATS_COLUMNS = [
     "school_id",
     "school_name",
@@ -141,10 +155,13 @@ MD_STATS_PATH_TERMS = (
     "facts_figures",
     "facts",
     "figures",
+    "fact-sheet",
+    "fact_sheet",
     "admissions-statistics",
     "admissions_statistics",
     "class-statistics",
     "class_statistics",
+    "by-the-numbers",
     "annual-report",
     "annual_report",
     "fact-book",
@@ -153,6 +170,7 @@ MD_STATS_PATH_TERMS = (
 
 MD_STATS_TEXT_TERMS = (
     "class profile",
+    "class of",
     "student profile",
     "entering class",
     "incoming class",
@@ -161,8 +179,10 @@ MD_STATS_TEXT_TERMS = (
     "facts and figures",
     "admissions statistics",
     "class statistics",
+    "by the numbers",
     "annual report",
     "fact book",
+    "fact sheet",
 )
 
 MD_ADMISSIONS_PATH_TERMS = (
@@ -311,6 +331,7 @@ def is_fetch_ready_source_type(source_type: str) -> bool:
 
 __all__ = [
     "MD_DATA_CONFIDENCE",
+    "MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS",
     "MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS",
     "MD_OFFICIAL_EXTRACTED_STATS_COLUMNS",
     "MD_OFFICIAL_DISCOVERY_REPORT_COLUMNS",

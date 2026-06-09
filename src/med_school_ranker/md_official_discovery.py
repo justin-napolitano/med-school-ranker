@@ -34,6 +34,7 @@ from med_school_ranker.paths import (
     ADMISSIONS_STATS_CSV,
     LETTER_REQUIREMENTS_CSV,
     MASTER_CSV,
+    MD_OFFICIAL_ASSISTED_SEARCH_SEEDS_CSV,
     MD_OFFICIAL_COVERAGE_CSV,
     MD_OFFICIAL_DISCOVERY_REPORT_CSV,
     MD_OFFICIAL_SOURCE_CANDIDATES_CSV,
@@ -309,6 +310,33 @@ def rows_from_published_source_urls(schools_by_id: dict[str, dict[str, str]]) ->
                 (
                     "URL came from a third-party table's school_source_url field and is used only as "
                     f"an official candidate seed; values from that table are not evidence. match={match.label} score={fmt_decimal(match.score)}."
+                ),
+                school_website=url,
+            )
+        )
+    return rows
+
+
+def rows_from_assisted_search_seeds(schools_by_id: dict[str, dict[str, str]]) -> list[dict[str, str]]:
+    rows = []
+    for source_row in read_csv(MD_OFFICIAL_ASSISTED_SEARCH_SEEDS_CSV):
+        school_id = clean(source_row.get("school_id"))
+        school = schools_by_id.get(school_id)
+        url = clean(source_row.get("candidate_source_url"))
+        if not school or not url or clean(source_row.get("degree_type") or school.get("degree_type")).upper() != "MD":
+            continue
+        if clean(source_row.get("review_status")) not in {"approved_for_discovery", "accepted_for_fetch", ""}:
+            continue
+        rows.append(
+            candidate_row(
+                school,
+                url,
+                "assisted_search_official_url_seed",
+                clean(source_row.get("candidate_source_title")),
+                (
+                    "Official URL discovered via assisted web search; search result text is not evidence. "
+                    f"provider={clean(source_row.get('search_provider'))}; rank={clean(source_row.get('result_rank'))}; "
+                    f"query={clean(source_row.get('search_query'))}. {clean(source_row.get('notes'))}"
                 ),
                 school_website=url,
             )
@@ -695,6 +723,7 @@ def build_md_official_discovery(
         + rows_from_letter_requirements(schools_by_id)
         + rows_from_cycletrack_lor_requirements(schools_by_id)
         + rows_from_published_source_urls(schools_by_id)
+        + rows_from_assisted_search_seeds(schools_by_id)
     )
     if reuse_existing_candidates:
         candidates = merge_candidates(read_csv(MD_OFFICIAL_SOURCE_CANDIDATES_CSV) + candidates)

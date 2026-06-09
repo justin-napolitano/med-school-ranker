@@ -42,8 +42,8 @@ MCAT_RE = re.compile(
     re.IGNORECASE,
 )
 GPA_RE = re.compile(
-    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
-    r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative)\s+)?gpa"
+    r"(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa(?:[^0-9]{0,40}(?:overall|cumulative|undergraduate))?[^0-9]{0,60}(?P<after>\b[2345]\.\d{1,3})"
+    r"|(?P<before>\b[2345]\.\d{1,3})[^a-z0-9]{0,30}(?:(?:median|mean|average|avg)\s+)?(?:(?:overall|cumulative|undergraduate)\s+)?gpa"
     r"|(?:gpa)(?:\s+\d{1,5}(?:,\d{3})?){1,3}\s+(?P<after_ocr>\b[2345]\.\d{1,3})",
     re.IGNORECASE,
 )
@@ -75,6 +75,12 @@ PROFILE_TERMS = {
     "profile",
 }
 IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".webp", ".tif", ".tiff")
+COHORT_YEAR_PATTERNS = (
+    r"(?:entering|matriculating|incoming)\s+class(?:\s+of)?\s+(20\d{2})",
+    r"class\s+of\s+(20\d{2})",
+    r"(20\d{2})\s+(?:entering|matriculating|incoming)\s+class",
+    r"(20\d{2})\s+class\s+profile",
+)
 
 
 class VisibleTextParser(HTMLParser):
@@ -124,6 +130,7 @@ class MetricCandidate:
     score: int
     rejected: bool
     reject_reason: str
+    cohort_year: str = ""
     corrected: bool = False
 
 
@@ -197,6 +204,8 @@ def context_score(context: str) -> tuple[int, bool, str]:
     for term in PROFILE_TERMS:
         if term in lower:
             score += 1
+    if "class composition" in lower or "new entrants" in lower:
+        score += 3
     if "class of" in lower:
         score += 1
     return score, False, ""
@@ -206,13 +215,48 @@ def candidate_context(text: str, start: int, end: int, window: int = 180) -> str
     return compact_text(text[max(0, start - window) : min(len(text), end + window)])
 
 
+def cohort_year_anchors(text: str) -> list[tuple[int, str]]:
+    anchors: list[tuple[int, str]] = []
+    for pattern in COHORT_YEAR_PATTERNS:
+        for match in re.finditer(pattern, text, re.IGNORECASE):
+            anchors.append((match.start(), match.group(1)))
+    return sorted(set(anchors), key=lambda item: item[0])
+
+
+def cohort_year_for_position(anchors: list[tuple[int, str]], position: int, max_distance: int = 2500) -> str:
+    selected = ""
+    selected_position = -1
+    for anchor_position, year in anchors:
+        if anchor_position > position:
+            break
+        selected = year
+        selected_position = anchor_position
+    if selected and position - selected_position <= max_distance:
+        return selected
+    return ""
+
+
+def last_gpa_qualifier_position(window: str, terms: list[str], word_boundary: bool = False) -> int:
+    positions = []
+    for term in terms:
+        if word_boundary:
+            pattern = rf"(?<![a-z]){re.escape(term)}(?![a-z])"
+            matches = list(re.finditer(pattern, window))
+            positions.append(matches[-1].start() if matches else -1)
+        else:
+            positions.append(window.rfind(term))
+    return max(positions)
+
+
 def find_metric_candidates(
     text: str,
     pattern: re.Pattern[str],
     kind: str,
     allow_ocr_gpa_correction: bool = False,
+    anchors: list[tuple[int, str]] | None = None,
 ) -> list[MetricCandidate]:
     candidates = []
+    anchors = anchors if anchors is not None else cohort_year_anchors(text)
     for match in pattern.finditer(text):
         groups = match.groupdict()
         raw_value = next((groups.get(name) for name in ("after", "before", "after_ocr", "before_ocr") if groups.get(name)), "")
@@ -234,17 +278,15 @@ def find_metric_candidates(
             continue
         score, rejected, reject_reason = context_score(context)
         if kind == "gpa":
-            qualifier_window = text[max(0, match.start() - 45) : min(len(text), match.end() + 12)].lower()
-            allowed_positions = [
-                qualifier_window.rfind(term)
-                for term in ["overall", "cumulative", "total gpa", "total", "class gpa", "class"]
-            ]
-            disallowed_positions = [
-                qualifier_window.rfind(term)
-                for term in ["science", "bcpm", "postbac", "post-bac", "graduate", "masters", "master's"]
-            ]
-            allowed_position = max(allowed_positions)
-            disallowed_position = max(disallowed_positions)
+            qualifier_window = text[max(0, match.start() - 45) : match.end()].lower()
+            allowed_position = last_gpa_qualifier_position(
+                qualifier_window,
+                ["overall", "cumulative", "undergraduate", "total gpa", "total", "class gpa", "class"],
+            )
+            disallowed_position = max(
+                last_gpa_qualifier_position(qualifier_window, ["science", "bcpm", "postbac", "post-bac"]),
+                last_gpa_qualifier_position(qualifier_window, ["graduate", "masters", "master's"], word_boundary=True),
+            )
             if disallowed_position > allowed_position:
                 candidates.append(
                     MetricCandidate(
@@ -254,6 +296,7 @@ def find_metric_candidates(
                         score=0,
                         rejected=True,
                         reject_reason="science_or_bcpm_gpa_context",
+                        cohort_year=cohort_year_for_position(anchors, match.start()),
                         corrected=corrected,
                     )
                 )
@@ -268,6 +311,7 @@ def find_metric_candidates(
                 score=score,
                 rejected=rejected,
                 reject_reason=reject_reason,
+                cohort_year=cohort_year_for_position(anchors, match.start()),
                 corrected=corrected,
             )
         )
@@ -278,7 +322,28 @@ def best_metric_candidate(candidates: list[MetricCandidate]) -> MetricCandidate 
     accepted = [candidate for candidate in candidates if not candidate.rejected and candidate.score > 0]
     if not accepted:
         return None
-    return sorted(accepted, key=lambda item: (-item.score, item.metric != "median", item.value))[0]
+    return sorted(accepted, key=lambda item: (-item.score, item.metric != "median", -int(item.cohort_year or 0), item.value))[0]
+
+
+def best_metric_pair(
+    mcat_candidates: list[MetricCandidate],
+    gpa_candidates: list[MetricCandidate],
+) -> tuple[MetricCandidate | None, MetricCandidate | None, str]:
+    accepted_mcats = [candidate for candidate in mcat_candidates if not candidate.rejected and candidate.score > 0]
+    accepted_gpas = [candidate for candidate in gpa_candidates if not candidate.rejected and candidate.score > 0]
+    shared_years = {
+        candidate.cohort_year
+        for candidate in accepted_mcats
+        if candidate.cohort_year and any(gpa.cohort_year == candidate.cohort_year for gpa in accepted_gpas)
+    }
+    for year in sorted(shared_years, key=int, reverse=True):
+        best_mcat = best_metric_candidate([candidate for candidate in accepted_mcats if candidate.cohort_year == year])
+        best_gpa = best_metric_candidate([candidate for candidate in accepted_gpas if candidate.cohort_year == year])
+        if best_mcat and best_gpa:
+            return best_mcat, best_gpa, year
+    best_mcat = best_metric_candidate(mcat_candidates)
+    best_gpa = best_metric_candidate(gpa_candidates)
+    return best_mcat, best_gpa, ""
 
 
 def rejected_only_reason(candidates: list[MetricCandidate]) -> str:
@@ -287,17 +352,8 @@ def rejected_only_reason(candidates: list[MetricCandidate]) -> str:
 
 
 def cohort_year_from_text(text: str) -> str:
-    patterns = [
-        r"(?:entering|matriculating)\s+class(?:\s+of)?\s+(20\d{2})",
-        r"class\s+of\s+(20\d{2})",
-        r"(20\d{2})\s+(?:entering|matriculating)\s+class",
-        r"(20\d{2})\s+class\s+profile",
-    ]
-    for pattern in patterns:
-        match = re.search(pattern, text, re.IGNORECASE)
-        if match:
-            return match.group(1)
-    return ""
+    years = [year for _, year in cohort_year_anchors(text)]
+    return str(max(int(year) for year in years)) if years else ""
 
 
 def population_from_context(context: str) -> str:
@@ -328,10 +384,10 @@ def extract_stats_from_text(
     title = compact_text(title or clean(candidate.get("candidate_source_title")))
     lower_url = clean(candidate.get("candidate_source_url")).lower().split("?", 1)[0]
     allow_ocr_gpa_correction = lower_url.endswith(IMAGE_EXTENSIONS)
-    mcat_candidates = find_metric_candidates(visible_text, MCAT_RE, "mcat")
-    gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa", allow_ocr_gpa_correction=allow_ocr_gpa_correction)
-    best_mcat = best_metric_candidate(mcat_candidates)
-    best_gpa = best_metric_candidate(gpa_candidates)
+    anchors = cohort_year_anchors(visible_text)
+    mcat_candidates = find_metric_candidates(visible_text, MCAT_RE, "mcat", anchors=anchors)
+    gpa_candidates = find_metric_candidates(visible_text, GPA_RE, "gpa", allow_ocr_gpa_correction=allow_ocr_gpa_correction, anchors=anchors)
+    best_mcat, best_gpa, selected_cohort_year = best_metric_pair(mcat_candidates, gpa_candidates)
     evidence_parts = [candidate.context for candidate in [best_mcat, best_gpa] if candidate]
     evidence = compact_text(" ".join(evidence_parts))[:700]
     official_score = float(clean(candidate.get("official_domain_score")) or 0)
@@ -340,6 +396,8 @@ def extract_stats_from_text(
         extraction_status = "accepted"
         review_status = "approved_official_extraction"
         notes = "Official-domain MCAT/GPA values found in class-profile context."
+        if selected_cohort_year:
+            notes += f" Selected latest shared cohort year {selected_cohort_year}."
         if best_gpa.corrected:
             notes += " GPA value used OCR correction from impossible 5.xx reading to 3.xx on an official image source."
     elif best_mcat or best_gpa:
@@ -369,7 +427,7 @@ def extract_stats_from_text(
         "fetch_status": clean(candidate.get("fetch_status")) or "fetched",
         "extraction_status": extraction_status,
         "review_status": review_status,
-        "stats_cohort_year": cohort_year_from_text(visible_text),
+        "stats_cohort_year": selected_cohort_year or cohort_year_from_text(visible_text),
         "metric_population": population_from_context(combined_context),
         "metric_type": metric_type_from_candidates(best_mcat, best_gpa),
         "mcat_value": format_float(best_mcat.value if best_mcat else None, 1),

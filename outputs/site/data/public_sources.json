@@ -412,6 +412,26 @@
   {
     "row_count": "1",
     "source_name": "Official MD school source",
+    "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
     "source_url": "https://med.uc.edu/admissions/medical-student-admissions/md-admissions/class-profile"
   },
   {
@@ -422,7 +442,17 @@
   {
     "row_count": "1",
     "source_name": "Official MD school source",
+    "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
     "source_url": "https://medicine.iu.edu/facts"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
   },
   {
     "row_count": "1",
@@ -432,7 +462,17 @@
   {
     "row_count": "1",
     "source_name": "Official MD school source",
+    "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
     "source_url": "https://medicine.yale.edu/about/history-facts-and-figures/"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
   },
   {
     "row_count": "1",
@@ -442,7 +482,17 @@
   {
     "row_count": "1",
     "source_name": "Official MD school source",
+    "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
     "source_url": "https://www.rosalindfranklin.edu/academics/chicago-medical-school/degree-programs/allopathic-medicine-md/class-profile/"
+  },
+  {
+    "row_count": "1",
+    "source_name": "Official MD school source",
+    "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
   },
   {
     "row_count": "1",
@@ -502,22 +552,12 @@
   {
     "row_count": "1",
     "source_name": "ProspectiveDoctor; Shemmassian",
-    "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
-  },
-  {
-    "row_count": "1",
-    "source_name": "ProspectiveDoctor; Shemmassian",
     "source_url": "http://www.usd.edu/medicine/medical-student-affairs/eligibility; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
     "row_count": "1",
     "source_name": "ProspectiveDoctor; Shemmassian",
     "source_url": "http://www.utrgv.edu/school-of-medicine/admissions-and-aid/index.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
-  },
-  {
-    "row_count": "1",
-    "source_name": "ProspectiveDoctor; Shemmassian",
-    "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
     "row_count": "1",
@@ -588,11 +628,6 @@
     "row_count": "1",
     "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
     "source_url": "http://mdadmissions.msu.edu/ApplicationProcess/future/default2.htm; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
-  },
-  {
-    "row_count": "1",
-    "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-    "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
     "row_count": "1",
@@ -702,11 +737,6 @@
   {
     "row_count": "1",
     "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-    "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
-  },
-  {
-    "row_count": "1",
-    "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
     "source_url": "http://www.neomed.edu/admissions/apply/#com; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
@@ -755,17 +785,12 @@
     "source_url": "https://med.ucf.edu/admissions/; http://admissions.med.ufl.edu/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
-    "row_count": "1",
-    "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-    "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
-  },
-  {
     "row_count": "2",
     "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
     "source_url": "https://medicine.howard.edu/admissions; http://drexel.edu/medicine/academics/md-program/md-program-admissions/; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
-    "row_count": "2",
+    "row_count": "1",
     "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
     "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
@@ -775,7 +800,7 @@
     "source_url": "https://medschool.usuhs.edu/admissions/application-requirements; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
-    "row_count": "4",
+    "row_count": "3",
     "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
     "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
@@ -835,12 +860,12 @@
     "source_url": "https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
-    "row_count": "6",
+    "row_count": "5",
     "source_name": "Shemmassian; The Match Guy",
     "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
   },
   {
-    "row_count": "13",
+    "row_count": "11",
     "source_name": "The Match Guy",
     "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
   }

@@ -1,7 +1,7 @@
 metric,count,notes
 active_md_schools,159,"Active, non-excluded MD rows scanned."
-candidate_urls,308,Unique MD official candidate URLs.
-fetch_ready_official_source_urls,210,Official URLs with class/profile/report-like paths.
-schools_with_any_candidate,105,MD schools with at least one candidate URL.
-schools_with_fetch_ready_candidate,48,MD schools with at least one candidate ready for extraction.
-network_discovery_enabled,1,"When enabled, discovery expands via robots sitemaps, one-hop admissions links, and optional known-path probing."
+candidate_urls,319,Unique MD official candidate URLs.
+fetch_ready_official_source_urls,219,Official URLs with class/profile/report-like paths.
+schools_with_any_candidate,111,MD schools with at least one candidate URL.
+schools_with_fetch_ready_candidate,54,MD schools with at least one candidate ready for extraction.
+network_discovery_enabled,0,"When enabled, discovery expands via robots sitemaps, one-hop admissions links, and optional known-path probing."

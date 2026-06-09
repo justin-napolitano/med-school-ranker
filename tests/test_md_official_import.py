@@ -5,9 +5,12 @@ from pathlib import Path
 from med_school_ranker import md_official_apply, md_official_discovery, md_official_extraction, official_stats_extraction
 from med_school_ranker.md_official_rules import (
     MD_DATA_CONFIDENCE,
+    MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS,
     MD_OFFICIAL_COVERAGE_COLUMNS,
     MD_OFFICIAL_EXTRACTED_STATS_COLUMNS,
     MD_OFFICIAL_SOURCE_CANDIDATE_COLUMNS,
+    is_fetch_ready_source_type,
+    md_source_type_hint,
     read_csv,
     write_csv,
 )
@@ -81,6 +84,57 @@ def test_md_known_path_probe_discovers_live_class_profile(monkeypatch) -> None:
     assert rows[0]["discovery_method"] == "official_known_path_probe"
 
 
+def test_md_discovery_imports_assisted_search_seed(tmp_path: Path, monkeypatch) -> None:
+    seeds_csv = tmp_path / "data/source_tables/md_official_assisted_search_seeds.csv"
+    monkeypatch.setattr(md_official_discovery, "MD_OFFICIAL_ASSISTED_SEARCH_SEEDS_CSV", seeds_csv)
+    school = {
+        "school_id": "md_nyu",
+        "school_name": "NYU Grossman School of Medicine",
+        "degree_type": "MD",
+        "state_abbrev": "NY",
+        "website": "https://med.nyu.edu/",
+    }
+    write_csv(
+        seeds_csv,
+        MD_OFFICIAL_ASSISTED_SEARCH_SEED_COLUMNS,
+        [
+            {
+                "school_id": "md_nyu",
+                "school_name": "NYU Grossman School of Medicine",
+                "degree_type": "MD",
+                "candidate_source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers",
+                "candidate_source_title": "MD Admissions By the Numbers",
+                "search_query": "NYU Grossman School of Medicine median MCAT GPA official",
+                "search_provider": "google",
+                "result_rank": "1",
+                "discovered_date": "2026-06-08",
+                "review_status": "approved_for_discovery",
+            }
+        ],
+    )
+
+    rows = md_official_discovery.rows_from_assisted_search_seeds({"md_nyu": school})
+
+    assert len(rows) == 1
+    assert rows[0]["candidate_source_url"].endswith("/by-the-numbers")
+    assert rows[0]["review_status"] == "accepted_for_fetch"
+    assert rows[0]["discovery_method"] == "assisted_search_official_url_seed"
+
+
+def test_md_source_type_treats_fact_sheet_and_class_of_pages_as_fetch_ready() -> None:
+    fact_sheet_type = md_source_type_hint(
+        "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php",
+        "Doctor of Medicine (M.D.) Degree Fact Sheet",
+    )
+    class_news_type = md_source_type_hint(
+        "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx",
+        "USF Health Morsani College of Medicine welcomes newest future doctors",
+    )
+
+    assert is_fetch_ready_source_type(fact_sheet_type)
+    assert is_fetch_ready_source_type(class_news_type)
+
+
 def test_md_extractor_accepts_class_profile_values() -> None:
     candidate = {
         "school_id": "md_test",
@@ -103,6 +157,96 @@ def test_md_extractor_accepts_class_profile_values() -> None:
     assert row["mcat_value"] == "514"
     assert row["gpa_value"] == "3.82"
     assert row["evidence_text"]
+
+
+def test_md_extractor_accepts_undergraduate_gpa_as_overall_gpa() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/by-the-numbers",
+        "candidate_source_title": "Admissions By the Numbers",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "The incoming class had a median MCAT score of 523. Their median undergraduate GPA was 3.98."
+
+    row = md_extracted_row(candidate, text, "Admissions By the Numbers")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "523"
+    assert row["gpa_value"] == "3.98"
+
+
+def test_md_extractor_does_not_reject_overall_gpa_followed_by_bcpm_metric() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/entering-class-profile",
+        "candidate_source_title": "Entering M.D. Class Profile",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "Entering M.D. Class Profile Applications 4,165 Mean MCAT 515 Mean GPA 3.85 Mean BCPM 3.82."
+
+    row = md_extracted_row(candidate, text, "Entering M.D. Class Profile")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "515"
+    assert row["gpa_value"] == "3.85"
+
+
+def test_md_extractor_accepts_mcat_composite_in_class_composition() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/entering-class-profile",
+        "candidate_source_title": "2025 Entering Class Profile",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = "2025 Entering Class Profile Class Composition Class GPA: 3.83 Class Science GPA: 3.79 MCAT composite: 514"
+
+    row = md_extracted_row(candidate, text, "2025 Entering Class Profile")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["mcat_value"] == "514"
+    assert row["gpa_value"] == "3.83"
+
+
+def test_md_extractor_uses_latest_shared_cohort_year_on_multi_year_pages() -> None:
+    candidate = {
+        "school_id": "md_test",
+        "school_name": "Test College of Medicine",
+        "degree_type": "MD",
+        "candidate_source_url": "https://medicine.example.edu/admissions/fact-sheet",
+        "candidate_source_title": "Fact Sheet",
+        "candidate_source_type": "class_profile",
+        "source_host": "medicine.example.edu",
+        "official_domain_status": "official_school_domain",
+        "official_domain_score": "1.00",
+    }
+    text = """
+    Entering Class of 2022 Total Applied 7,096 Matriculated 125
+    Average GPA 3.53 Average Science GPA 3.42 Average MCAT 503.
+    Entering Class of 2024 Total Applied 6,858 Matriculated 105
+    Average GPA 3.45 Average Science GPA 3.38 Average MCAT 506.
+    """
+
+    row = md_extracted_row(candidate, text, "Fact Sheet")
+
+    assert row["extraction_status"] == "accepted"
+    assert row["stats_cohort_year"] == "2024"
+    assert row["mcat_value"] == "506"
+    assert row["gpa_value"] == "3.45"
 
 
 def test_md_extractor_prefers_cumulative_gpa_over_science_gpa() -> None:

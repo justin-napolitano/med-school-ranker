@@ -2,12 +2,12 @@
   "contains_admin_data": false,
   "contains_private_derived_data": false,
   "contains_reviewer_state": false,
-  "generated_at": "2026-06-09T02:37:40+00:00",
+  "generated_at": "2026-06-09T03:43:01+00:00",
   "node_schema_version": "site_nodes_v1",
   "node_type": "school_profile",
   "nodes": [
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "ATSU-KCOM",
         "city": "Kirksville",
@@ -241,7 +241,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "ATSU-SOMA",
         "city": "Mesa",
@@ -475,7 +475,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "ACOM",
         "city": "Dothan",
@@ -726,7 +726,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albany",
@@ -1016,7 +1016,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -1307,7 +1307,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bentonville",
@@ -1596,7 +1596,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Worth",
@@ -1832,7 +1832,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -2055,7 +2055,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "ARCOM",
         "city": "Fort Smith",
@@ -2306,7 +2306,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "BUCOM",
         "city": "Memphis",
@@ -2540,7 +2540,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -2786,7 +2786,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dayton",
@@ -3062,7 +3062,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -3329,7 +3329,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -3603,7 +3603,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "BCSOM",
         "city": "Las Cruces",
@@ -3837,7 +3837,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "BCSOM-FL",
         "city": "Melbourne",
@@ -4071,7 +4071,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -4345,7 +4345,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "CHSU-COM",
         "city": "Clovis",
@@ -4579,7 +4579,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Elk Grove",
@@ -4855,7 +4855,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Colton",
@@ -5130,7 +5130,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "CUSOM",
         "city": "Buies Creek",
@@ -5364,7 +5364,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Urbana-Champaign",
@@ -5640,7 +5640,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cleveland",
@@ -5916,7 +5916,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boca Raton",
@@ -5981,8 +5981,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
             }
           ],
           "title": "Overview"
@@ -6004,10 +6004,10 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.82",
+            "gpa_average": "3.85",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "513",
-            "mcat_band": "510-513"
+            "mcat_average": "515",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -6026,8 +6026,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
             }
           ],
           "title": "Admissions Stats"
@@ -6057,8 +6057,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
             }
           ],
           "title": "Cost and Debt"
@@ -6101,8 +6101,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
             }
           ],
           "title": "Requirements and Policies"
@@ -6132,8 +6132,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://med.fau.edu/admissions/md/index.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.fau.edu/medicine/md/admissions/entering-class/index.php"
             }
           ],
           "title": "Source Confidence"
@@ -6160,15 +6160,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "510-513",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "513"
+          "value": "515"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.82"
+          "value": "3.85"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -6192,7 +6192,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -6468,7 +6468,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Chicago",
@@ -6746,7 +6746,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -7022,7 +7022,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Camden",
@@ -7299,7 +7299,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mount Pleasant",
@@ -7545,7 +7545,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -7821,7 +7821,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -8057,7 +8057,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Austin",
@@ -8332,7 +8332,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "DMU-COM",
         "city": "West Des Moines",
@@ -8566,7 +8566,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hempstead",
@@ -8843,7 +8843,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -9120,7 +9120,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Durham",
@@ -9396,7 +9396,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "DUQCOM",
         "city": "Pittsburgh",
@@ -9630,7 +9630,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "DYU-COM",
         "city": "Buffalo",
@@ -9853,7 +9853,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Johnson City",
@@ -10127,7 +10127,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Norfolk",
@@ -10382,7 +10382,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "VCOM-Auburn Campus",
         "city": "Auburn",
@@ -10616,7 +10616,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "VCOM-Carolinas",
         "city": "Spartanburg",
@@ -10850,7 +10850,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "VCOM-Virginia",
         "city": "Blacksburg",
@@ -11084,7 +11084,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "VCOM-Louisiana",
         "city": "Monroe",
@@ -11335,7 +11335,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -11400,8 +11400,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
             }
           ],
           "title": "Overview"
@@ -11422,11 +11422,11 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.8",
+            "data_quality_band": "high",
+            "gpa_average": "3.81",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "512.6",
-            "mcat_band": "510-513"
+            "mcat_average": "514.9",
+            "mcat_band": "514-517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -11445,8 +11445,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
             }
           ],
           "title": "Admissions Stats"
@@ -11476,8 +11476,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
             }
           ],
           "title": "Cost and Debt"
@@ -11521,15 +11521,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -11552,8 +11552,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://som.georgetown.edu/prospectivestudents/degrees/md; http://med.emory.edu/education/admissions/md/index.html; http://medicine.mercer.edu/admissions/md/; http://www.bumc.bu.edu/busm/admissions/degree-programs/md-program/; http://medicine.tufts.edu/Admissions.aspx; https://medschool.creighton.edu/program/Medicine-MD; http://www.med.nyu.edu/school/md-admissions; https://medicine.stonybrookmedicine.edu/admissions_SOM; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.emory.edu/education/programs/md/class-profile/index.html"
             }
           ],
           "title": "Source Confidence"
@@ -11580,15 +11580,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "510-513",
+          "context": "514-517",
           "label": "MCAT average",
-          "value": "512.6"
+          "value": "514.9"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.8"
+          "value": "3.81"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -11606,13 +11606,13 @@
           "card_id": "data_quality",
           "context": "Watchlist",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -11677,8 +11677,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
             }
           ],
           "title": "Overview"
@@ -11700,9 +11700,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.81",
+            "gpa_average": "3.86",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "510.3",
+            "mcat_average": "510",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -11722,8 +11722,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
             }
           ],
           "title": "Admissions Stats"
@@ -11753,8 +11753,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
             }
           ],
           "title": "Cost and Debt"
@@ -11797,8 +11797,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
             }
           ],
           "title": "Requirements and Policies"
@@ -11828,8 +11828,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.fiu.edu/academics/degrees-and-programs/doctor-of-medicine/admissions/index.html; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.fiu.edu/academics/doctor-of-medicine/faqs/"
             }
           ],
           "title": "Source Confidence"
@@ -11858,13 +11858,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "510.3"
+          "value": "510"
         },
         {
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.81"
+          "value": "3.86"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -11888,7 +11888,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tallahassee",
@@ -12164,7 +12164,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "North Haven",
@@ -12441,7 +12441,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mobile",
@@ -12708,7 +12708,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hanover",
@@ -12983,7 +12983,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Scranton",
@@ -13274,7 +13274,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13550,7 +13550,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -13827,7 +13827,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nutley",
@@ -14116,7 +14116,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -14405,7 +14405,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Washington",
@@ -14682,7 +14682,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -14958,7 +14958,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "ICOM",
         "city": "Meridian",
@@ -15209,7 +15209,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "IllinoisCOM",
         "city": "Chicago",
@@ -15443,7 +15443,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Indianapolis",
@@ -15716,7 +15716,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "IUPCOM",
         "city": "Indiana",
@@ -15939,7 +15939,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Buffalo",
@@ -16216,7 +16216,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Honolulu",
@@ -16493,7 +16493,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -16769,7 +16769,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pasadena",
@@ -17046,7 +17046,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "KCU-COM-Joplin",
         "city": "Joplin",
@@ -17280,7 +17280,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "KCU-COM",
         "city": "Kansas City",
@@ -17514,7 +17514,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "KansasCOM",
         "city": "Wichita",
@@ -17748,7 +17748,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Los Angeles",
@@ -18023,7 +18023,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -18288,7 +18288,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -18524,7 +18524,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LECOM-Bradenton",
         "city": "Bradenton",
@@ -18775,7 +18775,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LECOM-Elmira",
         "city": "Elmira",
@@ -19009,7 +19009,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LECOM",
         "city": "Erie",
@@ -19260,7 +19260,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LECOM-Jacksonville",
         "city": "Jacksonville",
@@ -19494,7 +19494,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LECOM-Seton Hill",
         "city": "Greensburg",
@@ -19728,7 +19728,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -20005,7 +20005,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LUCOM",
         "city": "Lynchburg",
@@ -20239,7 +20239,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LMU-DCOM",
         "city": "Harrogate",
@@ -20473,7 +20473,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LMU-DCOM Knoxville",
         "city": "Knoxville",
@@ -20707,7 +20707,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "LMU-DCOM \u2013 Orange Park",
         "city": "Orange Park",
@@ -20941,7 +20941,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Loma Linda",
@@ -21217,7 +21217,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Shreveport",
@@ -21493,7 +21493,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Maywood",
@@ -21770,7 +21770,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MU-WCOM",
         "city": "Indianapolis",
@@ -22004,7 +22004,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Huntington",
@@ -22280,7 +22280,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -22555,7 +22555,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -22791,7 +22791,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Augusta",
@@ -23067,7 +23067,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Milwaukee",
@@ -23359,7 +23359,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charleston",
@@ -23637,7 +23637,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -23883,7 +23883,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Macon",
@@ -24159,7 +24159,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MSOM",
         "city": "Hagerstown",
@@ -24410,7 +24410,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fayetteville",
@@ -24661,7 +24661,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "East Lansing",
@@ -24938,7 +24938,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MSUCOM-DMC",
         "city": "Detroit",
@@ -25172,7 +25172,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MSUCOM",
         "city": "East Lansing",
@@ -25406,7 +25406,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MSUCOM-MUC",
         "city": "Macomb",
@@ -25629,7 +25629,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MWU/AZCOM",
         "city": "Glendale",
@@ -25863,7 +25863,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "MWU/CCOM",
         "city": "Downers Grove",
@@ -26097,7 +26097,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Atlanta",
@@ -26164,8 +26164,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
             }
           ],
           "title": "Overview"
@@ -26189,8 +26189,8 @@
             "data_quality_band": "high",
             "gpa_average": "3.64",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "504.6",
-            "mcat_band": "502-505"
+            "mcat_average": "505.6",
+            "mcat_band": "506-509"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -26213,8 +26213,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
             }
           ],
           "title": "Admissions Stats"
@@ -26248,8 +26248,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
             }
           ],
           "title": "Cost and Debt"
@@ -26295,8 +26295,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
             }
           ],
           "title": "Requirements and Policies"
@@ -26328,8 +26328,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "http://www.msm.edu/Admissions/doctorofmedicine.php; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://enews.msm.edu/Admissions/doctor-of-medicine/fact-sheet.php"
             }
           ],
           "title": "Source Confidence"
@@ -26356,9 +26356,9 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "502-505",
+          "context": "506-509",
           "label": "MCAT average",
-          "value": "504.6"
+          "value": "505.6"
         },
         {
           "card_id": "gpa_average",
@@ -26388,7 +26388,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Mineola",
@@ -26654,7 +26654,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -26719,8 +26719,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
             }
           ],
           "title": "Overview"
@@ -26741,11 +26741,11 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.64",
-            "gpa_band": "3.60-3.79",
-            "mcat_average": "498.5",
-            "mcat_band": "498-501"
+            "data_quality_band": "high",
+            "gpa_average": "3.98",
+            "gpa_band": "Greater than 3.79",
+            "mcat_average": "523",
+            "mcat_band": "Greater than 517"
           },
           "missing_fields": [],
           "readiness": "ready",
@@ -26764,8 +26764,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
             }
           ],
           "title": "Admissions Stats"
@@ -26795,8 +26795,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
             }
           ],
           "title": "Cost and Debt"
@@ -26837,15 +26837,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -26868,8 +26868,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.sanjuanbautista.edu/school/md-program/admissions.html; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://med.nyu.edu/education/md-degree/md-admissions/by-the-numbers"
             }
           ],
           "title": "Source Confidence"
@@ -26896,15 +26896,15 @@
         },
         {
           "card_id": "mcat_average",
-          "context": "498-501",
+          "context": "Greater than 517",
           "label": "MCAT average",
-          "value": "498.5"
+          "value": "523"
         },
         {
           "card_id": "gpa_average",
-          "context": "3.60-3.79",
+          "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.64"
+          "value": "3.98"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -26922,13 +26922,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "NYITCOM",
         "city": "Old Westbury",
@@ -27162,7 +27162,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "NYITCOM-Jonesboro",
         "city": "Jonesboro",
@@ -27396,7 +27396,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Valhalla",
@@ -27687,7 +27687,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "NoordaCOM",
         "city": "Provo",
@@ -27938,7 +27938,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rootstown",
@@ -28184,7 +28184,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -28461,7 +28461,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Fort Lauderdale",
@@ -28526,8 +28526,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
             }
           ],
           "title": "Overview"
@@ -28548,10 +28548,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "medium",
-            "gpa_average": "3.71",
+            "data_quality_band": "high",
+            "gpa_average": "3.75",
             "gpa_band": "3.60-3.79",
-            "mcat_average": "510.5",
+            "mcat_average": "511",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -28571,8 +28571,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
             }
           ],
           "title": "Admissions Stats"
@@ -28602,8 +28602,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
             }
           ],
           "title": "Cost and Debt"
@@ -28645,15 +28645,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "medium",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -28676,8 +28676,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "Shemmassian; The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://md.nova.edu/admissions/admissions-requirements.html"
             }
           ],
           "title": "Source Confidence"
@@ -28706,13 +28706,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "510.5"
+          "value": "511"
         },
         {
           "card_id": "gpa_average",
           "context": "3.60-3.79",
           "label": "GPA average",
-          "value": "3.71"
+          "value": "3.75"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -28730,13 +28730,13 @@
           "card_id": "data_quality",
           "context": "Low priority",
           "label": "Data Quality",
-          "value": "medium"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "NSU-KPCOM-Clearwater",
         "city": "Clearwater",
@@ -28970,7 +28970,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "NSU-KPCOM",
         "city": "Fort Lauderdale",
@@ -29204,7 +29204,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -29481,7 +29481,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OU-HCOM-Cleveland",
         "city": "Cleveland",
@@ -29715,7 +29715,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OU-HCOM",
         "city": "Athens",
@@ -29949,7 +29949,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OU-HCOM-Dublin",
         "city": "Dublin",
@@ -30183,7 +30183,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OSU-COM",
         "city": "Tulsa",
@@ -30417,7 +30417,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OSU-COM Tahlequah",
         "city": "Tahlequah",
@@ -30640,7 +30640,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Portland",
@@ -30916,7 +30916,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "OCOM",
         "city": "Celebration",
@@ -31167,7 +31167,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "PNWU-COM",
         "city": "Yakima",
@@ -31401,7 +31401,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "El Paso",
@@ -31664,7 +31664,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Hershey",
@@ -31910,7 +31910,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "PCOM",
         "city": "Philadelphia",
@@ -32161,7 +32161,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "PCOM Georgia",
         "city": "Suwanee",
@@ -32412,7 +32412,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "PCOM South Georgia",
         "city": "Moultrie",
@@ -32663,7 +32663,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -32909,7 +32909,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Stony Brook",
@@ -33186,7 +33186,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Burlington",
@@ -33462,7 +33462,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "RVUCOM",
         "city": "Parker",
@@ -33696,7 +33696,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "RVUCOM-SU Campus",
         "city": "Ivins",
@@ -33930,7 +33930,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "RVU-MCOM",
         "city": "Billings",
@@ -34164,7 +34164,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Las Vegas",
@@ -34439,7 +34439,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM",
         "city": "Stratford",
@@ -34673,7 +34673,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Rowan-VirtuaSOM-Sewell",
         "city": "Sewell",
@@ -34907,7 +34907,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -35184,7 +35184,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Newark",
@@ -35460,7 +35460,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Piscataway",
@@ -35734,7 +35734,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Brooklyn",
@@ -36012,7 +36012,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -36288,7 +36288,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "SHSU-COM",
         "city": "Huntsville",
@@ -36522,7 +36522,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Philadelphia",
@@ -36800,7 +36800,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Springfield",
@@ -37078,7 +37078,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Salt Lake City",
@@ -37345,7 +37345,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Palo Alto",
@@ -37620,7 +37620,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Syracuse",
@@ -37898,7 +37898,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "College Station",
@@ -38134,7 +38134,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lubbock",
@@ -38411,7 +38411,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbus",
@@ -38476,8 +38476,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
             }
           ],
           "title": "Overview"
@@ -38498,10 +38498,10 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
+            "data_quality_band": "high",
             "gpa_average": "3.83",
             "gpa_band": "Greater than 3.79",
-            "mcat_average": "513.8",
+            "mcat_average": "514",
             "mcat_band": "514-517"
           },
           "missing_fields": [],
@@ -38521,8 +38521,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
             }
           ],
           "title": "Admissions Stats"
@@ -38552,8 +38552,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
             }
           ],
           "title": "Cost and Debt"
@@ -38597,15 +38597,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -38628,8 +38628,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian; The Match Guy",
-              "source_url": "https://medicine.osu.edu/education/md/admissions; https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.osu.edu/education/md/admissions/before-you-apply/entering-class-profile"
             }
           ],
           "title": "Source Confidence"
@@ -38658,7 +38658,7 @@
           "card_id": "mcat_average",
           "context": "514-517",
           "label": "MCAT average",
-          "value": "513.8"
+          "value": "514"
         },
         {
           "card_id": "gpa_average",
@@ -38682,13 +38682,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Antonio",
@@ -38934,7 +38934,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tyler",
@@ -39209,7 +39209,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TVCOM",
         "city": "Phoenix",
@@ -39432,7 +39432,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Providence",
@@ -39709,7 +39709,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -39974,7 +39974,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TouroCOM-Harlem",
         "city": "New York",
@@ -40208,7 +40208,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TouroCOM-Middletown",
         "city": "Middletown",
@@ -40442,7 +40442,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TouroCOM-Great Falls",
         "city": "Great Falls",
@@ -40676,7 +40676,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TUCOM",
         "city": "Vallejo",
@@ -40910,7 +40910,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "TUNCOM",
         "city": "Henderson",
@@ -41144,7 +41144,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Boston",
@@ -41421,7 +41421,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Orleans",
@@ -41698,7 +41698,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tampa",
@@ -41763,8 +41763,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
             }
           ],
           "title": "Overview"
@@ -41785,8 +41785,8 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
-            "gpa_average": "3.96",
+            "data_quality_band": "high",
+            "gpa_average": "3.95",
             "gpa_band": "Greater than 3.79",
             "mcat_average": "520",
             "mcat_band": "Greater than 517"
@@ -41808,8 +41808,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
             }
           ],
           "title": "Admissions Stats"
@@ -41839,8 +41839,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
             }
           ],
           "title": "Cost and Debt"
@@ -41884,15 +41884,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -41915,8 +41915,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://www.usf.edu/health/news/2024/mcom-welcomes-class-of-2028.aspx"
             }
           ],
           "title": "Source Confidence"
@@ -41951,7 +41951,7 @@
           "card_id": "gpa_average",
           "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.96"
+          "value": "3.95"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -41969,13 +41969,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Bethesda",
@@ -42238,7 +42238,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Birmingham",
@@ -42514,7 +42514,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Phoenix",
@@ -42789,7 +42789,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Tucson",
@@ -43042,7 +43042,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Little Rock",
@@ -43317,7 +43317,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Davis",
@@ -43593,7 +43593,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Irvine",
@@ -43870,7 +43870,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Riverside",
@@ -44146,7 +44146,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Diego",
@@ -44422,7 +44422,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "San Francisco",
@@ -44698,7 +44698,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Orlando",
@@ -44973,7 +44973,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -45239,7 +45239,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Cincinnati",
@@ -45515,7 +45515,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Denver",
@@ -45791,7 +45791,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Farmington",
@@ -46069,7 +46069,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Gainesville",
@@ -46344,7 +46344,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Athens",
@@ -46604,7 +46604,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Houston",
@@ -46879,7 +46879,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chicago",
@@ -47155,7 +47155,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Iowa City",
@@ -47430,7 +47430,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -47706,7 +47706,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Lexington",
@@ -47983,7 +47983,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Louisville",
@@ -48260,7 +48260,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Baltimore",
@@ -48537,7 +48537,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Worcester",
@@ -48814,7 +48814,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Miami",
@@ -49091,7 +49091,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Ann Arbor",
@@ -49368,7 +49368,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Minneapolis",
@@ -49643,7 +49643,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Jackson",
@@ -49917,7 +49917,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -50194,7 +50194,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kansas City",
@@ -50468,7 +50468,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Omaha",
@@ -50742,7 +50742,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Reno",
@@ -51019,7 +51019,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "UNECOM",
         "city": "Biddeford",
@@ -51253,7 +51253,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Albuquerque",
@@ -51531,7 +51531,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Chapel Hill",
@@ -51765,7 +51765,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Grand Forks",
@@ -52040,7 +52040,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "UNTHSC/TCOM",
         "city": "Fort Worth",
@@ -52274,7 +52274,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "UNC-COM",
         "city": "Greely",
@@ -52497,7 +52497,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Oklahoma City",
@@ -52774,7 +52774,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "UP-KYCOM",
         "city": "Pikeville",
@@ -53008,7 +53008,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Pittsburgh",
@@ -53284,7 +53284,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Rochester",
@@ -53559,7 +53559,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Columbia",
@@ -53782,7 +53782,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Greenville",
@@ -54058,7 +54058,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Vermillion",
@@ -54334,7 +54334,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Memphis",
@@ -54610,7 +54610,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Galveston",
@@ -54884,7 +54884,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Edinburg",
@@ -55158,7 +55158,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Dallas",
@@ -55432,7 +55432,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Toledo",
@@ -55708,7 +55708,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Charlottesville",
@@ -55985,7 +55985,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Seattle",
@@ -56261,7 +56261,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Madison",
@@ -56537,7 +56537,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "UIWSOM",
         "city": "San Antonio",
@@ -56771,7 +56771,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Nashville",
@@ -57047,7 +57047,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Richmond",
@@ -57323,7 +57323,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Roanoke",
@@ -57388,8 +57388,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
             }
           ],
           "title": "Overview"
@@ -57410,7 +57410,7 @@
         },
         {
           "facts": {
-            "data_quality_band": "low",
+            "data_quality_band": "high",
             "gpa_average": "3.67",
             "gpa_band": "3.60-3.79",
             "mcat_average": "512",
@@ -57433,8 +57433,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
             }
           ],
           "title": "Admissions Stats"
@@ -57464,8 +57464,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
             }
           ],
           "title": "Cost and Debt"
@@ -57507,15 +57507,15 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
             }
           ],
           "title": "Requirements and Policies"
         },
         {
           "facts": {
-            "admissions_data_quality_band": "low",
+            "admissions_data_quality_band": "high",
             "missing_fields": "letter_requirements",
             "rank_confidence": "partial"
           },
@@ -57538,8 +57538,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "The Match Guy",
-              "source_url": "https://thematchguy.com/average-mcat-gpa-medical-school-acceptance/"
+              "source_name": "Official MD school source",
+              "source_url": "https://medicine.vtc.vt.edu/admissions/class-statistics.html"
             }
           ],
           "title": "Source Confidence"
@@ -57592,13 +57592,13 @@
           "card_id": "data_quality",
           "context": "Top application candidate",
           "label": "Data Quality",
-          "value": "low"
+          "value": "high"
         }
       ],
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Winston-Salem",
@@ -57663,8 +57663,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
             }
           ],
           "title": "Overview"
@@ -57686,9 +57686,9 @@
         {
           "facts": {
             "data_quality_band": "high",
-            "gpa_average": "3.79",
-            "gpa_band": "3.60-3.79",
-            "mcat_average": "512",
+            "gpa_average": "3.83",
+            "gpa_band": "Greater than 3.79",
+            "mcat_average": "511",
             "mcat_band": "510-513"
           },
           "missing_fields": [],
@@ -57708,8 +57708,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
             }
           ],
           "title": "Admissions Stats"
@@ -57739,8 +57739,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
             }
           ],
           "title": "Cost and Debt"
@@ -57779,8 +57779,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
             }
           ],
           "title": "Requirements and Policies"
@@ -57810,8 +57810,8 @@
               "source_url": "https://lcme.org/directory/accredited-programs/"
             },
             {
-              "source_name": "ProspectiveDoctor; Shemmassian",
-              "source_url": "http://www.wakehealth.edu/School/MD-Program/Admissions/Admissions.htm; https://www.shemmassianconsulting.com/blog/average-gpa-and-mcat-score-for-every-medical-school"
+              "source_name": "Official MD school source",
+              "source_url": "https://school.wakehealth.edu/Education-and-Training/MD-Program/Current-Class-Profile"
             }
           ],
           "title": "Source Confidence"
@@ -57840,13 +57840,13 @@
           "card_id": "mcat_average",
           "context": "510-513",
           "label": "MCAT average",
-          "value": "512"
+          "value": "511"
         },
         {
           "card_id": "gpa_average",
-          "context": "3.60-3.79",
+          "context": "Greater than 3.79",
           "label": "GPA average",
-          "value": "3.79"
+          "value": "3.83"
         },
         {
           "card_id": "in_state_estimated_cost",
@@ -57870,7 +57870,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Spokane",
@@ -58145,7 +58145,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "St. Louis",
@@ -58420,7 +58420,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Detroit",
@@ -58695,7 +58695,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New York",
@@ -58970,7 +58970,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "WVSOM",
         "city": "Lewisburg",
@@ -59221,7 +59221,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Morgantown",
@@ -59498,7 +59498,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "Kalamazoo",
@@ -59773,7 +59773,7 @@
       "source_confidence": "partial"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "WesternU/COMP",
         "city": "Pomona",
@@ -60007,7 +60007,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "WesternU/COMP-Northwest",
         "city": "Lebanon",
@@ -60241,7 +60241,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "WCUCOM",
         "city": "Hattiesburg",
@@ -60475,7 +60475,7 @@
       "source_confidence": "provisional"
     },
     {
-      "generated_at": "2026-06-09T02:37:40+00:00",
+      "generated_at": "2026-06-09T03:43:01+00:00",
       "header": {
         "campus_name": "Main campus",
         "city": "New Haven",

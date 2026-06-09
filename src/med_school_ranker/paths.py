@@ -25,6 +25,7 @@ OFFICIAL_STATS_SOURCE_CANDIDATES_CSV = SOURCE_TABLES / "official_mcat_gpa_source
 OFFICIAL_STATS_EXTRACTED_VALUES_CSV = SOURCE_TABLES / "official_mcat_gpa_extracted_values.csv"
 MD_OFFICIAL_SOURCE_CANDIDATES_CSV = SOURCE_TABLES / "md_official_source_candidates.csv"
 MD_OFFICIAL_EXTRACTED_STATS_CSV = SOURCE_TABLES / "md_official_extracted_stats.csv"
+MD_OFFICIAL_ASSISTED_SEARCH_SEEDS_CSV = SOURCE_TABLES / "md_official_assisted_search_seeds.csv"
 AACOM_DO_PROFILE_CANDIDATES_CSV = SOURCE_TABLES / "aacom_do_profile_candidates.csv"
 AACOM_DO_EXTRACTED_STATS_CSV = SOURCE_TABLES / "aacom_do_extracted_stats.csv"
 COST_AND_DEBT_CSV = NORMALIZED_DATA / "cost_and_debt.csv"
